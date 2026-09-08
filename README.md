@@ -1,5 +1,7 @@
 # Đồ Án Tốt Nghiệp: Hệ Thống AI Đa Phương Thức Hỗ Trợ Người Khiếm Thị
 
+[![CI/CD Pipeline](https://github.com/lqmnhat13/Do-An-Tot-Nghiep/actions/workflows/cicd.yml/badge.svg)](https://github.com/lqmnhat13/Do-An-Tot-Nghiep/actions/workflows/cicd.yml)
+
 Hệ thống AI đa phương thức chạy **hoàn toàn offline tại local trên macOS (Apple Silicon M1 16GB)**, hỗ trợ người mù và người có thị lực kém nhận biết môi trường trong nhà, phát hiện vật cản, ước lượng độ gần tương đối, đánh giá rủi ro va chạm, đọc chữ (OCR) và hỏi đáp thị giác (VQA) theo yêu cầu với giao diện âm thanh tiếng Việt.
 
 ---

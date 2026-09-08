@@ -1,0 +1,171 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  # =========================================================================
+  # 1. CODE QUALITY & LINTING
+  # =========================================================================
+  lint:
+    name: Code Quality & Linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: "pip"
+
+      - name: Install Linting Tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8
+
+      - name: Check for Python syntax errors and undefined names
+        run: |
+          # Dừng build nếu có lỗi cú pháp hoặc biến chưa định nghĩa
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+
+      - name: Flake8 Code Quality Warnings
+        run: |
+          # Cảnh báo chất lượng mã (không làm fail build)
+          flake8 . --count --exit-zero --max-complexity=15 --max-line-length=127 --statistics
+
+  # =========================================================================
+  # 2. UNIT TESTS & PIPELINE VALIDATION
+  # =========================================================================
+  test:
+    name: Unit Tests & Pipeline Evaluation
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: "pip"
+
+      - name: Install System Dependencies for OpenCV
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends libgl1 libglib2.0-0
+
+      - name: Cache Hugging Face Model Weights
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: ${{ runner.os }}-hf-${{ hashFiles('models/manifest.json') }}
+          restore-keys: |
+            ${{ runner.os }}-hf-
+
+      - name: Install Python Dependencies (CPU-Optimized for CI)
+        run: |
+          python -m pip install --upgrade pip
+          # Cài đặt PyTorch CPU wheels giúp giảm dung lượng tải từ ~2.5GB xuống ~150MB
+          pip install torch torchvision --extra-index-url https://download.pytorch.org/whl/cpu
+          pip install -r requirements.txt
+
+      - name: Run Full Unit Test Suite (29 tests)
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m unittest discover -s tests -p "test_*.py" -v
+
+      - name: Run End-to-End Pipeline Smoke Test (Dummy Camera)
+        run: |
+          python scripts/evaluate_video.py --video dummy --duration 2.0 --device cpu --out evaluation/results/ci_eval_report.json
+
+      - name: Upload Test & Evaluation Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-evaluation-results
+          path: evaluation/results/
+          retention-days: 14
+
+  # =========================================================================
+  # 3. BUILD & INTEGRITY VERIFICATION
+  # =========================================================================
+  build:
+    name: Package & Asset Verification
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Verify Core Configurations & Assets
+        run: |
+          echo "Verifying project structure..."
+          test -f configs/app_config.yaml || { echo "Missing app_config.yaml"; exit 1; }
+          test -f configs/model_config.yaml || { echo "Missing model_config.yaml"; exit 1; }
+          test -f configs/fusion_rules.yaml || { echo "Missing fusion_rules.yaml"; exit 1; }
+          test -f models/manifest.json || { echo "Missing models/manifest.json"; exit 1; }
+          test -f models/weights/yolov8n.pt || { echo "Missing YOLOv8n weights"; exit 1; }
+          test -f assets/audio/alert_high.wav || { echo "Missing alert_high.wav"; exit 1; }
+          test -f assets/audio/chime.wav || { echo "Missing chime.wav"; exit 1; }
+          test -f assets/audio/ready.wav || { echo "Missing ready.wav"; exit 1; }
+          echo "All core assets and configurations verified successfully."
+
+      - name: Create Release Distribution Bundle
+        run: |
+          mkdir -p dist
+          tar --exclude='.git' \
+              --exclude='.github' \
+              --exclude='tests' \
+              --exclude='__pycache__' \
+              -czvf dist/do-an-tot-nghiep-release.tar.gz .
+
+      - name: Upload Distribution Archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-package
+          path: dist/do-an-tot-nghiep-release.tar.gz
+          retention-days: 14
+
+  # =========================================================================
+  # 4. CONTINUOUS DELIVERY (AUTOMATED GITHUB RELEASE ON TAG)
+  # =========================================================================
+  release:
+    name: Publish GitHub Release
+    runs-on: ubuntu-latest
+    needs: [test, build]
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download Built Package
+        uses: actions/download-artifact@v4
+        with:
+          name: release-package
+          path: dist
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/do-an-tot-nghiep-release.tar.gz
+          generate_release_notes: true
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

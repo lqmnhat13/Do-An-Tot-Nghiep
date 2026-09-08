@@ -8,9 +8,14 @@ Tuân thủ mục 9.3 của Kế hoạch:
 
 import argparse
 import os
+import sys
 import time
 import json
 import numpy as np
+
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
 
 from src.camera.camera_manager import CameraManager
 from src.detection.class_filter import ClassFilter
