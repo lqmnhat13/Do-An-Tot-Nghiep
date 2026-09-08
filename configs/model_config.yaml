@@ -1,0 +1,78 @@
+# Cấu hình các mô hình AI: Detection, Depth, OCR, VQA
+detection:
+  model_name: "yolov8n"
+  weights_path: "models/weights/yolov8n.pt"
+  confidence_threshold: 0.25
+  iou_threshold: 0.45
+  device: "mps" # mps | cpu
+  input_size: 640
+  # 21 lớp COCO trong nhà theo kế hoạch
+  enabled_classes:
+    - "person"
+    - "cat"
+    - "dog"
+    - "chair"
+    - "couch"
+    - "bed"
+    - "dining table"
+    - "tv"
+    - "laptop"
+    - "keyboard"
+    - "mouse"
+    - "cell phone"
+    - "bottle"
+    - "cup"
+    - "bowl"
+    - "book"
+    - "clock"
+    - "vase"
+    - "microwave"
+    - "oven"
+    - "toaster"
+    - "sink"
+    - "refrigerator"
+    - "toilet"
+  # Nhóm đối tượng có thể gây va chạm cần kích hoạt cảnh báo nguy cơ
+  alert_classes:
+    - "person"
+    - "dog"
+    - "cat"
+    - "chair"
+    - "couch"
+    - "bed"
+    - "dining table"
+    - "refrigerator"
+    - "toilet"
+    - "sink"
+    - "laptop"
+    - "tv"
+    - "cell phone"
+
+depth:
+  model_name: "depth_anything_v2_small"
+  hf_repo_id: "depth-anything/Depth-Anything-V2-Small-hf"
+  local_dir: "models/weights/depth_anything_v2_small"
+  device: "mps" # mps | cpu
+  representation: "relative_depth" # relative_depth | metric_depth
+  near_is_larger: true # Depth Anything V2 outputs inverse/relative depth where larger is closer
+  percentile_roi: 80 # lấy phân vị 80% trong vùng ROI đã co viền
+  roi_erosion_ratio: 0.15 # co viền 15% để tránh nhiễu phông nền
+  input_height: 256 # kích thước suy luận tối ưu cho Apple Silicon (50ms ~ 20 FPS)
+  input_width: 256
+
+ocr:
+  engine: "easyocr" # easyocr | paddleocr
+  languages: ["vi", "en"]
+  device: "mps" # mps | cpu
+  min_confidence: 0.3
+  blur_laplacian_threshold: 60.0 # dưới ngưỡng này cảnh báo ảnh mờ
+  min_brightness: 40.0 # dưới ngưỡng này cảnh báo ảnh quá tối
+  max_brightness: 240.0 # trên ngưỡng này cảnh báo lóa sáng
+
+vqa:
+  engine: "blip_vlm" # blip_vlm | rule_vqa
+  use_vlm: true
+  caption_model_name: "Salesforce/blip-image-captioning-base"
+  translation_model_name: "Helsinki-NLP/opus-mt-en-vi"
+  device: "mps" # mps | cpu
+  max_tokens: 45

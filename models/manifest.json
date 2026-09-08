@@ -1,0 +1,39 @@
+{
+  "project": "Do-An-Tot-Nghiep Multimodal Assistive System",
+  "version": "1.0.0",
+  "updated_at": "2026-09-07",
+  "models": {
+    "yolov8n": {
+      "task": "object_detection",
+      "framework": "ultralytics",
+      "checkpoint": "yolov8n.pt",
+      "source": "Ultralytics COCO pretrained",
+      "license": "AGPL-3.0",
+      "classes_count": 80,
+      "filtered_classes_count": 21,
+      "device": "mps"
+    },
+    "depth_anything_v2_small": {
+      "task": "monocular_depth_estimation",
+      "framework": "transformers",
+      "hf_repo": "depth-anything/Depth-Anything-V2-Small-hf",
+      "representation": "relative_depth",
+      "license": "Apache-2.0",
+      "device": "mps"
+    },
+    "easyocr_vi": {
+      "task": "vietnamese_ocr",
+      "framework": "easyocr",
+      "languages": ["vi", "en"],
+      "license": "Apache-2.0",
+      "device": "mps"
+    },
+    "macos_say_tts": {
+      "task": "vietnamese_tts",
+      "framework": "system_native",
+      "voice": "Linh",
+      "locale": "vi_VN",
+      "license": "Apple Proprietary Built-in"
+    }
+  }
+}

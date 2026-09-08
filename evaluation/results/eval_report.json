@@ -1,0 +1,24 @@
+{
+  "video_source": "dummy",
+  "evaluation_duration_sec": 5.0,
+  "total_camera_frames": 135,
+  "total_frames_processed": 135,
+  "performance_metrics": {
+    "fps": 26.6,
+    "detection": {
+      "p50": 16.423478999058716,
+      "p95": 49.83980211545713,
+      "mean": 24.415367121400777
+    },
+    "depth": {
+      "p50": 63.13237450376619,
+      "p95": 102.2547938468051,
+      "mean": 71.42127305269241
+    },
+    "end_to_end": {
+      "p50": 16.454791999422014,
+      "p95": 49.864675001299474,
+      "mean": 24.439549180679023
+    }
+  }
+}

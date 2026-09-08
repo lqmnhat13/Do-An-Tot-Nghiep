@@ -1,0 +1,31 @@
+# Cấu hình runtime và phần cứng của ứng dụng
+app:
+  name: "Local Multimodal Assistive System"
+  version: "1.0.0"
+  device: "mps" # mps | cpu
+  log_level: "INFO"
+
+camera:
+  source: 0 # 0 for default webcam, or path to video file, or "dummy"
+  width: 640
+  height: 480
+  fps: 30
+  buffer_size: 2 # drop-oldest bounded buffer limit
+  reconnect_delay_sec: 2.0
+  max_reconnect_attempts: 5
+
+runtime:
+  detection_interval_ms: 66 # ~15 FPS
+  depth_interval_ms: 125 # ~8 FPS
+  watchdog_timeout_sec: 3.0
+  enable_preview: true
+  preview_width: 800
+  preview_height: 600
+
+audio:
+  enabled: true
+  engine: "say" # say (macOS native) | dummy
+  voice: "Linh" # Vietnamese voice on macOS
+  speech_rate_wpm: 200
+  enable_chimes: true
+  min_alert_interval_sec: 2.0
