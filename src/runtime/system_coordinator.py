@@ -6,7 +6,7 @@ import numpy as np
 from src.contracts.frame_packet import FramePacket
 from src.contracts.detection import DetectionResult
 from src.contracts.depth_map import DepthMap
-from src.contracts.risk import RiskAssessment, DataQuality
+from src.contracts.risk import RiskAssessment, RiskLevel, DataQuality
 from src.contracts.audio import AudioTask, AudioPriority
 from src.contracts.request import OCRRequest, OCRResult, VQARequest, VQAResult
 
@@ -74,6 +74,7 @@ class SystemCoordinator:
         self._running = False
         self._det_thread: Optional[threading.Thread] = None
         self._depth_thread: Optional[threading.Thread] = None
+        self._on_demand_thread: Optional[threading.Thread] = None
 
         # Lưu trữ trạng thái mới nhất phục vụ hiển thị HUD
         self._latest_packet: Optional[FramePacket] = None
@@ -82,6 +83,8 @@ class SystemCoordinator:
         self._latest_assessments: List[RiskAssessment] = []
         self._current_mode = "OBSERVATION" # "OBSERVATION" | "OCR" | "VQA" | "DEGRADED"
         self._on_demand_active = False
+        self._on_demand_generation = 0
+        self._active_on_demand_token: Optional[int] = None
         self._state_lock = threading.Lock()
 
     def is_on_demand_active(self) -> bool:
@@ -90,10 +93,97 @@ class SystemCoordinator:
             return self._on_demand_active
 
     def set_on_demand_active(self, active: bool, mode: str = "OBSERVATION") -> None:
-        """Thiết lập trạng thái On-Demand (bật/tắt chế độ tạm dừng cảnh báo)."""
+        """Thiết lập trạng thái On-Demand mà không dừng pipeline an toàn."""
         with self._state_lock:
+            self._on_demand_generation += 1
             self._on_demand_active = active
+            self._active_on_demand_token = self._on_demand_generation if active else None
             self._current_mode = mode if active else "OBSERVATION"
+
+    def _is_current_on_demand(self, token: int) -> bool:
+        with self._state_lock:
+            return self._on_demand_active and self._active_on_demand_token == token
+
+    def _post_on_demand_audio(self, token: int, task: AudioTask) -> bool:
+        """Chỉ token hiện hành mới được tạo side effect âm thanh."""
+        with self._state_lock:
+            if not self._on_demand_active or self._active_on_demand_token != token:
+                return False
+            return self.audio_coordinator.post_task(task)
+
+    def _publish_on_demand_result(
+        self,
+        token: int,
+        metric_name: str,
+        latency: float,
+        task: AudioTask
+    ) -> bool:
+        """Ghi metrics và phát kết quả như một thao tác có kiểm tra generation."""
+        with self._state_lock:
+            if not self._on_demand_active or self._active_on_demand_token != token:
+                return False
+            self.metrics.record_latency(metric_name, latency)
+            return self.audio_coordinator.post_task(task)
+
+    def _finish_on_demand(self, token: int) -> None:
+        """Chỉ owner của generation hiện hành mới được kết thúc mode on-demand."""
+        with self._state_lock:
+            if self._active_on_demand_token != token:
+                return
+            self._on_demand_active = False
+            self._active_on_demand_token = None
+            self._current_mode = "OBSERVATION"
+
+    def _start_on_demand(
+        self,
+        mode: str,
+        target,
+        args: tuple = ()
+    ) -> bool:
+        """Dành token và khởi động đúng một worker inference on-demand."""
+        with self._state_lock:
+            if self._on_demand_thread is not None and self._on_demand_thread.is_alive():
+                rejection = "worker on-demand trước chưa kết thúc"
+                thread = None
+                token = -1
+            elif self._on_demand_active:
+                rejection = "tác vụ on-demand khác đang hoạt động"
+                thread = None
+                token = -1
+            else:
+                rejection = ""
+                self._on_demand_generation += 1
+                token = self._on_demand_generation
+                self._on_demand_active = True
+                self._active_on_demand_token = token
+                self._current_mode = mode
+                thread = threading.Thread(
+                    target=target,
+                    args=(token, *args),
+                    name=f"{mode}TaskThread",
+                    daemon=True
+                )
+                self._on_demand_thread = thread
+
+        if thread is None:
+            print(f"[SystemCoordinator] Từ chối {mode}: {rejection}.")
+            return False
+
+        try:
+            # Không start thread trong lúc giữ _state_lock.
+            thread.start()
+            return True
+        except Exception as exc:
+            with self._state_lock:
+                if self._on_demand_thread is thread:
+                    self._on_demand_thread = None
+                if self._active_on_demand_token == token:
+                    self._on_demand_generation += 1
+                    self._active_on_demand_token = None
+                    self._on_demand_active = False
+                    self._current_mode = "OBSERVATION"
+            print(f"[SystemCoordinator] Không thể khởi động {mode}: {exc}")
+            return False
 
     def start(self) -> None:
         """Khởi động toàn bộ các luồng của hệ thống."""
@@ -120,11 +210,18 @@ class SystemCoordinator:
     def stop(self) -> None:
         """Dừng toàn bộ hệ thống an toàn."""
         self._running = False
+        self.set_on_demand_active(False)
         self.camera_manager.stop()
         if self._det_thread and self._det_thread.is_alive():
             self._det_thread.join(timeout=1.5)
         if self._depth_thread and self._depth_thread.is_alive():
             self._depth_thread.join(timeout=1.5)
+        if (
+            self._on_demand_thread
+            and self._on_demand_thread.is_alive()
+            and self._on_demand_thread is not threading.current_thread()
+        ):
+            self._on_demand_thread.join(timeout=1.5)
         self.audio_coordinator.stop()
 
     def _depth_worker(self) -> None:
@@ -179,12 +276,8 @@ class SystemCoordinator:
                 # 4. Risk Fusion FSM đánh giá rủi ro
                 assessments = self.risk_fsm.update(sync_pair)
 
-                # 5. Alert Aggregator tổng hợp và phát cảnh báo
-                # TẠM DỪNG CẢNH BÁO LIÊN TỤC KHI ĐANG Ở CHẾ ĐỘ ON-DEMAND (VQA / OCR)
-                if not self.is_on_demand_active():
-                    alert_task = self.alert_aggregator.aggregate(assessments)
-                    if alert_task is not None:
-                        self.audio_coordinator.post_task(alert_task)
+                # 5. Alert Aggregator luôn giữ đường cảnh báo HIGH_RISK hoạt động.
+                self._post_safety_alert(assessments)
 
                 e2e_ms = (time.monotonic() - t0) * 1000.0
                 self.metrics.record_latency("end_to_end_ms", e2e_ms)
@@ -202,87 +295,105 @@ class SystemCoordinator:
             except Exception as e:
                 print(f"[DetectionWorker] Lỗi suy luận và fusion: {e}")
 
+    def _post_safety_alert(self, assessments: List[RiskAssessment]) -> None:
+        """Trong on-demand chỉ cho HIGH_RISK đi qua để không ngắt bởi LOW/MEDIUM."""
+        alert_candidates = assessments
+        if self.is_on_demand_active():
+            alert_candidates = [a for a in assessments if a.risk_level == RiskLevel.HIGH]
+
+        if not alert_candidates:
+            return
+
+        alert_task = self.alert_aggregator.aggregate(alert_candidates)
+        if alert_task is not None:
+            self.audio_coordinator.post_task(alert_task)
+
     # ================= On-Demand OCR & VQA =================
 
-    def trigger_ocr(self) -> None:
+    def trigger_ocr(self) -> bool:
         """Kích hoạt tác vụ đọc chữ theo yêu cầu."""
-        if self.is_on_demand_active():
-            print("[SystemCoordinator] Tác vụ theo yêu cầu đang thực thi, bỏ qua yêu cầu OCR.")
-            return
-        threading.Thread(target=self._run_ocr_task, name="OCRTaskThread", daemon=True).start()
+        return self._start_on_demand("OCR", self._run_ocr_task)
 
-    def _run_ocr_task(self) -> None:
-        self.set_on_demand_active(True, mode="OCR")
+    def _run_ocr_task(self, token: int) -> None:
         try:
+            if not self._is_current_on_demand(token):
+                return
             self.audio_coordinator.interrupt()
 
             packet = self.get_latest_frame()
             if packet is None:
-                self.audio_coordinator.post_task(AudioTask(
+                if not self._post_on_demand_audio(token, AudioTask(
                     priority=AudioPriority.ON_DEMAND,
                     text="Chưa nhận được khung hình từ camera để đọc.",
-                    interruptible=False
-                ))
-                self.audio_coordinator.wait_until_idle(timeout=4.0)
+                    interruptible=True
+                )):
+                    return
+                if self._is_current_on_demand(token):
+                    self.audio_coordinator.wait_until_idle(timeout=4.0)
                 return
 
-            self.audio_coordinator.post_task(AudioTask(
+            if not self._post_on_demand_audio(token, AudioTask(
                 priority=AudioPriority.ON_DEMAND,
                 text="Đang xử lý đọc chữ...",
                 sound_file="assets/audio/chime.wav",
-                interruptible=False
-            ))
-
-            req = OCRRequest(request_id=f"ocr_{packet.frame_id}", image=packet.image)
-            res = self.ocr_service.process(req)
-
-            if not self.is_on_demand_active():
+                interruptible=True
+            )):
                 return
 
-            self.metrics.record_latency("ocr_sec", res.latency_sec)
-            self.audio_coordinator.post_task(AudioTask(
-                priority=AudioPriority.ON_DEMAND,
-                text=res.text,
-                interruptible=False
-            ))
+            req = OCRRequest(request_id=f"ocr_{token}_{packet.frame_id}", image=packet.image)
+            res = self.ocr_service.process(req)
 
-            self.audio_coordinator.wait_until_idle(timeout=45.0)
+            if not self._publish_on_demand_result(
+                token,
+                "ocr_sec",
+                res.latency_sec,
+                AudioTask(
+                    priority=AudioPriority.ON_DEMAND,
+                    text=res.text,
+                    interruptible=True
+                )
+            ):
+                return
+
+            if self._is_current_on_demand(token):
+                self.audio_coordinator.wait_until_idle(timeout=45.0)
         except Exception as e:
             print(f"[SystemCoordinator] Lỗi xử lý OCR: {e}")
         finally:
-            self.set_on_demand_active(False)
+            self._finish_on_demand(token)
 
-    def trigger_vqa(self, question: str = "Phía trước có gì?") -> None:
+    def trigger_vqa(self, question: str = "Phía trước có gì?") -> bool:
         """Kích hoạt tác vụ hỏi đáp thị giác (VQA)."""
-        if self.is_on_demand_active():
-            print("[SystemCoordinator] Tác vụ theo yêu cầu đang thực thi, bỏ qua yêu cầu VQA.")
-            return
-        threading.Thread(target=self._run_vqa_task, args=(question,), name="VQATaskThread", daemon=True).start()
+        return self._start_on_demand("VQA", self._run_vqa_task, (question,))
 
-    def _run_vqa_task(self, question: str) -> None:
-        # 1. Bật chế độ On-Demand: Tạm dừng cảnh báo liên tục
-        self.set_on_demand_active(True, mode="VQA")
+    def _run_vqa_task(self, token: int, question: str) -> None:
+        # Pipeline an toàn và HIGH_RISK vẫn hoạt động trong toàn bộ tác vụ.
         try:
             # 2. Ngắt cảnh báo cũ và làm sạch hàng đợi âm thanh
+            if not self._is_current_on_demand(token):
+                return
             self.audio_coordinator.interrupt()
 
             packet = self.get_latest_frame()
             if packet is None:
-                self.audio_coordinator.post_task(AudioTask(
+                if not self._post_on_demand_audio(token, AudioTask(
                     priority=AudioPriority.ON_DEMAND,
                     text="Chưa có hình ảnh để trả lời.",
-                    interruptible=False
-                ))
-                self.audio_coordinator.wait_until_idle(timeout=4.0)
+                    interruptible=True
+                )):
+                    return
+                if self._is_current_on_demand(token):
+                    self.audio_coordinator.wait_until_idle(timeout=4.0)
                 return
 
             # 3. Thông báo đang quan sát
-            self.audio_coordinator.post_task(AudioTask(
+            if not self._post_on_demand_audio(token, AudioTask(
                 priority=AudioPriority.ON_DEMAND,
                 text="Đang quan sát để trả lời...",
                 sound_file="assets/audio/chime.wav",
-                interruptible=False
-            ))
+                interruptible=True
+            )):
+                return
 
             with self._state_lock:
                 detected_names = [a.class_name for a in self._latest_assessments]
@@ -297,33 +408,36 @@ class SystemCoordinator:
                 ]
 
             # 4. Thực thi mô hình VQA (BLIP Captioning + MarianMT + Spatial Grounding)
-            req = VQARequest(request_id=f"vqa_{packet.frame_id}", image=packet.image, question=question)
+            if not self._is_current_on_demand(token):
+                return
+
+            req = VQARequest(request_id=f"vqa_{token}_{packet.frame_id}", image=packet.image, question=question)
             res = self.vqa_service.answer(req, visual_context={
                 "detected_classes": detected_names,
                 "spatial_objects": spatial_objects
             })
 
-            # Kiểm tra nếu người dùng đã hủy (bấm phím S)
-            if not self.is_on_demand_active():
+            if not self._publish_on_demand_result(
+                token,
+                "vqa_sec",
+                res.latency_sec,
+                AudioTask(
+                    priority=AudioPriority.ON_DEMAND,
+                    text=res.answer,
+                    interruptible=True
+                )
+            ):
                 return
 
-            self.metrics.record_latency("vqa_sec", res.latency_sec)
-
-            # 5. Phát âm toàn văn câu trả lời VQA
-            self.audio_coordinator.post_task(AudioTask(
-                priority=AudioPriority.ON_DEMAND,
-                text=res.answer,
-                interruptible=False
-            ))
-
-            # 6. ĐỢI ĐỌC XONG VQA HOÀN TOÀN MỚI CHO PHÉP CẢNH BÁO TIẾP TỤC
-            self.audio_coordinator.wait_until_idle(timeout=45.0)
+            # 6. Đợi cả câu trả lời hoặc cảnh báo HIGH_RISK chen ngang phát xong.
+            if self._is_current_on_demand(token):
+                self.audio_coordinator.wait_until_idle(timeout=45.0)
 
         except Exception as e:
             print(f"[SystemCoordinator] Lỗi xử lý VQA: {e}")
         finally:
-            # 7. Phục hồi trạng thái bình thường để tiếp tục cảnh báo va chạm
-            self.set_on_demand_active(False)
+            # 7. Phục hồi trạng thái quan sát sau khi tác vụ on-demand hoàn tất.
+            self._finish_on_demand(token)
 
     def stop_speech(self) -> None:
         """Ngắt tiếng khẩn cấp và kết thúc chế độ on-demand."""
