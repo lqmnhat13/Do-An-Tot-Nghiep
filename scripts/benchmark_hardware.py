@@ -8,8 +8,14 @@ Tuân thủ mục 2.1 và 9.1 của Kế hoạch:
 
 import time
 import os
+import sys
 import numpy as np
 import torch
+
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, PROJECT_ROOT)
+
+from src.runtime.model_loading import pretrained_kwargs
 
 def benchmark_yolo(device="mps", num_runs=50):
     print("\n--- BENCHMARK: YOLOv8n Detection ---")
@@ -49,8 +55,9 @@ def benchmark_depth(device="mps", num_runs=20):
     from PIL import Image
 
     repo_id = "depth-anything/Depth-Anything-V2-Small-hf"
-    processor = AutoImageProcessor.from_pretrained(repo_id)
-    model = AutoModelForDepthEstimation.from_pretrained(repo_id)
+    load_kwargs = pretrained_kwargs()
+    processor = AutoImageProcessor.from_pretrained(repo_id, **load_kwargs)
+    model = AutoModelForDepthEstimation.from_pretrained(repo_id, **load_kwargs)
     model.to(device)
     model.eval()
 

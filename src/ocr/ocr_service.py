@@ -5,6 +5,7 @@ import numpy as np
 
 from src.contracts.request import OCRRequest, OCRResult
 from src.ocr.image_quality import ImageQualityChecker
+from src.runtime.model_loading import is_offline_mode, offline_load_error
 
 class OCRService:
     """
@@ -27,13 +28,32 @@ class OCRService:
         self.min_confidence = min_confidence
         self.quality_checker = quality_checker or ImageQualityChecker()
         self._reader = None
+        self._load_attempted = False
+        self._load_error: Optional[str] = None
 
     def _ensure_reader(self) -> None:
-        if self._reader is None:
-            print("[OCRService] Đang khởi tạo EasyOCR engine cho tiếng Việt...")
+        if self._reader is not None or self._load_attempted:
+            return
+
+        self._load_attempted = True
+        print("[OCRService] Đang khởi tạo EasyOCR engine cho tiếng Việt...")
+        try:
             import easyocr
-            self._reader = easyocr.Reader(self.languages, gpu=self.use_gpu)
+            self._reader = easyocr.Reader(
+                self.languages,
+                gpu=self.use_gpu,
+                download_enabled=not is_offline_mode()
+            )
+            self._load_error = None
             print("[OCRService] EasyOCR khởi tạo thành công.")
+        except Exception as exc:
+            self._reader = None
+            self._load_error = offline_load_error("EasyOCR", ",".join(self.languages), exc)
+            print(f"[OCRService] {self._load_error} Dùng fallback OCR không khả dụng.")
+
+    @property
+    def load_error(self) -> Optional[str]:
+        return self._load_error
 
     def process(self, request: OCRRequest) -> OCRResult:
         t0 = time.monotonic()
@@ -52,6 +72,15 @@ class OCRService:
 
         try:
             self._ensure_reader()
+            if self._reader is None:
+                message = self._load_error or "EasyOCR không khả dụng."
+                return OCRResult(
+                    request_id=request.request_id,
+                    success=False,
+                    text=message,
+                    latency_sec=time.monotonic() - t0,
+                    error_message=message
+                )
             # 2. Chạy nhận dạng OCR
             raw_results = self._reader.readtext(request.image)
 

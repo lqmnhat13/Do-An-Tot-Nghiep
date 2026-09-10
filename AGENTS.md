@@ -20,7 +20,8 @@ Hệ thống hỗ trợ người khiếm thị, chạy offline trên macOS Apple
 
 ## Verification
 
-- Run: PYTHONPATH=. /opt/anaconda3/envs/ai-macbook/bin/python \
+- Run: HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 PYTHONPATH=. \
+  /opt/anaconda3/envs/ai-macbook/bin/python \
   -m unittest discover -s tests -p "test_*.py" -v
 - Với thay đổi runtime, kiểm tra deadlock, shutdown và thread safety.
 - Với thay đổi safety, thêm test cho lỗi và dữ liệu stale.

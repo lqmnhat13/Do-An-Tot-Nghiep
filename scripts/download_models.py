@@ -13,6 +13,9 @@ import math
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 WEIGHTS_DIR = os.path.join(PROJECT_ROOT, "models", "weights")
+sys.path.insert(0, PROJECT_ROOT)
+
+from src.runtime.model_loading import enable_model_downloads, pretrained_kwargs
 
 def setup_yolo_weights():
     os.makedirs(WEIGHTS_DIR, exist_ok=True)
@@ -52,11 +55,43 @@ def setup_depth_weights():
         from transformers import AutoImageProcessor, AutoModelForDepthEstimation
         repo_id = "depth-anything/Depth-Anything-V2-Small-hf"
         print(f"        Đang nạp processor & model từ repo: {repo_id}...")
-        processor = AutoImageProcessor.from_pretrained(repo_id)
-        model = AutoModelForDepthEstimation.from_pretrained(repo_id)
+        load_kwargs = pretrained_kwargs(allow_download=True)
+        processor = AutoImageProcessor.from_pretrained(repo_id, **load_kwargs)
+        model = AutoModelForDepthEstimation.from_pretrained(repo_id, **load_kwargs)
         print(f"[OK] Depth Anything V2 Small đã sẵn sàng (đã lưu cache local).")
     except Exception as e:
         print(f"[FAIL] Không thể kiểm tra Depth Anything V2: {e}")
+
+def setup_vqa_weights():
+    print("[CHECK] Kiểm tra BLIP và MarianMT...")
+    try:
+        from transformers import (
+            BlipProcessor,
+            BlipForConditionalGeneration,
+            MarianTokenizer,
+            MarianMTModel,
+        )
+        load_kwargs = pretrained_kwargs(allow_download=True)
+        caption_repo = "Salesforce/blip-image-captioning-base"
+        translation_repo = "Helsinki-NLP/opus-mt-en-vi"
+        print(f"        Đang nạp BLIP từ repo: {caption_repo}...")
+        BlipProcessor.from_pretrained(caption_repo, **load_kwargs)
+        BlipForConditionalGeneration.from_pretrained(caption_repo, **load_kwargs)
+        print(f"        Đang nạp MarianMT từ repo: {translation_repo}...")
+        MarianTokenizer.from_pretrained(translation_repo, **load_kwargs)
+        MarianMTModel.from_pretrained(translation_repo, **load_kwargs)
+        print("[OK] BLIP và MarianMT đã sẵn sàng trong cache local.")
+    except Exception as e:
+        print(f"[FAIL] Không thể chuẩn bị BLIP/MarianMT: {e}")
+
+def setup_ocr_weights():
+    print("[CHECK] Kiểm tra EasyOCR tiếng Việt và tiếng Anh...")
+    try:
+        import easyocr
+        easyocr.Reader(["vi", "en"], gpu=False, download_enabled=True)
+        print("[OK] EasyOCR đã sẵn sàng trong cache local.")
+    except Exception as e:
+        print(f"[FAIL] Không thể chuẩn bị EasyOCR: {e}")
 
 def create_sine_wav(filepath, freq=880.0, duration=0.2, volume=0.5, sample_rate=44100):
     """Tạo file WAV sóng sin đơn giản làm âm beep/chime cảnh báo cố định."""
@@ -87,7 +122,10 @@ def setup_audio_assets():
     create_sine_wav(os.path.join(audio_dir, "ready.wav"), freq=440.0, duration=0.1)
 
 if __name__ == "__main__":
+    enable_model_downloads()
     setup_yolo_weights()
     setup_depth_weights()
+    setup_vqa_weights()
+    setup_ocr_weights()
     setup_audio_assets()
     print("[ALL DONE] Hoàn tất chuẩn bị weights và tài nguyên âm thanh.")

@@ -7,6 +7,7 @@ from PIL import Image
 
 from src.contracts.frame_packet import FramePacket
 from src.contracts.depth_map import DepthMap, DepthRepresentation
+from src.runtime.model_loading import offline_load_error, pretrained_kwargs
 
 class DepthEstimator:
     """
@@ -31,16 +32,29 @@ class DepthEstimator:
 
         self._model = None
         self._processor = None
+        self._load_error: Optional[str] = None
         self._load_model()
 
     def _load_model(self) -> None:
         print(f"[DepthEstimator] Đang nạp mô hình {self.model_name} lên {self.device}...")
-        from transformers import AutoImageProcessor, AutoModelForDepthEstimation
-        self._processor = AutoImageProcessor.from_pretrained(self.model_name)
-        self._model = AutoModelForDepthEstimation.from_pretrained(self.model_name)
-        self._model.to(self.device)
-        self._model.eval()
-        print("[DepthEstimator] Nạp mô hình Depth Anything V2 thành công.")
+        try:
+            from transformers import AutoImageProcessor, AutoModelForDepthEstimation
+            load_kwargs = pretrained_kwargs()
+            self._processor = AutoImageProcessor.from_pretrained(self.model_name, **load_kwargs)
+            self._model = AutoModelForDepthEstimation.from_pretrained(self.model_name, **load_kwargs)
+            self._model.to(self.device)
+            self._model.eval()
+            self._load_error = None
+            print("[DepthEstimator] Nạp mô hình Depth Anything V2 thành công.")
+        except Exception as exc:
+            self._processor = None
+            self._model = None
+            self._load_error = offline_load_error("Depth Anything V2", self.model_name, exc)
+            print(f"[DepthEstimator] {self._load_error} Dùng fallback depth không khả dụng.")
+
+    @property
+    def load_error(self) -> Optional[str]:
+        return self._load_error
 
     def estimate(self, packet: FramePacket) -> DepthMap:
         """

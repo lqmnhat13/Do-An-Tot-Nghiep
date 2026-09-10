@@ -7,6 +7,7 @@ import torch
 from PIL import Image
 
 from src.contracts.request import VQARequest, VQAResult
+from src.runtime.model_loading import offline_load_error, pretrained_kwargs
 
 class VQAService:
     """
@@ -38,6 +39,8 @@ class VQAService:
         self._trans_model = None
         self._models_lock = threading.Lock()
         self._is_loading = False
+        self._load_attempted = False
+        self._load_error: Optional[str] = None
 
         if not lazy_load and self.use_vlm:
             self._load_models()
@@ -46,25 +49,47 @@ class VQAService:
         with self._models_lock:
             if self._caption_model is not None and self._trans_model is not None:
                 return True
+            if self._load_attempted:
+                return False
+
+            self._load_attempted = True
 
             try:
                 print(f"[VQAService] Đang nạp mô hình mô tả ảnh BLIP ({self.caption_model_name}) lên {self.device}...")
                 from transformers import BlipProcessor, BlipForConditionalGeneration, MarianTokenizer, MarianMTModel
+                load_kwargs = pretrained_kwargs()
 
-                self._caption_processor = BlipProcessor.from_pretrained(self.caption_model_name)
-                self._caption_model = BlipForConditionalGeneration.from_pretrained(self.caption_model_name).to(self.device)
+                self._caption_processor = BlipProcessor.from_pretrained(self.caption_model_name, **load_kwargs)
+                self._caption_model = BlipForConditionalGeneration.from_pretrained(
+                    self.caption_model_name, **load_kwargs
+                ).to(self.device)
                 self._caption_model.eval()
 
                 print(f"[VQAService] Đang nạp mô hình dịch tiếng Việt MarianMT ({self.translation_model_name})...")
-                self._trans_tokenizer = MarianTokenizer.from_pretrained(self.translation_model_name)
-                self._trans_model = MarianMTModel.from_pretrained(self.translation_model_name).to(self.device)
+                self._trans_tokenizer = MarianTokenizer.from_pretrained(
+                    self.translation_model_name, **load_kwargs
+                )
+                self._trans_model = MarianMTModel.from_pretrained(
+                    self.translation_model_name, **load_kwargs
+                ).to(self.device)
                 self._trans_model.eval()
 
+                self._load_error = None
                 print("[VQAService] Nạp mô hình VQA & Translation thành công.")
                 return True
-            except Exception as e:
-                print(f"[VQAService] Lỗi nạp mô hình VLM: {e}")
+            except Exception as exc:
+                self._caption_processor = None
+                self._caption_model = None
+                self._trans_tokenizer = None
+                self._trans_model = None
+                model_names = f"{self.caption_model_name}, {self.translation_model_name}"
+                self._load_error = offline_load_error("VQA/MarianMT", model_names, exc)
+                print(f"[VQAService] {self._load_error} Dùng fallback từ detection context.")
                 return False
+
+    @property
+    def load_error(self) -> Optional[str]:
+        return self._load_error
 
     def answer(self, request: VQARequest, visual_context: Optional[Dict[str, Any]] = None) -> VQAResult:
         t0 = time.monotonic()
