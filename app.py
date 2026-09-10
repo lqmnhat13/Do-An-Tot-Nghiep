@@ -136,6 +136,7 @@ def main():
     vqa_service = VQAService(
         device=device,
         use_vlm=vqa_cfg.get("use_vlm", True),
+        backend_name=vqa_cfg.get("backend", "legacy_caption"),
         caption_model_name=vqa_cfg.get("caption_model_name", "Salesforce/blip-image-captioning-base"),
         translation_model_name=vqa_cfg.get("translation_model_name", "Helsinki-NLP/opus-mt-en-vi"),
         lazy_load=True
