@@ -110,6 +110,25 @@ python app.py
   python app.py --source 0 --no-gui
   ```
 
+### 3.5. Chạy riêng VQA với webcam thật
+
+Chế độ này chỉ khởi tạo webcam và `VQAService`; YOLO, Depth, tracking, OCR,
+RiskFSM và cảnh báo va chạm đều không được chạy:
+
+```bash
+python scripts/run_vqa_camera.py \
+  --camera 0 \
+  --question "Mô tả khung cảnh phía trước."
+```
+
+Trong cửa sổ preview:
+
+- **`[Q]`**: chụp frame hiện tại và chạy VQA.
+- **`[S]`**: dừng TTS và hủy kết quả đang chờ.
+- **`[ESC]`**: thoát.
+
+Thêm `--no-speech` nếu chỉ muốn xem kết quả trong terminal.
+
 ---
 
 ## 4. Phím Tắt Điều Khiển (Keyboard Shortcuts)
