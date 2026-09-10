@@ -64,6 +64,7 @@ Do-An-Tot-Nghiep/
 │   ├── inspect_environment.py  # Kiểm tra phần cứng, MPS, camera, voices
 │   ├── download_models.py      # Tải/sao chép weights và tạo âm thanh mẫu
 │   ├── benchmark_hardware.py   # Đo latency P50/P95 độc lập từng module
+│   ├── benchmark_vqa_backends.py # Benchmark VQA backend không khởi động pipeline
 │   └── evaluate_video.py       # Đánh giá pipeline trên video replay / offline
 ├── tests/                      # Bộ 26 unit tests tự động
 ├── evaluation/
@@ -158,3 +159,30 @@ python scripts/benchmark_hardware.py
 python scripts/evaluate_video.py --video dummy --duration 5.0
 ```
 Báo cáo JSON sẽ được tự động xuất ra thư mục `evaluation/results/eval_report.json`.
+
+### 5.4. Benchmark VQA backend
+
+Tạo file JSONL, mỗi dòng tham chiếu một ảnh trong thư mục dữ liệu:
+
+```json
+{"image":"room.jpg","question":"Trên bàn có gì?","expected_answer":"Có một chiếc cốc"}
+```
+
+Chạy baseline `LegacyCaptionBackend` hoàn toàn độc lập với camera, YOLO,
+Depth, OCR, FSM và TTS:
+
+```bash
+python scripts/benchmark_vqa_backends.py \
+  --images evaluation/vqa/images \
+  --questions evaluation/vqa/questions.jsonl \
+  --backend legacy_caption \
+  --warmup 1 \
+  --repeats 3 \
+  --output evaluation/results/vqa_legacy.json
+```
+
+Thêm `--interactive-score` để nhập thủ công điểm từ 0 đến 2 cho
+`question_adherence`, `object_accuracy`, `spatial_accuracy` và
+`vietnamese_quality`. Công cụ chỉ ghi đáp án mong đợi vào report để đối chiếu;
+không sử dụng LLM khác để tự động chấm đúng/sai. Điểm cũng có thể được khai báo
+trước trong trường `manual_scores` của từng dòng JSONL.
