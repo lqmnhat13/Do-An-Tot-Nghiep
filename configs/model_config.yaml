@@ -70,7 +70,7 @@ ocr:
   max_brightness: 240.0 # trên ngưỡng này cảnh báo lóa sáng
 
 vqa:
-  backend: "legacy_caption" # legacy_caption | disabled | mlx_vlm (opt-in)
+  backend: "mlx_vlm" # legacy_caption | disabled | mlx_vlm
   use_vlm: true
   caption_model_name: "Salesforce/blip-image-captioning-base"
   translation_model_name: "Helsinki-NLP/opus-mt-en-vi"
