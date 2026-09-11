@@ -225,9 +225,49 @@ HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 PYTHONPATH=. \
 
 ---
 
-## 4. Phím Tắt Điều Khiển (Keyboard Shortcuts)
+## 4. Giao Diện Người Dùng & Phím Tắt (Dark Translucent HUD)
 
-Khi cửa sổ hiển thị đang hoạt động, sử dụng các phím tắt sau:
+Hệ thống sử dụng giao diện HUD camera bán trong suốt hiện đại (**Dark Translucent HUD**), tối ưu hóa diện tích quan sát cho camera, hiển thị thông tin rủi ro trực quan bằng cả màu sắc và chữ viết, không làm chậm pipeline AI:
+
+### 4.1. Bố Cục Giao Diện HUD
+- **A. Top Status Bar (Thanh trạng thái đỉnh)**:
+  - Chấm tròn xanh trạng thái camera trực tiếp.
+  - Tên định danh hệ thống: **SECOND EYE**.
+  - Status Pill hiển thị chế độ hiện tại: `QUAN SAT` (Observation), `DANG PHAN TICH` (VQA), `DANG DOC CHU` (OCR), `TIN HIEU YEU` (Degraded).
+  - Voice Pill `DANG NOI` màu cyan xuất hiện tức thì khi TTS đang phát âm thanh.
+  - Chỉ số `FPS: xx.x` ở góc phải.
+- **B. Phân Vùng Không Gian (Spatial Guidance)**:
+  - 3 phân vùng với vạch chia mảnh, độ mờ nhẹ: **TRÁI** (35%), **TRUNG TÂM** (30%), **PHẢI** (35%).
+  - Tuyệt đối không dùng cụm từ *"LỐI ĐI"* để tránh gây hiểu nhầm vùng trung tâm là an toàn.
+- **C. Khung Nhận Diện & Nhãn Nguy Cơ (Bounding Boxes)**:
+  - Bounding Box bo góc hiện đại, tự động clamp trong khung hình camera.
+  - Nhãn hiển thị linh hoạt (tự động đảo vị trí xuống dưới nếu phía trên bị cấn đỉnh hoặc thẻ Depth).
+  - Nhãn gồm: `[TÊN ĐỐI TƯỢNG] | [MỨC NGUY CƠ] - [ĐỘ GẦN]`.
+- **D. Banner Cảnh Báo Khẩn Cấp (Priority Alert Banner)**:
+  - Chỉ xuất hiện khi có nguy cơ `HIGH` (Đỏ) hoặc `MEDIUM` (Hổ phách/Amber).
+  - Tự động co dãn theo chiều dài văn bản và tự ngắt bằng dấu `...` nếu vượt quá giới hạn, tuyệt đối không che lấp Mini Depth Map.
+- **E. Thẻ Chẩn Đoán Góc Phải (Right Diagnostics Card)**:
+  - Chứa **Mini Depth Map** (bản đồ độ sâu thu nhỏ với dải màu Inferno), tái sử dụng bộ đệm theo `frame_id`.
+  - Hiển thị trạng thái `DEPTH --` thay vì để trống nếu dữ liệu độ sâu chưa sẵn sàng.
+  - Thống kê thời gian thực: `Det P50` (độ trễ phát hiện) và `Depth P50` (độ trễ ước lượng độ sâu).
+- **F. Thanh Phím Tắt Ở Đáy (Bottom Action Bar)**:
+  - Thiết kế dạng keycap nhỏ, gọn gàng, tự co giãn theo kích thước màn hình.
+- **G. Màn Hình Chờ (Loading State)**:
+  - Giao diện tối sang trọng với hiệu ứng loading dots động theo thời gian (hoàn toàn không block/sleep luồng hiển thị).
+
+### 4.2. Phân Định Mức Nguy Cơ & Lưu Ý An Toàn
+| Mức nguy cơ | Màu sắc đại diện | Nhãn chữ hiển thị | Ý nghĩa an toàn |
+| :--- | :--- | :--- | :--- |
+| **HIGH** | Đỏ (`COLOR_HIGH_RISK`) | `NGUY CO CAO` | Vật cản ở cự ly rất gần hoặc trực diện, kích hoạt còi báo và ngắt tiếng ưu tiên |
+| **MEDIUM** | Hổ phách (`COLOR_MED_RISK`) | `CHU Y` | Vật cản ở cự ly gần hoặc tiếp cận vùng trung tâm |
+| **LOW** | Teal (`COLOR_LOW_RISK`) | `NGUY CO THAP` | Vật cản ở xa hoặc ngoài làn di chuyển chính |
+
+> [!CAUTION]
+> **Ràng buộc an toàn cốt lõi**:
+> Mức `LOW_RISK` chỉ thể hiện rằng **theo dữ liệu cảm biến hiện tại, nguy cơ va chạm được đánh giá là thấp**. Hệ thống **tuyệt đối không sử dụng từ "AN TOÀN"** và **không bao giờ khẳng định đường đi phía trước là an toàn**. Người dùng khiếm thị luôn được khuyến cáo sử dụng gậy dẫn đường và chú ý cảm nhận thực tế.
+
+### 4.3. Phím Tắt Điều Khiển (Keyboard Shortcuts)
+Khi cửa sổ hiển thị đang mở:
 - **`[SPACE]` (Phím cách)**: Kích hoạt chế độ chụp và đọc chữ tiếng Việt (OCR).
 - **`[Q]`**: Kích hoạt hỏi đáp môi trường xung quanh (VQA).
 - **`[S]`**: Dừng/ngắt âm thanh đang đọc ngay lập tức.
@@ -237,33 +277,44 @@ Khi cửa sổ hiển thị đang hoạt động, sử dụng các phím tắt s
 
 ## 5. Kiểm Thử Tự Động & Đo Kiểm Hiệu Năng
 
-### 5.1. Chạy Toàn Bộ Unit Tests (26 bài test)
+### 5.1. Chạy Toàn Bộ Unit Tests
+Xác nhận toàn bộ 76 bài unit test tự động (bao gồm bộ test độc lập cho `HUDRenderer`):
 ```bash
-PYTHONPATH=. python -m unittest discover -s tests -p "test_*.py" -v
+HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 PYTHONPATH=. \
+  /opt/anaconda3/envs/ai-macbook/bin/python \
+  -m unittest discover -s tests -p "test_*.py" -v
 ```
 
-### 5.2. Đo Kiểm Độ Trễ Phần Cứng (Latency P50 / P95)
+### 5.2. Sinh Ảnh Demo HUD & Đo Hiệu Năng Render
+Chạy script kiểm tra trực quan các trạng thái HUD mà không cần mở camera hay tải model AI:
+```bash
+python scripts/render_hud_demo.py
+```
+- Các ảnh PNG sẽ được lưu tại thư mục `artifacts/hud_demo/` gồm:
+  1. `01_observation.png`: Chế độ quan sát bình thường.
+  2. `02_medium_risk.png`: Cảnh báo mức độ chú ý.
+  3. `03_high_risk_speaking.png`: Cảnh báo nguy cơ cao kết hợp trạng thái đang nói.
+  4. `04_no_camera_loading.png`: Trạng thái chờ kết nối camera.
+- Script đồng thời đo kiểm tốc độ kết xuất đồ họa (Render rate thông thường đạt **> 350 FPS**, P50 **< 3ms** trên Apple Silicon M1).
+
+### 5.3. Đo Kiểm Độ Trễ Phần Cứng (Latency P50 / P95)
 ```bash
 python scripts/benchmark_hardware.py
 ```
 
-### 5.3. Đánh Giá Trên Video
+### 5.4. Đánh Giá Trên Video
 ```bash
 python scripts/evaluate_video.py --video dummy --duration 5.0
 ```
 Báo cáo JSON sẽ được tự động xuất ra thư mục `evaluation/results/eval_report.json`.
 
-### 5.4. Benchmark VQA backend
-
+### 5.5. Benchmark VQA backend
 Tạo file JSONL, mỗi dòng tham chiếu một ảnh trong thư mục dữ liệu:
-
 ```json
 {"image":"room.jpg","question":"Trên bàn có gì?","expected_answer":"Có một chiếc cốc"}
 ```
 
-Chạy baseline `LegacyCaptionBackend` hoàn toàn độc lập với camera, YOLO,
-Depth, OCR, FSM và TTS:
-
+Chạy baseline `LegacyCaptionBackend`:
 ```bash
 python scripts/benchmark_vqa_backends.py \
   --images evaluation/vqa/images \
@@ -273,9 +324,4 @@ python scripts/benchmark_vqa_backends.py \
   --repeats 3 \
   --output evaluation/results/vqa_legacy.json
 ```
-
-Thêm `--interactive-score` để nhập thủ công điểm từ 0 đến 2 cho
-`question_adherence`, `object_accuracy`, `spatial_accuracy` và
-`vietnamese_quality`. Công cụ chỉ ghi đáp án mong đợi vào report để đối chiếu;
-không sử dụng LLM khác để tự động chấm đúng/sai. Điểm cũng có thể được khai báo
-trước trong trường `manual_scores` của từng dòng JSONL.
+Thêm `--interactive-score` để nhập thủ công điểm từ 0 đến 2 cho `question_adherence`, `object_accuracy`, `spatial_accuracy` và `vietnamese_quality`.

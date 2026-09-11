@@ -160,7 +160,11 @@ def main():
     # 8. App Runner
     preview_w = app_cfg.get("runtime", {}).get("preview_width", 800)
     preview_h = app_cfg.get("runtime", {}).get("preview_height", 600)
-    hud_renderer = HUDRenderer(target_width=preview_w, target_height=preview_h)
+    hud_renderer = HUDRenderer(
+        target_width=preview_w,
+        target_height=preview_h,
+        config=app_cfg.get("ui", {})
+    )
 
     runner = AppRunner(
         coordinator=coordinator,

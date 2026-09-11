@@ -29,3 +29,9 @@ audio:
   speech_rate_wpm: 200
   enable_chimes: true
   min_alert_interval_sec: 2.0
+
+ui:
+  theme: "dark_hud" # dark_hud
+  show_depth_map: true
+  show_spatial_guides: true
+  show_diagnostics: true
