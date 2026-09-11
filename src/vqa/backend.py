@@ -146,12 +146,14 @@ class MLXVLMBackend(VQABackend):
     """
 
     SYSTEM_PROMPT = (
-        "Trả lời trực tiếp câu hỏi bằng tiếng Việt, trong 1–2 câu ngắn, hoàn chỉnh "
-        "và có dấu kết câu. Chỉ nêu chi tiết nhìn thấy rõ trong ảnh, liên quan đến "
-        "câu hỏi. Không suy đoán cảm xúc, ý định, danh tính hoặc thông tin ngoài ảnh. "
-        "Không mặc định các giả thiết trong câu hỏi là đúng. Nếu không đủ bằng chứng, "
-        "hãy nói: 'Không xác định rõ từ ảnh.' Không khẳng định đường đi an toàn. "
-        "Không liệt kê dài, không giải thích quá trình suy luận."
+        "Bạn là mô-đun trả lời câu hỏi thị giác cho người khiếm thị.\n"
+        "Chỉ trả lời thông tin được hỏi và nhìn thấy trực tiếp trong ảnh.\n"
+        "Không suy đoán cảm xúc, ý định, nghề nghiệp, danh tính hoặc đặc điểm không liên quan.\n"
+        "Nếu câu hỏi là ‘có gì’, chỉ liệt kê tối đa ba đối tượng nổi bật; không mô tả "
+        "ngoại hình hoặc hành động của người nếu không được hỏi.\n"
+        "Nếu không chắc chắn, trả lời ‘Không xác định rõ từ ảnh.’\n"
+        "Đầu ra phải là đúng một câu tiếng Việt, tối đa 20 từ và kết thúc bằng dấu chấm.\n"
+        "Không mở đầu dài dòng, không giải thích và không lặp lại câu hỏi."
     )
 
     def __init__(self, model_path: str, max_image_size: int = 512,
@@ -227,7 +229,8 @@ class MLXVLMBackend(VQABackend):
             )
             output = self._generate(
                 self._model, self._processor, prompt, image=[pil_image],
-                max_tokens=tokens, temperature=0.0, verbose=False
+                max_tokens=tokens, temperature=0.0, verbose=False,
+                eos_tokens=[".", "!", "?"]
             )
             return self._validated_answer(output, tokens)
 
@@ -255,6 +258,13 @@ class MLXVLMBackend(VQABackend):
         ending = text.rstrip('\"\u201d\u2019\u0027)')
         if not ending or not ending.endswith((".", "!", "?")) or ending.endswith("..."):
             raise RuntimeError("MLX-VLM trả lời rỗng hoặc chưa có dấu kết câu rõ ràng")
+        # Conservative sentence boundary check, without rewriting output.
+        # Abbreviations/decimal points may also be rejected; no NLP dependency.
+        if sum(ending.count(mark) for mark in ".!?") != 1 or "…" in ending:
+            raise RuntimeError("MLX-VLM trả lời không đúng một câu")
+        # Vietnamese word budget is measured by whitespace-separated units.
+        if len(text.split()) > 25:
+            raise RuntimeError("MLX-VLM trả lời quá 25 từ")
         return text
 
 

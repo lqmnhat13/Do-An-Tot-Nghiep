@@ -37,10 +37,12 @@ class TestMLXVLM(unittest.TestCase):
         self.modules.start()
         self.addCleanup(self.modules.stop)
         # A regression must fail instead of contacting a server or initializing CUDA.
-        for target in ("socket.socket.connect", "torch.cuda.init"):
+        for target in ("socket.socket.connect", "socket.socket.connect_ex",
+                       "socket.getaddrinfo", "torch.cuda.init"):
             guard = patch(target, side_effect=AssertionError(target))
-            guard.start()
+            guarded_call = guard.start()
             self.addCleanup(guard.stop)
+            self.addCleanup(guarded_call.assert_not_called)
         self.frame = np.zeros((600, 1200, 3), dtype=np.uint8)
         self.frame[:, :] = [10, 20, 30]
         self.context = {"spatial_objects": [
@@ -78,6 +80,7 @@ class TestMLXVLM(unittest.TestCase):
         self.assertEqual(image.size, (512, 256))
         self.assertEqual(image.getpixel((0, 0)), (30, 20, 10))
         self.assertEqual(self.generate.call_args.kwargs["max_tokens"], 64)
+        self.assertEqual(self.generate.call_args.kwargs["eos_tokens"], [".", "!", "?"])
         np.testing.assert_array_equal(self.frame, original)
 
     def test_configured_smaller_limits_and_string_output(self):
@@ -102,12 +105,31 @@ class TestMLXVLM(unittest.TestCase):
         self.assertEqual([m["role"] for m in messages], ["system", "user"])
         self.assertEqual(messages[1]["content"], question)
         instructions = messages[0]["content"]
-        for requirement in ("tiếng Việt", "1–2 câu", "hoàn chỉnh", "nhìn thấy rõ",
-                            "cảm xúc", "ý định", "danh tính", "ngoài ảnh",
-                            "Không xác định rõ từ ảnh.", "Không khẳng định đường đi an toàn"):
+        for requirement in ("tiếng Việt", "đúng một câu", "tối đa 20 từ", "nhìn thấy trực tiếp",
+                            "cảm xúc", "ý định", "nghề nghiệp", "danh tính",
+                            "tối đa ba đối tượng", "ngoại hình hoặc hành động",
+                            "Không xác định rõ từ ảnh."):
             self.assertIn(requirement, instructions)
         self.assertEqual(self.template.call_args.kwargs["num_images"], 1)
         self.assertEqual(self.generate.call_args.kwargs["temperature"], 0.0)
+        self.assertEqual(self.generate.call_args.kwargs["max_tokens"], 64)
+        self.assertEqual(self.generate.call_args.kwargs["eos_tokens"], [".", "!", "?"])
+
+    def test_multiple_sentences_and_over_word_budget_fallback_without_cutting(self):
+        service = self.service()
+        for text in ("Có một chiếc ghế. Nó màu đỏ.", "Có ghế! Có bàn?",
+                     "Có ghế.Có bàn.", "Có ghế.\nCó bàn.",
+                     " ".join(["vật"] * 26) + "."):
+            with self.subTest(text=text):
+                self.generate.return_value = types.SimpleNamespace(text=text, finish_reason="stop")
+                before = self.generate.call_count
+                self.assert_fallback(service)
+                self.assertEqual(self.generate.call_count, before + 1)
+
+    def test_one_sentence_at_word_limit_is_accepted_unchanged(self):
+        text = " ".join(["vật"] * 25) + "."
+        self.generate.return_value = types.SimpleNamespace(text=text, finish_reason="stop")
+        self.assertEqual(self.service().answer(self.request()).answer, "Khung cảnh: " + text)
 
     def test_truncation_discards_entire_answer_without_retry_or_punctuation_repair(self):
         service = self.service()

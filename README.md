@@ -172,9 +172,11 @@ Thiếu dependency, thiếu model hoặc lỗi inference đều fallback về de
 CLI không có detection nên sẽ báo chưa nhận diện rõ. Lỗi nạp được ghi nhớ đến khi
 khởi động lại ứng dụng. Guardrail tiếp tục từ chối câu hỏi xác nhận đường đi an toàn.
 
-MLX-VLM nhận chỉ dẫn riêng ở system message: trả lời tiếng Việt trong 1–2 câu
-ngắn hoàn chỉnh, chỉ dựa vào chi tiết nhìn thấy rõ và liên quan đến câu hỏi;
-không suy đoán cảm xúc, ý định, danh tính hoặc thông tin ngoài ảnh. Câu hỏi được
+MLX-VLM nhận chỉ dẫn riêng ở system message: đúng một câu tiếng Việt, tối đa 20 từ,
+kết thúc bằng dấu chấm, chỉ nêu thông tin được hỏi và nhìn thấy trực tiếp;
+không suy đoán cảm xúc, ý định, nghề nghiệp, danh tính hoặc đặc điểm không liên quan.
+Với câu hỏi “có gì”, chỉ liệt kê tối đa ba đối tượng nổi bật, không tự mô tả ngoại hình
+hay hành động của người. Câu hỏi được
 giữ nguyên ở user message; cả hai đi qua chat template của model. Khi thiếu bằng
 chứng, chỉ dẫn yêu cầu nói “Không xác định rõ từ ảnh.”
 
@@ -183,11 +185,18 @@ detection-context fallback. Khi phiên bản MLX-VLM không có lý do dừng, s
 sinh đạt ngân sách cũng được coi là có thể bị cắt. `stop` tường minh được ưu tiên
 hơn phép kiểm đếm này. Output rỗng hoặc không kết thúc bằng `.`, `!`, `?` (có thể
 kèm dấu đóng ngoặc/ngoặc kép), hoặc kết thúc bằng dấu ba chấm, cũng dùng fallback.
+Output nhiều hơn một câu hoặc quá 25 đơn vị phân cách bằng khoảng trắng bị bỏ toàn bộ.
+Đếm câu dựa trên dấu `.`, `!`, `?`, nên viết tắt hoặc số thập phân cũng có thể bị từ chối.
 Không giữ riêng câu đầu của output đã hết token vì phần bị mất có thể chứa điều
 kiện làm thay đổi nghĩa; không sinh lại, nối tiếp hay thêm dấu chấm để che câu dở.
 Formatter bảo toàn dấu kết câu đã có. Ngân sách vẫn là 64 token và ảnh tối đa 512 px.
 
-Đây là chỉ dẫn và kiểm tra bảo thủ, không bảo đảm loại bỏ hallucination hoặc xác
+`generate()` dùng `eos_tokens=[".", "!", "?"]`, được hỗ trợ trực tiếp trong
+mlx-vlm 0.7.0, để dừng ở dấu kết câu đầu. Thư viện có thể loại token EOS khỏi text;
+nếu output vì vậy thiếu dấu kết câu, vẫn fallback, không tự thêm dấu. Điều này có
+thể tăng tần suất fallback; chưa đo lại camera/latency sau thay đổi.
+
+Prompt/stop token chỉ giúp giảm, không bảo đảm loại bỏ hallucination hoặc xác
 nhận một câu đúng ngữ pháp. Câu đúng nhưng thiếu dấu kết câu cũng có thể bị bỏ;
 output dạng chuỗi không có metadata có thể không phát hiện được việc hết token
 nếu đã có dấu kết câu. Chưa đo mức giảm hallucination, RAM hoặc độ trễ với model
