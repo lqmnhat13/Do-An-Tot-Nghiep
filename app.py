@@ -139,7 +139,8 @@ def main():
         backend_name=vqa_cfg.get("backend", "legacy_caption"),
         caption_model_name=vqa_cfg.get("caption_model_name", "Salesforce/blip-image-captioning-base"),
         translation_model_name=vqa_cfg.get("translation_model_name", "Helsinki-NLP/opus-mt-en-vi"),
-        lazy_load=True
+        lazy_load=True,
+        mlx_vlm_config=vqa_cfg.get("mlx_vlm", {})
     )
 
     # 7. System Coordinator

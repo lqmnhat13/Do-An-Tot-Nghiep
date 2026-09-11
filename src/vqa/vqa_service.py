@@ -19,7 +19,8 @@ class VQAService:
         lazy_load: bool = True,
         backend_name: str = "legacy_caption",
         backend: Optional[VQABackend] = None,
-        safety_guardrail: Optional[SafetyGuardrail] = None
+        safety_guardrail: Optional[SafetyGuardrail] = None,
+        mlx_vlm_config: Optional[Dict[str, Any]] = None
     ):
         # Giữ cấu hình cũ để tương thích consumer hiện tại.
         self.device = device
@@ -37,7 +38,8 @@ class VQAService:
                 device=device,
                 caption_model_name=caption_model_name,
                 translation_model_name=translation_model_name,
-                lazy_load=lazy_load
+                lazy_load=lazy_load,
+                mlx_vlm_config=mlx_vlm_config
             )
         else:
             self.backend = None

@@ -70,9 +70,15 @@ ocr:
   max_brightness: 240.0 # trên ngưỡng này cảnh báo lóa sáng
 
 vqa:
-  backend: "legacy_caption" # legacy_caption | disabled
+  backend: "legacy_caption" # legacy_caption | disabled | mlx_vlm (opt-in)
   use_vlm: true
   caption_model_name: "Salesforce/blip-image-captioning-base"
   translation_model_name: "Helsinki-NLP/opus-mt-en-vi"
   device: "mps" # mps | cpu
   max_tokens: 45
+  mlx_vlm:
+    # Repo ID chỉ được script download_models.py sử dụng, không dùng ở runtime.
+    hf_repo_id: "mlx-community/Qwen2-VL-2B-Instruct-4bit"
+    model_path: "models/weights/qwen2_vl_2b_4bit" # tương đối từ project root
+    max_image_size: 512 # cạnh dài nhất, giữ tỉ lệ và toàn bộ khung hình; cap 512
+    max_tokens: 64 # cap 64 để câu trả lời ngắn và giảm độ trễ trên M1 16GB

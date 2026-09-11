@@ -1,4 +1,6 @@
 import threading
+import json
+from pathlib import Path
 from abc import ABC, abstractmethod
 from typing import Optional
 
@@ -135,17 +137,110 @@ class LegacyCaptionBackend(VQABackend):
         return text[:-1].strip() if text.endswith(".") else text
 
 
+class MLXVLMBackend(VQABackend):
+    """Question-aware MLX inference, strictly local and always loaded on demand.
+
+    One lock covers both loading and generation: processors/Metal state must not
+    be used concurrently. No worker is owned by this backend; cancellation and
+    suppression of late results remain the caller's responsibility.
+    """
+
+    def __init__(self, model_path: str, max_image_size: int = 512,
+                 max_tokens: int = 64):
+        self.model_path = model_path
+        self.max_image_size = max_image_size
+        self.max_tokens = max_tokens
+        self._lock = threading.Lock()
+        self._model = self._processor = None
+        self._generate = self._apply_chat_template = None
+        self._config = None
+        self._load_attempted = False
+        self._load_error: Optional[str] = None
+
+    @property
+    def load_error(self) -> Optional[str]:
+        return self._load_error
+
+    def _load_models(self) -> None:
+        # Caller holds _lock. Never acquire it recursively.
+        if self._model is not None:
+            return
+        if self._load_attempted:
+            raise RuntimeError(self._load_error)
+        self._load_attempted = True
+        try:
+            if not self.model_path:
+                raise ValueError("Chưa cấu hình vqa.mlx_vlm.model_path")
+            path = Path(self.model_path).expanduser()
+            if not path.is_absolute():
+                path = Path(__file__).resolve().parents[2] / path
+            path = path.resolve()
+            # Reject repo IDs/missing paths BEFORE importing MLX or calling load:
+            # mlx_vlm.load otherwise treats missing directories as Hub repo IDs.
+            if not path.is_dir() or not (path / "config.json").is_file():
+                raise FileNotFoundError(f"Thiếu thư mục model/config.json: {path}")
+            if not any(path.glob("*.safetensors")):
+                raise FileNotFoundError(f"Thiếu trọng số safetensors: {path}")
+            with (path / "config.json").open(encoding="utf-8") as handle:
+                config = json.load(handle)
+            from mlx_vlm import load, generate
+            from mlx_vlm.prompt_utils import apply_chat_template
+
+            model, processor = load(
+                str(path), local_files_only=True, trust_remote_code=False
+            )
+            self._model, self._processor = model, processor
+            self._config = config
+            self._generate = generate
+            self._apply_chat_template = apply_chat_template
+        except Exception as exc:
+            self._load_error = (
+                f"MLX-VLM không khả dụng: {exc}. Cài mlx-vlm và chạy "
+                "scripts/download_models.py --mlx-vlm khi có mạng."
+            )
+            raise RuntimeError(self._load_error) from exc
+
+    def answer(self, image: np.ndarray, question: str) -> str:
+        with self._lock:
+            # Hard caps still apply when users increase YAML values.
+            size = max(28, min(int(self.max_image_size), 512))
+            tokens = max(1, min(int(self.max_tokens), 64))
+            self._load_models()
+            rgb = image[:, :, ::-1] if image.ndim == 3 else image
+            pil_image = Image.fromarray(rgb).convert("RGB")
+            pil_image.thumbnail((size, size), Image.Resampling.LANCZOS)
+            prompt = self._apply_chat_template(
+                self._processor, self._config, question, num_images=1
+            )
+            output = self._generate(
+                self._model, self._processor, prompt, image=[pil_image],
+                max_tokens=tokens, temperature=0.0, verbose=False
+            )
+            text = output if isinstance(output, str) else getattr(output, "text", None)
+            if not isinstance(text, str):
+                raise RuntimeError("MLX-VLM trả về kết quả không hợp lệ")
+            return text.strip()
+
+
 def create_vqa_backend(
     backend_name: str,
     *,
     device: str,
     caption_model_name: str,
     translation_model_name: str,
-    lazy_load: bool
+    lazy_load: bool,
+    mlx_vlm_config: Optional[dict] = None
 ) -> Optional[VQABackend]:
     normalized = backend_name.strip().lower()
     if normalized in ("none", "disabled", "rule_vqa"):
         return None
+    if normalized == "mlx_vlm":
+        config = mlx_vlm_config or {}
+        return MLXVLMBackend(
+            model_path=config.get("model_path", ""),
+            max_image_size=config.get("max_image_size", 512),
+            max_tokens=config.get("max_tokens", 64),
+        )
     if normalized in ("legacy_caption", "blip_vlm"):
         return LegacyCaptionBackend(
             device=device,

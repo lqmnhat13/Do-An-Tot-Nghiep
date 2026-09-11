@@ -10,6 +10,8 @@ import shutil
 import wave
 import struct
 import math
+import argparse
+from pathlib import Path
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 WEIGHTS_DIR = os.path.join(PROJECT_ROOT, "models", "weights")
@@ -121,11 +123,43 @@ def setup_audio_assets():
     # Beep xác nhận OCR/VQA (tần số 440 Hz)
     create_sine_wav(os.path.join(audio_dir, "ready.wav"), freq=440.0, duration=0.1)
 
-if __name__ == "__main__":
+def setup_mlx_vlm_weights():
+    """Download a local MLX snapshot only on explicit --mlx-vlm opt-in."""
+    import yaml
+    from huggingface_hub import snapshot_download
+
+    with open(os.path.join(PROJECT_ROOT, "configs", "model_config.yaml"),
+              encoding="utf-8") as handle:
+        config = yaml.safe_load(handle)["vqa"]["mlx_vlm"]
+    target = Path(config["model_path"]).expanduser()
+    if not target.is_absolute():
+        target = Path(PROJECT_ROOT) / target
+    snapshot_download(repo_id=config["hf_repo_id"], local_dir=str(target),
+                      local_files_only=False)
+    print(f"[OK] MLX-VLM đã lưu tại: {target}")
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--mlx-vlm", action="store_true",
+                        help="Chỉ tải model MLX-VLM cấu hình trong model_config.yaml")
+    args = parser.parse_args(argv)
     enable_model_downloads()
+    if args.mlx_vlm:
+        try:
+            setup_mlx_vlm_weights()
+        except Exception as exc:
+            print(f"[FAIL] Không thể chuẩn bị MLX-VLM: {exc}", file=sys.stderr)
+            return 1
+        return 0
     setup_yolo_weights()
     setup_depth_weights()
     setup_vqa_weights()
     setup_ocr_weights()
     setup_audio_assets()
     print("[ALL DONE] Hoàn tất chuẩn bị weights và tài nguyên âm thanh.")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

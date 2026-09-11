@@ -58,3 +58,6 @@ htmlcov/
 # Logs & temp
 *.log
 tmp/
+
+# Local model downloads (prepared explicitly by scripts/download_models.py)
+/models/weights/

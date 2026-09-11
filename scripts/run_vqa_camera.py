@@ -36,7 +36,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--width", type=int, default=None, help="Chiều rộng camera")
     parser.add_argument("--height", type=int, default=None, help="Chiều cao camera")
     parser.add_argument("--device", choices=("mps", "cpu"), default=None)
-    parser.add_argument("--backend", default=None, help="VQA backend trong model_config.yaml")
+    parser.add_argument("--backend", default=None,
+                        help="VQA backend: legacy_caption | disabled | mlx_vlm")
     parser.add_argument(
         "--question",
         default="Mô tả khung cảnh phía trước.",
@@ -173,6 +174,7 @@ def main() -> int:
             "translation_model_name", "Helsinki-NLP/opus-mt-en-vi"
         ),
         lazy_load=True,
+        mlx_vlm_config=vqa_config.get("mlx_vlm", {}),
     )
     tts_engine = None if args.no_speech else TTSEngine(
         voice=audio_config.get("voice", "Linh"),

@@ -130,6 +130,57 @@ Trong cửa sổ preview:
 
 Thêm `--no-speech` nếu chỉ muốn xem kết quả trong terminal.
 
+### 3.6. VQA question-aware với MLX-VLM (tùy chọn Apple Silicon)
+
+Backend `mlx_vlm` đưa toàn bộ khung hình (resize giữ tỉ lệ, không crop) và nguyên
+câu hỏi vào chat template của model. Backend mặc định vẫn là `legacy_caption`;
+`disabled` vẫn dùng detection context. MLX chỉ được import và nạp model khi có
+request hợp lệ, sau SafetyGuardrail; không dùng CUDA.
+
+Cài dependency tùy chọn và chủ động tải snapshot khi có mạng:
+
+```bash
+conda activate ai-macbook
+python -m pip install mlx-vlm
+python scripts/download_models.py --mlx-vlm
+```
+
+Script lấy `vqa.mlx_vlm.hf_repo_id` và `model_path` từ
+`configs/model_config.yaml`, chỉ tải MLX khi có `--mlx-vlm`, không khởi tạo model.
+Snapshot cấu hình sẵn là `mlx-community/Qwen2-VL-2B-Instruct-4bit`.
+Đường dẫn tương đối được tính từ project root; có thể đổi sang thư mục local khác.
+Runtime yêu cầu thư mục đã có config, weights và processor/tokenizer; không nhận
+Hub repo ID thay cho đường dẫn, không tự tải kể cả khi `SECOND_EYE_OFFLINE=0`.
+
+Chạy thử với webcam, bấm **Q** để hỏi:
+
+```bash
+HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 python scripts/run_vqa_camera.py \
+  --backend mlx_vlm --question "Chiếc ghế trong ảnh có màu gì?" --no-speech
+```
+
+Để dùng trong ứng dụng đầy đủ, chủ động đổi `vqa.backend` thành `mlx_vlm`
+trong YAML rồi chạy `python app.py`. Detection, depth và cảnh báo vẫn chạy trong
+ứng dụng đầy đủ; CLI webcam ở trên chỉ là công cụ thử VQA, không có cảnh báo.
+
+`vqa.mlx_vlm.max_image_size` giới hạn cạnh dài nhất (mặc định/cap 512 px),
+`max_tokens` giới hạn đầu ra (mặc định/cap 64). Các request được tuần tự hóa;
+model được giữ lại sau lần dùng đầu. Đây là mức khởi đầu cho M1 16GB, chưa phải
+cam kết về RAM/độ trễ: cần đo với model thật khi chạy đồng thời pipeline.
+Hủy/thoát loại bỏ kết quả muộn nhưng không ngắt ngay phép tính Metal đang chạy.
+Thiếu dependency, thiếu model hoặc lỗi inference đều fallback về detection context;
+CLI không có detection nên sẽ báo chưa nhận diện rõ. Lỗi nạp được ghi nhớ đến khi
+khởi động lại ứng dụng. Guardrail tiếp tục từ chối câu hỏi xác nhận đường đi an toàn.
+
+API tích hợp tham khảo [tài liệu chính thức MLX-VLM](https://github.com/Blaizzy/mlx-vlm).
+Test mock không tải model và không cần MLX:
+
+```bash
+HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 PYTHONPATH=. \
+  /opt/anaconda3/envs/ai-macbook/bin/python \
+  -m unittest discover -s tests -p "test_*.py" -v
+```
+
 ---
 
 ## 4. Phím Tắt Điều Khiển (Keyboard Shortcuts)
