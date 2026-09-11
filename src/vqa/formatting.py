@@ -26,7 +26,10 @@ def format_vqa_answer(
     details = _spatial_details(visual_context)
     description = backend_text.strip()
     if description:
-        final_text = f"Khung cảnh: {description}."
+        # Preserve model punctuation; legacy captions still need a final period.
+        ending = description.rstrip('\"\u201d\u2019\u0027)')
+        suffix = "" if ending.endswith((".", "!", "?", "…")) else "."
+        final_text = f"Khung cảnh: {description}{suffix}"
         if details:
             final_text += f" Cụ thể có: {', '.join(details)}."
         return final_text

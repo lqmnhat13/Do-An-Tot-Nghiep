@@ -6,6 +6,7 @@ from src.contracts.request import OCRRequest, VQARequest
 from src.ocr.image_quality import ImageQualityChecker
 from src.vqa.backend import VQABackend
 from src.vqa.vqa_service import VQAService
+from src.vqa.formatting import format_vqa_answer
 
 
 class FakeVQABackend(VQABackend):
@@ -22,6 +23,17 @@ class FailingVQABackend(VQABackend):
         raise RuntimeError("backend test failure")
 
 class TestOCRVQA(unittest.TestCase):
+    def test_formatting_preserves_terminal_punctuation_and_legacy_caption(self):
+        for text in ("Ghế màu đỏ.", "Không xác định rõ!", "Đây là ghế?",
+                     '“Không xác định rõ.”'):
+            with self.subTest(text=text):
+                self.assertEqual(format_vqa_answer(text), "Khung cảnh: " + text)
+        self.assertEqual(format_vqa_answer("Một chiếc ghế"),
+                         "Khung cảnh: Một chiếc ghế.")
+        self.assertEqual(format_vqa_answer("Ghế màu đỏ.", {"spatial_objects": [
+            {"name": "ghế", "direction": "LEFT", "proximity": "gần"}
+        ]}), "Khung cảnh: Ghế màu đỏ. Cụ thể có: ghế bên trái (gần).")
+
     def test_image_quality_checker_dark(self):
         checker = ImageQualityChecker(min_brightness=40.0)
         # Ảnh đen hoàn toàn

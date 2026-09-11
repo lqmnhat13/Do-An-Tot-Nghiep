@@ -24,8 +24,9 @@ class TestMLXVLM(unittest.TestCase):
         (self.path / "config.json").write_text('{"model_type": "qwen2_vl"}')
         (self.path / "model.safetensors").touch()
         self.load = Mock(return_value=(object(), object()))
-        self.generate = Mock(return_value=types.SimpleNamespace(text="Một chiếc ghế"))
-        self.template = Mock(side_effect=lambda processor, config, q, **kw: q)
+        self.generate = Mock(return_value=types.SimpleNamespace(text="Một chiếc ghế."))
+        self.template = Mock(side_effect=lambda processor, config, messages, **kw:
+                             "formatted:" + messages[-1]["content"])
         fake = types.ModuleType("mlx_vlm")
         fake.load, fake.generate = self.load, self.generate
         prompts = types.ModuleType("mlx_vlm.prompt_utils")
@@ -69,10 +70,10 @@ class TestMLXVLM(unittest.TestCase):
             service.answer(self.request("Cửa ở đâu?"))
         self.load.assert_called_once_with(str(self.path.resolve()),
                                           local_files_only=True, trust_remote_code=False)
-        self.assertEqual([c.args[2] for c in self.template.call_args_list],
+        self.assertEqual([c.args[2][-1]["content"] for c in self.template.call_args_list],
                          ["  Ghế màu gì?  ", "Cửa ở đâu?"])
         self.assertEqual([c.args[2] for c in self.generate.call_args_list],
-                         ["  Ghế màu gì?  ", "Cửa ở đâu?"])
+                         ["formatted:  Ghế màu gì?  ", "formatted:Cửa ở đâu?"])
         image = self.generate.call_args.kwargs["image"][0]
         self.assertEqual(image.size, (512, 256))
         self.assertEqual(image.getpixel((0, 0)), (30, 20, 10))
@@ -80,7 +81,7 @@ class TestMLXVLM(unittest.TestCase):
         np.testing.assert_array_equal(self.frame, original)
 
     def test_configured_smaller_limits_and_string_output(self):
-        self.generate.return_value = "  màu đỏ  "
+        self.generate.return_value = "  Ghế màu đỏ.  "
         service = self.service(max_image_size=224, max_tokens=32)
         self.assertIn("màu đỏ", service.answer(self.request()).answer)
         self.assertEqual(self.generate.call_args.kwargs["image"][0].size, (224, 112))
@@ -91,6 +92,70 @@ class TestMLXVLM(unittest.TestCase):
         self.assertIn("không thể xác nhận", result.answer)
         self.load.assert_not_called()
         self.generate.assert_not_called()
+
+    def test_grounding_instructions_are_separate_from_unchanged_question(self):
+        question = "  Người này đang buồn và định đi đâu?\nHãy đoán.  "
+        self.service().answer(self.request(question))
+        processor, config, messages = self.template.call_args.args
+        self.assertIs(processor, self.load.return_value[1])
+        self.assertEqual(config["model_type"], "qwen2_vl")
+        self.assertEqual([m["role"] for m in messages], ["system", "user"])
+        self.assertEqual(messages[1]["content"], question)
+        instructions = messages[0]["content"]
+        for requirement in ("tiếng Việt", "1–2 câu", "hoàn chỉnh", "nhìn thấy rõ",
+                            "cảm xúc", "ý định", "danh tính", "ngoài ảnh",
+                            "Không xác định rõ từ ảnh.", "Không khẳng định đường đi an toàn"):
+            self.assertIn(requirement, instructions)
+        self.assertEqual(self.template.call_args.kwargs["num_images"], 1)
+        self.assertEqual(self.generate.call_args.kwargs["temperature"], 0.0)
+
+    def test_truncation_discards_entire_answer_without_retry_or_punctuation_repair(self):
+        service = self.service()
+        outputs = [
+            types.SimpleNamespace(text="Chiếc ghế có màu", finish_reason="length",
+                                  generation_tokens=64),
+            # Do not keep a prefix whose missing tail could qualify the claim.
+            types.SimpleNamespace(text="Có một chiếc ghế. Tuy nhiên", finish_reason="length"),
+            types.SimpleNamespace(text="Có một chiếc ghế.", finish_reason="length"),
+            types.SimpleNamespace(text="Có một chiếc ghế.", generation_tokens=64),
+            types.SimpleNamespace(text="Có một chiếc ghế.", generation_tokens=65,
+                                  finish_reason=None),
+            types.SimpleNamespace(text="Chiếc ghế có màu", finish_reason="stop",
+                                  generation_tokens=12),
+            "Chiếc ghế có màu", "Có một chiếc ghế...", "Có một chiếc ghế…",
+            "   ", types.SimpleNamespace(text=None),
+        ]
+        for output in outputs:
+            with self.subTest(output=output):
+                self.generate.return_value = output
+                before = self.generate.call_count
+                self.assert_fallback(service)
+                self.assertEqual(self.generate.call_count, before + 1)
+        self.load.assert_called_once()
+
+    def test_explicit_stop_and_older_complete_outputs_are_preserved(self):
+        service = self.service()
+        text = "Không xác định rõ từ ảnh."
+        for output in (text, types.SimpleNamespace(text=text),
+                       types.SimpleNamespace(text=text, generation_tokens=12),
+                       types.SimpleNamespace(text=text, finish_reason="stop",
+                                             generation_tokens=64)):
+            with self.subTest(output=output):
+                self.generate.return_value = output
+                self.assertEqual(service.answer(self.request()).answer,
+                                 "Khung cảnh: " + text)
+
+    def test_smaller_budget_is_used_to_detect_truncation(self):
+        self.generate.return_value = types.SimpleNamespace(
+            text="Có một chiếc ghế.", generation_tokens=16)
+        self.assert_fallback(self.service(max_tokens=16))
+
+    def test_incomplete_output_without_context_uses_existing_fallback(self):
+        self.generate.return_value = "Chiếc ghế đang"
+        result = self.service().answer(self.request())
+        self.assertTrue(result.success)
+        self.assertEqual(result.answer,
+                         "Chưa phát hiện được khung cảnh hoặc vật thể rõ ràng phía trước.")
 
     def test_missing_model_repo_id_and_incomplete_snapshot(self):
         for path in ("", str(self.path / "missing"), "owner/nonexistent-model"):
@@ -114,7 +179,7 @@ class TestMLXVLM(unittest.TestCase):
         self.load.assert_called_once()
 
     def test_inference_failure_releases_lock_and_can_recover(self):
-        self.generate.side_effect = [RuntimeError("Metal error"), None, "", "recovered"]
+        self.generate.side_effect = [RuntimeError("Metal error"), None, "", "recovered."]
         service = self.service()
         for _ in range(3):
             self.assert_fallback(service)
@@ -127,7 +192,7 @@ class TestMLXVLM(unittest.TestCase):
             entered.set()
             if not release.wait(2):
                 raise RuntimeError("test timed out")
-            return "done"
+            return "done."
         self.generate.side_effect = generate
         service = self.service()
         results = []
@@ -158,7 +223,7 @@ class TestMLXVLM(unittest.TestCase):
         def generate(*args, **kwargs):
             entered.set()
             release.wait(4)
-            return "late"
+            return "late."
         self.generate.side_effect = generate
         tts = Mock()
         session = VQACameraSession(self.service(), "Có gì?", tts)

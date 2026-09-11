@@ -145,6 +145,15 @@ class MLXVLMBackend(VQABackend):
     suppression of late results remain the caller's responsibility.
     """
 
+    SYSTEM_PROMPT = (
+        "Trả lời trực tiếp câu hỏi bằng tiếng Việt, trong 1–2 câu ngắn, hoàn chỉnh "
+        "và có dấu kết câu. Chỉ nêu chi tiết nhìn thấy rõ trong ảnh, liên quan đến "
+        "câu hỏi. Không suy đoán cảm xúc, ý định, danh tính hoặc thông tin ngoài ảnh. "
+        "Không mặc định các giả thiết trong câu hỏi là đúng. Nếu không đủ bằng chứng, "
+        "hãy nói: 'Không xác định rõ từ ảnh.' Không khẳng định đường đi an toàn. "
+        "Không liệt kê dài, không giải thích quá trình suy luận."
+    )
+
     def __init__(self, model_path: str, max_image_size: int = 512,
                  max_tokens: int = 64):
         self.model_path = model_path
@@ -209,17 +218,44 @@ class MLXVLMBackend(VQABackend):
             rgb = image[:, :, ::-1] if image.ndim == 3 else image
             pil_image = Image.fromarray(rgb).convert("RGB")
             pil_image.thumbnail((size, size), Image.Resampling.LANCZOS)
+            messages = [
+                {"role": "system", "content": self.SYSTEM_PROMPT},
+                {"role": "user", "content": question},
+            ]
             prompt = self._apply_chat_template(
-                self._processor, self._config, question, num_images=1
+                self._processor, self._config, messages, num_images=1
             )
             output = self._generate(
                 self._model, self._processor, prompt, image=[pil_image],
                 max_tokens=tokens, temperature=0.0, verbose=False
             )
-            text = output if isinstance(output, str) else getattr(output, "text", None)
-            if not isinstance(text, str):
-                raise RuntimeError("MLX-VLM trả về kết quả không hợp lệ")
-            return text.strip()
+            return self._validated_answer(output, tokens)
+
+    @staticmethod
+    def _validated_answer(output, token_limit: int) -> str:
+        """Reject potentially unfinished output; never invent a continuation.
+
+        Older MLX-VLM versions may return text or omit finish_reason. Token count
+        is then a conservative limit signal. Punctuation is only a heuristic,
+        not proof of grammatical completeness or visual grounding.
+        """
+        text = output if isinstance(output, str) else getattr(output, "text", None)
+        if not isinstance(text, str):
+            raise RuntimeError("MLX-VLM trả về kết quả không hợp lệ")
+        reason = getattr(output, "finish_reason", None)
+        count = getattr(output, "generation_tokens", None)
+        hit_limit = reason == "length" or (
+            reason != "stop" and isinstance(count, int) and count >= token_limit
+        )
+        if hit_limit:
+            # Even a complete-looking prefix can lose a qualification in the
+            # missing tail. Discard the whole answer and let the service fallback.
+            raise RuntimeError("MLX-VLM chạm giới hạn token; bỏ câu trả lời có thể bị cắt")
+        text = text.strip()
+        ending = text.rstrip('\"\u201d\u2019\u0027)')
+        if not ending or not ending.endswith((".", "!", "?")) or ending.endswith("..."):
+            raise RuntimeError("MLX-VLM trả lời rỗng hoặc chưa có dấu kết câu rõ ràng")
+        return text
 
 
 def create_vqa_backend(
