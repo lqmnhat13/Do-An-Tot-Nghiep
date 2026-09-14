@@ -12,7 +12,7 @@ Hệ thống AI đa phương thức chạy **hoàn toàn offline tại local tr�
    - Camera Worker độc quyền thu nhận khung hình với OpenCV (AVFoundation), gắn monotonic timestamp.
    - `BoundedBuffer` thread-safe với cơ chế **Drop-Oldest**: khi consumer chưa đọc kịp, tự động loại bỏ khung hình cũ nhất, đảm bảo mô hình luôn xử lý dữ liệu mới nhất mà không gây tắc nghẽn camera.
 2. **Detection & Tracking**:
-   - YOLOv8n trên tập con 21 nhãn COCO đồ vật và nội thất trong nhà.
+   - YOLOv8n trên tập con 24 nhãn COCO cho người, thú nuôi, đồ vật và nội thất trong nhà.
    - Phân tách rõ ràng giữa `enabled_classes` (cho phép nhận diện) và `alert_classes` (kích hoạt cảnh báo va chạm).
    - ByteTrack duy trì định danh `track_id` ổn định qua các frame.
 3. **Monocular Relative Depth (Depth Anything V2 Small)**:
@@ -65,8 +65,10 @@ Do-An-Tot-Nghiep/
 │   ├── download_models.py      # Tải/sao chép weights và tạo âm thanh mẫu
 │   ├── benchmark_hardware.py   # Đo latency P50/P95 độc lập từng module
 │   ├── benchmark_vqa_backends.py # Benchmark VQA backend không khởi động pipeline
+│   ├── render_hud_demo.py      # Sinh ảnh demo và benchmark HUD không cần camera
+│   ├── run_vqa_camera.py       # Thử riêng VQA với webcam
 │   └── evaluate_video.py       # Đánh giá pipeline trên video replay / offline
-├── tests/                      # Bộ 26 unit tests tự động
+├── tests/                      # Bộ 76 unit tests tự động
 ├── evaluation/
 │   └── results/                # Kết quả báo cáo benchmark JSON
 ├── requirements.txt            # Danh sách thư viện Python
@@ -86,18 +88,48 @@ conda activate ai-macbook
 # /opt/anaconda3/envs/ai-macbook/bin/python
 ```
 
-### 3.2. Kiểm tra môi trường & Phần cứng
+Cài các dependency runtime cơ bản:
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+MLX-VLM là dependency tùy chọn, chỉ cần cài khi sử dụng backend `mlx_vlm`
+đang được chọn trong `configs/model_config.yaml`:
+
+```bash
+python -m pip install mlx-vlm
+```
+
+### 3.2. Chuẩn bị model để chạy offline
+
+Runtime không tự tải model. Khi máy còn kết nối mạng, chủ động chuẩn bị YOLO,
+Depth Anything, OCR, backend `legacy_caption` và các âm thanh cảnh báo:
+
+```bash
+python scripts/download_models.py
+```
+
+Chuẩn bị riêng snapshot MLX-VLM được cấu hình:
+
+```bash
+python scripts/download_models.py --mlx-vlm
+```
+
+Sau khi tải xong, ứng dụng có thể chạy offline. Không bật cloud API hay telemetry.
+
+### 3.3. Kiểm tra môi trường & Phần cứng
 Chạy script kiểm tra phần cứng, camera và giọng nói:
 ```bash
 python scripts/inspect_environment.py
 ```
 
-### 3.3. Chạy Ứng Dụng với Webcam Trực Tiếp
+### 3.4. Chạy Ứng Dụng với Webcam Trực Tiếp
 ```bash
 python app.py
 ```
 
-### 3.4. Chạy với Video Test hoặc Camera Giả Lập
+### 3.5. Chạy với Video Test hoặc Camera Giả Lập
 - Chạy với camera giả lập (Dummy mode):
   ```bash
   python app.py --source dummy
@@ -111,7 +143,7 @@ python app.py
   python app.py --source 0 --no-gui
   ```
 
-### 3.5. Chạy riêng VQA với webcam thật
+### 3.6. Chạy riêng VQA với webcam thật
 
 Chế độ này chỉ khởi tạo webcam và `VQAService`; YOLO, Depth, tracking, OCR,
 RiskFSM và cảnh báo va chạm đều không được chạy:
@@ -130,12 +162,13 @@ Trong cửa sổ preview:
 
 Thêm `--no-speech` nếu chỉ muốn xem kết quả trong terminal.
 
-### 3.6. VQA question-aware với MLX-VLM (tùy chọn Apple Silicon)
+### 3.7. VQA question-aware với MLX-VLM (tùy chọn Apple Silicon)
 
 Backend `mlx_vlm` đưa toàn bộ khung hình (resize giữ tỉ lệ, không crop) và nguyên
-câu hỏi vào chat template của model. Backend mặc định vẫn là `legacy_caption`;
-`disabled` vẫn dùng detection context. MLX chỉ được import và nạp model khi có
-request hợp lệ, sau SafetyGuardrail; không dùng CUDA.
+câu hỏi vào chat template của model. Cấu hình hiện tại chọn `mlx_vlm` làm backend;
+`legacy_caption` vẫn có thể được chọn thủ công và `disabled` chỉ dùng detection
+context. MLX chỉ được import và nạp model khi có request hợp lệ, sau
+SafetyGuardrail; không dùng CUDA.
 
 Cài dependency tùy chọn và chủ động tải snapshot khi có mạng:
 
@@ -159,9 +192,9 @@ HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 python scripts/run_vqa_camera.py \
   --backend mlx_vlm --question "Chiếc ghế trong ảnh có màu gì?" --no-speech
 ```
 
-Để dùng trong ứng dụng đầy đủ, chủ động đổi `vqa.backend` thành `mlx_vlm`
-trong YAML rồi chạy `python app.py`. Detection, depth và cảnh báo vẫn chạy trong
-ứng dụng đầy đủ; CLI webcam ở trên chỉ là công cụ thử VQA, không có cảnh báo.
+Ứng dụng đầy đủ đã dùng `vqa.backend: mlx_vlm` trong cấu hình mặc định; chạy
+`python app.py` sau khi đã chuẩn bị snapshot. Detection, depth và cảnh báo vẫn
+chạy liên tục; CLI webcam ở trên chỉ là công cụ thử VQA, không có cảnh báo.
 
 `vqa.mlx_vlm.max_image_size` giới hạn cạnh dài nhất (mặc định/cap 512 px),
 `max_tokens` giới hạn đầu ra (mặc định/cap 64). Các request được tuần tự hóa;
@@ -295,7 +328,8 @@ python scripts/render_hud_demo.py
   2. `02_medium_risk.png`: Cảnh báo mức độ chú ý.
   3. `03_high_risk_speaking.png`: Cảnh báo nguy cơ cao kết hợp trạng thái đang nói.
   4. `04_no_camera_loading.png`: Trạng thái chờ kết nối camera.
-- Script đồng thời đo kiểm tốc độ kết xuất đồ họa (Render rate thông thường đạt **> 350 FPS**, P50 **< 3ms** trên Apple Silicon M1).
+- Script đồng thời in Render rate cùng latency P50/P95 thực đo trên máy đang chạy;
+  unit test yêu cầu P50 nhỏ hơn 20 ms.
 
 ### 5.3. Đo Kiểm Độ Trễ Phần Cứng (Latency P50 / P95)
 ```bash
