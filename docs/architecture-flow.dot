@@ -1,0 +1,70 @@
+digraph assistive_flow {
+  graph [
+    label="LUỒNG HOẠT ĐỘNG CỦA HỆ THỐNG",
+    labelloc=t,
+    fontsize=23,
+    fontname="Arial",
+    fontcolor="#172434",
+    bgcolor="#ffffff",
+    pad=0.35,
+    nodesep=0.48,
+    ranksep=0.68,
+    splines=ortho,
+    rankdir=LR
+  ];
+  node [shape=box, style="rounded,filled", fontname="Arial", fontsize=13,
+        color="#9ba9b2", fontcolor="#172434", fillcolor="#f4f7f8",
+        margin="0.20,0.14", penwidth=1.2];
+  edge [color="#647781", penwidth=1.6, arrowsize=0.75];
+
+  camera [label="Camera / video\nFrame mới nhất", fillcolor="#d8edf0", color="#3e8793"];
+  buffers [label="2 bộ đệm drop-oldest\nDetection + Depth", fillcolor="#e5f1f3", color="#3e8793"];
+
+  subgraph cluster_continuous {
+    label="CHẠY LIÊN TỤC";
+    fontsize=16;
+    fontname="Arial";
+    fontcolor="#17626d";
+    color="#8dbfc5";
+    style="rounded";
+    penwidth=1.5;
+    detection [label="YOLOv8n\nDetection + tracking", fillcolor="#dff1ee", color="#4b9a87"];
+    depth [label="Depth Anything V2\nĐộ gần tương đối", fillcolor="#dff1ee", color="#4b9a87"];
+    sync [label="Đồng bộ + kiểm tra\nđộ mới dữ liệu", fillcolor="#f8f1d9", color="#c5a64d"];
+    risk [label="Risk FSM +\nAlert Aggregator", fillcolor="#f8e8df", color="#cf805f"];
+  }
+
+  subgraph cluster_on_demand {
+    label="CHỈ KHI NGƯỜI DÙNG YÊU CẦU";
+    fontsize=16;
+    fontname="Arial";
+    fontcolor="#37627b";
+    color="#9bb8cc";
+    style="rounded";
+    penwidth=1.5;
+    trigger [label="Space: OCR\nQ: VQA", fillcolor="#e6eff8", color="#7398b4"];
+    snapshot [label="Ảnh camera mới nhất\n(kiểm tra độ mới)", fillcolor="#e6eff8", color="#7398b4"];
+    ocr [label="Apple Vision\nEasyOCR dự phòng", fillcolor="#e6eff8", color="#7398b4"];
+    vqa [label="MLX-VLM\nGuardrail an toàn", fillcolor="#e6eff8", color="#7398b4"];
+  }
+
+  audio [label="Audio Coordinator\nTTS tiếng Việt", fillcolor="#f9e1e3", color="#c46b75"];
+  hud [label="HUD / trạng thái", fillcolor="#edf0f2", color="#8797a2"];
+
+  camera -> buffers;
+  buffers -> detection;
+  buffers -> depth;
+  detection -> sync;
+  depth -> sync;
+  sync -> risk;
+  risk -> audio [xlabel="cảnh báo", fontname="Arial", fontsize=11, fontcolor="#97503e"];
+  camera -> snapshot [style=dashed, color="#7398b4"];
+  trigger -> snapshot [style=dashed, color="#7398b4"];
+  snapshot -> ocr;
+  snapshot -> vqa;
+  ocr -> audio [style=dashed, color="#7398b4"];
+  vqa -> audio [style=dashed, color="#7398b4"];
+  detection -> hud [style=dotted, color="#8797a2"];
+  depth -> hud [style=dotted, color="#8797a2"];
+  risk -> hud [style=dotted, color="#8797a2"];
+}
