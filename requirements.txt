@@ -6,6 +6,7 @@ transformers>=4.35.0
 sentencepiece>=0.2.2 # Required by MarianTokenizer (legacy VQA and offline-loading tests)
 opencv-python>=4.8.0
 easyocr>=1.7.0
+pyobjc-framework-Vision>=12.2.2; sys_platform == "darwin"
 pyyaml>=6.0
 scipy>=1.10.0
 scikit-image>=0.20.0

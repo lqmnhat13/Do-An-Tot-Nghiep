@@ -208,11 +208,12 @@ def main() -> int:
     )
     service = OCRService(
         languages=ocr_config.get("languages", ["vi", "en"]),
+        engine=ocr_config.get("engine", "easyocr"),
         use_gpu=use_gpu,
         min_confidence=min_confidence,
         quality_checker=quality_checker,
     )
-    backend_desc = f"EasyOCR ({'GPU' if use_gpu else 'CPU'})"
+    backend_desc = "Vision (EasyOCR dự phòng)" if service.engine == "vision" else f"EasyOCR ({'GPU' if use_gpu else 'CPU'})"
 
     tts_engine = None if args.no_speech else TTSEngine(
         voice=audio_config.get("voice", "Linh"),

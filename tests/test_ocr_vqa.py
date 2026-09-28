@@ -22,6 +22,14 @@ class FailingVQABackend(VQABackend):
     def answer(self, image, question):
         raise RuntimeError("backend test failure")
 
+
+class FixedVQABackend(VQABackend):
+    def __init__(self, answer):
+        self.text = answer
+
+    def answer(self, image, question):
+        return self.text
+
 class TestOCRVQA(unittest.TestCase):
     def test_formatting_preserves_terminal_punctuation_and_legacy_caption(self):
         for text in ("Ghế màu đỏ.", "Không xác định rõ!", "Đây là ghế?",
@@ -57,6 +65,11 @@ class TestOCRVQA(unittest.TestCase):
         res = vqa.answer(req)
         self.assertTrue(res.success)
         self.assertIn("không thể xác nhận đường đi có an toàn hay không", res.answer)
+        english = vqa.answer(VQARequest(
+            "vqa_english", np.zeros((10, 10, 3), dtype=np.uint8),
+            "Is it safe to walk?"
+        ))
+        self.assertIn("không thể xác nhận", english.answer)
 
     def test_vqa_with_context(self):
         vqa = VQAService(use_vlm=False)
@@ -114,6 +127,32 @@ class TestOCRVQA(unittest.TestCase):
 
         self.assertTrue(result.success)
         self.assertIn("người", result.answer)
+
+    def test_unsafe_model_answer_is_refused_without_stale_context(self):
+        request = VQARequest("unsafe", np.zeros((10, 10, 3), dtype=np.uint8),
+                             "Mô tả phía trước")
+        for text in ("Bạn có thể đi tiếp an toàn.",
+                     "Lối đi phía trước an toàn.",
+                     "Không có vật cản phía trước.",
+                     "An toàn để đi tiếp.",
+                     "Bạn có thể đi tiếp.",
+                     "You can proceed."):
+            with self.subTest(text=text):
+                service = VQAService(backend=FixedVQABackend(text))
+                result = service.answer(request, {"spatial_objects": [
+                    {"name": "ghế", "direction": "CENTER", "proximity": "gần"}
+                ]})
+                self.assertIn("không thể xác nhận đường đi", result.answer)
+                self.assertNotIn("ghế", result.answer)
+
+    def test_model_can_report_unsafe_path_without_refusal(self):
+        service = VQAService(backend=FixedVQABackend(
+            "Lối đi phía trước không an toàn vì có cành cây chắn."
+        ))
+        result = service.answer(VQARequest(
+            "blocked", np.zeros((10, 10, 3), dtype=np.uint8), "Mô tả phía trước"
+        ))
+        self.assertIn("không an toàn", result.answer)
 
 if __name__ == "__main__":
     unittest.main()

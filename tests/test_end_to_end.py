@@ -22,6 +22,71 @@ from src.contracts.risk import RiskAssessment, RiskLevel, Direction, DataQuality
 from src.runtime.system_coordinator import SystemCoordinator
 
 class TestEndToEnd(unittest.TestCase):
+    def test_on_demand_rejects_stale_or_future_camera_frame(self):
+        now = time.monotonic()
+        def frame(timestamp):
+            return FramePacket(
+                frame_id=1, source_id="test",
+                image=np.zeros((8, 8, 3), dtype=np.uint8),
+                original_size=(8, 8), timestamp_mono=timestamp,
+            )
+        self.assertTrue(SystemCoordinator._is_fresh_on_demand_frame(
+            frame(now - 0.1), now
+        ))
+        self.assertFalse(SystemCoordinator._is_fresh_on_demand_frame(
+            frame(now - 2.0), now
+        ))
+        self.assertFalse(SystemCoordinator._is_fresh_on_demand_frame(
+            frame(now + 0.1), now
+        ))
+
+    def test_stale_camera_frame_never_reaches_ocr_or_vqa(self):
+        coordinator = object.__new__(SystemCoordinator)
+        coordinator.audio_coordinator = MagicMock()
+        coordinator.ocr_service = MagicMock()
+        coordinator.vqa_service = MagicMock()
+        coordinator._is_current_on_demand = MagicMock(return_value=True)
+        coordinator._post_on_demand_audio = MagicMock(return_value=True)
+        coordinator._finish_on_demand = MagicMock()
+        coordinator.get_latest_frame = MagicMock(return_value=FramePacket(
+            frame_id=1, source_id="test",
+            image=np.zeros((8, 8, 3), dtype=np.uint8),
+            original_size=(8, 8), timestamp_mono=time.monotonic() - 2.0,
+        ))
+
+        coordinator._run_ocr_task(1)
+        coordinator._run_vqa_task(2, "Phía trước có gì?")
+
+        coordinator.ocr_service.process.assert_not_called()
+        coordinator.vqa_service.answer.assert_not_called()
+        self.assertEqual(coordinator._post_on_demand_audio.call_count, 2)
+        for call in coordinator._post_on_demand_audio.call_args_list:
+            self.assertIn("ảnh camera mới", call.args[1].text)
+
+    def test_vqa_context_excludes_stale_and_degraded_assessments(self):
+        now = time.monotonic()
+        packet = FramePacket(
+            frame_id=5, source_id="test", image=np.zeros((8, 8, 3), dtype=np.uint8),
+            original_size=(8, 8), timestamp_mono=now
+        )
+        def assessment(quality, source_age, expiry_age):
+            return RiskAssessment(
+                track_id=1, class_name="ghế", direction=Direction.CENTER,
+                risk_level=RiskLevel.LOW, data_quality=quality,
+                relative_proximity=0.5, proximity_desc="gần", reason="test",
+                source_timestamp=now - source_age, expires_at=now - expiry_age,
+            )
+        candidates = [
+            assessment(DataQuality.VALID, 0.1, -1.0),
+            assessment(DataQuality.STALE, 0.1, -1.0),
+            assessment(DataQuality.VALID, 2.0, -1.0),
+            assessment(DataQuality.VALID, 0.1, 0.1),
+        ]
+        self.assertEqual(
+            SystemCoordinator._fresh_vqa_assessments(packet, candidates, now),
+            candidates[:1],
+        )
+
     def test_full_pipeline_dummy(self):
         # Thiết lập camera dummy
         camera = CameraManager(source="dummy", width=320, height=240, target_fps=20.0)

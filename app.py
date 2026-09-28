@@ -22,6 +22,7 @@ from src.fusion.alert_aggregator import AlertAggregator
 from src.audio.tts_engine import TTSEngine
 from src.audio.audio_coordinator import AudioCoordinator
 from src.ocr.ocr_service import OCRService
+from src.ocr.image_quality import ImageQualityChecker
 from src.vqa.vqa_service import VQAService
 from src.runtime.system_coordinator import SystemCoordinator
 from src.ui.hud_renderer import HUDRenderer
@@ -32,6 +33,21 @@ def load_yaml(path: str) -> dict:
         with open(path, "r", encoding="utf-8") as f:
             return yaml.safe_load(f) or {}
     return {}
+
+
+def build_ocr_service(model_cfg: dict, device: str) -> OCRService:
+    ocr_cfg = model_cfg.get("ocr", {})
+    return OCRService(
+        languages=ocr_cfg.get("languages", ["vi", "en"]),
+        engine=ocr_cfg.get("engine", "easyocr"),
+        use_gpu=(device == "mps"),
+        min_confidence=float(ocr_cfg.get("min_confidence", 0.35)),
+        quality_checker=ImageQualityChecker(
+            blur_threshold=float(ocr_cfg.get("blur_laplacian_threshold", 50.0)),
+            min_brightness=float(ocr_cfg.get("min_brightness", 40.0)),
+            max_brightness=float(ocr_cfg.get("max_brightness", 235.0)),
+        ),
+    )
 
 def main():
     parser = argparse.ArgumentParser(description="Hệ thống AI đa phương thức hỗ trợ người khiếm thị")
@@ -148,7 +164,7 @@ def main():
     audio_coordinator = AudioCoordinator(tts_engine=tts_engine)
 
     # 6. On-Demand OCR & VQA
-    ocr_service = OCRService(use_gpu=(device == "mps"))
+    ocr_service = build_ocr_service(model_cfg, device)
     vqa_cfg = model_cfg.get("vqa", {})
     vqa_service = VQAService(
         device=device,

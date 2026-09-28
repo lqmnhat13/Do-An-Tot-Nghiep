@@ -61,7 +61,7 @@ depth:
   input_width: 256
 
 ocr:
-  engine: "easyocr" # easyocr | paddleocr
+  engine: "vision" # vision (macOS) | easyocr
   languages: ["vi", "en"]
   device: "mps" # mps | cpu
   min_confidence: 0.3
@@ -78,7 +78,7 @@ vqa:
   max_tokens: 45
   mlx_vlm:
     # Repo ID chỉ được script download_models.py sử dụng, không dùng ở runtime.
-    hf_repo_id: "mlx-community/Qwen2-VL-2B-Instruct-4bit"
-    model_path: "models/weights/qwen2_vl_2b_4bit" # tương đối từ project root
+    hf_repo_id: "mlx-community/Qwen2.5-VL-3B-Instruct-4bit"
+    model_path: "models/weights/qwen2_5_vl_3b_4bit" # tương đối từ project root
     max_image_size: 512 # cạnh dài nhất, giữ tỉ lệ và toàn bộ khung hình; cap 512
     max_tokens: 64 # cap 64 để câu trả lời ngắn và giảm độ trễ trên M1 16GB

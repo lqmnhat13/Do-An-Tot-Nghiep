@@ -34,7 +34,7 @@ Hệ thống AI đa phương thức chạy **hoàn toàn offline tại local tr�
    - Giọng đọc tiếng Việt `Linh` tích hợp sẵn trên macOS, kèm bộ âm thanh WAV chime/beep cảnh báo không độ trễ.
 6. **On-Demand OCR & VQA**:
    - Kích hoạt theo yêu cầu người dùng (phím bấm).
-   - OCR kiểm tra độ rung mờ (Laplacian) và độ sáng trước khi nhận dạng; sắp xếp thứ tự đọc tự nhiên từ trên xuống dưới, từ trái sang phải.
+   - OCR kiểm tra độ rung mờ (Laplacian) và độ sáng trước khi nhận dạng; dùng Apple Vision trên macOS với EasyOCR dự phòng và sắp xếp chữ theo vị trí.
    - VQA có **rào chắn an toàn (Safety Guardrail)**: tuyệt đối từ chối khẳng định đường đi an toàn, khuyến cáo người dùng dùng gậy dẫn đường.
 
 ---
@@ -107,7 +107,8 @@ python -m pip install mlx-vlm
 ### 3.2. Chuẩn bị model để chạy offline
 
 Runtime không tự tải model. Khi máy còn kết nối mạng, chủ động chuẩn bị YOLO,
-Depth Anything, OCR, backend `legacy_caption` và các âm thanh cảnh báo:
+Depth Anything, EasyOCR dự phòng, backend `legacy_caption` và các âm thanh cảnh báo.
+OCR Apple Vision dùng model có sẵn trong macOS:
 
 ```bash
 python scripts/download_models.py
@@ -183,7 +184,7 @@ python scripts/download_models.py --mlx-vlm
 
 Script lấy `vqa.mlx_vlm.hf_repo_id` và `model_path` từ
 `configs/model_config.yaml`, chỉ tải MLX khi có `--mlx-vlm`, không khởi tạo model.
-Snapshot cấu hình sẵn là `mlx-community/Qwen2-VL-2B-Instruct-4bit`.
+Snapshot cấu hình sẵn là `mlx-community/Qwen2.5-VL-3B-Instruct-4bit`.
 Đường dẫn tương đối được tính từ project root; có thể đổi sang thư mục local khác.
 Runtime yêu cầu thư mục đã có config, weights và processor/tokenizer; không nhận
 Hub repo ID thay cho đường dẫn, không tự tải kể cả khi `SECOND_EYE_OFFLINE=0`.

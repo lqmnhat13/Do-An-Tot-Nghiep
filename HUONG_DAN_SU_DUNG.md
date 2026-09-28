@@ -157,7 +157,7 @@ Lệnh thực hiện các công việc sau:
 | YOLOv8n | Giữ file đã có, tìm bản sao tại một số thư mục backup, hoặc tải rồi đặt vào `models/weights/yolov8n.pt` |
 | Depth Anything V2 Small | Chuẩn bị processor và model trong cache Hugging Face |
 | BLIP và MarianMT | Chuẩn bị model cho backend mô tả ảnh cũ, kể cả khi YAML đang chọn MLX |
-| EasyOCR vi/en | Chuẩn bị model OCR bằng Reader chạy CPU trong bước tải |
+| EasyOCR vi/en | Chuẩn bị model OCR dự phòng bằng Reader chạy CPU; Apple Vision không cần tải model riêng |
 | Âm thanh | Tạo lại `alert_high.wav`, `chime.wav`, `ready.wav` trong `assets/audio/` |
 
 Nếu đã tùy chỉnh các tệp WAV trên, sao lưu trước khi chạy vì script tạo lại chúng. Script hiện chưa có tùy chọn CLI riêng để chỉ tải depth hoặc chỉ tải OCR.
@@ -177,8 +177,8 @@ Lệnh này **chỉ tải snapshot MLX**, không thay thế lệnh chuẩn bị 
 ```yaml
 vqa:
   mlx_vlm:
-    hf_repo_id: "mlx-community/Qwen2-VL-2B-Instruct-4bit"
-    model_path: "models/weights/qwen2_vl_2b_4bit"
+    hf_repo_id: "mlx-community/Qwen2.5-VL-3B-Instruct-4bit"
+    model_path: "models/weights/qwen2_5_vl_3b_4bit"
 ```
 
 Đây là đoạn cấu hình minh họa các khóa liên quan; không dùng nó để ghi đè toàn bộ tệp YAML.
@@ -188,7 +188,7 @@ vqa:
 ```bash
 ls -lh models/weights/yolov8n.pt
 ls -lh assets/audio/alert_high.wav assets/audio/chime.wav assets/audio/ready.wav
-ls models/weights/qwen2_vl_2b_4bit
+ls models/weights/qwen2_5_vl_3b_4bit
 ```
 
 Với snapshot MLX, cần có `config.json`, trọng số `.safetensors` và các tệp processor/tokenizer được tải cùng snapshot. Không chỉ sao chép một tệp weights rời. Kiểm tra thư mục tồn tại mới là bước đầu; kiểm chứng đầy đủ cần gọi VQA thực tế khi offline.
@@ -487,7 +487,7 @@ Nhánh MLX hiện giới hạn cứng cạnh ảnh tối đa 512 pixel và tối
 | `runtime.enable_preview` | Dùng CLI `--no-gui` để tắt cửa sổ |
 | `camera.buffer_size` và các khóa reconnect | Chưa được truyền từ YAML vào đầy đủ runtime |
 | Interval detection/depth | Không phải tất cả giá trị YAML đều điều khiển worker thực tế |
-| `ocr.min_confidence`, các ngưỡng chất lượng OCR | Ứng dụng chính còn dùng mặc định service cho nhiều giá trị |
+| `ocr.engine`, `ocr.min_confidence`, các ngưỡng chất lượng OCR | Ứng dụng chính đọc từ YAML; Vision trên macOS, EasyOCR dự phòng khi Vision không khả dụng |
 | `risk_fsm.depth_threshold_*` | FSM hiện có ngưỡng viết trực tiếp trong mã |
 | Device riêng của từng model | Chưa được sử dụng như bộ điều khiển độc lập cho từng model |
 | `ui.show_diagnostics` | Chưa điều khiển HUD như tên gọi gợi ý |
@@ -665,7 +665,7 @@ Camera manager có thể chuyển sang dummy sau nhiều lần mở thất bại
 
 Nếu là lỗi chất lượng ảnh, tăng độ rõ bằng cách giữ camera yên, đưa chữ vào vùng đủ lớn, thay hướng ánh sáng và tránh phản chiếu. Chờ tác vụ cũ kết thúc rồi nhấn lại `SPACE`.
 
-Nếu thông báo là thiếu EasyOCR/model, chỉnh ảnh sẽ không giải quyết được: quay lại cài dependency và chuẩn bị model. Nên khởi động lại sau khi sửa vì service ghi nhớ lần thử nạp thất bại.
+Nếu log báo Vision không khả dụng, ứng dụng thử EasyOCR dự phòng. Nếu cả EasyOCR hoặc model của nó cũng thiếu, cài dependency và chuẩn bị model rồi khởi động lại; chỉnh ảnh không giải quyết được lỗi nạp engine.
 
 ### 12.5. VQA không trả lời đúng câu hỏi hoặc luôn dùng câu dự phòng
 
@@ -741,7 +741,7 @@ Không cần tạo tình huống va chạm thật để chứng minh cảnh báo
 | Kiểm tra máy/camera/TTS | `python scripts/inspect_environment.py` |
 | Mở ứng dụng | `python app.py --source 0` |
 | Thử riêng VQA qua camera (MLX) | `python scripts/run_vqa_camera.py --camera 0` |
-| Thử riêng OCR qua camera (EasyOCR) | `python scripts/run_ocr_camera.py --camera 0` |
+| Thử riêng OCR qua camera (Vision, EasyOCR dự phòng) | `python scripts/run_ocr_camera.py --camera 0` |
 | Thử riêng OCR với file ảnh | `python scripts/run_ocr_camera.py --image /duong/dan/anh.jpg` |
 | Đọc chữ trong ứng dụng chính | `SPACE` trong cửa sổ |
 | Mô tả cảnh trong ứng dụng chính | `Q` trong cửa sổ |

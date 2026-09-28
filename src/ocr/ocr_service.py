@@ -1,5 +1,4 @@
 import time
-import os
 import cv2
 from typing import Optional, List, Dict, Any, Tuple
 import numpy as np
@@ -22,9 +21,11 @@ class OCRService:
         languages: Optional[List[str]] = None,
         use_gpu: bool = True,
         min_confidence: float = 0.35,
-        quality_checker: Optional[ImageQualityChecker] = None
+        quality_checker: Optional[ImageQualityChecker] = None,
+        engine: str = "easyocr",
     ):
         self.languages = languages or ["vi", "en"]
+        self.engine = engine
         self.use_gpu = use_gpu
         self.min_confidence = min_confidence
         self.quality_checker = quality_checker or ImageQualityChecker()
@@ -37,6 +38,14 @@ class OCRService:
             return
 
         self._load_attempted = True
+        if self.engine == "vision":
+            try:
+                from src.ocr.vision_engine import VisionOCRReader
+                self._reader = VisionOCRReader(self.languages)
+                self._load_error = None
+                return
+            except Exception as exc:
+                print(f"[OCRService] Vision không khả dụng: {exc}. Dùng EasyOCR.")
         print("[OCRService] Đang khởi tạo EasyOCR engine cho tiếng Việt...")
         try:
             import easyocr
@@ -103,7 +112,18 @@ class OCRService:
                 overlap = max(0.0, min(item["bottom"], line["bottom"]) - max(item["top"], line["top"]))
                 min_h = min(item["height"], line["line_height"])
                 ratio = overlap / min_h if min_h > 0 else 0.0
-                if ratio > 0.4 and ratio > best_overlap:
+                center_distance = abs(item["center_y"] - line["anchor_center_y"])
+                same_baseline = center_distance <= 0.4 * min(
+                    item["height"], line["anchor_height"]
+                )
+                aligned_neighbor = any(
+                    (word["right"] <= item["left"] or item["right"] <= word["left"])
+                    and max(0.0, min(item["bottom"], word["bottom"])
+                            - max(item["top"], word["top"]))
+                    / min(item["height"], word["height"]) > 0.6
+                    for word in line["words"]
+                )
+                if ratio > 0.4 and (same_baseline or aligned_neighbor) and ratio > best_overlap:
                     best_overlap = ratio
                     best_line = line
 
@@ -117,6 +137,8 @@ class OCRService:
                     "top": item["top"],
                     "bottom": item["bottom"],
                     "line_height": item["height"],
+                    "anchor_center_y": item["center_y"],
+                    "anchor_height": item["height"],
                     "words": [item]
                 })
 
@@ -127,12 +149,25 @@ class OCRService:
         result_lines = []
         for line in lines:
             line["words"].sort(key=lambda w: w["left"])
-            line_text = " ".join(w["text"] for w in line["words"]).strip()
-            if line_text:
-                if line_text[-1] in ".!?:;":
-                    result_lines.append(line_text)
-                else:
-                    result_lines.append(line_text + ".")
+            groups = []
+            current = []
+            for word in line["words"]:
+                if current:
+                    previous = current[-1]
+                    gap = word["left"] - previous["right"]
+                    # A wide gap usually separates signs or columns, even at the same height.
+                    if gap > max(40.0, 0.75 * max(previous["height"], word["height"])):
+                        groups.append(current)
+                        current = []
+                current.append(word)
+            if current:
+                groups.append(current)
+            for group in groups:
+                line_text = " ".join(word["text"] for word in group).strip()
+                if line_text:
+                    result_lines.append(
+                        line_text if line_text[-1] in ".!?:;" else line_text + "."
+                    )
 
         return " ".join(result_lines)
 

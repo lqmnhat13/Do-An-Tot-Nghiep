@@ -75,6 +75,15 @@ class VQAService:
                     "Dùng fallback detection context."
                 )
 
+        unsafe_answer = self.safety_guardrail.check_answer(backend_text)
+        if unsafe_answer is not None:
+            return VQAResult(
+                request_id=request.request_id,
+                success=True,
+                answer=unsafe_answer,
+                latency_sec=time.monotonic() - started_at,
+            )
+
         return VQAResult(
             request_id=request.request_id,
             success=True,

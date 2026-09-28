@@ -37,6 +37,8 @@ class SystemCoordinator:
     - Đo đạc metrics P50/P95 và giám sát watchdog.
     """
 
+    MAX_ON_DEMAND_FRAME_AGE_MS = 1000.0
+
     def __init__(
         self,
         camera_manager: CameraManager,
@@ -314,6 +316,11 @@ class SystemCoordinator:
         """Kích hoạt tác vụ đọc chữ theo yêu cầu."""
         return self._start_on_demand("OCR", self._run_ocr_task)
 
+    @classmethod
+    def _is_fresh_on_demand_frame(cls, packet: FramePacket, now: float) -> bool:
+        age_ms = packet.age_ms(now)
+        return 0.0 <= age_ms <= cls.MAX_ON_DEMAND_FRAME_AGE_MS
+
     def _run_ocr_task(self, token: int) -> None:
         try:
             if not self._is_current_on_demand(token):
@@ -321,10 +328,12 @@ class SystemCoordinator:
             self.audio_coordinator.interrupt()
 
             packet = self.get_latest_frame()
-            if packet is None:
+            if packet is None or not self._is_fresh_on_demand_frame(
+                packet, time.monotonic()
+            ):
                 if not self._post_on_demand_audio(token, AudioTask(
                     priority=AudioPriority.ON_DEMAND,
-                    text="Chưa nhận được khung hình từ camera để đọc.",
+                    text="Chưa có ảnh camera mới để đọc chữ. Vui lòng thử lại.",
                     interruptible=True
                 )):
                     return
@@ -366,6 +375,16 @@ class SystemCoordinator:
         """Kích hoạt tác vụ hỏi đáp thị giác (VQA)."""
         return self._start_on_demand("VQA", self._run_vqa_task, (question,))
 
+    @staticmethod
+    def _fresh_vqa_assessments(packet: FramePacket, assessments: List[RiskAssessment],
+                               now: float) -> List[RiskAssessment]:
+        return [
+            assessment for assessment in assessments
+            if assessment.data_quality == DataQuality.VALID
+            and not assessment.is_expired(now)
+            and abs(packet.timestamp_mono - assessment.source_timestamp) <= 0.75
+        ]
+
     def _run_vqa_task(self, token: int, question: str) -> None:
         # Pipeline an toàn và HIGH_RISK vẫn hoạt động trong toàn bộ tác vụ.
         try:
@@ -375,10 +394,12 @@ class SystemCoordinator:
             self.audio_coordinator.interrupt()
 
             packet = self.get_latest_frame()
-            if packet is None:
+            if packet is None or not self._is_fresh_on_demand_frame(
+                packet, time.monotonic()
+            ):
                 if not self._post_on_demand_audio(token, AudioTask(
                     priority=AudioPriority.ON_DEMAND,
-                    text="Chưa có hình ảnh để trả lời.",
+                    text="Chưa có ảnh camera mới để trả lời. Vui lòng thử lại.",
                     interruptible=True
                 )):
                     return
@@ -396,7 +417,10 @@ class SystemCoordinator:
                 return
 
             with self._state_lock:
-                detected_names = [a.class_name for a in self._latest_assessments]
+                fresh_assessments = self._fresh_vqa_assessments(
+                    packet, self._latest_assessments, time.monotonic()
+                )
+                detected_names = [a.class_name for a in fresh_assessments]
                 spatial_objects = [
                     {
                         "name": a.class_name,
@@ -404,7 +428,7 @@ class SystemCoordinator:
                         "proximity": a.proximity_desc,
                         "risk_level": a.risk_level.value
                     }
-                    for a in self._latest_assessments
+                    for a in fresh_assessments
                 ]
 
             # 4. Thực thi mô hình VQA (BLIP Captioning + MarianMT + Spatial Grounding)
