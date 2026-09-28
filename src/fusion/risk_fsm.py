@@ -17,6 +17,7 @@ class TrackState:
     consecutive_high_count: int = 0
     consecutive_safe_count: int = 0
     last_alert_time: float = 0.0
+    last_alert_risk: Optional[RiskLevel] = None
     last_depth_frame_id: Optional[int] = None
     last_assessment: Optional[RiskAssessment] = None
 
@@ -26,6 +27,7 @@ class RiskFSM:
     Tuân thủ mục 4.3 của Kế hoạch:
     - Hysteresis cho tăng và hạ mức nguy cơ.
     - Không đếm lặp cùng một kết quả depth.
+    - Chỉ trích ROI và đánh giá nguy cơ khi data_quality == VALID.
     - Đường kích hoạt nhanh khi nguy cơ cao trực diện (instant_high_risk_in_center).
     - Cooldown chống phát lặp, nhưng cho phép vượt cooldown khi mức nguy cơ tăng cấp.
     """
@@ -35,15 +37,21 @@ class RiskFSM:
         class_filter: ClassFilter,
         spatial_zones: SpatialZones,
         roi_extractor: ROIExtractor,
+        depth_threshold_high: float = 0.75,
+        depth_threshold_medium: float = 0.45,
+        depth_threshold_low: float = 0.25,
         confirmations_to_escalate: int = 1,
         confirmations_to_deescalate: int = 3,
         instant_high_risk_in_center: bool = True,
-        cooldown_sec: float = 2.5,
+        cooldown_sec: float = 4.0,
         allow_escalation_override: bool = True
     ):
         self.class_filter = class_filter
         self.spatial_zones = spatial_zones
         self.roi_extractor = roi_extractor
+        self.depth_threshold_high = depth_threshold_high
+        self.depth_threshold_medium = depth_threshold_medium
+        self.depth_threshold_low = depth_threshold_low
         self.confirmations_to_escalate = confirmations_to_escalate
         self.confirmations_to_deescalate = confirmations_to_deescalate
         self.instant_high_risk_in_center = instant_high_risk_in_center
@@ -56,6 +64,7 @@ class RiskFSM:
         """
         Đánh giá nguy cơ cho toàn bộ đối tượng trong SynchronizedPair.
         Trả về danh sách RiskAssessment của các đối tượng trong khung hình.
+        Chỉ tính nguy cơ khi data_quality == VALID; nếu không trả UNDETERMINED và reset bộ đếm.
         """
         now = current_mono if current_mono is not None else time.monotonic()
         det_result = sync_pair.detection_result
@@ -77,30 +86,45 @@ class RiskFSM:
             # 1. Xác định hướng không gian
             direction = self.spatial_zones.determine_direction(det.bbox, orig_w)
 
-            # 2. Đánh giá độ gần từ ROI
-            proximity = 0.0
-            prox_desc = "chưa rõ"
-            reason = "Chưa có dữ liệu độ sâu"
+            # 2. Xử lý theo chất lượng dữ liệu: chỉ trích ROI khi VALID
+            if data_quality != DataQuality.VALID or depth_map is None:
+                proximity = 0.0
+                prox_desc = "chưa rõ"
+                if data_quality == DataQuality.UNAVAILABLE or depth_map is None:
+                    reason = "Chưa có dữ liệu độ sâu"
+                elif data_quality == DataQuality.STALE:
+                    reason = "Dữ liệu độ sâu hoặc nhận diện đã cũ"
+                elif data_quality == DataQuality.DEGRADED:
+                    reason = "Dữ liệu độ sâu bị suy giảm hoặc lệch thời gian"
+                else:
+                    reason = "Chất lượng dữ liệu không hợp lệ"
 
-            is_new_depth_sample = False
-            if depth_map is not None:
+                # Reset bộ đếm xác nhận và trạng thái phụ thuộc depth cho track này
+                state.consecutive_high_count = 0
+                state.consecutive_safe_count = 0
+                state.current_risk = RiskLevel.UNDETERMINED
+                state.last_depth_frame_id = None
+                final_risk = RiskLevel.UNDETERMINED
+
+            else:
+                is_new_depth_sample = False
                 if state.last_depth_frame_id != depth_map.frame_id:
                     is_new_depth_sample = True
                     state.last_depth_frame_id = depth_map.frame_id
 
                 proximity, prox_desc, reason = self.roi_extractor.extract_proximity(det.bbox, depth_map)
 
-            # 3. Đánh giá mức nguy cơ tức thời (instant candidate risk)
-            candidate_risk = self._evaluate_candidate_risk(
-                det=det,
-                direction=direction,
-                proximity=proximity,
-                data_quality=data_quality
-            )
+                # 3. Đánh giá mức nguy cơ tức thời (instant candidate risk)
+                candidate_risk = self._evaluate_candidate_risk(
+                    det=det,
+                    direction=direction,
+                    proximity=proximity,
+                    data_quality=data_quality
+                )
 
-            # 4. Áp dụng State Machine & Hysteresis
-            final_risk = self._apply_hysteresis(state, candidate_risk, direction, proximity, is_new_depth_sample)
-            state.current_risk = final_risk
+                # 4. Áp dụng State Machine & Hysteresis
+                final_risk = self._apply_hysteresis(state, candidate_risk, direction, proximity, is_new_depth_sample)
+                state.current_risk = final_risk
 
             # 5. Đóng gói kết quả RiskAssessment
             vi_name = self.class_filter.get_vietnamese_name(det.class_name)
@@ -142,18 +166,18 @@ class RiskFSM:
         if not self.class_filter.is_alert_candidate(det.class_name):
             return RiskLevel.NO_ALERT
 
-        # Đánh giá theo độ gần và hướng
-        if proximity >= 0.55:
+        # Đánh giá theo độ gần và hướng dựa trên các ngưỡng cấu hình
+        if proximity >= self.depth_threshold_high:
             if direction == Direction.CENTER:
                 return RiskLevel.HIGH
             else:
-                return RiskLevel.HIGH if proximity >= 0.75 else RiskLevel.MEDIUM
-        elif proximity >= 0.35:
+                return RiskLevel.HIGH if proximity >= min(1.0, self.depth_threshold_high + 0.05) else RiskLevel.MEDIUM
+        elif proximity >= self.depth_threshold_medium:
             if direction == Direction.CENTER:
                 return RiskLevel.MEDIUM
             else:
                 return RiskLevel.LOW
-        elif proximity >= 0.20:
+        elif proximity >= self.depth_threshold_low:
             return RiskLevel.LOW
         else:
             return RiskLevel.NO_ALERT
@@ -217,13 +241,14 @@ class RiskFSM:
         # Nếu đang trong cooldown
         if time_since_alert < self.cooldown_sec:
             # Cho phép ghi đè nếu nguy cơ tăng lên HIGH mà trước đó chưa cảnh báo HIGH
-            if self.allow_escalation_override and target_risk == RiskLevel.HIGH and state.current_risk != RiskLevel.HIGH:
+            if self.allow_escalation_override and target_risk == RiskLevel.HIGH and state.last_alert_risk != RiskLevel.HIGH:
                 return True
             return False
 
         return True
 
-    def mark_alert_triggered(self, track_id: int, current_mono: float) -> None:
+    def mark_alert_triggered(self, track_id: int, current_mono: float, risk_level: Optional[RiskLevel] = None) -> None:
         """Đánh dấu thời điểm đã phát cảnh báo cho track_id."""
         if track_id in self._tracks:
             self._tracks[track_id].last_alert_time = current_mono
+            self._tracks[track_id].last_alert_risk = risk_level

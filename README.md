@@ -19,12 +19,15 @@ Hệ thống AI đa phương thức chạy **hoàn toàn offline tại local tr�
    - Chạy trên Apple Silicon MPS.
    - Hợp đồng `DepthMap` chặt chẽ (`near_is_larger=True`, `valid_mask`, `preprocess_transform`).
    - `ROIExtractor` co viền (erosion 15%) để loại bỏ nhiễu phông nền, tính phân vị (percentile) độ gần của vật thể.
+   - Mô tả theo thang tương đối: "độ gần tương đối cao", "độ gần tương đối trung bình", "độ gần tương đối thấp", "ở xa", "chưa rõ"; loại bỏ hoàn toàn các chuỗi mét giả định (`~Xm`, `> 3m`).
 4. **Synchronizer & Risk Fusion FSM**:
    - Tách biệt hai trục: `DataQuality` (`VALID`, `DEGRADED`, `STALE`, `UNAVAILABLE`) và `RiskLevel` (`UNDETERMINED`, `NO_ALERT`, `LOW`, `MEDIUM`, `HIGH`).
+   - Chỉ cặp dữ liệu đạt `VALID` mới được trích ROI và đánh giá nguy cơ. Cặp `DEGRADED`, `STALE` hoặc `UNAVAILABLE` đều trả `UNDETERMINED`, reset bộ đếm và không tạo cảnh báo va chạm.
    - Phân chia 3 vùng không gian: Trái (35%), Giữa (30%), Phải (35%).
-   - Cơ chế Hysteresis: Nâng mức cảnh báo cần 2 frame độc lập (hoặc kích hoạt tức thì nếu vật cản rất gần ở giữa); hạ mức cần 3 frame an toàn liên tiếp.
-   - Cooldown 3.0s chống lặp, nhưng cho phép ghi đè (override) ngay lập tức khi nguy cơ tăng cấp.
-   - Không tự động kết luận môi trường an toàn khi dữ liệu bị trễ hoặc mất kết nối độ sâu.
+   - Cơ chế Hysteresis: Nâng mức cảnh báo cần xác nhận độc lập (hoặc kích hoạt tức thì nếu vật cản ở giữa); hạ mức cần 3 frame an toàn liên tiếp.
+   - Cooldown chống lặp, nhưng cho phép ghi đè (override) khi nguy cơ tăng cấp lên `HIGH`.
+   - Không tự động kết luận môi trường an toàn khi dữ liệu bị trễ, mất kết nối độ sâu hoặc suy giảm chất lượng.
+   - **Giới hạn an toàn**: Việc xử lý dữ liệu stale và loại bỏ số mét giả không chứng minh các ngưỡng FSM hoàn hảo về mặt vật lý, cũng như không bảo đảm phát hiện mọi chướng ngại vật trong môi trường thực tế.
 5. **Audio Coordinator & Native macOS TTS**:
    - Hàng đợi ưu tiên 4 cấp: `HIGH_RISK` (1), `SYSTEM_STATUS` (2), `ON_DEMAND` (3), `INFO` (4).
    - **Preemption**: Cảnh báo nguy cơ cao ngay lập tức ngắt tiếng TTS đang đọc dở trong < 50ms.

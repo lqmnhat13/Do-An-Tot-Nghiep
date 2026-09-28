@@ -11,6 +11,9 @@ class TestAudioPriority(unittest.TestCase):
         self.mock_engine.is_speaking.return_value = False
         self.coordinator = AudioCoordinator(tts_engine=self.mock_engine, dedup_window_sec=1.0)
 
+    def tearDown(self):
+        self.coordinator.stop()
+
     def test_priority_ordering(self):
         # Đẩy task INFO trước, sau đó đẩy task HIGH_RISK
         t_info = AudioTask(priority=AudioPriority.INFO, text="Bình thường")
@@ -38,6 +41,50 @@ class TestAudioPriority(unittest.TestCase):
         accepted = self.coordinator.post_task(expired_task)
         self.assertFalse(accepted)
         self.assertEqual(self.coordinator.dropped_expired_count, 1)
+
+    def test_drop_task_expired_during_chime_before_speak(self):
+        """Task hết hạn trong thời gian phát chime không được gọi speak()."""
+        now = time.monotonic()
+        # Task có hạn 0.05s
+        task = AudioTask(
+            priority=AudioPriority.HIGH_RISK,
+            text="Cảnh báo hết hạn lúc chime",
+            sound_file="assets/audio/alert_high.wav",
+            created_at=now,
+            expires_at=now + 0.04
+        )
+
+        def mock_wait(*args, **kwargs):
+            # Giả lập phát chime mất 0.06s khiến task bị quá hạn
+            time.sleep(0.06)
+
+        self.mock_engine.wait_until_done.side_effect = mock_wait
+        self.coordinator.start()
+
+        self.coordinator.post_task(task)
+        time.sleep(0.15)
+
+        self.mock_engine.play_sound.assert_called_with("assets/audio/alert_high.wav")
+        self.mock_engine.speak.assert_not_called()
+        self.assertEqual(self.coordinator.dropped_expired_count, 1)
+
+    def test_valid_task_speaks_after_chime(self):
+        """Task còn hạn hợp lệ sau chime phải được gọi speak()."""
+        now = time.monotonic()
+        task = AudioTask(
+            priority=AudioPriority.HIGH_RISK,
+            text="Cảnh báo hợp lệ",
+            sound_file="assets/audio/alert_high.wav",
+            created_at=now,
+            expires_at=now + 2.0 # Còn hạn 2s
+        )
+
+        self.coordinator.start()
+        self.coordinator.post_task(task)
+        time.sleep(0.1)
+
+        self.mock_engine.play_sound.assert_called_with("assets/audio/alert_high.wav")
+        self.mock_engine.speak.assert_called_with("Cảnh báo hợp lệ")
 
     def test_preemption(self):
         # Giả lập đang có task ON_DEMAND đang đọc dở

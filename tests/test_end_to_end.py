@@ -128,20 +128,32 @@ class TestEndToEnd(unittest.TestCase):
             risk_level=RiskLevel.MEDIUM,
             data_quality=DataQuality.VALID,
             relative_proximity=0.4,
-            proximity_desc="gần",
+            proximity_desc="độ gần tương đối trung bình",
             reason="test",
             source_timestamp=now,
             expires_at=now + 1.0
         )
-        high_risk = RiskAssessment(
+        stale_high_risk = RiskAssessment(
             track_id=2,
+            class_name="xe",
+            direction=Direction.CENTER,
+            risk_level=RiskLevel.HIGH,
+            data_quality=DataQuality.STALE,
+            relative_proximity=0.9,
+            proximity_desc="độ gần tương đối cao",
+            reason="test stale",
+            source_timestamp=now - 2.5,
+            expires_at=now + 1.0
+        )
+        valid_high_risk = RiskAssessment(
+            track_id=3,
             class_name="xe",
             direction=Direction.CENTER,
             risk_level=RiskLevel.HIGH,
             data_quality=DataQuality.VALID,
             relative_proximity=0.9,
-            proximity_desc="rất gần",
-            reason="test",
+            proximity_desc="độ gần tương đối cao",
+            reason="test valid",
             source_timestamp=now,
             expires_at=now + 1.0
         )
@@ -154,10 +166,16 @@ class TestEndToEnd(unittest.TestCase):
         mock_tts.is_speaking.return_value = True
         mock_tts.stop.reset_mock()
 
+        # MEDIUM không ngắt VQA
         coordinator._post_safety_alert([medium_risk])
         mock_tts.stop.assert_not_called()
 
-        coordinator._post_safety_alert([medium_risk, high_risk])
+        # HIGH từ depth STALE không được ngắt tiếng hay phát cảnh báo
+        coordinator._post_safety_alert([stale_high_risk])
+        mock_tts.stop.assert_not_called()
+
+        # HIGH hợp lệ ngắt tiếng ngay lập tức
+        coordinator._post_safety_alert([valid_high_risk])
         mock_tts.stop.assert_called_once()
         self.assertEqual(audio_coordinator.interrupted_count, 1)
         self.assertTrue(coordinator.is_on_demand_active())

@@ -6,9 +6,9 @@ from src.depth.depth_representation import DepthRepresentationHelper
 
 class ROIExtractor:
     """
-    Trích xuất độ sâu cho vùng quan tâm (ROI) của từng Bounding Box và ước lượng khoảng cách.
+    Trích xuất độ sâu cho vùng quan tâm (ROI) của từng Bounding Box và ước lượng độ gần tương đối.
     Tuân thủ mục 4.1: Co viền (erosion), loại trừ background, kiểm tra valid_mask,
-    tính percentile độ gần theo đúng chiều near_is_larger và ước tính khoảng cách theo mét.
+    tính percentile độ gần theo đúng chiều near_is_larger.
     """
 
     def __init__(
@@ -27,10 +27,10 @@ class ROIExtractor:
 
     def extract_proximity(self, bbox: BoundingBox, depth_map: DepthMap) -> Tuple[float, str, str]:
         """
-        Trích xuất mức độ gần tương đối và khoảng cách ước lượng cho một BoundingBox.
+        Trích xuất mức độ gần tương đối cho một BoundingBox.
         Trả về:
             relative_proximity: float [0.0, 1.0] (1.0 là gần nhất)
-            proximity_desc: str (ví dụ: "rất gần (~0.8m)", "gần (~1.5m)", "vừa phải (~2.5m)", "xa")
+            proximity_desc: str (ví dụ: "độ gần tương đối cao", "độ gần tương đối trung bình", "độ gần tương đối thấp", "ở xa", "chưa rõ")
             reason: str giải thích căn cứ tính toán
         """
         h_depth, w_depth = depth_map.shape
@@ -81,18 +81,15 @@ class ROIExtractor:
         score = float(np.percentile(roi_norm_vals, self.percentile))
         score = max(0.0, min(1.0, score))
 
-        # 5. Ước lượng khoảng cách mét xấp xỉ trong nhà
-        est_dist = max(0.5, min(4.5, 0.4 + (1.0 - score) * 3.6))
-
-        # 6. Phân nhóm mô tả độ gần kèm khoảng cách mét
+        # 5. Phân nhóm mô tả độ gần tương đối (không khẳng định khoảng cách mét tuyệt đối)
         if score >= 0.75:
-            desc = f"rất gần (~{est_dist:.1f}m)"
+            desc = "độ gần tương đối cao"
         elif score >= 0.50:
-            desc = f"gần (~{est_dist:.1f}m)"
+            desc = "độ gần tương đối trung bình"
         elif score >= 0.30:
-            desc = f"vừa phải (~{est_dist:.1f}m)"
+            desc = "độ gần tương đối thấp"
         else:
-            desc = f"ở xa (> 3m)"
+            desc = "ở xa"
 
-        reason = f"Độ gần {score*100:.0f}% (~{est_dist:.1f}m, {valid_pixels_count}px)"
+        reason = f"Độ gần tương đối {score*100:.0f}% ({valid_pixels_count}px)"
         return score, desc, reason

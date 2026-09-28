@@ -149,13 +149,18 @@ class AudioCoordinator:
                     self.tts_engine.play_sound(task.sound_file)
                     self.tts_engine.wait_until_done(timeout=0.5)
 
-                # Phát câu nói bằng TTS
-                if task.text:
-                    self.tts_engine.speak(task.text)
+                # Kiểm tra lại thời hạn hiệu lực sau khi phát chime, ngay trước khi TTS bắt đầu nói
+                now_after_chime = time.monotonic()
+                if task.is_expired(now_after_chime):
+                    self._dropped_expired_count += 1
+                else:
+                    # Phát câu nói bằng TTS
+                    if task.text:
+                        self.tts_engine.speak(task.text)
 
-                # Đợi cho tới khi nói xong hoặc bị ngắt
-                while self._running and self.tts_engine.is_speaking():
-                    time.sleep(0.02)
+                    # Đợi cho tới khi nói xong hoặc bị ngắt
+                    while self._running and self.tts_engine.is_speaking():
+                        time.sleep(0.02)
             finally:
                 with self._current_lock:
                     self._current_task = None

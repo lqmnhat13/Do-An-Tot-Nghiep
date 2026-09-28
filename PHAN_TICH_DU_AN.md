@@ -375,12 +375,12 @@ Giả sử detection của frame 120 hoàn thành trước depth của frame 120
 
 | Trạng thái | Ý nghĩa trong mã |
 |---|---|
-| `VALID` | Các mốc thời gian nằm trong ngưỡng được cấu hình |
-| `DEGRADED` | Detection/depth bị lệch hoặc có nguồn vượt ngưỡng tuổi thông thường |
-| `STALE` | Tuổi nguồn cũ hơn hoặc tuổi depth vượt 2 giây |
-| `UNAVAILABLE` | Chưa có depth để ghép |
+| `VALID` | Cả hai nguồn nằm trong giới hạn tuổi và lệch thời gian không quá `max_pair_skew_ms` |
+| `DEGRADED` | Detection và depth lệch thời gian vượt quá `max_pair_skew_ms` |
+| `STALE` | Detection, depth hoặc nguồn kết hợp vượt ngưỡng tuổi tối đa (`max_detection_age_ms`, `max_depth_age_ms`, `max_alert_age_ms`) |
+| `UNAVAILABLE` | Chưa có depth map nào để ghép cặp |
 
-`VALID` ở đây xác nhận điều kiện thời gian, không xác nhận model dự đoán đúng. Chất lượng thời gian được giữ riêng với `RiskLevel` để phân biệt “chưa đủ thông tin” và “mức nguy cơ thấp”. Tuy nhiên, FSM hiện vẫn có thể tính nguy cơ từ `STALE` hoặc `DEGRADED`; đây là giới hạn của chính sách xử lý hiện tại.
+`VALID` ở đây xác nhận điều kiện thời gian đồng bộ, không xác nhận model dự đoán đúng. Chất lượng dữ liệu được giữ riêng với `RiskLevel`: chỉ khi cặp dữ liệu đạt `VALID` thì FSM mới trích ROI và tính nguy cơ va chạm. Nếu chất lượng là `DEGRADED`, `STALE` hoặc `UNAVAILABLE`, hệ thống lập tức trả `UNDETERMINED`, mô tả "chưa rõ", và reset bộ đếm xác nhận, ngăn chặn việc phát cảnh báo va chạm từ dữ liệu cũ hoặc không đồng bộ.
 
 ### 7.5. Bước 5 — Lấy độ gần đại diện cho từng vật thể
 
@@ -390,7 +390,9 @@ Sau khi giới hạn ROI trong ảnh, chương trình yêu cầu tối thiểu 1
 
 Có thể hiểu phân vị 80 là một giá trị nghiêng về nhóm pixel gần hơn, nhưng ít phụ thuộc vào một pixel cực đại duy nhất. So với trung bình, cách này giúp phần gần của vật thể có ảnh hưởng rõ hơn. Nếu các giá trị depth hợp lệ gần như bằng nhau, helper hiện gán 0,5; đó là quy ước số học, không phải bằng chứng rằng toàn cảnh nằm ở một khoảng cách vừa phải.
 
-Mã còn dùng công thức `0.4 + (1 - score) * 3.6`, giới hạn trong khoảng 0,5–4,5 để tạo số mét minh họa. Công thức này là quy tắc tự đặt, chưa được hiệu chuẩn bằng khoảng cách thật. Vì thế các chuỗi như `~1.3m` hoặc `> 3m` không được xem là phép đo vật lý đáng tin cậy.
+Độ gần tương đối sau đó được phân nhóm thành các mô tả định tính tương đối: "độ gần tương đối cao" (score >= 0.75), "độ gần tương đối trung bình" (score >= 0.50), "độ gần tương đối thấp" (score >= 0.30) và "ở xa". Hệ thống đã xóa bỏ hoàn toàn công thức chuyển đổi sang mét cũng như các chuỗi mét giả định (`~Xm`, `> 3m`) vì Depth Anything V2 là mô hình relative depth chưa qua hiệu chuẩn khoảng cách vật lý thực tế.
+
+Cần lưu ý giới hạn: việc xử lý dữ liệu cũ (stale) và loại bỏ số mét giả giúp cảnh báo trung thực với năng lực mô hình, nhưng không đồng nghĩa với việc chứng minh các ngưỡng của FSM hoàn hảo về mặt vật lý, cũng như không bảo đảm phát hiện mọi chướng ngại vật hay đảm bảo an toàn tuyệt đối khi di chuyển.
 
 ### 7.6. Bước 6 — Xác định hướng và mức nguy cơ tức thời
 

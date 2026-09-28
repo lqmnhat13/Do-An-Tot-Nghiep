@@ -12,19 +12,25 @@ synchronizer:
 
 risk_fsm:
   # Ngưỡng relative depth (đã chuẩn hóa [0, 1], trong đó giá trị lớn hơn = gần hơn)
-  depth_threshold_high: 0.60
-  depth_threshold_medium: 0.40
-  depth_threshold_low: 0.20
+  # Tinh chỉnh tối ưu cho môi trường trong nhà / phòng nhỏ (indoor):
+  depth_threshold_high: 0.75
+  depth_threshold_medium: 0.45
+  depth_threshold_low: 0.25
 
   # Hysteresis: số frame xác nhận để chuyển trạng thái (1 frame phản hồi tức thì cho người mù)
   confirmations_to_escalate: 1
   confirmations_to_deescalate: 3
-  instant_high_risk_in_center: true # Kích hoạt nhanh ngay khi vật cản ở vùng giữa
+  instant_high_risk_in_center: true # Kích hoạt nhanh ngay khi vật cản >= depth_threshold_high ở vùng giữa
 
   # Cooldown tránh lặp lại cảnh báo cùng một đối tượng (giây)
-  track_alert_cooldown_sec: 2.5
+  track_alert_cooldown_sec: 4.0
   # Cho phép ghi đè cooldown nếu mức rủi ro tăng cấp (ví dụ từ MEDIUM lên HIGH)
   allow_escalation_override: true
+
+alert_aggregator:
+  # Khoảng nghỉ tối thiểu giữa hai cảnh báo bất kỳ (chống dồn dập, tạo khoảng thở cho người dùng)
+  global_alert_interval_sec: 3.5
+  alert_lifetime_sec: 3.0
 
 labels_vi:
   person: "người"

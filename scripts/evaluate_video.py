@@ -12,6 +12,7 @@ import sys
 import time
 import json
 import numpy as np
+import yaml
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if PROJECT_ROOT not in sys.path:
@@ -41,16 +42,60 @@ def main():
 
     print(f"[EVALUATION] Bắt đầu chạy đánh giá trên nguồn '{args.video}' trong {args.duration}s...")
 
+    fusion_cfg_path = os.path.join(PROJECT_ROOT, "configs", "fusion_rules.yaml")
+    fusion_cfg = {}
+    if os.path.exists(fusion_cfg_path):
+        with open(fusion_cfg_path, "r", encoding="utf-8") as f:
+            fusion_cfg = yaml.safe_load(f) or {}
+
+    sync_cfg = fusion_cfg.get("synchronizer", {})
+    max_pair_skew_ms = float(sync_cfg.get("max_pair_skew_ms", 600.0))
+    max_detection_age_ms = float(sync_cfg.get("max_detection_age_ms", 1000.0))
+    max_depth_age_ms = float(sync_cfg.get("max_depth_age_ms", 1200.0))
+    max_alert_age_ms = float(sync_cfg.get("max_alert_age_ms", 1500.0))
+
+    spatial_cfg = fusion_cfg.get("spatial", {})
+    spatial_zones = SpatialZones(
+        left_ratio=spatial_cfg.get("left_ratio", 0.35),
+        center_ratio=spatial_cfg.get("center_ratio", 0.30),
+        right_ratio=spatial_cfg.get("right_ratio", 0.35)
+    )
+
     camera = CameraManager(source=args.video, target_fps=30.0)
-    class_filter = ClassFilter()
+    class_filter = ClassFilter(custom_vi_names=fusion_cfg.get("labels_vi"))
     detector = YoloDetector(device=args.device, class_filter=class_filter)
     tracker = ByteTrackerAdapter()
     depth_estimator = DepthEstimator(device=args.device)
     roi_extractor = ROIExtractor()
-    spatial_zones = SpatialZones()
-    synchronizer = Synchronizer()
-    risk_fsm = RiskFSM(class_filter, spatial_zones, roi_extractor)
-    alert_aggregator = AlertAggregator(risk_fsm)
+    synchronizer = Synchronizer(
+        max_pair_skew_ms=max_pair_skew_ms,
+        max_detection_age_ms=max_detection_age_ms,
+        max_depth_age_ms=max_depth_age_ms,
+        max_alert_age_ms=max_alert_age_ms
+    )
+    fsm_cfg = fusion_cfg.get("risk_fsm", {})
+    risk_fsm = RiskFSM(
+        class_filter=class_filter,
+        spatial_zones=spatial_zones,
+        roi_extractor=roi_extractor,
+        depth_threshold_high=float(fsm_cfg.get("depth_threshold_high", 0.75)),
+        depth_threshold_medium=float(fsm_cfg.get("depth_threshold_medium", 0.45)),
+        depth_threshold_low=float(fsm_cfg.get("depth_threshold_low", 0.25)),
+        confirmations_to_escalate=int(fsm_cfg.get("confirmations_to_escalate", 2)),
+        confirmations_to_deescalate=int(fsm_cfg.get("confirmations_to_deescalate", 3)),
+        instant_high_risk_in_center=bool(fsm_cfg.get("instant_high_risk_in_center", True)),
+        cooldown_sec=float(fsm_cfg.get("track_alert_cooldown_sec", 4.0)),
+        allow_escalation_override=bool(fsm_cfg.get("allow_escalation_override", True))
+    )
+    agg_cfg = fusion_cfg.get("alert_aggregator", {})
+    alert_aggregator = AlertAggregator(
+        risk_fsm=risk_fsm,
+        alert_lifetime_sec=float(agg_cfg.get("alert_lifetime_sec", fsm_cfg.get("alert_lifetime_sec", 3.0))),
+        global_alert_interval_sec=float(agg_cfg.get("global_alert_interval_sec", 3.5)),
+        max_detection_age_ms=max_detection_age_ms,
+        max_depth_age_ms=max_depth_age_ms,
+        max_alert_age_ms=max_alert_age_ms
+    )
     tts_engine = TTSEngine()
     audio_coordinator = AudioCoordinator(tts_engine=tts_engine)
 

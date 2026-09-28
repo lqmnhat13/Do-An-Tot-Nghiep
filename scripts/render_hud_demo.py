@@ -122,9 +122,9 @@ def main():
         latency_ms=13.4
     )
     assess_obs = [
-        RiskAssessment(1, "ghế sofa", Direction.LEFT, RiskLevel.LOW, DataQuality.VALID, 0.35, "xa", "xa", now, now + 1.0),
-        RiskAssessment(2, "bàn ăn", Direction.CENTER, RiskLevel.LOW, DataQuality.VALID, 0.40, "vừa phải", "vừa phải", now, now + 1.0),
-        RiskAssessment(3, "người", Direction.RIGHT, RiskLevel.LOW, DataQuality.VALID, 0.30, "xa", "xa", now, now + 1.0)
+        RiskAssessment(1, "ghế sofa", Direction.LEFT, RiskLevel.LOW, DataQuality.VALID, 0.35, "độ gần tương đối thấp", "vùng bên", now, now + 1.0),
+        RiskAssessment(2, "bàn ăn", Direction.CENTER, RiskLevel.LOW, DataQuality.VALID, 0.40, "độ gần tương đối trung bình", "vùng giữa", now, now + 1.0),
+        RiskAssessment(3, "người", Direction.RIGHT, RiskLevel.LOW, DataQuality.VALID, 0.30, "ở xa", "vùng bên", now, now + 1.0)
     ]
     snap_obs = {
         "packet": packet,
@@ -149,7 +149,7 @@ def main():
         latency_ms=13.7
     )
     assess_med = [
-        RiskAssessment(4, "ghế", Direction.CENTER, RiskLevel.MEDIUM, DataQuality.VALID, 0.58, "gần", "vùng giữa", now, now + 1.0)
+        RiskAssessment(4, "ghế", Direction.CENTER, RiskLevel.MEDIUM, DataQuality.VALID, 0.58, "độ gần tương đối trung bình", "vùng giữa", now, now + 1.0)
     ]
     snap_med = {
         "packet": packet,
@@ -174,7 +174,7 @@ def main():
         latency_ms=14.1
     )
     assess_high = [
-        RiskAssessment(5, "người", Direction.CENTER, RiskLevel.HIGH, DataQuality.VALID, 0.82, "rất gần", "khoảng cách nguy cấp", now, now + 1.0)
+        RiskAssessment(5, "người", Direction.CENTER, RiskLevel.HIGH, DataQuality.VALID, 0.82, "độ gần tương đối cao", "độ gần cao ở giữa", now, now + 1.0)
     ]
     snap_high = {
         "packet": packet,

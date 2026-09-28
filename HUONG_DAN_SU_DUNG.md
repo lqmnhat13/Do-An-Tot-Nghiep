@@ -417,9 +417,9 @@ Vạch chia biểu thị trái, giữa, phải của **khung hình camera**. N�
 | `CHU Y` | Thuật toán đang đánh giá ở mức MEDIUM |
 | `NGUY CO THAP` | Nhãn giao diện cho nhóm còn lại trong logic vẽ bbox hiện tại; không nên dùng nó để suy ra dữ liệu luôn hợp lệ |
 
-Trong contract còn có `UNDETERMINED` và `NO_ALERT`; HUD hiện chưa hiển thị tách biệt mọi trạng thái này trên nhãn bbox. Vì vậy phải đọc kết hợp trạng thái, depth và log, không chỉ dựa vào màu hoặc nhãn thấp.
+Trong contract còn có `UNDETERMINED` và `NO_ALERT`; HUD hiển thị nhãn theo mức nguy cơ và độ gần tương đối. Cảnh báo và HUD chỉ dùng các mức độ gần tương đối ("độ gần tương đối cao", "độ gần tương đối trung bình", "độ gần tương đối thấp", "ở xa", hoặc "chưa rõ"), tuyệt đối không suy đoán hoặc hiển thị khoảng cách theo mét (`~Xm`, `> 3m`) từ Depth Anything V2 relative depth.
 
-Các chuỗi như `~1.3m` được tạo từ độ gần tương đối, chưa phải số đo khoảng cách vật lý đã hiệu chuẩn. Bản đồ depth thu nhỏ giúp quan sát kết quả mô hình; màu sắc không cho biết tự động nơi nào có thể đi qua.
+Bản đồ depth thu nhỏ giúp quan sát tương quan nông/sâu của mô hình; màu sắc và độ gần tương đối không cho biết tự động nơi nào có thể đi qua và không bảo đảm phát hiện mọi vật cản trong thực tế. Khi dữ liệu depth bị suy giảm (`DEGRADED`) hoặc quá cũ (`STALE`), hệ thống chuyển sang trạng thái không xác định (`UNDETERMINED`) và từ chối phát cảnh báo va chạm dựa trên dữ liệu không hợp lệ.
 
 <a id="cau-hinh"></a>
 ## 9. Thay đổi cấu hình
@@ -740,8 +740,11 @@ Không cần tạo tình huống va chạm thật để chứng minh cảnh báo
 | Chuẩn bị MLX riêng | `python scripts/download_models.py --mlx-vlm` |
 | Kiểm tra máy/camera/TTS | `python scripts/inspect_environment.py` |
 | Mở ứng dụng | `python app.py --source 0` |
-| Đọc chữ | `SPACE` trong cửa sổ |
-| Mô tả cảnh | `Q` trong cửa sổ |
+| Thử riêng VQA qua camera (MLX) | `python scripts/run_vqa_camera.py --camera 0` |
+| Thử riêng OCR qua camera (EasyOCR) | `python scripts/run_ocr_camera.py --camera 0` |
+| Thử riêng OCR với file ảnh | `python scripts/run_ocr_camera.py --image /duong/dan/anh.jpg` |
+| Đọc chữ trong ứng dụng chính | `SPACE` trong cửa sổ |
+| Mô tả cảnh trong ứng dụng chính | `Q` trong cửa sổ |
 | Dừng lời/yêu cầu hiện tại | `S` trong cửa sổ |
 | Thoát | `ESC` trong cửa sổ; `Ctrl+C` tại Terminal khi cần |
 | Không mở cửa sổ trong 30 giây | `python app.py --no-gui --duration 30` |

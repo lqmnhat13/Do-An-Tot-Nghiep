@@ -37,7 +37,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--height", type=int, default=None, help="Chiều cao camera")
     parser.add_argument("--device", choices=("mps", "cpu"), default=None)
     parser.add_argument("--backend", default=None,
-                        help="VQA backend: legacy_caption | disabled | mlx_vlm")
+                        help="VQA backend: mlx_vlm | legacy_caption | disabled")
     parser.add_argument(
         "--question",
         default="Mô tả khung cảnh phía trước.",
@@ -144,7 +144,15 @@ def open_camera(index: int, width: int, height: int):
         capture = cv2.VideoCapture(index)
     if not capture.isOpened():
         capture.release()
-        raise RuntimeError(f"Không thể mở camera index {index}")
+        if index != 0:
+            print(f"[THÔNG BÁO] Camera index {index} không tồn tại (hệ thống chỉ có 1 camera). Tự động chuyển về camera index 0...")
+            capture = cv2.VideoCapture(0, cv2.CAP_AVFOUNDATION)
+            if not capture.isOpened():
+                capture.release()
+                capture = cv2.VideoCapture(0)
+        if not capture.isOpened():
+            capture.release()
+            raise RuntimeError(f"Không thể mở camera index {index} (hoặc camera 0). Hãy kiểm tra kết nối camera và quyền truy cập trong System Settings.")
     capture.set(cv2.CAP_PROP_FRAME_WIDTH, width)
     capture.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
     return capture

@@ -104,23 +104,40 @@ def main():
         right_ratio=spatial_cfg.get("right_ratio", 0.35)
     )
     sync_cfg = fusion_cfg.get("synchronizer", {})
+    max_pair_skew_ms = float(sync_cfg.get("max_pair_skew_ms", 600.0))
+    max_detection_age_ms = float(sync_cfg.get("max_detection_age_ms", 1000.0))
+    max_depth_age_ms = float(sync_cfg.get("max_depth_age_ms", 1200.0))
+    max_alert_age_ms = float(sync_cfg.get("max_alert_age_ms", 1500.0))
+
     synchronizer = Synchronizer(
-        max_pair_skew_ms=sync_cfg.get("max_pair_skew_ms", 120.0),
-        max_detection_age_ms=sync_cfg.get("max_detection_age_ms", 300.0),
-        max_depth_age_ms=sync_cfg.get("max_depth_age_ms", 350.0)
+        max_pair_skew_ms=max_pair_skew_ms,
+        max_detection_age_ms=max_detection_age_ms,
+        max_depth_age_ms=max_depth_age_ms,
+        max_alert_age_ms=max_alert_age_ms
     )
     fsm_cfg = fusion_cfg.get("risk_fsm", {})
     risk_fsm = RiskFSM(
         class_filter=class_filter,
         spatial_zones=spatial_zones,
         roi_extractor=roi_extractor,
-        confirmations_to_escalate=fsm_cfg.get("confirmations_to_escalate", 2),
-        confirmations_to_deescalate=fsm_cfg.get("confirmations_to_deescalate", 3),
-        instant_high_risk_in_center=fsm_cfg.get("instant_high_risk_in_center", True),
-        cooldown_sec=fsm_cfg.get("track_alert_cooldown_sec", 3.0),
-        allow_escalation_override=fsm_cfg.get("allow_escalation_override", True)
+        depth_threshold_high=float(fsm_cfg.get("depth_threshold_high", 0.75)),
+        depth_threshold_medium=float(fsm_cfg.get("depth_threshold_medium", 0.45)),
+        depth_threshold_low=float(fsm_cfg.get("depth_threshold_low", 0.25)),
+        confirmations_to_escalate=int(fsm_cfg.get("confirmations_to_escalate", 1)),
+        confirmations_to_deescalate=int(fsm_cfg.get("confirmations_to_deescalate", 3)),
+        instant_high_risk_in_center=bool(fsm_cfg.get("instant_high_risk_in_center", True)),
+        cooldown_sec=float(fsm_cfg.get("track_alert_cooldown_sec", 4.0)),
+        allow_escalation_override=bool(fsm_cfg.get("allow_escalation_override", True))
     )
-    alert_aggregator = AlertAggregator(risk_fsm=risk_fsm)
+    agg_cfg = fusion_cfg.get("alert_aggregator", {})
+    alert_aggregator = AlertAggregator(
+        risk_fsm=risk_fsm,
+        alert_lifetime_sec=float(agg_cfg.get("alert_lifetime_sec", fsm_cfg.get("alert_lifetime_sec", 3.0))),
+        global_alert_interval_sec=float(agg_cfg.get("global_alert_interval_sec", 3.5)),
+        max_detection_age_ms=max_detection_age_ms,
+        max_depth_age_ms=max_depth_age_ms,
+        max_alert_age_ms=max_alert_age_ms
+    )
 
     # 5. Audio Coordinator
     audio_cfg = app_cfg.get("audio", {})
