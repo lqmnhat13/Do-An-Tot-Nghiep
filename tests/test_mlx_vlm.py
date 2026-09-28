@@ -79,8 +79,8 @@ class TestMLXVLM(unittest.TestCase):
         image = self.generate.call_args.kwargs["image"][0]
         self.assertEqual(image.size, (512, 256))
         self.assertEqual(image.getpixel((0, 0)), (30, 20, 10))
-        self.assertEqual(self.generate.call_args.kwargs["max_tokens"], 64)
-        self.assertEqual(self.generate.call_args.kwargs["eos_tokens"], [".", "!", "?"])
+        self.assertEqual(self.generate.call_args.kwargs["max_tokens"], 128)
+        self.assertNotIn("eos_tokens", self.generate.call_args.kwargs)
         np.testing.assert_array_equal(self.frame, original)
 
     def test_configured_smaller_limits_and_string_output(self):
@@ -105,29 +105,33 @@ class TestMLXVLM(unittest.TestCase):
         self.assertEqual([m["role"] for m in messages], ["system", "user"])
         self.assertEqual(messages[1]["content"], question)
         instructions = messages[0]["content"]
-        for requirement in ("tiếng Việt", "đúng một câu", "tối đa 20 từ", "nhìn thấy trực tiếp",
+        for requirement in ("tiếng Việt", "một hoặc hai câu", "tối đa 40 từ", "nhìn thấy trực tiếp",
                             "cảm xúc", "ý định", "nghề nghiệp", "danh tính",
-                            "tối đa ba đối tượng", "ngoại hình hoặc hành động",
+                            "tối đa ba đối tượng", "không bịa thêm",
                             "Không xác định rõ từ ảnh."):
             self.assertIn(requirement, instructions)
         self.assertEqual(self.template.call_args.kwargs["num_images"], 1)
         self.assertEqual(self.generate.call_args.kwargs["temperature"], 0.0)
-        self.assertEqual(self.generate.call_args.kwargs["max_tokens"], 64)
-        self.assertEqual(self.generate.call_args.kwargs["eos_tokens"], [".", "!", "?"])
+        self.assertEqual(self.generate.call_args.kwargs["max_tokens"], 128)
+        self.assertNotIn("eos_tokens", self.generate.call_args.kwargs)
 
-    def test_multiple_sentences_and_over_word_budget_fallback_without_cutting(self):
+    def test_extra_sentences_and_over_word_budget_fallback_without_cutting(self):
         service = self.service()
-        for text in ("Có một chiếc ghế. Nó màu đỏ.", "Có ghế! Có bàn?",
-                     "Có ghế.Có bàn.", "Có ghế.\nCó bàn.",
-                     " ".join(["vật"] * 26) + "."):
+        for text in ("Có ghế. Có bàn. Có cửa.", "Có ghế.Có bàn.",
+                     "Có ghế.\nCó bàn.", " ".join(["vật"] * 46) + "."):
             with self.subTest(text=text):
                 self.generate.return_value = types.SimpleNamespace(text=text, finish_reason="stop")
                 before = self.generate.call_count
                 self.assert_fallback(service)
                 self.assertEqual(self.generate.call_count, before + 1)
 
-    def test_one_sentence_at_word_limit_is_accepted_unchanged(self):
-        text = " ".join(["vật"] * 25) + "."
+    def test_two_sentences_at_word_limit_are_accepted_unchanged(self):
+        text = " ".join(["vật"] * 20) + ". " + " ".join(["đồ"] * 25) + "."
+        self.generate.return_value = types.SimpleNamespace(text=text, finish_reason="stop")
+        self.assertEqual(self.service().answer(self.request()).answer, "Khung cảnh: " + text)
+
+    def test_second_grounded_sentence_is_preserved(self):
+        text = "Có một người ngồi trên ghế. Người đó đang cầm một cuốn sách."
         self.generate.return_value = types.SimpleNamespace(text=text, finish_reason="stop")
         self.assertEqual(self.service().answer(self.request()).answer, "Khung cảnh: " + text)
 
@@ -139,8 +143,8 @@ class TestMLXVLM(unittest.TestCase):
             # Do not keep a prefix whose missing tail could qualify the claim.
             types.SimpleNamespace(text="Có một chiếc ghế. Tuy nhiên", finish_reason="length"),
             types.SimpleNamespace(text="Có một chiếc ghế.", finish_reason="length"),
-            types.SimpleNamespace(text="Có một chiếc ghế.", generation_tokens=64),
-            types.SimpleNamespace(text="Có một chiếc ghế.", generation_tokens=65,
+            types.SimpleNamespace(text="Có một chiếc ghế.", generation_tokens=128),
+            types.SimpleNamespace(text="Có một chiếc ghế.", generation_tokens=129,
                                   finish_reason=None),
             types.SimpleNamespace(text="Chiếc ghế có màu", finish_reason="stop",
                                   generation_tokens=12),

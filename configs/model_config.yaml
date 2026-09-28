@@ -81,4 +81,4 @@ vqa:
     hf_repo_id: "mlx-community/Qwen2.5-VL-3B-Instruct-4bit"
     model_path: "models/weights/qwen2_5_vl_3b_4bit" # tương đối từ project root
     max_image_size: 512 # cạnh dài nhất, giữ tỉ lệ và toàn bộ khung hình; cap 512
-    max_tokens: 64 # cap 64 để câu trả lời ngắn và giảm độ trễ trên M1 16GB
+    max_tokens: 128 # cap 128; cho phép 1-2 câu nhưng vẫn giới hạn độ trễ trên M1 16GB

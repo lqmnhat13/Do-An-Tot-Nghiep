@@ -1,5 +1,6 @@
 import threading
 import json
+import re
 from pathlib import Path
 from abc import ABC, abstractmethod
 from typing import Optional
@@ -147,17 +148,19 @@ class MLXVLMBackend(VQABackend):
 
     SYSTEM_PROMPT = (
         "Bạn là mô-đun trả lời câu hỏi thị giác cho người khiếm thị.\n"
-        "Chỉ trả lời thông tin được hỏi và nhìn thấy trực tiếp trong ảnh.\n"
+        "Trả lời đúng trọng tâm câu hỏi bằng những chi tiết nhìn thấy trực tiếp trong ảnh.\n"
         "Không suy đoán cảm xúc, ý định, nghề nghiệp, danh tính hoặc đặc điểm không liên quan.\n"
-        "Nếu câu hỏi là ‘có gì’, chỉ liệt kê tối đa ba đối tượng nổi bật; không mô tả "
-        "ngoại hình hoặc hành động của người nếu không được hỏi.\n"
+        "Nếu được hỏi mô tả khung cảnh, nêu đối tượng nổi bật rồi bổ sung vị trí, "
+        "hành động hoặc chi tiết dễ nhận thấy nếu ảnh thực sự cho thấy; không bịa thêm để viết dài.\n"
+        "Nếu câu hỏi là ‘có gì’, ưu tiên tối đa ba đối tượng nổi bật.\n"
         "Nếu không chắc chắn, trả lời ‘Không xác định rõ từ ảnh.’\n"
-        "Đầu ra phải là đúng một câu tiếng Việt, tối đa 20 từ và kết thúc bằng dấu chấm.\n"
-        "Không mở đầu dài dòng, không giải thích và không lặp lại câu hỏi."
+        "Trả lời bằng tiếng Việt, một hoặc hai câu, tối đa 40 từ; "
+        "chỉ dùng câu thứ hai khi có thêm thông tin hữu ích và chắc chắn.\n"
+        "Kết thúc bằng dấu câu. Không mở đầu dài dòng và không lặp lại câu hỏi."
     )
 
     def __init__(self, model_path: str, max_image_size: int = 512,
-                 max_tokens: int = 64):
+                 max_tokens: int = 128):
         self.model_path = model_path
         self.max_image_size = max_image_size
         self.max_tokens = max_tokens
@@ -215,7 +218,7 @@ class MLXVLMBackend(VQABackend):
         with self._lock:
             # Hard caps still apply when users increase YAML values.
             size = max(28, min(int(self.max_image_size), 512))
-            tokens = max(1, min(int(self.max_tokens), 64))
+            tokens = max(1, min(int(self.max_tokens), 128))
             self._load_models()
             rgb = image[:, :, ::-1] if image.ndim == 3 else image
             pil_image = Image.fromarray(rgb).convert("RGB")
@@ -230,7 +233,6 @@ class MLXVLMBackend(VQABackend):
             output = self._generate(
                 self._model, self._processor, prompt, image=[pil_image],
                 max_tokens=tokens, temperature=0.0, verbose=False,
-                eos_tokens=[".", "!", "?"]
             )
             return self._validated_answer(output, tokens)
 
@@ -258,13 +260,12 @@ class MLXVLMBackend(VQABackend):
         ending = text.rstrip('\"\u201d\u2019\u0027)')
         if not ending or not ending.endswith((".", "!", "?")) or ending.endswith("..."):
             raise RuntimeError("MLX-VLM trả lời rỗng hoặc chưa có dấu kết câu rõ ràng")
-        # Conservative sentence boundary check, without rewriting output.
-        # Abbreviations/decimal points may also be rejected; no NLP dependency.
-        if sum(ending.count(mark) for mark in ".!?") != 1 or "…" in ending:
-            raise RuntimeError("MLX-VLM trả lời không đúng một câu")
+        # Require one or two complete sentences; do not rewrite partial output.
+        if not re.fullmatch(r"[^.!?…\n]+[.!?](?:[ \t]+[^.!?…\n]+[.!?])?", ending):
+            raise RuntimeError("MLX-VLM trả lời không đúng một hoặc hai câu")
         # Vietnamese word budget is measured by whitespace-separated units.
-        if len(text.split()) > 25:
-            raise RuntimeError("MLX-VLM trả lời quá 25 từ")
+        if len(text.split()) > 45:
+            raise RuntimeError("MLX-VLM trả lời quá 45 từ")
         return text
 
 
@@ -285,7 +286,7 @@ def create_vqa_backend(
         return MLXVLMBackend(
             model_path=config.get("model_path", ""),
             max_image_size=config.get("max_image_size", 512),
-            max_tokens=config.get("max_tokens", 64),
+            max_tokens=config.get("max_tokens", 128),
         )
     if normalized in ("legacy_caption", "blip_vlm"):
         return LegacyCaptionBackend(
