@@ -216,11 +216,12 @@ class TestFusion(unittest.TestCase):
         """Khi dữ liệu stale đến, bộ đếm hysteresis bị reset; khi depth phục hồi, xác nhận bắt đầu lại từ đầu."""
         now = time.monotonic()
         vals_high = np.ones((480, 640), dtype=np.float32) * 1.0 # Nền ở xa
-        vals_high[100:300, 10:100] = 10.0 # Vật thể độ gần tương đối cao (norm = 1.0 >= 0.75)
+        vals_high[200:400, 280:360] = 10.0 # Vật thể độ gần tương đối cao (norm = 1.0 >= 0.75)
         mask = np.ones((480, 640), dtype=bool)
 
-        # 1. Vật thể ở bên TRÁI (cần 2 frame xác nhận để lên HIGH theo confirmations_to_escalate=2)
-        det_left = Detection(class_name="chair", confidence=0.9, bbox=BoundingBox(10, 100, 100, 300), track_id=10)
+        # 1. Vật chắn hành lang, tắt kích hoạt nhanh để kiểm tra 2 mẫu xác nhận.
+        self.fsm.instant_high_risk_in_center = False
+        det_left = Detection(class_name="chair", confidence=0.9, bbox=BoundingBox(280, 200, 360, 400), track_id=10)
         dm_fresh_1 = DepthMap(
             representation=DepthRepresentation.RELATIVE_DEPTH,
             unit="relative",

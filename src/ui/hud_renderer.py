@@ -3,6 +3,7 @@ from typing import Dict, Any, Optional, Tuple, List
 import cv2
 import numpy as np
 
+from src.fusion.walking_corridor import WalkingCorridor
 from src.contracts.risk import RiskLevel, Direction, RiskAssessment
 
 # Bảng màu chuẩn BGR cho Dark Translucent HUD
@@ -56,7 +57,7 @@ class HUDRenderer:
     - Bố cục gọn gàng, không che khuất camera, thẩm mỹ cao.
     - Hiển thị mức nguy cơ bằng cả màu sắc và chữ viết.
     - Tuyệt đối không dùng từ 'AN TOAN' cho LOW_RISK (chỉ dùng 'NGUY CO THAP').
-    - Vùng trung tâm mang nhãn 'TRUNG TAM', không dùng 'LOI DI'.
+    - Hình thang 'VUNG XET VAT CAN' khớp hình học của bộ đánh giá nguy cơ.
     - Bounding Box và Banner luôn được clamp trong khung hình, không che mini depth map.
     - Hỗ trợ letterbox bảo toàn tỷ lệ khung hình camera gốc.
     """
@@ -65,11 +66,13 @@ class HUDRenderer:
         self,
         target_width: int = 800,
         target_height: int = 600,
-        config: Optional[Dict[str, Any]] = None
+        config: Optional[Dict[str, Any]] = None,
+        walking_corridor: Optional[WalkingCorridor] = None
     ):
         self.target_width = max(320, int(target_width))
         self.target_height = max(240, int(target_height))
         self.config = config or {}
+        self.walking_corridor = walking_corridor or WalkingCorridor()
 
         self._cached_depth_id: int = -1
         self._cached_depth_mini: Optional[np.ndarray] = None
@@ -173,7 +176,7 @@ class HUDRenderer:
         # 1. Letterbox ảnh camera để bảo toàn tỷ lệ khung hình
         canvas, scale, pad_x, pad_y, scaled_w, scaled_h = self._apply_letterbox(packet.image, w, h)
 
-        # 2. Phân vùng không gian (Spatial Guidance)
+        # 2. Hành lang xét vật cản (cùng hình học với RiskFSM)
         if self.config.get("show_spatial_guides", True):
             self._draw_spatial_guides(canvas, pad_x, pad_y, scaled_w, scaled_h)
 
@@ -264,28 +267,21 @@ class HUDRenderer:
         scaled_w: int,
         scaled_h: int
     ) -> None:
-        """B. Spatial Guidance: Đường phân chia và nhãn TRAI - TRUNG TAM - PHAI."""
-        x_left = pad_x + int(round(scaled_w * 0.35))
-        x_right = pad_x + int(round(scaled_w * 0.65))
-        y_top = 45
-        y_bottom = canvas.shape[0] - 42
-
-        # Đường kẻ phân chia vùng mờ tinh tế
-        line_color = (65, 55, 45)
-        cv2.line(canvas, (x_left, y_top), (x_left, y_bottom), line_color, 1, cv2.LINE_AA)
-        cv2.line(canvas, (x_right, y_top), (x_right, y_bottom), line_color, 1, cv2.LINE_AA)
-
-        # Nhãn khu vực ở đáy (Tuyệt đối không dùng 'LOI DI')
-        label_y = y_bottom - 6
-        font_scale = 0.40
-
-        left_cx = pad_x + int(round(scaled_w * 0.175))
-        center_cx = pad_x + int(round(scaled_w * 0.50))
-        right_cx = pad_x + int(round(scaled_w * 0.825))
-
-        for text, cx in [("TRAI", left_cx), ("TRUNG TAM", center_cx), ("PHAI", right_cx)]:
-            (tw, _), _ = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, font_scale, 1)
-            cv2.putText(canvas, text, (cx - tw // 2, label_y), cv2.FONT_HERSHEY_SIMPLEX, font_scale, COLOR_TEXT_MUTED, 1, cv2.LINE_AA)
+        """Render the same corridor geometry in letterboxed image coordinates."""
+        polygon = self.walking_corridor.polygon(scaled_w, scaled_h)
+        if not polygon:
+            return
+        points = np.array([(round(x + pad_x), round(y + pad_y))
+                           for x, y in polygon], dtype=np.int32)
+        points[:, 0] = np.clip(points[:, 0], pad_x, pad_x + scaled_w - 1)
+        points[:, 1] = np.clip(points[:, 1], pad_y, pad_y + scaled_h - 1)
+        cv2.polylines(canvas, [points], True, COLOR_CYAN, 1, cv2.LINE_AA)
+        text = "VUNG XET VAT CAN"
+        (tw, _), _ = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 0.40, 1)
+        cx = pad_x + round(self.walking_corridor.center_x * scaled_w)
+        cv2.putText(canvas, text, (max(pad_x, cx - tw // 2),
+                                  max(pad_y + 14, points[0, 1] - 6)),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.40, COLOR_TEXT_MUTED, 1, cv2.LINE_AA)
 
     def _draw_assessments(
         self,

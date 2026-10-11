@@ -1,12 +1,13 @@
 from dataclasses import dataclass
-from typing import Dict, Optional, List, Tuple
+from typing import Dict, Optional, List
 import time
+import math
 
-from src.contracts.detection import Detection, BoundingBox
-from src.contracts.depth_map import DepthMap
+from src.contracts.detection import Detection
 from src.contracts.risk import DataQuality, RiskLevel, Direction, RiskAssessment
 from src.detection.class_filter import ClassFilter
 from src.depth.roi_extractor import ROIExtractor
+from src.fusion.walking_corridor import WalkingCorridor
 from src.fusion.spatial_zones import SpatialZones
 from src.fusion.synchronizer import SynchronizedPair
 
@@ -25,10 +26,10 @@ class RiskFSM:
     """
     Finite State Machine (FSM) đánh giá nguy cơ va chạm cho từng đối tượng được theo vết.
     Tuân thủ mục 4.3 của Kế hoạch:
-    - Hysteresis cho tăng và hạ mức nguy cơ.
+    - Xác nhận tăng mức; hạ mức ngay khi điều kiện cảnh báo không còn.
     - Không đếm lặp cùng một kết quả depth.
     - Chỉ trích ROI và đánh giá nguy cơ khi data_quality == VALID.
-    - Đường kích hoạt nhanh khi nguy cơ cao trực diện (instant_high_risk_in_center).
+    - Kích hoạt nhanh HIGH trong hành lang (tên tùy chọn cũ: instant_high_risk_in_center).
     - Cooldown chống phát lặp, nhưng cho phép vượt cooldown khi mức nguy cơ tăng cấp.
     """
 
@@ -44,10 +45,12 @@ class RiskFSM:
         confirmations_to_deescalate: int = 3,
         instant_high_risk_in_center: bool = True,
         cooldown_sec: float = 4.0,
-        allow_escalation_override: bool = True
+        allow_escalation_override: bool = True,
+        walking_corridor: Optional[WalkingCorridor] = None
     ):
         self.class_filter = class_filter
         self.spatial_zones = spatial_zones
+        self.walking_corridor = walking_corridor or WalkingCorridor()
         self.roi_extractor = roi_extractor
         self.depth_threshold_high = depth_threshold_high
         self.depth_threshold_medium = depth_threshold_medium
@@ -70,13 +73,14 @@ class RiskFSM:
         det_result = sync_pair.detection_result
         depth_map = sync_pair.depth_map
         data_quality = sync_pair.data_quality
-        orig_w = det_result.preprocess_transform.get("original_size", (640, 480))[0]
+        fallback_size = (depth_map.width, depth_map.height) if depth_map is not None else (640, 480)
+        orig_w, orig_h = det_result.preprocess_transform.get("original_size", fallback_size)
 
         assessments: List[RiskAssessment] = []
         current_frame_track_ids = set()
 
         for det in det_result.detections:
-            t_id = det.track_id or -1
+            t_id = det.track_id if det.track_id is not None else -1
             current_frame_track_ids.add(t_id)
 
             if t_id not in self._tracks:
@@ -84,7 +88,9 @@ class RiskFSM:
             state = self._tracks[t_id]
 
             # 1. Xác định hướng không gian
-            direction = self.spatial_zones.determine_direction(det.bbox, orig_w)
+            overlap = self.walking_corridor.overlap_ratio(det.bbox, orig_w, orig_h)
+            direction = (self.spatial_zones.determine_direction(det.bbox, orig_w)
+                         if overlap is not None else Direction.CENTER)
 
             # 2. Xử lý theo chất lượng dữ liệu: chỉ trích ROI khi VALID
             if data_quality != DataQuality.VALID or depth_map is None:
@@ -112,18 +118,32 @@ class RiskFSM:
                     is_new_depth_sample = True
                     state.last_depth_frame_id = depth_map.frame_id
 
-                proximity, prox_desc, reason = self.roi_extractor.extract_proximity(det.bbox, depth_map)
+                proximity, prox_desc = 0.0, "chưa rõ"
+                if overlap is None:
+                    reason = "BBox hoặc kích thước ảnh không hợp lệ"
+                    candidate_risk = RiskLevel.UNDETERMINED
+                elif depth_map.shape != (orig_h, orig_w):
+                    reason = "Kích thước depth không khớp ảnh gốc"
+                    candidate_risk = RiskLevel.UNDETERMINED
+                elif overlap < self.walking_corridor.min_overlap_ratio:
+                    reason = f"Vật ngoài hành lang đi thẳng (giao {overlap:.1%})"
+                    candidate_risk = RiskLevel.NO_ALERT
+                else:
+                    proximity, prox_desc, reason = self.roi_extractor.extract_proximity(
+                        det.bbox.clamp(orig_w, orig_h), depth_map)
+                    if prox_desc == "chưa rõ" or not math.isfinite(proximity):
+                        if not math.isfinite(proximity):
+                            reason = "Độ gần ROI không hợp lệ"
+                        proximity, prox_desc = 0.0, "chưa rõ"
+                        candidate_risk = RiskLevel.UNDETERMINED
+                    else:
+                        candidate_risk = self._evaluate_candidate_risk(
+                            det=det, direction=direction, proximity=proximity,
+                            data_quality=data_quality)
+                        reason = f"Trong hành lang (giao {overlap:.1%}); {reason}"
 
-                # 3. Đánh giá mức nguy cơ tức thời (instant candidate risk)
-                candidate_risk = self._evaluate_candidate_risk(
-                    det=det,
-                    direction=direction,
-                    proximity=proximity,
-                    data_quality=data_quality
-                )
-
-                # 4. Áp dụng State Machine & Hysteresis
-                final_risk = self._apply_hysteresis(state, candidate_risk, direction, proximity, is_new_depth_sample)
+                final_risk = self._apply_hysteresis(
+                    state, candidate_risk, direction, proximity, is_new_depth_sample)
                 state.current_risk = final_risk
 
             # 5. Đóng gói kết quả RiskAssessment
@@ -159,24 +179,18 @@ class RiskFSM:
         data_quality: DataQuality
     ) -> RiskLevel:
         # Nếu hoàn toàn không có dữ liệu độ sâu -> UNDETERMINED
-        if data_quality == DataQuality.UNAVAILABLE or proximity <= 0.0:
+        if data_quality != DataQuality.VALID or not math.isfinite(proximity) or proximity < 0.0:
             return RiskLevel.UNDETERMINED
 
         # Nếu không nằm trong nhóm alert_classes -> NO_ALERT
         if not self.class_filter.is_alert_candidate(det.class_name):
             return RiskLevel.NO_ALERT
 
-        # Đánh giá theo độ gần và hướng dựa trên các ngưỡng cấu hình
+        # Hướng chỉ mô tả vị trí; điều kiện chắn đường đã được xét bằng hành lang.
         if proximity >= self.depth_threshold_high:
-            if direction == Direction.CENTER:
-                return RiskLevel.HIGH
-            else:
-                return RiskLevel.HIGH if proximity >= min(1.0, self.depth_threshold_high + 0.05) else RiskLevel.MEDIUM
+            return RiskLevel.HIGH
         elif proximity >= self.depth_threshold_medium:
-            if direction == Direction.CENTER:
-                return RiskLevel.MEDIUM
-            else:
-                return RiskLevel.LOW
+            return RiskLevel.MEDIUM
         elif proximity >= self.depth_threshold_low:
             return RiskLevel.LOW
         else:
@@ -190,18 +204,17 @@ class RiskFSM:
         proximity: float,
         is_new_depth_sample: bool
     ) -> RiskLevel:
-        # Đường kích hoạt tức thì nếu vật cản ở ngay chính diện phía trước
+        # Tên tùy chọn tương thích cũ: kích hoạt nhanh cho HIGH trong hành lang, bất kể hướng.
         if (
             self.instant_high_risk_in_center
             and candidate == RiskLevel.HIGH
-            and direction == Direction.CENTER
         ):
             state.consecutive_high_count = self.confirmations_to_escalate
             state.consecutive_safe_count = 0
             return RiskLevel.HIGH
 
         if candidate == RiskLevel.HIGH:
-            if is_new_depth_sample or state.consecutive_high_count == 0:
+            if is_new_depth_sample:
                 state.consecutive_high_count += 1
             state.consecutive_safe_count = 0
             if state.consecutive_high_count >= self.confirmations_to_escalate:
@@ -213,18 +226,9 @@ class RiskFSM:
             state.consecutive_safe_count = 0
             return RiskLevel.MEDIUM
 
-        elif candidate in (RiskLevel.NO_ALERT, RiskLevel.LOW):
-            state.consecutive_high_count = 0
-            if is_new_depth_sample:
-                state.consecutive_safe_count += 1
-
-            if state.current_risk in (RiskLevel.HIGH, RiskLevel.MEDIUM):
-                if state.consecutive_safe_count >= self.confirmations_to_deescalate:
-                    return candidate
-                else:
-                    return state.current_risk
-            return candidate
-
+        # Không giữ cảnh báo cũ khi vật ra khỏi hành lang, ở xa hoặc ROI lỗi.
+        state.consecutive_high_count = 0
+        state.consecutive_safe_count = 0
         return candidate
 
     def can_trigger_alert(self, track_id: int, target_risk: RiskLevel, current_mono: float) -> bool:

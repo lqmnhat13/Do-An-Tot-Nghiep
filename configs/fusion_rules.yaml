@@ -1,4 +1,12 @@
-# Quy tắc phân vùng không gian, đồng bộ thời gian và FSM đánh giá rủi ro
+# Quy tắc hành lang đi thẳng, đồng bộ thời gian và FSM đánh giá rủi ro
+walking_corridor:
+  center_x: 0.50
+  top_y: 0.35
+  top_width: 0.20
+  bottom_width: 0.60
+  min_overlap_ratio: 0.10
+
+# Hướng chỉ mô tả vị trí, không dùng làm điều kiện cảnh báo.
 spatial:
   left_ratio: 0.35   # 0% - 35%: Vùng bên trái
   center_ratio: 0.30 # 35% - 65%: Vùng trực diện phía trước
@@ -17,10 +25,10 @@ risk_fsm:
   depth_threshold_medium: 0.45
   depth_threshold_low: 0.25
 
-  # Hysteresis: số frame xác nhận để chuyển trạng thái (1 frame phản hồi tức thì cho người mù)
+  # Xác nhận tăng mức; hạ mức ngay khi bbox/độ gần không còn đạt điều kiện.
   confirmations_to_escalate: 1
-  confirmations_to_deescalate: 3
-  instant_high_risk_in_center: true # Kích hoạt nhanh ngay khi vật cản >= depth_threshold_high ở vùng giữa
+  confirmations_to_deescalate: 3 # Tương thích cấu hình cũ; không giữ cảnh báo khi hạ mức.
+  instant_high_risk_in_center: true # Tên tương thích cũ: kích hoạt HIGH ngay trong hành lang, bất kể hướng.
 
   # Cooldown tránh lặp lại cảnh báo cùng một đối tượng (giây)
   track_alert_cooldown_sec: 4.0

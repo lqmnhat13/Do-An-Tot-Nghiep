@@ -24,6 +24,7 @@ from src.detection.yolo_detector import YoloDetector
 from src.tracking.byte_tracker import ByteTrackerAdapter
 from src.depth.depth_estimator import DepthEstimator
 from src.depth.roi_extractor import ROIExtractor
+from src.fusion.walking_corridor import WalkingCorridor
 from src.fusion.spatial_zones import SpatialZones
 from src.fusion.synchronizer import Synchronizer
 from src.fusion.risk_fsm import RiskFSM
@@ -54,6 +55,7 @@ def main():
     max_depth_age_ms = float(sync_cfg.get("max_depth_age_ms", 1200.0))
     max_alert_age_ms = float(sync_cfg.get("max_alert_age_ms", 1500.0))
 
+    walking_corridor = WalkingCorridor(**fusion_cfg.get("walking_corridor", {}))
     spatial_cfg = fusion_cfg.get("spatial", {})
     spatial_zones = SpatialZones(
         left_ratio=spatial_cfg.get("left_ratio", 0.35),
@@ -77,6 +79,7 @@ def main():
     risk_fsm = RiskFSM(
         class_filter=class_filter,
         spatial_zones=spatial_zones,
+        walking_corridor=walking_corridor,
         roi_extractor=roi_extractor,
         depth_threshold_high=float(fsm_cfg.get("depth_threshold_high", 0.75)),
         depth_threshold_medium=float(fsm_cfg.get("depth_threshold_medium", 0.45)),
