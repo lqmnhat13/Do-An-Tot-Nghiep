@@ -15,7 +15,7 @@ class AlertAggregator:
     """
     Bộ tổng hợp và lựa chọn cảnh báo nguy cơ quan trọng nhất.
     Tuân thủ mục 4.3 của Kế hoạch:
-    - Tổng hợp 1 cảnh báo ngắn quan trọng nhất khi có vật cản.
+    - Chỉ tổng hợp cảnh báo HIGH; MEDIUM/LOW không kích hoạt âm thanh hoặc cooldown.
     - Báo hướng và độ gần tương đối, không khẳng định khoảng cách mét.
     - Lọc bỏ dữ liệu stale/degraded trước khi xếp hạng hoặc kích hoạt cooldown.
     - Cảnh báo có thời hạn hiệu lực rõ ràng (expires_at) ràng buộc với tuổi dữ liệu nguồn.
@@ -54,7 +54,7 @@ class AlertAggregator:
 
         # 1. Lọc các đối tượng:
         # - data_quality phải là VALID (không dùng dữ liệu DEGRADED, STALE hoặc UNAVAILABLE)
-        # - risk_level phải là HIGH hoặc MEDIUM
+        # - risk_level phải là HIGH
         # - Chưa hết hạn assessment (a.is_expired(now))
         # - Chưa quá hạn dữ liệu nguồn (now - a.source_timestamp <= max_source_age_sec)
         # - Được phép phát theo quy tắc cooldown của FSM
@@ -62,7 +62,7 @@ class AlertAggregator:
         for a in assessments:
             if a.data_quality != DataQuality.VALID:
                 continue
-            if a.risk_level not in (RiskLevel.HIGH, RiskLevel.MEDIUM):
+            if a.risk_level != RiskLevel.HIGH:
                 continue
             if a.is_expired(now):
                 continue
@@ -77,11 +77,10 @@ class AlertAggregator:
             return None
 
         # 2. Xếp hạng độ ưu tiên khẩn cấp
-        # Thứ tự: HIGH ở CENTER > HIGH ở LEFT/RIGHT > MEDIUM ở CENTER > MEDIUM ở LEFT/RIGHT
+        # Thứ tự: HIGH ở CENTER > HIGH ở LEFT/RIGHT, sau đó theo độ gần.
         def sort_key(a: RiskAssessment):
-            level_score = 2 if a.risk_level == RiskLevel.HIGH else 1
             dir_score = 2 if a.direction == Direction.CENTER else 1
-            return (level_score, dir_score, a.relative_proximity)
+            return (dir_score, a.relative_proximity)
 
         active_candidates.sort(key=sort_key, reverse=True)
         top_risk = active_candidates[0]
@@ -99,10 +98,7 @@ class AlertAggregator:
         dir_text = DIRECTION_TEXT_VI.get(top_risk.direction, "phía trước")
         prox_text = top_risk.proximity_desc # ví dụ: "độ gần tương đối cao", "độ gần tương đối trung bình"
 
-        if top_risk.risk_level == RiskLevel.HIGH:
-            prefix = "Chú ý, có"
-        else:
-            prefix = "Có"
+        prefix = "Chú ý, có"
 
         if prox_text and prox_text != "chưa rõ":
             if top_risk.direction == Direction.CENTER:
@@ -127,7 +123,7 @@ class AlertAggregator:
         self._last_global_alert_time = now
         self._last_alert_risk_level = top_risk.risk_level
 
-        priority = AudioPriority.HIGH_RISK if top_risk.risk_level == RiskLevel.HIGH else AudioPriority.SYSTEM_STATUS
+        priority = AudioPriority.HIGH_RISK
 
         # 6. Hạn của AudioTask là thời điểm sớm nhất giữa hạn assessment, hạn nguồn và task lifetime
         task_lifetime_limit = now + self.alert_lifetime_sec
@@ -139,7 +135,7 @@ class AlertAggregator:
         return AudioTask(
             priority=priority,
             text=alert_text,
-            sound_file="assets/audio/alert_high.wav" if top_risk.risk_level == RiskLevel.HIGH else None,
+            sound_file="assets/audio/alert_high.wav",
             created_at=now,
             expires_at=task_expires_at,
             interruptible=True,

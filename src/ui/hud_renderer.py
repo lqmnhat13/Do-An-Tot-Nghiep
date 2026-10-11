@@ -337,7 +337,7 @@ class HUDRenderer:
             elif a.risk_level == RiskLevel.MEDIUM:
                 color = COLOR_MED_RISK
                 thickness = 2
-                level_str = "CHU Y"
+                level_str = "TRUNG BINH"
             else:
                 color = COLOR_LOW_RISK
                 thickness = 1
@@ -398,17 +398,16 @@ class HUDRenderer:
             cv2.putText(canvas, label_text, (tag_x1 + 5, tag_y1 + th + 4), cv2.FONT_HERSHEY_SIMPLEX, font_scale, COLOR_TEXT_MAIN, 1, cv2.LINE_AA)
 
     def _draw_alert_banner(self, canvas: np.ndarray, assessments: List[RiskAssessment], width: int) -> None:
-        """D. Priority Alert Banner: Chỉ hiển thị cho HIGH hoặc MEDIUM, không che depth card."""
-        urgent = [a for a in assessments if isinstance(a, RiskAssessment) and a.risk_level in (RiskLevel.HIGH, RiskLevel.MEDIUM)]
+        """D. Priority Alert Banner: Chỉ hiển thị cho HIGH, không che depth card."""
+        urgent = [a for a in assessments if isinstance(a, RiskAssessment) and a.risk_level == RiskLevel.HIGH]
         if not urgent:
             return
 
         # Chọn đối tượng có rủi ro cao nhất
-        top_a = max(urgent, key=lambda x: (2 if x.risk_level == RiskLevel.HIGH else 1, getattr(x, "relative_proximity", 0.0)))
+        top_a = max(urgent, key=lambda x: getattr(x, "relative_proximity", 0.0))
 
-        is_high = (top_a.risk_level == RiskLevel.HIGH)
-        b_color = COLOR_HIGH_RISK if is_high else COLOR_MED_RISK
-        prefix = "NGUY CO CAO" if is_high else "CHU Y"
+        b_color = COLOR_HIGH_RISK
+        prefix = "NGUY CO CAO"
 
         dir_map = {Direction.CENTER: "TRUNG TAM", Direction.LEFT: "TRAI", Direction.RIGHT: "PHAI"}
         dir_str = dir_map.get(top_a.direction, self._clean_ascii(getattr(top_a.direction, "value", "")))
@@ -422,7 +421,7 @@ class HUDRenderer:
         banner_y1 = 48
         max_banner_w = max(100, width - 215 - banner_x1)
 
-        font_scale = 0.46 if is_high else 0.42
+        font_scale = 0.46
         fitted_msg = self._fit_text(raw_msg, max_banner_w - 20, cv2.FONT_HERSHEY_SIMPLEX, font_scale, 1)
 
         (tw, th), _ = cv2.getTextSize(fitted_msg, cv2.FONT_HERSHEY_SIMPLEX, font_scale, 1)

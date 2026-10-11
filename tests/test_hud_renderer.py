@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import patch
 import time
 import numpy as np
 
@@ -179,6 +180,22 @@ class TestHUDRenderer(unittest.TestCase):
         self.assertEqual(out_high.shape, (600, 800, 3))
         self.assertEqual(out_med.shape, (600, 800, 3))
         self.assertEqual(out_low.shape, (600, 800, 3))
+
+    def test_banner_only_for_high(self):
+        for level in (RiskLevel.HIGH, RiskLevel.MEDIUM, RiskLevel.LOW, RiskLevel.NO_ALERT):
+            with self.subTest(level=level):
+                snapshot = self._create_synthetic_snapshot(risk_level=level)
+                canvas = np.zeros((600, 800, 3), dtype=np.uint8)
+                self.renderer._draw_alert_banner(canvas, snapshot['assessments'], 800)
+                self.assertEqual(bool(np.any(canvas)), level == RiskLevel.HIGH)
+
+    def test_medium_bbox_is_informational(self):
+        snapshot = self._create_synthetic_snapshot(risk_level=RiskLevel.MEDIUM)
+        with patch('src.ui.hud_renderer.cv2.putText', wraps=__import__('cv2').putText) as draw:
+            self.renderer.render(snapshot)
+        texts = [call.args[1] for call in draw.call_args_list]
+        self.assertTrue(any('TRUNG BINH' in text for text in texts))
+        self.assertFalse(any('CHU Y' in text for text in texts))
 
     def test_unknown_mode_does_not_crash(self):
         snapshot = self._create_synthetic_snapshot()

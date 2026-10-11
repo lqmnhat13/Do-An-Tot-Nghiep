@@ -85,9 +85,9 @@ class TestCorridorRisk(unittest.TestCase):
         self.fsm = RiskFSM(ClassFilter(), SpatialZones(), self.roi)
         self.aggregator = AlertAggregator(self.fsm, global_alert_interval_sec=3.5)
 
-    def assess(self, box=None, frame=1, quality=DataQuality.VALID, size=(640, 480), depth=True):
+    def assess(self, box=None, frame=1, quality=DataQuality.VALID, size=(640, 480), depth=True, class_name="chair"):
         now = 100 + frame * .1
-        detection = Detection('chair', .9, box or self.inside, track_id=0)
+        detection = Detection(class_name, .9, box or self.inside, track_id=0)
         result = DetectionResult([detection], frame, now, 0, {'original_size': size})
         dm = DepthMap(DepthRepresentation.RELATIVE_DEPTH, 'relative', True,
                       np.ones((480, 640), dtype=np.float32),
@@ -112,15 +112,36 @@ class TestCorridorRisk(unittest.TestCase):
     def test_exit_reentry_and_cooldown_escalation(self):
         self.roi.extract_proximity.return_value = (.6, 'gần', 'test')
         medium = self.assess()
-        self.assertIsNotNone(self.aggregator.aggregate([medium], 100.1))
+        self.assertIsNone(self.aggregator.aggregate([medium], 100.1))
+        self.assertEqual(self.fsm._tracks[0].last_alert_time, 0.0)
+        self.assertEqual(self.aggregator._last_global_alert_time, 0.0)
         self.assertEqual(self.assess(self.outside, frame=2).risk_level, RiskLevel.NO_ALERT)
         self.assertIsNone(self.aggregator.aggregate([self.assess(frame=3)], 100.3))
         self.roi.extract_proximity.return_value = (.8, 'gần', 'test')
         high = self.assess(frame=4)
         self.assertIsNotNone(self.aggregator.aggregate([high], 100.4))
         self.assertIsNone(self.aggregator.aggregate([self.assess(frame=5)], 100.5))
+        self.roi.extract_proximity.return_value = (.6, 'trung bình', 'test')
+        self.assertIsNone(self.aggregator.aggregate([self.assess(frame=6)], 100.6))
+        self.assertEqual(self.fsm._tracks[0].last_alert_time, 100.4)
+        self.roi.extract_proximity.return_value = (.8, 'gần', 'test')
+        self.assertIsNone(self.aggregator.aggregate([self.assess(frame=7)], 100.7))
         self.assertIsNotNone(self.aggregator.aggregate([self.assess(frame=45)], 104.5))
         self.assertIn(0, self.fsm._tracks)
+
+    def test_only_near_person_and_obstacles_trigger_audio(self):
+        for class_name in ('person', 'chair', 'dining table'):
+            for score in (.20, .25, .45, .749, .75, .9):
+                with self.subTest(class_name=class_name, score=score):
+                    self.setUp()
+                    self.roi.extract_proximity.return_value = (score, 'test', 'test')
+                    a = self.assess(class_name=class_name)
+                    task = self.aggregator.aggregate([a], 100.1)
+                    self.assertEqual(task is not None, score >= .75)
+                    if score < .75:
+                        self.assertEqual(self.fsm._tracks[0].last_alert_time, 0.0)
+                        self.assertEqual(self.aggregator._last_global_alert_time, 0.0)
+                        self.assertIsNone(self.fsm._tracks[0].last_alert_risk)
 
     def test_side_center_can_block_corridor_and_has_same_depth_threshold(self):
         # center_x = 200 < 224, and old central overlap < 40%.

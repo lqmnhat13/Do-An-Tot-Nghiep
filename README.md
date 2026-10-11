@@ -33,9 +33,9 @@
 | VQA | MLX-VLM mặc định; guardrail từ chối khẳng định đường đi an toàn. | Khi bấm `Q` |
 | HUD | Hiển thị frame, trạng thái và kết quả xử lý gần nhất. | Khi bật GUI |
 
-Khi OCR hoặc VQA đang xử lý, detection và depth vẫn tiếp tục chạy. Trong thời gian đó, cảnh báo `HIGH_RISK` vẫn được phép chen ngang câu trả lời; các cảnh báo thấp hơn được tạm hạn chế để không cắt lời liên tục. Khi dữ liệu detection/depth trễ hoặc không đạt chất lượng, hệ thống không tự suy ra rằng môi trường an toàn.
+Khi OCR hoặc VQA đang xử lý, detection và depth vẫn tiếp tục chạy. Trong thời gian đó, cảnh báo `HIGH_RISK` vẫn được phép chen ngang câu trả lời; MEDIUM/LOW chỉ dùng để hiển thị thông tin và không phát âm thanh trong mọi chế độ. Khi dữ liệu detection/depth trễ hoặc không đạt chất lượng, hệ thống không tự suy ra rằng môi trường an toàn.
 
-Cảnh báo vật cản chỉ xét các lớp thuộc `alert_classes` có bounding box giao đủ với hành lang hình thang và độ gần đạt mức MEDIUM/HIGH. HUD hiển thị hành lang bằng nhãn `VUNG XET VAT CAN`; trái/phải/giữa chỉ mô tả vị trí. Khi bbox ra ngoài hành lang hoặc độ gần giảm dưới ngưỡng, FSM hạ mức ngay; cooldown và ưu tiên tăng mức vẫn được giữ.
+Cảnh báo vật cản chỉ xét các lớp thuộc `alert_classes` có bounding box giao đủ với hành lang hình thang và độ gần đạt mức HIGH (mặc định ≥ 0,75; độ gần tương đối, không phải mét). Chỉ HIGH phát âm thanh và banner cảnh báo; MEDIUM/LOW vẫn được tính, nhưng không phát cảnh báo hoặc kích hoạt cooldown. Nhãn MEDIUM trên bbox là `TRUNG BINH`. HUD hiển thị hành lang bằng nhãn `VUNG XET VAT CAN`; trái/phải/giữa chỉ mô tả vị trí. Khi bbox ra ngoài hành lang hoặc độ gần giảm dưới ngưỡng, FSM hạ mức ngay; cooldown và ưu tiên tăng mức vẫn được giữ.
 
 Điều chỉnh `walking_corridor` trong `configs/fusion_rules.yaml`: `center_x=0.50`, `top_y=0.35`, `top_width=0.20`, `bottom_width=0.60` đều theo tỷ lệ ảnh; `min_overlap_ratio=0.10` là diện tích giao chia cho diện tích nhỏ hơn giữa bbox đã clamp và hành lang. Camera cần hướng theo hướng đi; tinh chỉnh bằng video từ vị trí gắn camera thực tế. Hình thang là vùng ước lượng trên ảnh, không xác nhận đường đi an toàn hoặc khoảng cách theo mét. Tùy chọn cũ `instant_high_risk_in_center` hiện áp dụng cho HIGH trong hành lang ở mọi hướng; `confirmations_to_deescalate` được giữ để tương thích nhưng không giữ mức cảnh báo cũ.
 

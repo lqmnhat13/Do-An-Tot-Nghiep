@@ -460,7 +460,7 @@ class TestFusion(unittest.TestCase):
         self.assertEqual(assessments_high[0].risk_level, RiskLevel.HIGH)
 
     def test_global_alert_interval_throttles_interleaved_tracks(self):
-        """AlertAggregator áp dụng khoảng lặng toàn cục (global_alert_interval_sec) giữa các track khác nhau nhưng cho phép nguy cơ HIGH vượt hàng đợi."""
+        """AlertAggregator áp dụng khoảng lặng toàn cục (global_alert_interval_sec) giữa các track HIGH; MEDIUM không phát âm thanh hoặc kích hoạt khoảng lặng."""
         aggregator_spaced = AlertAggregator(
             risk_fsm=self.fsm,
             alert_lifetime_sec=3.0,
@@ -470,7 +470,7 @@ class TestFusion(unittest.TestCase):
             max_alert_age_ms=1500.0
         )
         t0 = 100.0
-        # 1. Track 1 phát cảnh báo MEDIUM tại t0 -> thành công
+        # 1. Track 1 ở mức MEDIUM: bỏ qua, không kích hoạt khoảng lặng.
         a1 = RiskAssessment(
             track_id=1,
             class_name="ghế",
@@ -484,11 +484,11 @@ class TestFusion(unittest.TestCase):
             expires_at=t0 + 2.0
         )
         task1 = aggregator_spaced.aggregate([a1], current_mono=t0)
-        self.assertIsNotNone(task1)
-        self.assertEqual(task1.text, "Có ghế bên trái, ở cự ly trung bình")
+        self.assertIsNone(task1)
+        self.assertEqual(aggregator_spaced._last_global_alert_time, 0.0)
 
         # 2. Track 2 (khác track 1) đến lúc t0 + 1.0 (trong khoảng 3.0s interval), cùng mức MEDIUM
-        # -> Bị throttle bởi global_alert_interval_sec dù track 2 chưa bao giờ cooldown!
+        # -> Bỏ qua vì MEDIUM; chưa có cảnh báo nào kích hoạt khoảng lặng.
         a2 = RiskAssessment(
             track_id=2,
             class_name="bàn",
@@ -504,7 +504,7 @@ class TestFusion(unittest.TestCase):
         task2 = aggregator_spaced.aggregate([a2], current_mono=t0 + 1.0)
         self.assertIsNone(task2)
 
-        # 3. Track 3 đến lúc t0 + 1.5 với mức HIGH -> Nguy hiểm khẩn cấp (escalation override) được phép ngắt khoảng lặng!
+        # 3. HIGH đầu tiên được phát; các MEDIUM trước đó không chặn HIGH.
         a3 = RiskAssessment(
             track_id=3,
             class_name="bậc thang",
