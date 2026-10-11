@@ -26,13 +26,13 @@
 
 | Chức năng | Cách kích hoạt trong ứng dụng chính | Kết quả |
 |---|---|---|
-| Quan sát và cảnh báo | Tự chạy sau khi khởi động | Vật thể xuất hiện trên giao diện; một số tình huống tạo âm báo/lời cảnh báo |
+| Quan sát và cảnh báo | Tự chạy sau khi khởi động; nhấn `C` để quay lại | Vật thể xuất hiện trên giao diện; một số tình huống tạo âm báo/lời cảnh báo |
 | Đọc chữ — OCR | Nhấn `SPACE` | Chụp ảnh hiện tại, nhận dạng chữ và đọc kết quả |
 | Mô tả cảnh — VQA | Nhấn `Q` | Chụp ảnh hiện tại và xử lý yêu cầu “Mô tả khung cảnh phía trước” |
-| Dừng lời nói/yêu cầu hiện tại | Nhấn `S` | Ngắt âm thanh và vô hiệu kết quả on-demand đang chờ |
+| Dừng lời nói/yêu cầu hiện tại | Nhấn `S` | Ngắt âm thanh, vô hiệu kết quả on-demand đang chờ; giữ chế độ hiện tại |
 | Thoát | Nhấn `ESC` | Dừng ứng dụng và đóng cửa sổ |
 
-Detection, depth và đánh giá nguy cơ tiếp tục hoạt động trong lúc OCR/VQA xử lý. Cảnh báo HIGH có thể chen ngang lời đọc; cảnh báo MEDIUM tạm không chen ngang trong chế độ on-demand.
+Detection, depth và đánh giá nguy cơ tiếp tục hoạt động trong mọi chế độ. Chọn OCR/VQA tắt toàn bộ cảnh báo vật cản, kể cả HIGH; hoàn tất, lỗi hoặc thiếu ảnh đều không tự bật lại. Nhấn `C` để về chế độ Cảnh báo. MEDIUM/LOW chỉ là thông tin hiển thị, không phát âm thanh.
 
 Đây là bản mẫu phục vụ nghiên cứu và trình diễn. Mức nguy cơ thấp hoặc không có lời cảnh báo không xác nhận rằng đường đi an toàn. Các con số mét xuất hiện trên giao diện/lời đọc hiện là ước lượng theo quy tắc chưa hiệu chuẩn. Khi thử nghiệm, nên quan sát tại chỗ hoặc trong khu vực được kiểm soát, có người hỗ trợ khi cần; không dùng kết quả để thay thế phương tiện hỗ trợ di chuyển đang có.
 
@@ -314,7 +314,7 @@ python app.py --source 0 --no-gui --duration 30
 
 Chương trình chạy pipeline trong khoảng thời lượng được đặt sau bước khởi động worker; thời gian nạp model trước đó và thời gian dừng có thể làm tổng thời gian lệnh dài hơn.
 
-Trong chế độ này, **không có cơ chế nhận các phím `SPACE`, `Q`, `S`, `ESC` của cửa sổ OpenCV**. Đây là chế độ quan sát/đánh giá tự động, không phải cách dùng OCR/VQA bằng bàn phím trong Terminal. Muốn dừng sớm, nhấn `Ctrl+C` tại Terminal.
+Trong chế độ này, **không có cơ chế nhận các phím `SPACE`, `Q`, `C`, `S`, `ESC` của cửa sổ OpenCV**. Đây là chế độ quan sát/đánh giá tự động, không phải cách dùng OCR/VQA bằng bàn phím trong Terminal. Muốn dừng sớm, nhấn `Ctrl+C` tại Terminal.
 
 ### 6.6. Thử nhánh CPU
 
@@ -376,15 +376,15 @@ Phím `Q` gửi câu hỏi cố định “Mô tả khung cảnh phía trước�
 
 Nếu VLM thiếu model, lỗi suy luận hoặc đầu ra không đạt giới hạn định dạng, ứng dụng có thể mô tả các vật thể đã nhận diện thay vì trả lời từ VLM. Một câu nói về vật thể chưa đủ chứng minh Qwen đã chạy thành công; xem Terminal để biết có thông báo fallback hay không.
 
-### 7.4. Khi đang bận hoặc có cảnh báo chen ngang
+### 7.4. Chuyển chế độ khi đang bận
 
 Ứng dụng chỉ cho một worker OCR/VQA hoạt động tại một thời điểm. Bấm liên tiếp không tạo hàng đợi nhiều câu hỏi; yêu cầu mới có thể bị từ chối khi worker cũ chưa xong.
 
-Nếu cảnh báo HIGH chen ngang lời OCR/VQA, phần đang nói có thể bị dừng. Không nên chờ ứng dụng tự đọc tiếp đúng vị trí bị ngắt. Sau khi xử lý tình huống và tác vụ cũ kết thúc, có thể yêu cầu lại nếu cần.
+Trong OCR/VQA, cảnh báo HIGH không phát hoặc chen ngang. Kết thúc tác vụ vẫn giữ chế độ đó; bấm lại `SPACE`/`Q` để xử lý ảnh mới. Nhấn `C` bất kỳ lúc nào để dừng lời OCR/VQA, hủy kết quả chờ và chuyển về Cảnh báo ngay. Model cũ có thể vẫn tính toán đến khi worker thoát; kết quả đã hủy không được phát lại.
 
 ### 7.5. Dừng lời nói và thoát
 
-- Nhấn `S` để ngắt âm thanh hiện tại và hủy hiệu lực kết quả on-demand đang chờ. Đây không phải công tắc tắt tiếng vĩnh viễn: cảnh báo mới vẫn có thể phát sau đó.
+- Nhấn `S` để ngắt âm thanh hiện tại và hủy hiệu lực kết quả on-demand đang chờ. S giữ chế độ đang chọn: trong OCR/VQA, cảnh báo tiếp tục tắt; trong Cảnh báo, cảnh báo mới vẫn có thể phát sau đó.
 - Sau khi nhấn `S`, model có thể còn tính toán trong nền; yêu cầu mới có thể chưa được nhận ngay.
 - Nhấn `ESC` để thoát từ cửa sổ. Đây là thao tác thoát được vòng lặp xử lý rõ ràng; không nên chỉ dựa vào nút đóng cửa sổ của macOS.
 - Khi chạy trong Terminal, `Ctrl+C` được vòng chạy chính xử lý để dừng. Nếu bị kẹt trong bước khởi tạo native, đường dừng có thể khác với lúc vòng chạy đã hoạt động.
@@ -398,9 +398,9 @@ Khi kết thúc bình thường, Terminal in `[AppRunner] Đã dừng toàn bộ
 
 | Nhãn HUD | Cách hiểu |
 |---|---|
-| `QUAN SAT` | Đang ở chế độ quan sát thông thường; không phải chứng nhận tất cả nguồn dữ liệu đều tốt |
-| `DANG DOC CHU` | Đang trong tác vụ OCR |
-| `DANG PHAN TICH` | Đang trong tác vụ VQA |
+| `CANH BAO BAT` | Chế độ Cảnh báo đang bật; không xác nhận đường đi an toàn |
+| `OCR XU LY / SAN SANG` | Chế độ OCR đang xử lý hoặc sẵn sàng nhận ảnh mới; `CB TAT` là cảnh báo đang tắt |
+| `VQA XU LY / SAN SANG` | Chế độ VQA đang xử lý hoặc sẵn sàng nhận ảnh mới; `CB TAT` là cảnh báo đang tắt |
 | `TIN HIEU YEU` | Dữ liệu ghép detection/depth đang bị đánh dấu suy giảm hoặc cũ |
 | `DANG NOI` | Bộ âm thanh đang phát |
 | `DEPTH --` | HUD chưa có bản đồ depth để hiển thị; cần xem thêm log để biết nguyên nhân |
@@ -683,7 +683,7 @@ Không đổi `model_path` thành tên Hub repository để mong runtime tự t�
 
 Thử lần lượt `say` và `afplay` như mục 5.2. Kiểm tra âm lượng, thiết bị đầu ra, tên giọng và file WAV. Khi lệnh độc lập hoạt động, thử OCR với ảnh chữ rõ để tạo một nội dung có thể nghe được.
 
-Không phải mọi frame hay vật thể đều tạo lời nói. `S` chỉ dừng hiện tại; còn `audio.enabled: false` chưa phải cách tắt/bật âm thanh đáng tin cậy trong phiên bản này. Công cụ VQA riêng chạy với `--no-speech` thì chủ động không phát TTS.
+Không phải mọi frame hay vật thể đều tạo lời nói. Trong OCR/VQA, phải nhấn `C` để bật lại cảnh báo vật cản. `S` chỉ dừng hiện tại và giữ chế độ; còn `audio.enabled: false` chưa phải cách tắt/bật âm thanh đáng tin cậy trong phiên bản này. Công cụ VQA riêng chạy với `--no-speech` thì chủ động không phát TTS.
 
 ### 12.7. Bấm phím không có tác dụng
 
@@ -745,7 +745,8 @@ Không cần tạo tình huống va chạm thật để chứng minh cảnh báo
 | Thử riêng OCR với file ảnh | `python scripts/run_ocr_camera.py --image /duong/dan/anh.jpg` |
 | Đọc chữ trong ứng dụng chính | `SPACE` trong cửa sổ |
 | Mô tả cảnh trong ứng dụng chính | `Q` trong cửa sổ |
-| Dừng lời/yêu cầu hiện tại | `S` trong cửa sổ |
+| Về chế độ Cảnh báo | `C` trong cửa sổ ứng dụng chính |
+| Dừng lời/yêu cầu hiện tại | `S` trong cửa sổ; giữ chế độ hiện tại |
 | Thoát | `ESC` trong cửa sổ; `Ctrl+C` tại Terminal khi cần |
 | Không mở cửa sổ trong 30 giây | `python app.py --no-gui --duration 30` |
 | Xem tùy chọn | `python app.py --help` |

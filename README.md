@@ -33,7 +33,7 @@
 | VQA | MLX-VLM mặc định; guardrail từ chối khẳng định đường đi an toàn. | Khi bấm `Q` |
 | HUD | Hiển thị frame, trạng thái và kết quả xử lý gần nhất. | Khi bật GUI |
 
-Khi OCR hoặc VQA đang xử lý, detection và depth vẫn tiếp tục chạy. Trong thời gian đó, cảnh báo `HIGH_RISK` vẫn được phép chen ngang câu trả lời; MEDIUM/LOW chỉ dùng để hiển thị thông tin và không phát âm thanh trong mọi chế độ. Khi dữ liệu detection/depth trễ hoặc không đạt chất lượng, hệ thống không tự suy ra rằng môi trường an toàn.
+Khi OCR hoặc VQA đang xử lý, detection và depth vẫn tiếp tục chạy. Chọn OCR/VQA sẽ dừng và tắt toàn bộ cảnh báo vật cản, kể cả `HIGH_RISK`, cho đến khi bấm `C` chuyển về chế độ Cảnh báo; MEDIUM/LOW chỉ dùng để hiển thị thông tin và không phát âm thanh trong mọi chế độ. Khi dữ liệu detection/depth trễ hoặc không đạt chất lượng, hệ thống không tự suy ra rằng môi trường an toàn.
 
 Cảnh báo vật cản chỉ xét các lớp thuộc `alert_classes` có bounding box giao đủ với hành lang hình thang và độ gần đạt mức HIGH (mặc định ≥ 0,75; độ gần tương đối, không phải mét). Chỉ HIGH phát âm thanh và banner cảnh báo; MEDIUM/LOW vẫn được tính, nhưng không phát cảnh báo hoặc kích hoạt cooldown. Nhãn MEDIUM trên bbox là `TRUNG BINH`. HUD hiển thị hành lang bằng nhãn `VUNG XET VAT CAN`; trái/phải/giữa chỉ mô tả vị trí. Khi bbox ra ngoài hành lang hoặc độ gần giảm dưới ngưỡng, FSM hạ mức ngay; cooldown và ưu tiên tăng mức vẫn được giữ.
 
@@ -103,8 +103,11 @@ Nguồn `dummy` là ảnh giả lập, **không** chứng minh hệ thống ho�
 | --- | --- |
 | `Space` | Chụp frame mới và đọc chữ bằng OCR. |
 | `Q` | Hỏi VQA theo câu mặc định “Mô tả khung cảnh phía trước”. |
-| `S` | Dừng giọng đọc và hủy kết quả OCR/VQA đang chờ. |
+| `C` | Chuyển về chế độ Cảnh báo, dừng lời OCR/VQA và hủy hiệu lực kết quả đang chờ. |
+| `S` | Dừng giọng đọc và hủy kết quả OCR/VQA đang chờ; giữ nguyên chế độ đã chọn. |
 | `Esc` | Thoát cửa sổ và dừng hệ thống. |
+
+Khởi động ở chế độ Cảnh báo. `Space`/`Q` vừa chọn chế độ OCR/VQA vừa xử lý một ảnh mới; hoàn tất, lỗi hoặc thiếu ảnh đều giữ chế độ đó. Bấm lại để xử lý ảnh mới. Chỉ `C` bật lại cảnh báo từ nguồn ảnh sau lúc chuyển chế độ. Nếu worker cũ còn chạy, yêu cầu OCR/VQA mới bị từ chối; `C` vẫn chuyển về Cảnh báo ngay.
 
 Các phím trên chỉ hoạt động khi cửa sổ GUI có focus. Ở chế độ `--no-gui`, dùng `Ctrl+C` để dừng; không có thao tác OCR/VQA qua phím tắt GUI. Nếu cần thử riêng OCR trên ảnh hoặc đổi câu hỏi VQA trên webcam, dùng các CLI phụ trong [CLI.md](CLI.md). Hai CLI phụ đó **không** chạy pipeline cảnh báo; để thử trải nghiệm đầy đủ, dùng `app.py`.
 

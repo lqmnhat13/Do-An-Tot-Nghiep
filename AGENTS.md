@@ -4,7 +4,8 @@ Hệ thống hỗ trợ người khiếm thị, chạy offline trên macOS Apple
 
 ## Architecture invariants
 
-- Detection, depth và cảnh báo an toàn phải tiếp tục hoạt động trong mọi chế độ.
+- Detection, depth và đánh giá nguy cơ phải tiếp tục hoạt động trong mọi chế độ.
+- Chỉ phát cảnh báo vật cản trong chế độ Cảnh báo; OCR/VQA tắt cả HIGH cho đến khi người dùng bấm C.
 - VQA và OCR chỉ chạy on-demand.
 - Không bao giờ dùng VLM để khẳng định đường đi an toàn.
 - Không thay đổi Detection, Depth hoặc Risk contracts nếu chưa cập nhật consumer.

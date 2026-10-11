@@ -26,8 +26,8 @@ class TestAudioPriority(unittest.TestCase):
         first = self.coordinator._queue.get()
         second = self.coordinator._queue.get()
 
-        self.assertEqual(first.priority, AudioPriority.HIGH_RISK)
-        self.assertEqual(second.priority, AudioPriority.INFO)
+        self.assertEqual(first.task.priority, AudioPriority.HIGH_RISK)
+        self.assertEqual(second.task.priority, AudioPriority.INFO)
 
     def test_drop_expired_task(self):
         now = time.monotonic()

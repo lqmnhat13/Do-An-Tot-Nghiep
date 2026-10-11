@@ -186,7 +186,11 @@ class HUDRenderer:
         self._draw_assessments(canvas, det_res, assessments, packet.original_size, scale, pad_x, pad_y)
 
         # 4. Banner cảnh báo ưu tiên khẩn cấp (Priority Alert Banner)
-        self._draw_alert_banner(canvas, assessments, w)
+        legacy_mode = snapshot.get("mode", "OBSERVATION")
+        selected_mode = snapshot.get("selected_mode", legacy_mode)
+        enabled = snapshot.get("safety_alerts_enabled", selected_mode not in ("OCR", "VQA"))
+        if enabled:
+            self._draw_alert_banner(canvas, assessments, w)
 
         # 5. Thẻ chuẩn đoán & Bản đồ độ sâu (Right Diagnostics Card)
         if self.config.get("show_depth_map", True):
@@ -237,19 +241,24 @@ class HUDRenderer:
 
         # Status Pill cho chế độ hiện tại
         mode_str = snapshot.get("mode", "OBSERVATION")
-        mode_pill_map = {
-            "OBSERVATION": ("QUAN SAT", COLOR_CYAN),
-            "VQA": ("DANG PHAN TICH", COLOR_MED_RISK),
-            "OCR": ("DANG DOC CHU", COLOR_MED_RISK),
-            "DEGRADED": ("TIN HIEU YEU", COLOR_HIGH_RISK)
-        }
-        pill_text, pill_color = mode_pill_map.get(mode_str, (self._clean_ascii(mode_str).upper()[:14], COLOR_TEXT_MUTED))
-        next_x = self._draw_status_pill(canvas, 140, 8, pill_text, color=pill_color, font_scale=0.40)
+        selected = snapshot.get("selected_mode", mode_str if mode_str in ("OCR", "VQA") else "WARNING")
+        enabled = snapshot.get("safety_alerts_enabled", selected == "WARNING")
+        if selected in ("OCR", "VQA"):
+            active = snapshot.get("on_demand_active", True)
+            status = "XU LY" if active else "SAN SANG"
+            if width < 600:
+                status = "XL" if active else "CHO"
+            pill_text = f"{selected} {status} | CB {'BAT' if enabled else 'TAT'}"
+            pill_color = COLOR_MED_RISK
+        else:
+            pill_text = "CANH BAO BAT" if enabled else "CANH BAO TAT"
+            if mode_str == "DEGRADED":
+                pill_text = "CB BAT | TIN HIEU YEU"
+            pill_color = COLOR_CYAN if mode_str != "DEGRADED" else COLOR_HIGH_RISK
+        next_x = self._draw_status_pill(canvas, 140, 8, pill_text, color=pill_color, font_scale=0.36)
 
-        # Pill Đang nói nếu TTS đang phát
-        is_speaking = bool(snapshot.get("is_speaking", False))
-        if is_speaking:
-            self._draw_status_pill(canvas, next_x + 10, 8, "DANG NOI", color=(100, 235, 255), font_scale=0.40)
+        if snapshot.get("is_speaking", False) and width >= 600:
+            next_x = self._draw_status_pill(canvas, next_x + 10, 8, "DANG NOI", color=(100, 235, 255), font_scale=0.36)
 
         # FPS hiển thị góc phải
         metrics = snapshot.get("metrics") or {}
@@ -257,6 +266,8 @@ class HUDRenderer:
         fps_text = f"FPS {fps_val:.1f}" if fps_val > 0 else "FPS --"
         (tw, _), _ = cv2.getTextSize(fps_text, cv2.FONT_HERSHEY_SIMPLEX, 0.42, 1)
         fps_pill_x = width - tw - 24
+        if fps_pill_x < next_x + 8:
+            return
         self._draw_status_pill(canvas, fps_pill_x, 8, fps_text, color=COLOR_TEXT_MAIN, font_scale=0.40)
 
     def _draw_spatial_guides(
@@ -496,6 +507,7 @@ class HUDRenderer:
         shortcuts = [
             ("Q", "Hoi canh vat"),
             ("SPACE", "Doc chu"),
+            ("C", "Canh bao"),
             ("S", "Dung doc"),
             ("ESC", "Thoat")
         ]
@@ -503,31 +515,36 @@ class HUDRenderer:
             shortcuts = [
                 ("Q", "VQA"),
                 ("SPACE", "OCR"),
+                ("C", "CB"),
                 ("S", "Dung"),
                 ("ESC", "Thoat")
             ]
 
-        curr_x = 16
+        if width < 480:
+            shortcuts = [("Q", "VQA"), ("SPACE", "OCR"), ("C", "CB"), ("S", ""), ("ESC", "")]
+        curr_x = 8 if width < 480 else 16
+        font_scale = 0.32 if width < 480 else 0.38
+        gap = 8 if width < 480 else 18
         for key, desc in shortcuts:
             # Keycap viền nhỏ
-            (kw, _), _ = cv2.getTextSize(key, cv2.FONT_HERSHEY_SIMPLEX, 0.38, 1)
+            (kw, _), _ = cv2.getTextSize(key, cv2.FONT_HERSHEY_SIMPLEX, font_scale, 1)
             k_box_w = kw + 10
             k_box_h = 20
             k_y1 = y1 + 8
             k_y2 = k_y1 + k_box_h
 
-            if curr_x + k_box_w + 80 > width:
+            clean_desc = self._clean_ascii(desc)
+            (dw, _), _ = cv2.getTextSize(clean_desc, cv2.FONT_HERSHEY_SIMPLEX, font_scale, 1)
+            if curr_x + k_box_w + 6 + dw > width - 4:
                 break
 
             cv2.rectangle(canvas, (curr_x, k_y1), (curr_x + k_box_w, k_y2), (55, 45, 38), -1)
             cv2.rectangle(canvas, (curr_x, k_y1), (curr_x + k_box_w, k_y2), COLOR_CYAN, 1)
-            cv2.putText(canvas, key, (curr_x + 5, k_y1 + 14), cv2.FONT_HERSHEY_SIMPLEX, 0.38, COLOR_CYAN, 1, cv2.LINE_AA)
+            cv2.putText(canvas, key, (curr_x + 5, k_y1 + 14), cv2.FONT_HERSHEY_SIMPLEX, font_scale, COLOR_CYAN, 1, cv2.LINE_AA)
 
             curr_x += k_box_w + 6
-            clean_desc = self._clean_ascii(desc)
-            cv2.putText(canvas, clean_desc, (curr_x, k_y1 + 14), cv2.FONT_HERSHEY_SIMPLEX, 0.38, COLOR_TEXT_MUTED, 1, cv2.LINE_AA)
-            (dw, _), _ = cv2.getTextSize(clean_desc, cv2.FONT_HERSHEY_SIMPLEX, 0.38, 1)
-            curr_x += dw + 18
+            cv2.putText(canvas, clean_desc, (curr_x, k_y1 + 14), cv2.FONT_HERSHEY_SIMPLEX, font_scale, COLOR_TEXT_MUTED, 1, cv2.LINE_AA)
+            curr_x += dw + gap
 
     def _draw_empty_state(self, snapshot: Dict[str, Any]) -> np.ndarray:
         """G. Empty / Loading State khi chưa có camera packet."""

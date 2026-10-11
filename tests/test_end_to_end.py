@@ -130,8 +130,8 @@ class TestEndToEnd(unittest.TestCase):
         coordinator.stop()
         self.assertFalse(coordinator.camera_manager.is_alive())
 
-    def test_vqa_high_risk_preempts_audio_without_cancelling_vqa(self):
-        """HIGH_RISK ngắt tiếng VQA; MEDIUM không ngắt và VQA vẫn giữ trạng thái."""
+    def test_vqa_mutes_high_risk_until_warning_mode(self):
+        """OCR/VQA tắt cảnh báo HIGH cả trong và sau tác vụ cho đến khi bấm C."""
         camera = MagicMock()
         camera.get_latest_frame.return_value = FramePacket(
             frame_id=1,
@@ -239,10 +239,10 @@ class TestEndToEnd(unittest.TestCase):
         coordinator._post_safety_alert([stale_high_risk])
         mock_tts.stop.assert_not_called()
 
-        # HIGH hợp lệ ngắt tiếng ngay lập tức
+        # HIGH hợp lệ cũng bị tắt trong chế độ VQA.
         coordinator._post_safety_alert([valid_high_risk])
-        mock_tts.stop.assert_called_once()
-        self.assertEqual(audio_coordinator.interrupted_count, 1)
+        mock_tts.stop.assert_not_called()
+        self.assertEqual(audio_coordinator.interrupted_count, 0)
         self.assertTrue(coordinator.is_on_demand_active())
         self.assertEqual(coordinator.get_runtime_snapshot()["mode"], "VQA")
 
@@ -253,12 +253,17 @@ class TestEndToEnd(unittest.TestCase):
 
         # Sau khi hoàn thành và đọc xong, on_demand_active phải tự động chuyển về False
         self.assertFalse(coordinator.is_on_demand_active())
+        self.assertEqual(coordinator.get_runtime_snapshot()["selected_mode"], "VQA")
+        self.assertFalse(coordinator.get_runtime_snapshot()["safety_alerts_enabled"])
 
         # Kiểm tra phím dừng khẩn cấp stop_speech()
         coordinator.set_on_demand_active(True, mode="VQA")
         self.assertTrue(coordinator.is_on_demand_active())
         coordinator.stop_speech()
         self.assertFalse(coordinator.is_on_demand_active())
+        self.assertEqual(coordinator.get_runtime_snapshot()["mode"], "VQA")
+        coordinator.enter_warning_mode()
+        self.assertTrue(coordinator.get_runtime_snapshot()["safety_alerts_enabled"])
 
         coordinator.stop()
 
@@ -366,7 +371,7 @@ class TestEndToEnd(unittest.TestCase):
 
         coordinator.stop_speech()
         self.assertFalse(coordinator.trigger_vqa("B"))
-        self.assertEqual(coordinator.get_runtime_snapshot()["mode"], "OBSERVATION")
+        self.assertEqual(coordinator.get_runtime_snapshot()["mode"], "VQA")
 
         a_release.set()
         thread_a.join(timeout=0.5)
@@ -415,7 +420,8 @@ class TestEndToEnd(unittest.TestCase):
         self.assertFalse(coordinator.is_on_demand_active())
         self.assertIsNone(coordinator._active_on_demand_token)
         self.assertIsNone(coordinator._on_demand_thread)
-        self.assertEqual(coordinator.get_runtime_snapshot()["mode"], "OBSERVATION")
+        self.assertEqual(coordinator.get_runtime_snapshot()["mode"], "VQA")
+        self.assertFalse(coordinator.get_runtime_snapshot()["safety_alerts_enabled"])
 
 if __name__ == "__main__":
     unittest.main()

@@ -77,6 +77,8 @@ class SystemCoordinator:
         self._det_thread: Optional[threading.Thread] = None
         self._depth_thread: Optional[threading.Thread] = None
         self._on_demand_thread: Optional[threading.Thread] = None
+        self._on_demand_starting = False
+        self._shutting_down = False
 
         # Lưu trữ trạng thái mới nhất phục vụ hiển thị HUD
         self._latest_packet: Optional[FramePacket] = None
@@ -84,6 +86,8 @@ class SystemCoordinator:
         self._latest_depth: Optional[DepthMap] = None
         self._latest_assessments: List[RiskAssessment] = []
         self._current_mode = "OBSERVATION" # "OBSERVATION" | "OCR" | "VQA" | "DEGRADED"
+        self._selected_mode = "WARNING"
+        self._warning_since = float("-inf")
         self._on_demand_active = False
         self._on_demand_generation = 0
         self._active_on_demand_token: Optional[int] = None
@@ -94,13 +98,48 @@ class SystemCoordinator:
         with self._state_lock:
             return self._on_demand_active
 
-    def set_on_demand_active(self, active: bool, mode: str = "OBSERVATION") -> None:
-        """Thiết lập trạng thái On-Demand mà không dừng pipeline an toàn."""
+    def _select_mode_locked(self, mode: str) -> None:
+        changed = self._selected_mode != mode
+        self._selected_mode = mode
+        self._current_mode = "OBSERVATION" if mode == "WARNING" else mode
+        self.audio_coordinator.interrupt()
+        self.audio_coordinator.set_safety_alerts_enabled(mode == "WARNING")
+        if changed:
+            if mode == "WARNING":
+                self._warning_since = time.monotonic()
+                text = "Đã chuyển sang chế độ cảnh báo."
+            else:
+                text = f"Đã chuyển sang {mode}. Cảnh báo vật cản đã tắt."
+            self.audio_coordinator.post_task(AudioTask(
+                priority=AudioPriority.ON_DEMAND, text=text, interruptible=True))
+
+    def _cancel_on_demand_locked(self) -> None:
+        self._on_demand_generation += 1
+        self._on_demand_active = False
+        self._active_on_demand_token = None
+
+    def enter_warning_mode(self) -> None:
+        """C: cancel on-demand output and explicitly restore fresh safety alerts."""
         with self._state_lock:
-            self._on_demand_generation += 1
-            self._on_demand_active = active
-            self._active_on_demand_token = self._on_demand_generation if active else None
-            self._current_mode = mode if active else "OBSERVATION"
+            if self._shutting_down:
+                return
+            self._cancel_on_demand_locked()
+            self._select_mode_locked("WARNING")
+
+    def set_on_demand_active(self, active: bool, mode: str = "OBSERVATION") -> None:
+        """Compatibility setter: ending a task no longer changes the selected mode."""
+        if active and mode not in ("OCR", "VQA"):
+            raise ValueError("On-demand mode must be OCR or VQA")
+        with self._state_lock:
+            if self._shutting_down and active:
+                return
+            self._cancel_on_demand_locked()
+            if active:
+                self._select_mode_locked(mode)
+                self._on_demand_active = True
+                self._active_on_demand_token = self._on_demand_generation
+            else:
+                self.audio_coordinator.interrupt()
 
     def _is_current_on_demand(self, token: int) -> bool:
         with self._state_lock:
@@ -112,6 +151,17 @@ class SystemCoordinator:
             if not self._on_demand_active or self._active_on_demand_token != token:
                 return False
             return self.audio_coordinator.post_task(task)
+
+    def _wait_on_demand_audio(self, token: int, timeout: float) -> bool:
+        """Bounded polling lets C/S/shutdown release a cancelled worker promptly."""
+        deadline = time.monotonic() + timeout
+        while self._is_current_on_demand(token):
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                return False
+            if self.audio_coordinator.wait_until_idle(timeout=min(0.1, remaining)):
+                return True
+        return False
 
     def _publish_on_demand_result(
         self,
@@ -128,13 +178,12 @@ class SystemCoordinator:
             return self.audio_coordinator.post_task(task)
 
     def _finish_on_demand(self, token: int) -> None:
-        """Chỉ owner của generation hiện hành mới được kết thúc mode on-demand."""
+        """Only finish the current task; retain the selected OCR/VQA mode."""
         with self._state_lock:
             if self._active_on_demand_token != token:
                 return
             self._on_demand_active = False
             self._active_on_demand_token = None
-            self._current_mode = "OBSERVATION"
 
     def _start_on_demand(
         self,
@@ -144,7 +193,9 @@ class SystemCoordinator:
     ) -> bool:
         """Dành token và khởi động đúng một worker inference on-demand."""
         with self._state_lock:
-            if self._on_demand_thread is not None and self._on_demand_thread.is_alive():
+            if self._shutting_down or self._on_demand_starting or (
+                self._on_demand_thread is not None and self._on_demand_thread.is_alive()
+            ):
                 rejection = "worker on-demand trước chưa kết thúc"
                 thread = None
                 token = -1
@@ -158,7 +209,8 @@ class SystemCoordinator:
                 token = self._on_demand_generation
                 self._on_demand_active = True
                 self._active_on_demand_token = token
-                self._current_mode = mode
+                self._select_mode_locked(mode)
+                self._on_demand_starting = True
                 thread = threading.Thread(
                     target=target,
                     args=(token, *args),
@@ -183,14 +235,18 @@ class SystemCoordinator:
                     self._on_demand_generation += 1
                     self._active_on_demand_token = None
                     self._on_demand_active = False
-                    self._current_mode = "OBSERVATION"
             print(f"[SystemCoordinator] Không thể khởi động {mode}: {exc}")
             return False
+        finally:
+            with self._state_lock:
+                self._on_demand_starting = False
 
     def start(self) -> None:
         """Khởi động toàn bộ các luồng của hệ thống."""
         if self._running:
             return
+        with self._state_lock:
+            self._shutting_down = False
         self._running = True
 
         self.audio_coordinator.start()
@@ -211,8 +267,11 @@ class SystemCoordinator:
 
     def stop(self) -> None:
         """Dừng toàn bộ hệ thống an toàn."""
+        with self._state_lock:
+            self._shutting_down = True
+            self._cancel_on_demand_locked()
+            self.audio_coordinator.interrupt()
         self._running = False
-        self.set_on_demand_active(False)
         self.camera_manager.stop()
         if self._det_thread and self._det_thread.is_alive():
             self._det_thread.join(timeout=1.5)
@@ -278,7 +337,7 @@ class SystemCoordinator:
                 # 4. Risk Fusion FSM đánh giá rủi ro
                 assessments = self.risk_fsm.update(sync_pair)
 
-                # 5. Alert Aggregator luôn giữ đường cảnh báo HIGH_RISK hoạt động.
+                # 5. Chỉ phát cảnh báo khi người dùng chọn chế độ Cảnh báo.
                 self._post_safety_alert(assessments)
 
                 e2e_ms = (time.monotonic() - t0) * 1000.0
@@ -288,7 +347,7 @@ class SystemCoordinator:
                     self._latest_packet = packet
                     self._latest_detection = tracked_det
                     self._latest_assessments = assessments
-                    if not self._on_demand_active:
+                    if self._selected_mode == "WARNING":
                         if sync_pair.data_quality in (DataQuality.STALE, DataQuality.DEGRADED):
                             self._current_mode = "DEGRADED"
                         else:
@@ -298,17 +357,16 @@ class SystemCoordinator:
                 print(f"[DetectionWorker] Lỗi suy luận và fusion: {e}")
 
     def _post_safety_alert(self, assessments: List[RiskAssessment]) -> None:
-        """Trong on-demand chỉ cho HIGH_RISK đi qua để không ngắt bởi LOW/MEDIUM."""
-        alert_candidates = assessments
-        if self.is_on_demand_active():
-            alert_candidates = [a for a in assessments if a.risk_level == RiskLevel.HIGH]
-
-        if not alert_candidates:
-            return
-
-        alert_task = self.alert_aggregator.aggregate(alert_candidates)
-        if alert_task is not None:
-            self.audio_coordinator.post_task(alert_task)
+        """Gate before aggregation so muted modes do not consume cooldown."""
+        with self._state_lock:
+            if self._selected_mode != "WARNING" or self._shutting_down:
+                return
+            candidates = [a for a in assessments if a.source_timestamp > self._warning_since]
+            if not candidates:
+                return
+            task = self.alert_aggregator.aggregate(candidates)
+            if task is not None:
+                self.audio_coordinator.post_task(task)
 
     # ================= On-Demand OCR & VQA =================
 
@@ -325,8 +383,6 @@ class SystemCoordinator:
         try:
             if not self._is_current_on_demand(token):
                 return
-            self.audio_coordinator.interrupt()
-
             packet = self.get_latest_frame()
             if packet is None or not self._is_fresh_on_demand_frame(
                 packet, time.monotonic()
@@ -338,7 +394,7 @@ class SystemCoordinator:
                 )):
                     return
                 if self._is_current_on_demand(token):
-                    self.audio_coordinator.wait_until_idle(timeout=4.0)
+                    self._wait_on_demand_audio(token, timeout=4.0)
                 return
 
             if not self._post_on_demand_audio(token, AudioTask(
@@ -365,7 +421,7 @@ class SystemCoordinator:
                 return
 
             if self._is_current_on_demand(token):
-                self.audio_coordinator.wait_until_idle(timeout=45.0)
+                self._wait_on_demand_audio(token, timeout=45.0)
         except Exception as e:
             print(f"[SystemCoordinator] Lỗi xử lý OCR: {e}")
         finally:
@@ -386,13 +442,11 @@ class SystemCoordinator:
         ]
 
     def _run_vqa_task(self, token: int, question: str) -> None:
-        # Pipeline an toàn và HIGH_RISK vẫn hoạt động trong toàn bộ tác vụ.
+        # Detection/depth và đánh giá nguy cơ vẫn chạy; âm thanh cảnh báo đã tắt.
         try:
             # 2. Ngắt cảnh báo cũ và làm sạch hàng đợi âm thanh
             if not self._is_current_on_demand(token):
                 return
-            self.audio_coordinator.interrupt()
-
             packet = self.get_latest_frame()
             if packet is None or not self._is_fresh_on_demand_frame(
                 packet, time.monotonic()
@@ -404,7 +458,7 @@ class SystemCoordinator:
                 )):
                     return
                 if self._is_current_on_demand(token):
-                    self.audio_coordinator.wait_until_idle(timeout=4.0)
+                    self._wait_on_demand_audio(token, timeout=4.0)
                 return
 
             # 3. Thông báo đang quan sát
@@ -453,20 +507,21 @@ class SystemCoordinator:
             ):
                 return
 
-            # 6. Đợi cả câu trả lời hoặc cảnh báo HIGH_RISK chen ngang phát xong.
+            # 6. Đợi câu trả lời phát xong, không đổi chế độ đã chọn.
             if self._is_current_on_demand(token):
-                self.audio_coordinator.wait_until_idle(timeout=45.0)
+                self._wait_on_demand_audio(token, timeout=45.0)
 
         except Exception as e:
             print(f"[SystemCoordinator] Lỗi xử lý VQA: {e}")
         finally:
-            # 7. Phục hồi trạng thái quan sát sau khi tác vụ on-demand hoàn tất.
+            # 7. Kết thúc tác vụ; tiếp tục giữ chế độ VQA.
             self._finish_on_demand(token)
 
     def stop_speech(self) -> None:
-        """Ngắt tiếng khẩn cấp và kết thúc chế độ on-demand."""
-        self.set_on_demand_active(False)
-        self.audio_coordinator.interrupt()
+        """S: cancel speech/results while keeping the selected mode."""
+        with self._state_lock:
+            self._cancel_on_demand_locked()
+            self.audio_coordinator.interrupt()
 
     # ================= State Getters for HUD =================
 
@@ -486,6 +541,9 @@ class SystemCoordinator:
                 "depth": self._latest_depth,
                 "assessments": list(self._latest_assessments),
                 "mode": self._current_mode,
+                "selected_mode": self._selected_mode,
+                "on_demand_active": self._on_demand_active,
+                "safety_alerts_enabled": self._selected_mode == "WARNING" and not self._shutting_down,
                 "metrics": self.metrics.get_summary(),
                 "is_speaking": self.audio_coordinator.is_speaking
             }

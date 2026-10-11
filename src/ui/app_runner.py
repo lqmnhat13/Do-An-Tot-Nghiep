@@ -54,6 +54,9 @@ class AppRunner:
                     elif key in (ord('q'), ord('Q')):
                         print("[AppRunner] Phím Q: Kích hoạt mô tả toàn cảnh VQA.")
                         self.coordinator.trigger_vqa("Mô tả khung cảnh phía trước")
+                    elif key in (ord('c'), ord('C')):
+                        print("[AppRunner] Phím C: Chuyển sang chế độ Cảnh báo.")
+                        self.coordinator.enter_warning_mode()
                     elif key in (ord('s'), ord('S')):
                         print("[AppRunner] Phím S: Dừng âm thanh.")
                         self.coordinator.stop_speech()
