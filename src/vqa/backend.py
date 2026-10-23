@@ -228,8 +228,11 @@ class MLXVLMBackend(VQABackend):
                 {"role": "system", "content": self.SYSTEM_PROMPT},
                 {"role": "user", "content": question},
             ]
+            # enable_thinking=False: Qwen3.5 mặc định sinh <think>...</think> (chậm, câu trả lời
+            # bị loại); template không dùng biến này (Qwen2.5-VL, Qwen3-VL) bỏ qua nó.
             prompt = self._apply_chat_template(
-                self._processor, self._config, messages, num_images=1
+                self._processor, self._config, messages, num_images=1,
+                enable_thinking=False
             )
             output = self._generate(
                 self._model, self._processor, prompt, image=[pil_image],
