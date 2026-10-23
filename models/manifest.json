@@ -1,39 +1,82 @@
 {
   "project": "Do-An-Tot-Nghiep Multimodal Assistive System",
-  "version": "1.0.0",
-  "updated_at": "2026-09-07",
+  "version": "1.1.0",
+  "updated_at": "2026-10-23",
   "models": {
     "yolov8n": {
       "task": "object_detection",
       "framework": "ultralytics",
-      "checkpoint": "yolov8n.pt",
+      "checkpoint": "models/weights/yolov8n.pt",
       "source": "Ultralytics COCO pretrained",
       "license": "AGPL-3.0",
       "classes_count": 80,
-      "filtered_classes_count": 21,
-      "device": "mps"
+      "filtered_classes_count": 24,
+      "alert_classes_count": 13,
+      "device": "mps",
+      "status": "active"
     },
     "depth_anything_v2_small": {
       "task": "monocular_depth_estimation",
       "framework": "transformers",
       "hf_repo": "depth-anything/Depth-Anything-V2-Small-hf",
+      "location": "Hugging Face cache",
       "representation": "relative_depth",
       "license": "Apache-2.0",
-      "device": "mps"
+      "device": "mps",
+      "status": "active"
+    },
+    "qwen2_5_vl_3b_instruct_4bit": {
+      "task": "visual_question_answering",
+      "framework": "mlx-vlm",
+      "hf_repo": "mlx-community/Qwen2.5-VL-3B-Instruct-4bit",
+      "checkpoint": "models/weights/qwen2_5_vl_3b_4bit",
+      "license": "qwen-research",
+      "license_link": "https://huggingface.co/Qwen/Qwen2.5-VL-3B-Instruct/blob/main/LICENSE",
+      "device": "mlx",
+      "loading": "lazy, on demand",
+      "status": "active (default VQA backend: mlx_vlm)"
+    },
+    "apple_vision_ocr": {
+      "task": "ocr",
+      "framework": "system_native (pyobjc Vision)",
+      "languages": ["vi", "en"],
+      "license": "Apple Proprietary Built-in",
+      "status": "active (default OCR engine: vision)"
     },
     "easyocr_vi": {
       "task": "vietnamese_ocr",
       "framework": "easyocr",
       "languages": ["vi", "en"],
+      "checkpoints": ["~/.EasyOCR/model/craft_mlt_25k.pth", "~/.EasyOCR/model/latin_g2.pth"],
       "license": "Apache-2.0",
-      "device": "mps"
+      "device": "mps",
+      "status": "fallback (used when Apple Vision is unavailable)"
+    },
+    "blip_image_captioning_base": {
+      "task": "image_captioning",
+      "framework": "transformers",
+      "hf_repo": "Salesforce/blip-image-captioning-base",
+      "location": "Hugging Face cache",
+      "license": "BSD-3-Clause",
+      "device": "mps",
+      "status": "legacy (VQA backend legacy_caption, not used by default config)"
+    },
+    "opus_mt_en_vi": {
+      "task": "translation_en_vi",
+      "framework": "transformers",
+      "hf_repo": "Helsinki-NLP/opus-mt-en-vi",
+      "location": "Hugging Face cache",
+      "license": "unverified, check model card",
+      "device": "mps",
+      "status": "legacy (VQA backend legacy_caption, not used by default config)"
     },
     "macos_say_tts": {
       "task": "vietnamese_tts",
       "framework": "system_native",
       "voice": "Linh",
       "locale": "vi_VN",
-      "license": "Apple Proprietary Built-in"
+      "license": "Apple Proprietary Built-in",
+      "status": "active"
     }
   }
 }
