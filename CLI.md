@@ -76,6 +76,15 @@ python scripts/download_models.py --mlx-vlm
 
 Lệnh đầu kiểm tra/tải YOLO, Depth Anything, BLIP/MarianMT, EasyOCR và tạo các WAV cảnh báo trong `assets/audio/`. Lệnh `--mlx-vlm` **chỉ** tải snapshot MLX-VLM được khai báo trong `configs/model_config.yaml`. Hai lệnh cần mạng khi model chưa có; lệnh đầu có thể ghi lại các WAV mẫu. Chỉ chạy khi cần chuẩn bị tài nguyên.
 
+### Hiệu chỉnh khoảng cách (depth.metric_scale)
+
+```bash
+python scripts/calibrate_depth.py --distance 1.0
+python scripts/calibrate_depth.py --distance 1.0 --distance 2.0 --image a.jpg --image b.jpg --write
+```
+
+Đặt camera đối diện một mặt phẳng (tường, cửa tủ) ở khoảng cách đã đo bằng thước, nhấn Enter để chụp. Script đo trung vị độ sâu thô ở vùng giữa khung hình và in hệ số `metric_scale = khoảng cách thật / giá trị model`; đo 2–3 khoảng cách rồi dùng trung vị. Tùy chọn: `--distance MÉT` (lặp lại), `--image PATH` (tương ứng từng `--distance`, thay cho webcam), `--source N`, `--frames N` (mặc định 15), `--center-ratio` (mặc định 0.2), `--device mps|cpu`, `--write` (ghi vào `configs/model_config.yaml`, giữ nguyên chú thích). Cần `depth.representation: metric_depth`.
+
 ### Kiểm tra môi trường
 
 ```bash

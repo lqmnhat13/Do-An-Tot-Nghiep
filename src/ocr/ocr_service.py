@@ -30,6 +30,7 @@ class OCRService:
         self.min_confidence = min_confidence
         self.quality_checker = quality_checker or ImageQualityChecker()
         self._reader = None
+        self._using_vision = False
         self._load_attempted = False
         self._load_error: Optional[str] = None
 
@@ -42,10 +43,15 @@ class OCRService:
             try:
                 from src.ocr.vision_engine import VisionOCRReader
                 self._reader = VisionOCRReader(self.languages)
+                self._using_vision = True
                 self._load_error = None
                 return
             except Exception as exc:
                 print(f"[OCRService] Vision không khả dụng: {exc}. Dùng EasyOCR.")
+        self._load_easyocr()
+
+    def _load_easyocr(self) -> None:
+        self._using_vision = False
         print("[OCRService] Đang khởi tạo EasyOCR engine cho tiếng Việt...")
         try:
             import easyocr
@@ -174,9 +180,12 @@ class OCRService:
     def process(self, request: OCRRequest) -> OCRResult:
         t0 = time.monotonic()
 
-        # 1. Kiểm tra chất lượng ảnh đầu vào
+        # 1. Kiểm tra chất lượng ảnh đầu vào. Chỉ từ chối ngay ảnh quá nhỏ; ảnh bị
+        # nghi mờ/tối/lóa vẫn được đọc thử (đo trên dữ liệu thật, phần lớn vẫn đọc được)
+        # và chỉ trả lời hướng dẫn chụp lại khi không đọc ra chữ.
         is_ok, msg, metrics = self.quality_checker.assess(request.image)
-        if not is_ok:
+
+        def bad_quality_result() -> OCRResult:
             return OCRResult(
                 request_id=request.request_id,
                 success=False,
@@ -185,6 +194,11 @@ class OCRService:
                 latency_sec=time.monotonic() - t0,
                 error_message=msg
             )
+
+        if not is_ok and metrics.get("too_small"):
+            return bad_quality_result()
+        # Ảnh kém chất lượng dễ sinh chữ rác, nên đòi độ tin cậy cao hơn.
+        min_confidence = self.min_confidence if is_ok else max(self.min_confidence, 0.5)
 
         try:
             self._ensure_reader()
@@ -201,8 +215,25 @@ class OCRService:
             # 2. Tiền xử lý ảnh (upscale + tăng tương phản)
             processed_image, scale = self._preprocess_image(request.image)
 
-            # 3. Chạy nhận dạng EasyOCR
-            raw_results = self._reader.readtext(processed_image)
+            # 3. Chạy nhận dạng; Vision lỗi lúc chạy (không chỉ lúc nạp) cũng chuyển sang EasyOCR
+            try:
+                raw_results = self._reader.readtext(processed_image)
+            except Exception as exc:
+                if not self._using_vision:
+                    raise
+                print(f"[OCRService] Vision lỗi khi đọc: {exc}. Chuyển sang EasyOCR.")
+                self._reader = None
+                self._load_easyocr()
+                if self._reader is None:
+                    message = self._load_error or "EasyOCR không khả dụng."
+                    return OCRResult(
+                        request_id=request.request_id,
+                        success=False,
+                        text=message,
+                        latency_sec=time.monotonic() - t0,
+                        error_message=message
+                    )
+                raw_results = self._reader.readtext(processed_image)
 
             # 4. Lọc và chuẩn hoá toạ độ về ảnh gốc
             valid_items = []
@@ -210,7 +241,7 @@ class OCRService:
             for item in raw_results:
                 bbox_poly, text, conf = item
                 clean_text = text.strip()
-                if conf >= self.min_confidence and len(clean_text) > 0:
+                if conf >= min_confidence and len(clean_text) > 0:
                     pts = np.array(bbox_poly, dtype=np.float32)
                     if scale != 1.0:
                         pts = pts / scale
@@ -237,6 +268,8 @@ class OCRService:
                     })
 
             if not valid_items:
+                if not is_ok:
+                    return bad_quality_result()
                 return OCRResult(
                     request_id=request.request_id,
                     success=True,

@@ -22,9 +22,9 @@ from src.camera.camera_manager import CameraManager
 from src.detection.class_filter import ClassFilter
 from src.detection.yolo_detector import YoloDetector
 from src.tracking.byte_tracker import ByteTrackerAdapter
-from src.depth.depth_estimator import DepthEstimator
-from src.depth.roi_extractor import ROIExtractor
+from src.depth.factory import build_depth_estimator, build_roi_extractor
 from src.fusion.walking_corridor import WalkingCorridor
+from src.fusion.generic_obstacle import build_generic_obstacle_detector
 from src.fusion.spatial_zones import SpatialZones
 from src.fusion.synchronizer import Synchronizer
 from src.fusion.risk_fsm import RiskFSM
@@ -39,15 +39,21 @@ def main():
     parser.add_argument("--duration", type=float, default=5.0, help="Thời gian đánh giá (giây)")
     parser.add_argument("--device", type=str, default="mps")
     parser.add_argument("--out", type=str, default="evaluation/results/eval_report.json")
+    parser.add_argument("--weights", type=str, default=None, help="Ghi đè detection.weights_path")
     args = parser.parse_args()
 
     print(f"[EVALUATION] Bắt đầu chạy đánh giá trên nguồn '{args.video}' trong {args.duration}s...")
 
-    fusion_cfg_path = os.path.join(PROJECT_ROOT, "configs", "fusion_rules.yaml")
-    fusion_cfg = {}
-    if os.path.exists(fusion_cfg_path):
-        with open(fusion_cfg_path, "r", encoding="utf-8") as f:
-            fusion_cfg = yaml.safe_load(f) or {}
+    def load_cfg(name):
+        path = os.path.join(PROJECT_ROOT, "configs", name)
+        if not os.path.exists(path):
+            return {}
+        with open(path, "r", encoding="utf-8") as f:
+            return yaml.safe_load(f) or {}
+
+    fusion_cfg = load_cfg("fusion_rules.yaml")
+    model_cfg = load_cfg("model_config.yaml")
+    det_cfg = model_cfg.get("detection", {})
 
     sync_cfg = fusion_cfg.get("synchronizer", {})
     max_pair_skew_ms = float(sync_cfg.get("max_pair_skew_ms", 600.0))
@@ -64,11 +70,20 @@ def main():
     )
 
     camera = CameraManager(source=args.video, target_fps=30.0)
-    class_filter = ClassFilter(custom_vi_names=fusion_cfg.get("labels_vi"))
-    detector = YoloDetector(device=args.device, class_filter=class_filter)
+    class_filter = ClassFilter(
+        enabled_classes=det_cfg.get("enabled_classes"),
+        alert_classes=det_cfg.get("alert_classes"),
+        custom_vi_names=fusion_cfg.get("labels_vi")
+    )
+    detector = YoloDetector(
+        weights_path=args.weights or det_cfg.get("weights_path", "models/weights/yolov8n.pt"),
+        device=args.device,
+        class_filter=class_filter,
+        confidence_threshold=det_cfg.get("confidence_threshold", 0.45)
+    )
     tracker = ByteTrackerAdapter()
-    depth_estimator = DepthEstimator(device=args.device)
-    roi_extractor = ROIExtractor()
+    depth_estimator = build_depth_estimator(model_cfg, args.device)
+    roi_extractor = build_roi_extractor(model_cfg, fusion_cfg)
     synchronizer = Synchronizer(
         max_pair_skew_ms=max_pair_skew_ms,
         max_detection_age_ms=max_detection_age_ms,
@@ -88,7 +103,8 @@ def main():
         confirmations_to_deescalate=int(fsm_cfg.get("confirmations_to_deescalate", 3)),
         instant_high_risk_in_center=bool(fsm_cfg.get("instant_high_risk_in_center", True)),
         cooldown_sec=float(fsm_cfg.get("track_alert_cooldown_sec", 4.0)),
-        allow_escalation_override=bool(fsm_cfg.get("allow_escalation_override", True))
+        allow_escalation_override=bool(fsm_cfg.get("allow_escalation_override", True)),
+        generic_obstacle_detector=build_generic_obstacle_detector(fusion_cfg, walking_corridor)
     )
     agg_cfg = fusion_cfg.get("alert_aggregator", {})
     alert_aggregator = AlertAggregator(

@@ -1,0 +1,109 @@
+{
+  "sequence": "rgbd_dataset_freiburg1_desk",
+  "dataset": "TUM RGB-D (cvg.cit.tum.de)",
+  "frames": 596,
+  "duration_sec": 19.836385011672974,
+  "data_quality_counts": {
+    "VALID": 596
+  },
+  "frame_level": {
+    "frames_with_near_obstacle_gt(<1.0m, any object)": 414,
+    "of_which_system_HIGH": 310,
+    "frames_without_near_obstacle": 182,
+    "of_which_system_HIGH(false_alarm_frames)": 84,
+    "generic_obstacle_frames": 215,
+    "generic_obstacle_frames_with_near_gt": 213
+  },
+  "object_level": {
+    "<= 1.0m": {
+      "limit_m": 1.0,
+      "tp": 189,
+      "fp": 144,
+      "fn": 0,
+      "precision": 0.5675675675675675,
+      "recall": 1.0
+    },
+    "<= 1.5m": {
+      "limit_m": 1.5,
+      "tp": 328,
+      "fp": 5,
+      "fn": 8,
+      "precision": 0.984984984984985,
+      "recall": 0.9761904761904762
+    }
+  },
+  "object_gt_distance_by_risk": {
+    "HIGH": {
+      "n": 333,
+      "mean": 0.9789633710642118,
+      "median": 0.9348000288009644,
+      "p90": 1.2688000202178955,
+      "min": 0.4713999927043915,
+      "max": 1.7239999771118164
+    },
+    "MEDIUM": {
+      "n": 27,
+      "mean": 1.6656370339570221,
+      "median": 1.6898000240325928,
+      "p90": 1.8667999982833863,
+      "min": 1.1912000179290771,
+      "max": 2.404599905014038
+    }
+  },
+  "alert_classes_seen": {
+    "laptop": 193,
+    "tv": 82,
+    "chair": 13,
+    "dining table": 25,
+    "cell phone": 17,
+    "bed": 30
+  },
+  "spoken_alerts": {
+    "count": 6,
+    "per_minute": 18.148468069567787,
+    "samples": [
+      {
+        "t": 0.0,
+        "text": "Chú ý, có vật cản phía trước, độ gần tương đối cao"
+      },
+      {
+        "t": 5.168052911758423,
+        "text": "Chú ý, có ti vi bên phải, độ gần tương đối cao"
+      },
+      {
+        "t": 8.700153112411499,
+        "text": "Chú ý, có vật cản phía trước, độ gần tương đối cao"
+      },
+      {
+        "t": 12.268003940582275,
+        "text": "Chú ý, có máy tính xách tay phía trước, độ gần tương đối cao"
+      },
+      {
+        "t": 15.800019025802612,
+        "text": "Chú ý, có ti vi phía trước, độ gần tương đối cao"
+      },
+      {
+        "t": 19.30389094352722,
+        "text": "Chú ý, có vật cản phía trước, độ gần tương đối cao"
+      }
+    ]
+  },
+  "latency_ms": {
+    "detect": {
+      "n": 596,
+      "mean": 26.57598945452203,
+      "median": 24.357562499062624,
+      "p90": 38.73520799606922,
+      "min": 18.542790996434633,
+      "max": 291.3287500050501
+    },
+    "depth": {
+      "n": 149,
+      "mean": 60.47448996632616,
+      "median": 57.98420799692394,
+      "p90": 59.75867439847207,
+      "min": 55.77341699972749,
+      "max": 400.1693750033155
+    }
+  }
+}

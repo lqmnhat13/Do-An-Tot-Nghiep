@@ -476,6 +476,8 @@ class HUDRenderer:
                 v = depth_map.values
                 v_small = cv2.resize(v, (dw, dh), interpolation=cv2.INTER_NEAREST)
                 v_norm = cv2.normalize(v_small, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
+                if not getattr(depth_map, "near_is_larger", True):
+                    v_norm = 255 - v_norm  # metric: mét nhỏ = gần, vẫn hiển thị gần là sáng
                 self._cached_depth_mini = cv2.applyColorMap(v_norm, cv2.COLORMAP_INFERNO)
 
             canvas[my1:my2, mx1:mx2] = self._cached_depth_mini

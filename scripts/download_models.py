@@ -52,17 +52,22 @@ def setup_yolo_weights():
         print(f"[FAIL] Không thể tải yolov8n.pt: {e}")
 
 def setup_depth_weights():
-    print("[CHECK] Kiểm tra Depth Anything V2 Small...")
-    try:
-        from transformers import AutoImageProcessor, AutoModelForDepthEstimation
-        repo_id = "depth-anything/Depth-Anything-V2-Small-hf"
-        print(f"        Đang nạp processor & model từ repo: {repo_id}...")
-        load_kwargs = pretrained_kwargs(allow_download=True)
-        processor = AutoImageProcessor.from_pretrained(repo_id, **load_kwargs)
-        model = AutoModelForDepthEstimation.from_pretrained(repo_id, **load_kwargs)
-        print(f"[OK] Depth Anything V2 Small đã sẵn sàng (đã lưu cache local).")
-    except Exception as e:
-        print(f"[FAIL] Không thể kiểm tra Depth Anything V2: {e}")
+    # Model trong model_config.yaml (mặc định Metric-Indoor) + bản relative để có thể chuyển lại.
+    import yaml
+    with open(os.path.join(PROJECT_ROOT, "configs", "model_config.yaml"),
+              encoding="utf-8") as handle:
+        configured = (yaml.safe_load(handle) or {}).get("depth", {}).get("hf_repo_id")
+    repo_ids = [r for r in (configured, "depth-anything/Depth-Anything-V2-Small-hf") if r]
+    from transformers import AutoImageProcessor, AutoModelForDepthEstimation
+    load_kwargs = pretrained_kwargs(allow_download=True)
+    for repo_id in dict.fromkeys(repo_ids):
+        print(f"[CHECK] Kiểm tra depth model {repo_id}...")
+        try:
+            AutoImageProcessor.from_pretrained(repo_id, **load_kwargs)
+            AutoModelForDepthEstimation.from_pretrained(repo_id, **load_kwargs)
+            print(f"[OK] {repo_id} đã sẵn sàng (đã lưu cache local).")
+        except Exception as e:
+            print(f"[FAIL] Không thể kiểm tra {repo_id}: {e}")
 
 def setup_vqa_weights():
     print("[CHECK] Kiểm tra BLIP và MarianMT...")

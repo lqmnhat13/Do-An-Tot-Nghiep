@@ -117,7 +117,7 @@ class TestMLXVLM(unittest.TestCase):
 
     def test_extra_sentences_and_over_word_budget_fallback_without_cutting(self):
         service = self.service()
-        for text in ("Có ghế. Có bàn. Có cửa.", "Có ghế.Có bàn.",
+        for text in ("Có ghế. Có bàn. Có cửa. Có đèn.", "Có ghế.Có bàn.",
                      "Có ghế.\nCó bàn.", " ".join(["vật"] * 46) + "."):
             with self.subTest(text=text):
                 self.generate.return_value = types.SimpleNamespace(text=text, finish_reason="stop")
@@ -127,6 +127,11 @@ class TestMLXVLM(unittest.TestCase):
 
     def test_two_sentences_at_word_limit_are_accepted_unchanged(self):
         text = " ".join(["vật"] * 20) + ". " + " ".join(["đồ"] * 25) + "."
+        self.generate.return_value = types.SimpleNamespace(text=text, finish_reason="stop")
+        self.assertEqual(self.service().answer(self.request()).answer, "Khung cảnh: " + text)
+
+    def test_three_complete_sentences_are_accepted_unchanged(self):
+        text = "Có một chiếc xe đạp. Bên cạnh là bãi cỏ. Một người đang đứng gần xe."
         self.generate.return_value = types.SimpleNamespace(text=text, finish_reason="stop")
         self.assertEqual(self.service().answer(self.request()).answer, "Khung cảnh: " + text)
 

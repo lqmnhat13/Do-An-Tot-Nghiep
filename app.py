@@ -13,9 +13,9 @@ from src.camera.camera_manager import CameraManager
 from src.detection.class_filter import ClassFilter
 from src.detection.yolo_detector import YoloDetector
 from src.tracking.byte_tracker import ByteTrackerAdapter
-from src.depth.depth_estimator import DepthEstimator
-from src.depth.roi_extractor import ROIExtractor
+from src.depth.factory import build_depth_estimator, build_roi_extractor
 from src.fusion.walking_corridor import WalkingCorridor
+from src.fusion.generic_obstacle import build_generic_obstacle_detector
 from src.fusion.spatial_zones import SpatialZones
 from src.fusion.synchronizer import Synchronizer
 from src.fusion.risk_fsm import RiskFSM
@@ -99,19 +99,8 @@ def main():
     tracker = ByteTrackerAdapter(iou_threshold=0.3)
 
     # 3. Depth Estimation & ROI
-    depth_input_size = (
-        int(model_cfg.get("depth", {}).get("input_height", 256)),
-        int(model_cfg.get("depth", {}).get("input_width", 256))
-    )
-    depth_estimator = DepthEstimator(
-        model_name=model_cfg.get("depth", {}).get("hf_repo_id", "depth-anything/Depth-Anything-V2-Small-hf"),
-        device=device,
-        input_size=depth_input_size
-    )
-    roi_extractor = ROIExtractor(
-        erosion_ratio=model_cfg.get("depth", {}).get("roi_erosion_ratio", 0.15),
-        percentile=float(model_cfg.get("depth", {}).get("percentile_roi", 80.0))
-    )
+    depth_estimator = build_depth_estimator(model_cfg, device)
+    roi_extractor = build_roi_extractor(model_cfg, fusion_cfg)
 
     # 4. Synchronizer & Fusion
     walking_corridor = WalkingCorridor(**fusion_cfg.get("walking_corridor", {}))
@@ -146,7 +135,8 @@ def main():
         confirmations_to_deescalate=int(fsm_cfg.get("confirmations_to_deescalate", 3)),
         instant_high_risk_in_center=bool(fsm_cfg.get("instant_high_risk_in_center", True)),
         cooldown_sec=float(fsm_cfg.get("track_alert_cooldown_sec", 4.0)),
-        allow_escalation_override=bool(fsm_cfg.get("allow_escalation_override", True))
+        allow_escalation_override=bool(fsm_cfg.get("allow_escalation_override", True)),
+        generic_obstacle_detector=build_generic_obstacle_detector(fusion_cfg, walking_corridor)
     )
     agg_cfg = fusion_cfg.get("alert_aggregator", {})
     alert_aggregator = AlertAggregator(

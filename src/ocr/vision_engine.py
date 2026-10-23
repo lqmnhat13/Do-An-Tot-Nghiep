@@ -28,8 +28,10 @@ class VisionOCRReader:
         )
         request.setRecognitionLanguages_(self.languages)
         request.setUsesLanguageCorrection_(True)
+        # A Python `{}` raises NSInvalidArgumentException on macOS 27 + PyObjC 12;
+        # nil options are equivalent and accepted everywhere.
         handler = self._vision.VNImageRequestHandler.alloc().initWithData_options_(
-            data, {}
+            data, None
         )
         success, error = handler.performRequests_error_([request], None)
         if not success:

@@ -8,7 +8,8 @@ opencv-python>=4.8.0
 easyocr>=1.7.0
 pyobjc-framework-Vision>=12.2.2; sys_platform == "darwin"
 pyyaml>=6.0
-scipy>=1.10.0
+scipy>=1.10.0,<1.15; python_version < "3.11" # 1.15.x wheels fail to load on macOS 27 (dyld __thread_bss)
+scipy>=1.16; python_version >= "3.11"
 scikit-image>=0.20.0
 pillow>=9.5.0
 numpy>=1.24.0

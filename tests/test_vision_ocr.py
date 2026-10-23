@@ -39,6 +39,35 @@ class TestVisionOCR(unittest.TestCase):
         self.assertIs(service._reader, reader)
         easyocr_reader.assert_called_once()
 
+    def test_vision_runtime_failure_falls_back_to_easyocr(self):
+        from src.contracts.request import OCRRequest
+
+        class BrokenVision:
+            def __init__(self, languages):
+                pass
+
+            def readtext(self, image):
+                raise ValueError("NSInvalidArgumentException - key does not exist")
+
+        class FakeEasyOCR:
+            def readtext(self, image):
+                return [([[0, 0], [100, 0], [100, 30], [0, 30]], "XIN CHÀO", 0.9)]
+
+        class PassQuality:
+            def assess(self, image):
+                return True, "ok", {}
+
+        image = np.full((300, 700, 3), 255, dtype=np.uint8)
+        with patch("src.ocr.vision_engine.VisionOCRReader", BrokenVision), \
+             patch("easyocr.Reader", return_value=FakeEasyOCR()) as easyocr_reader:
+            service = OCRService(engine="vision", use_gpu=False, quality_checker=PassQuality())
+            first = service.process(OCRRequest(request_id="1", image=image))
+            second = service.process(OCRRequest(request_id="2", image=image))
+        self.assertTrue(first.success)
+        self.assertIn("XIN CHÀO", first.text)
+        self.assertIn("XIN CHÀO", second.text)
+        easyocr_reader.assert_called_once()
+
 
 if __name__ == "__main__":
     unittest.main()

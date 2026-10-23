@@ -8,6 +8,11 @@ from src.contracts.risk import DataQuality, RiskLevel, Direction, RiskAssessment
 from src.detection.class_filter import ClassFilter
 from src.depth.roi_extractor import ROIExtractor
 from src.fusion.walking_corridor import WalkingCorridor
+from src.fusion.generic_obstacle import GenericObstacleDetector
+
+# Track id dành riêng cho cảnh báo vật cản chung (không thuộc lớp COCO); ByteTrack chỉ cấp id dương.
+GENERIC_OBSTACLE_TRACK_ID = -100
+GENERIC_OBSTACLE_NAME = "vật cản"
 from src.fusion.spatial_zones import SpatialZones
 from src.fusion.synchronizer import SynchronizedPair
 
@@ -46,8 +51,10 @@ class RiskFSM:
         instant_high_risk_in_center: bool = True,
         cooldown_sec: float = 4.0,
         allow_escalation_override: bool = True,
-        walking_corridor: Optional[WalkingCorridor] = None
+        walking_corridor: Optional[WalkingCorridor] = None,
+        generic_obstacle_detector: Optional[GenericObstacleDetector] = None
     ):
+        self.generic_obstacle_detector = generic_obstacle_detector
         self.class_filter = class_filter
         self.spatial_zones = spatial_zones
         self.walking_corridor = walking_corridor or WalkingCorridor()
@@ -163,6 +170,11 @@ class RiskFSM:
             state.last_assessment = assessment
             assessments.append(assessment)
 
+        generic = self._assess_generic_obstacle(sync_pair, orig_w, orig_h, now)
+        if generic is not None:
+            current_frame_track_ids.add(GENERIC_OBSTACLE_TRACK_ID)
+            assessments.append(generic)
+
         # Dọn dẹp tracks cũ không còn xuất hiện
         if len(self._tracks) > 50:
             active_ids = {t for t in self._tracks if t in current_frame_track_ids}
@@ -170,6 +182,39 @@ class RiskFSM:
                 self._tracks = {t: s for t, s in self._tracks.items() if t in current_frame_track_ids}
 
         return assessments
+
+    def _assess_generic_obstacle(self, sync_pair: SynchronizedPair, orig_w: float, orig_h: float,
+                                 now: float) -> Optional[RiskAssessment]:
+        """HIGH cho vùng gần trong hành lang mà không vật được nhận diện nào phủ (chỉ depth metric)."""
+        depth_map = sync_pair.depth_map
+        if (self.generic_obstacle_detector is None or depth_map is None
+                or sync_pair.data_quality != DataQuality.VALID
+                or depth_map.shape != (int(orig_h), int(orig_w))):
+            return None
+        found = self.generic_obstacle_detector.find(
+            depth_map, [d.bbox for d in sync_pair.detection_result.detections])
+        if found is None:
+            return None
+        state = self._tracks.setdefault(GENERIC_OBSTACLE_TRACK_ID,
+                                        TrackState(track_id=GENERIC_OBSTACLE_TRACK_ID))
+        proximity = max(self.roi_extractor.score_from_distance(found.distance_m), self.depth_threshold_high)
+        state.current_risk = RiskLevel.HIGH
+        assessment = RiskAssessment(
+            track_id=GENERIC_OBSTACLE_TRACK_ID,
+            class_name=GENERIC_OBSTACLE_NAME,
+            direction=self.spatial_zones.determine_direction(found.bbox, orig_w),
+            risk_level=RiskLevel.HIGH,
+            data_quality=sync_pair.data_quality,
+            relative_proximity=proximity,
+            proximity_desc=self.roi_extractor.describe(proximity, metric=True),
+            reason=(f"Vật cản chưa nhận diện trong hành lang: {found.area_ratio:.0%} vùng "
+                    f"< {self.generic_obstacle_detector.near_distance_m:.1f} m, "
+                    f"ước lượng {found.distance_m:.1f} m"),
+            source_timestamp=sync_pair.effective_timestamp,
+            expires_at=now + 1.0,
+        )
+        state.last_assessment = assessment
+        return assessment
 
     def _evaluate_candidate_risk(
         self,

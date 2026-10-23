@@ -1,0 +1,24 @@
+{
+  "video_source": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/data/tum/fr1_desk.mp4",
+  "evaluation_duration_sec": 20.0,
+  "total_camera_frames": 493,
+  "total_frames_processed": 493,
+  "performance_metrics": {
+    "fps": 22.3,
+    "detection": {
+      "p50": 41.53622900048504,
+      "p95": 69.8509951998858,
+      "mean": 43.71860915001889
+    },
+    "depth": {
+      "p50": 86.21587499874295,
+      "p95": 101.18532355154457,
+      "mean": 87.452292939779
+    },
+    "end_to_end": {
+      "p50": 42.64316649641842,
+      "p95": 70.55717499752063,
+      "mean": 44.36567873992317
+    }
+  }
+}

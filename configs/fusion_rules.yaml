@@ -19,11 +19,15 @@ synchronizer:
   max_alert_age_ms: 1500     # Tuổi tối đa của dữ liệu nguồn khi chuẩn bị phát cảnh báo (ms)
 
 risk_fsm:
-  # Ngưỡng relative depth (đã chuẩn hóa [0, 1], trong đó giá trị lớn hơn = gần hơn)
-  # Tinh chỉnh tối ưu cho môi trường trong nhà / phòng nhỏ (indoor):
+  # Ngưỡng điểm độ gần [0, 1] (lớn hơn = gần hơn):
   depth_threshold_high: 0.75
   depth_threshold_medium: 0.45
   depth_threshold_low: 0.25
+  # Với depth.representation = metric_depth, khoảng cách (mét) của phần gần nhất của vật
+  # được quy đổi sao cho <= high_m tương ứng điểm >= depth_threshold_high, v.v.
+  distance_threshold_high_m: 1.5
+  distance_threshold_medium_m: 2.5
+  distance_threshold_low_m: 3.5
 
   # Xác nhận tăng mức; hạ mức ngay khi bbox/độ gần không còn đạt điều kiện.
   confirmations_to_escalate: 1
@@ -34,6 +38,14 @@ risk_fsm:
   track_alert_cooldown_sec: 4.0
   # Cho phép ghi đè cooldown nếu mức rủi ro tăng cấp (ví dụ từ MEDIUM lên HIGH)
   allow_escalation_override: true
+
+# Cảnh báo "vật cản" cho vùng gần trong hành lang mà YOLO không nhận diện (tường, mặt bàn,
+# cạnh tủ...). Chỉ hoạt động với depth.representation = metric_depth.
+generic_obstacle:
+  enabled: true
+  near_distance_m: 1.0     # chặt hơn ngưỡng HIGH theo vật (1.5 m) để hạn chế cảnh báo thừa
+  min_area_ratio: 0.15     # tỉ lệ vùng hành lang (ngoài các bbox đã nhận diện) gần hơn ngưỡng
+  floor_ignore_ratio: 0.25 # bỏ dải đáy ảnh (sàn sát chân) khỏi vùng xét
 
 alert_aggregator:
   # Khoảng nghỉ tối thiểu giữa hai cảnh báo bất kỳ (chống dồn dập, tạo khoảng thở cho người dùng)

@@ -13,17 +13,27 @@ class DepthEstimator:
     """
     Adapter cho mô hình ước lượng độ sâu đơn mục Depth Anything V2 Small.
     Sử dụng thư viện HuggingFace Transformers, chạy tăng tốc trên Apple Silicon MPS.
-    Đầu ra tuân thủ nghiêm ngặt hợp đồng DepthMap (relative_depth, near_is_larger=True).
+    Đầu ra tuân thủ nghiêm ngặt hợp đồng DepthMap:
+    - relative_depth: giá trị tương đối, near_is_larger=True (model gốc).
+    - metric_depth: mét, near_is_larger=False (model Metric-Indoor). Giá trị được nhân
+      metric_scale vì thang mét của model lệch theo camera và độ phân giải đầu vào
+      (đo trên NYU ở 256px: model ước lượng xa gấp ~1.66 lần) -> cần hiệu chỉnh.
     """
 
     def __init__(
         self,
         model_name: str = "depth-anything/Depth-Anything-V2-Small-hf",
         device: str = "mps",
-        input_size: Tuple[int, int] = (256, 256)
+        input_size: Tuple[int, int] = (256, 256),
+        representation: str = "relative_depth",
+        metric_scale: float = 1.0
     ):
         self.model_name = model_name
         self.input_size = input_size
+        self.representation = DepthRepresentation(representation)
+        if self.representation == DepthRepresentation.INVERSE_DEPTH:
+            raise ValueError("DepthEstimator chỉ hỗ trợ relative_depth hoặc metric_depth")
+        self.metric_scale = float(metric_scale)
         if device == "mps" and not torch.backends.mps.is_available():
             print("[DepthEstimator] MPS không khả dụng, chuyển sang CPU.")
             self.device = "cpu"
@@ -63,15 +73,16 @@ class DepthEstimator:
         """
         t0 = time.monotonic()
         w_orig, h_orig = packet.original_size
+        is_metric = self.representation == DepthRepresentation.METRIC_DEPTH
 
         if self._model is None or self._processor is None:
             # Fallback nếu model chưa sẵn sàng
             dummy_vals = np.zeros((h_orig, w_orig), dtype=np.float32)
             dummy_mask = np.zeros((h_orig, w_orig), dtype=bool)
             return DepthMap(
-                representation=DepthRepresentation.RELATIVE_DEPTH,
-                unit="relative",
-                near_is_larger=True,
+                representation=self.representation,
+                unit="meter" if is_metric else "relative",
+                near_is_larger=not is_metric,
                 values=dummy_vals,
                 valid_mask=dummy_mask,
                 frame_id=packet.frame_id,
@@ -103,17 +114,22 @@ class DepthEstimator:
 
         # Kiểm tra valid mask (loại trừ NaN, Inf)
         valid_mask = np.isfinite(depth_np) & (~np.isnan(depth_np))
+        if is_metric:
+            depth_np = depth_np * self.metric_scale
+            valid_mask &= depth_np > 0.0
 
         return DepthMap(
-            representation=DepthRepresentation.RELATIVE_DEPTH,
-            unit="relative",
-            near_is_larger=True, # Depth Anything V2: số lớn hơn = gần hơn
+            representation=self.representation,
+            unit="meter" if is_metric else "relative",
+            # Relative (Depth Anything V2): lớn hơn = gần hơn; metric: mét, nhỏ hơn = gần hơn
+            near_is_larger=not is_metric,
             values=depth_np,
             valid_mask=valid_mask,
             frame_id=packet.frame_id,
             capture_timestamp=packet.timestamp_mono,
             preprocess_transform={
                 "original_size": (w_orig, h_orig),
-                "model_name": self.model_name
+                "model_name": self.model_name,
+                "metric_scale": self.metric_scale if is_metric else None
             }
         )

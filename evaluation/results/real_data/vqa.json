@@ -1,0 +1,2453 @@
+{
+  "guardrail": {
+    "correct": 24,
+    "total": 24,
+    "missed_unsafe": [],
+    "over_refused": []
+  },
+  "backends": {
+    "mlx_vlm": {
+      "openvivqa_qa": {
+        "n": 100,
+        "valid_rate": 0.96,
+        "fallback_reasons": {
+          "MLX-VLM trả lời không đúng một đến ba câu": 4
+        },
+        "latency_sec_all": {
+          "n": 99,
+          "mean": 2.7106949411010848,
+          "median": 2.6817457910001394,
+          "p90": 3.1371260505984537,
+          "min": 2.1255473749988596,
+          "max": 3.7631619999956456
+        },
+        "first_call_latency_sec (gồm nạp model)": 6.721897417002765,
+        "answer_token_recall_mean": 0.4927557595912859,
+        "answer_contains_gt_rate": 0.11
+      },
+      "ktvic_describe": {
+        "n": 50,
+        "valid_rate": 0.94,
+        "fallback_reasons": {
+          "MLX-VLM trả lời không đúng một đến ba câu": 1,
+          "MLX-VLM chạm giới hạn token; bỏ câu trả lời có thể bị cắt": 1,
+          "MLX-VLM trả lời rỗng hoặc chưa có dấu kết câu rõ ràng": 1
+        },
+        "latency_sec_all": {
+          "n": 49,
+          "mean": 2.918633532326381,
+          "median": 2.753029667001101,
+          "p90": 3.409944508597255,
+          "min": 2.288108666994958,
+          "max": 6.142640875004872
+        },
+        "first_call_latency_sec (gồm nạp model)": 3.2219727500050794,
+        "content_precision_mean": 0.3586233211233211
+      },
+      "samples_qa": [
+        {
+          "id": "openvivqa_3610",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3610.jpg",
+          "question": "giày của người đàn ông mặc vest chỉ tay ra ngoài sông có màu gì ?",
+          "references": [
+            "giày của người đàn ông mặc vest chỉ tay ra ngoài sông có màu đen"
+          ],
+          "final_answer": "Khung cảnh: Không xác định rõ từ ảnh.",
+          "model_raw": "Không xác định rõ từ ảnh.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 6.721897417002765,
+          "token_recall": 0.0,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3699",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3699.jpg",
+          "question": "có mấy lọ hoa hồng ?",
+          "references": [
+            "có ba lọ"
+          ],
+          "final_answer": "Khung cảnh: Có hai lọ hoa hồng trong khung cảnh.",
+          "model_raw": "Có hai lọ hoa hồng trong khung cảnh.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.736525917003746,
+          "token_recall": 0.6666666666666666,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_103",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_103.jpg",
+          "question": "huy có thể đảm nhận những kỹ thuật gì ?",
+          "references": [
+            "huy có thể thay pin , sửa đồng hồ - máy tính"
+          ],
+          "final_answer": "Khung cảnh: Huy có thể đảm nhận các kỹ thuật như sửa chữa, thay thế pin.",
+          "model_raw": "Huy có thể đảm nhận các kỹ thuật như sửa chữa, thay thế pin.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 3.0291889169966453,
+          "token_recall": 0.6,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3336",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3336.jpg",
+          "question": "người phụ nữ mặc áo chấm bi đang cầm vật gì trên tay ?",
+          "references": [
+            "người phụ nữ mặc áo chấm bi đang cầm một túi rau và một bó rau"
+          ],
+          "final_answer": "Khung cảnh: Người phụ nữ mặc áo chấm bi đang cầm một chiếc nón.",
+          "model_raw": "Người phụ nữ mặc áo chấm bi đang cầm một chiếc nón.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.4989938750004512,
+          "token_recall": 0.6875,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3904",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3904.jpg",
+          "question": "có bao nhiêu người đang đi trên đường ?",
+          "references": [
+            "có hai người"
+          ],
+          "final_answer": "Khung cảnh: Có hai người đang đi trên đường.",
+          "model_raw": "Có hai người đang đi trên đường.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.320960582997941,
+          "token_recall": 1.0,
+          "contains_gt": true
+        },
+        {
+          "id": "openvivqa_3846",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3846.jpg",
+          "question": "cậu thanh niên mặc áo đen đang ngồi ở đâu ?",
+          "references": [
+            "trong một quán ăn"
+          ],
+          "final_answer": "Khung cảnh: Cậu thanh niên mặc áo đen đang ngồi ở cuối bàn ăn.",
+          "model_raw": "Cậu thanh niên mặc áo đen đang ngồi ở cuối bàn ăn.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.5118668750001234,
+          "token_recall": 0.25,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3661",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3661.jpg",
+          "question": "đây là chỗ nào ?",
+          "references": [
+            "đây là một khu chợ"
+          ],
+          "final_answer": "Khung cảnh: Đây là một khu chợ nhỏ với nhiều hàng áo quần treo bên ngoài.",
+          "model_raw": "Đây là một khu chợ nhỏ với nhiều hàng áo quần treo bên ngoài.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.593092457995226,
+          "token_recall": 1.0,
+          "contains_gt": true
+        },
+        {
+          "id": "openvivqa_3434",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3434.jpg",
+          "question": "những chiếc ghế được làm bằng chất liệu gì ?",
+          "references": [
+            "những chiếc ghế được làm bằng gỗ"
+          ],
+          "final_answer": "Khung cảnh: Ghế được làm bằng chất liệu gỗ.",
+          "model_raw": "Ghế được làm bằng chất liệu gỗ.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 3.143065459000354,
+          "token_recall": 0.7142857142857143,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3824",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3824.jpg",
+          "question": "có mấy cây dù màu trắng gần cái ao ?",
+          "references": [
+            "có hai cây dù màu trắng"
+          ],
+          "final_answer": "Khung cảnh: Có hai cây dù màu trắng gần ao.",
+          "model_raw": "Có hai cây dù màu trắng gần ao.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 3.120858624999528,
+          "token_recall": 1.0,
+          "contains_gt": true
+        },
+        {
+          "id": "openvivqa_3553",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3553.jpg",
+          "question": "người đàn ông cầm dao bằng tay nào ?",
+          "references": [
+            "cầm dao bằng tay phải"
+          ],
+          "final_answer": "Khung cảnh: Cả hai tay đều đang cầm dao.",
+          "model_raw": "Cả hai tay đều đang cầm dao.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 3.136586583997996,
+          "token_recall": 0.6,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_530",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_530.jpg",
+          "question": "bức ảnh được chụp vào lúc nào ?",
+          "references": [
+            "bức ảnh được chụp vào buổi chiều tối"
+          ],
+          "final_answer": "Khung cảnh: Câu hỏi không thể trả lời được.",
+          "model_raw": "Câu hỏi không thể trả lời được.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.137857667003118,
+          "token_recall": 0.125,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3889",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3889.jpg",
+          "question": "người phụ nữ mặc áo xanh lá đang kéo theo vật gì ?",
+          "references": [
+            "người phụ nữ kéo theo một giỏ đựng đồ"
+          ],
+          "final_answer": "Khung cảnh: Người phụ nữ mặc áo xanh lá đang kéo theo một chiếc xe đẩy.",
+          "model_raw": "Người phụ nữ mặc áo xanh lá đang kéo theo một chiếc xe đẩy.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.7410162499945727,
+          "token_recall": 0.6666666666666666,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_338",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_338.jpg",
+          "question": "bức ảnh được chụp ở đất nước nào ?",
+          "references": [
+            "bức ảnh được chụp ở canada"
+          ],
+          "final_answer": "Khung cảnh: Canada.",
+          "model_raw": "Canada.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.1255473749988596,
+          "token_recall": 0.16666666666666666,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3386",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3386.jpg",
+          "question": "chỗ này đang buôn bán mặt hàng gì là chủ yếu ?",
+          "references": [
+            "túi xách"
+          ],
+          "final_answer": "Khung cảnh: Chỗ này đang buôn bán mặt hàng phụ kiện như túi xách, ví, dép và các loại đồ trang sức.",
+          "model_raw": "Chỗ này đang buôn bán mặt hàng phụ kiện như túi xách, ví, dép và các loại đồ trang sức.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 3.037224374995276,
+          "token_recall": 1.0,
+          "contains_gt": true
+        },
+        {
+          "id": "openvivqa_339",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_339.jpg",
+          "question": "chi nhánh tiệm làm tóc đức nguyễn ở thành phố mỹ tho nằm tại số nhà mấy ?",
+          "references": [
+            "số 30 ấp bắc"
+          ],
+          "final_answer": "Khung cảnh: Không xác định rõ từ ảnh.",
+          "model_raw": "Không xác định rõ từ ảnh.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 3.1642417080001906,
+          "token_recall": 0.0,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_230",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_230.jpg",
+          "question": "cửa hàng làm dịch vụ gì ?",
+          "references": [
+            "cửa hàng làm về thẩm mỹ"
+          ],
+          "final_answer": "Khung cảnh: Cửa hàng làm dịch vụ làm móng, vẽ móng, tẩy trang, lột mụn, đắp dưỡng, massage, đắp collagen, chay collagen chống lão hóa.",
+          "model_raw": "Cửa hàng làm dịch vụ làm móng, vẽ móng, tẩy trang, lột mụn, đắp dưỡng, massage, đắp collagen, chay collagen chống lão hóa.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 3.7631619999956456,
+          "token_recall": 0.5,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3317",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3317.jpg",
+          "question": "người đàn ông áo trắng đeo cà vạt đang đứng ở đâu ?",
+          "references": [
+            "bên phải người đàn ông áo xanh da trời"
+          ],
+          "final_answer": "Khung cảnh: Người đàn ông áo trắng đeo cà vạt đang đứng ở giữa trong nhóm người.",
+          "model_raw": "Người đàn ông áo trắng đeo cà vạt đang đứng ở giữa trong nhóm người.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.809011332996306,
+          "token_recall": 0.4444444444444444,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_353",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_353.jpg",
+          "question": "đây là trường đại học nào ?",
+          "references": [
+            "trường đại học mở thành phố hồ chí minh"
+          ],
+          "final_answer": "Khung cảnh: Đây là Trường Đại học Mở TP. Hồ Chí Minh.",
+          "model_raw": "Đây là Trường Đại học Mở TP. Hồ Chí Minh.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.6404797920040437,
+          "token_recall": 0.7777777777777778,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3448",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3448.jpg",
+          "question": "người phụ nữ đang làm gì ?",
+          "references": [
+            "người phụ nữ đang mua rau"
+          ],
+          "final_answer": "Khung cảnh: Người phụ nữ đang chọn rau trong siêu thị.",
+          "model_raw": "Người phụ nữ đang chọn rau trong siêu thị.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.569688125004177,
+          "token_recall": 0.8333333333333334,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_242",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_242.jpg",
+          "question": "trung tâm đào đạo tiếng nhật tên gì ?",
+          "references": [
+            "sunrise"
+          ],
+          "final_answer": "Khung cảnh: Trung tâm đào tạo tiếng Nhật Sunrise.",
+          "model_raw": "Trung tâm đào tạo tiếng Nhật Sunrise.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.2367726669981494,
+          "token_recall": 1.0,
+          "contains_gt": true
+        },
+        {
+          "id": "openvivqa_179",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_179.jpg",
+          "question": "phương nam mở loại hình dịch vụ gì ?",
+          "references": [
+            "phương nam mở resort"
+          ],
+          "final_answer": "Khung cảnh: Phương Nam Resort cung cấp dịch vụ nghỉ dưỡng và thư giãn.",
+          "model_raw": "Phương Nam Resort cung cấp dịch vụ nghỉ dưỡng và thư giãn.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.904918042004283,
+          "token_recall": 0.75,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3491",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3491.jpg",
+          "question": "ai là người đang cầm hoa ?",
+          "references": [
+            "người phụ nữ"
+          ],
+          "final_answer": "Khung cảnh: Không xác định rõ từ ảnh.",
+          "model_raw": "Không xác định rõ từ ảnh.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.3808091250029975,
+          "token_recall": 0.0,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3812",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3812.jpg",
+          "question": "cô gái áo cam đang được ai ghi hình ?",
+          "references": [
+            "cô gái đeo ba lô màu trắng"
+          ],
+          "final_answer": "Khung cảnh: Cô gái áo cam đang được người mặc áo màu be ghi hình.",
+          "model_raw": "Cô gái áo cam đang được người mặc áo màu be ghi hình.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.713580167001055,
+          "token_recall": 0.42857142857142855,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_248",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_248.jpg",
+          "question": "căn hộ có bao nhiêu phòng ngủ ?",
+          "references": [
+            "căn hộ có 2 phòng ngủ"
+          ],
+          "final_answer": "Khung cảnh: Căn hộ B2 có 1 phòng ngủ.",
+          "model_raw": "Căn hộ B2 có 1 phòng ngủ.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.371635499999684,
+          "token_recall": 0.8333333333333334,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3543",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3543.jpg",
+          "question": "có bao nhiêu đứa trẻ không mang áo đỏ đứng ở hàng trước ?",
+          "references": [
+            "có một đứa trẻ không mang áo đỏ"
+          ],
+          "final_answer": "Khung cảnh: Không xác định rõ từ ảnh.",
+          "model_raw": "Không xác định rõ từ ảnh.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.5911260420034523,
+          "token_recall": 0.125,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3729",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3729.jpg",
+          "question": "những người này đang ngồi ở đâu ?",
+          "references": [
+            "ở một quán ăn vỉa hè"
+          ],
+          "final_answer": "Khung cảnh: Người này đang ngồi trên ghế bên đường.",
+          "model_raw": "Người này đang ngồi trên ghế bên đường.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.670500207997975,
+          "token_recall": 0.0,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3460",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3460.jpg",
+          "question": "người phụ nữ gánh hàng rong mặc áo màu gì ?",
+          "references": [
+            "người phụ nữ gánh hàng rong mặc áo màu xám"
+          ],
+          "final_answer": "Khung cảnh: Người phụ nữ gánh hàng rong mặc áo màu xanh.",
+          "model_raw": "Người phụ nữ gánh hàng rong mặc áo màu xanh.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.618378582999867,
+          "token_recall": 0.9,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_495",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_495.jpg",
+          "question": "bức ảnh nói về thị trường nào ?",
+          "references": [
+            "bức ảnh nói về thị trường siêu thị"
+          ],
+          "final_answer": "Khung cảnh: Thị trường siêu thị Việt Nam.",
+          "model_raw": "Thị trường siêu thị Việt Nam.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.226278750000347,
+          "token_recall": 0.5,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3746",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3746.jpg",
+          "question": "chàng trai phía sau hai cô gái bán hàng đang mang áo màu gì ?",
+          "references": [
+            "chàng trai mang áo màu đen"
+          ],
+          "final_answer": "Khung cảnh: Không xác định rõ từ ảnh.",
+          "model_raw": "Không xác định rõ từ ảnh.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.366155333998904,
+          "token_recall": 0.0,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3927",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3927.jpg",
+          "question": "mọi người đang tham gia lễ hội gì ?",
+          "references": [
+            "mọi người đang tham gia lễ trung thu"
+          ],
+          "final_answer": "Khung cảnh: Lễ hội đèn lồng.",
+          "model_raw": "Lễ hội đèn lồng.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.454153332997521,
+          "token_recall": 0.125,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3340",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3340.jpg",
+          "question": "cô gái đang đưa tay nào lên cao ?",
+          "references": [
+            "đang đưa tay trái lên cao"
+          ],
+          "final_answer": "Khung cảnh: Cô gái đang đưa tay lên cao.",
+          "model_raw": "Cô gái đang đưa tay lên cao.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 3.11851333300001,
+          "token_recall": 0.8333333333333334,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_153",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_153.jpg",
+          "question": "cô tuyết cung cấp số điện thoại nào cho khách hỏi thuê nhà ?",
+          "references": [
+            "0963000388"
+          ],
+          "final_answer": "Khung cảnh: Cô Tuyết cung cấp số điện thoại 0965 000 388 cho khách hỏi thuê nhà.",
+          "model_raw": "Cô Tuyết cung cấp số điện thoại 0965 000 388 cho khách hỏi thuê nhà.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 3.2836141670049983,
+          "token_recall": 0.0,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_36",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_36.jpg",
+          "question": "đây là câu lạc bộ cờ tướng phường nào ?",
+          "references": [
+            "đây là câu lạc bộ cờ tướng phường 8"
+          ],
+          "final_answer": "Khung cảnh: Cờ Tướng Phường 8.",
+          "model_raw": "Cờ Tướng Phường 8.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.626419125001121,
+          "token_recall": 0.4444444444444444,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_226",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_226.jpg",
+          "question": "quán ăn nằm ở đâu ?",
+          "references": [
+            "số 322 đường tân sơn nhì , phường tân sơn nhì , quận tân phú"
+          ],
+          "final_answer": "Chưa phát hiện được khung cảnh hoặc vật thể rõ ràng phía trước.",
+          "model_raw": "",
+          "backend_ok": false,
+          "backend_error": "MLX-VLM trả lời không đúng một đến ba câu",
+          "latency_sec": 3.0782354999973904,
+          "token_recall": 0.0,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3648",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3648.jpg",
+          "question": "người phụ nữ mặc tạp dề bán những gì ?",
+          "references": [
+            "bán các loại thịt tươi sống"
+          ],
+          "final_answer": "Khung cảnh: Người phụ nữ mặc tạp dề đang bán các loại rau và trái cây.",
+          "model_raw": "Người phụ nữ mặc tạp dề đang bán các loại rau và trái cây.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.544472499997937,
+          "token_recall": 0.5,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_2",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_2.jpg",
+          "question": "tiêu lệnh 4 là gì ?",
+          "references": [
+            "điện thoại số 114 đội chữa cháy chuyên nghiệp"
+          ],
+          "final_answer": "Khung cảnh: Tiêu lệnh 4 là số điện thoại 114 để đối phó với cháy nổ.",
+          "model_raw": "Tiêu lệnh 4 là số điện thoại 114 để đối phó với cháy nổ.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 3.5055074579940992,
+          "token_recall": 0.5555555555555556,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3862",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3862.jpg",
+          "question": "bức ảnh đang chụp khu vực nào ?",
+          "references": [
+            "bức ảnh đang chụp khu biển"
+          ],
+          "final_answer": "Khung cảnh: Khu vực đang được chụp là bãi biển.",
+          "model_raw": "Khu vực đang được chụp là bãi biển.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.2983316669997294,
+          "token_recall": 0.6666666666666666,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3499",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3499.jpg",
+          "question": "bạn nữ đang ôm con chó đi chơi giáng sinh với ai ?",
+          "references": [
+            "với một người đàn ông và một người phụ nữ đứng ở hai bên"
+          ],
+          "final_answer": "Khung cảnh: Không xác định rõ từ ảnh.",
+          "model_raw": "Không xác định rõ từ ảnh.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.586852499996894,
+          "token_recall": 0.0,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3301",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3301.jpg",
+          "question": "có bao nhiêu cây được trồng ven bờ ao ?",
+          "references": [
+            "có bốn cây được trồng ven bờ ao"
+          ],
+          "final_answer": "Khung cảnh: Có hai cây được trồng ven bờ ao.",
+          "model_raw": "Có hai cây được trồng ven bờ ao.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.2972887919968343,
+          "token_recall": 0.875,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3480",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3480.jpg",
+          "question": "người phụ nữ mang trang phục màu đen đang đứng ở đâu ?",
+          "references": [
+            "người phụ nữ mang trang phục màu đen đang đứng ở phía phải người phụ nữ mặc áo bông"
+          ],
+          "final_answer": "Khung cảnh: Người phụ nữ mang trang phục màu đen đang đứng ở phía bên phải của xe hàng.",
+          "model_raw": "Người phụ nữ mang trang phục màu đen đang đứng ở phía bên phải của xe hàng.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.6660230830020737,
+          "token_recall": 0.8421052631578947,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_154",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_154.jpg",
+          "question": "quán này bán gì ?",
+          "references": [
+            "quán này bán cà phê"
+          ],
+          "final_answer": "Khung cảnh: Quán này có bảng hiệu写着“Cà phê Nha San”.",
+          "model_raw": "Quán này có bảng hiệu写着“Cà phê Nha San”.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 3.242686791003507,
+          "token_recall": 0.8,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_462",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_462.jpg",
+          "question": "khách hàng sống ở đâu sẽ được giảm 2 . 5% tại fpt shop ?",
+          "references": [
+            "thành phố hồ chí minh , đồng nai và bình dương"
+          ],
+          "final_answer": "Chưa phát hiện được khung cảnh hoặc vật thể rõ ràng phía trước.",
+          "model_raw": "",
+          "backend_ok": false,
+          "backend_error": "MLX-VLM trả lời không đúng một đến ba câu",
+          "latency_sec": 3.398856291001721,
+          "token_recall": 0.0,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_537",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_537.jpg",
+          "question": "số điện thoại của quán là gì ?",
+          "references": [
+            "số điện thoại của quán là 19 006 830"
+          ],
+          "final_answer": "Khung cảnh: Số điện thoại của quán là 1900 6830.",
+          "model_raw": "Số điện thoại của quán là 1900 6830.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.206326415995136,
+          "token_recall": 0.6666666666666666,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3290",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3290.jpg",
+          "question": "những chiếc xe máy đậu ở phía bên nào của đường ray ?",
+          "references": [
+            "những chiếc xe máy đậu ở bên phải đường ray"
+          ],
+          "final_answer": "Khung cảnh: Điều này không thể xác định từ ảnh.",
+          "model_raw": "Điều này không thể xác định từ ảnh.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 3.1392839170002844,
+          "token_recall": 0.0,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_344",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_344.jpg",
+          "question": "yến mạch này có nguồn gốc từ đâu ?",
+          "references": [
+            "yến mạch này được nhập khẩu 100% từ úc"
+          ],
+          "final_answer": "Khung cảnh: Yến mạch này có nguồn gốc từ Úc.",
+          "model_raw": "Yến mạch này có nguồn gốc từ Úc.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.8371901669961517,
+          "token_recall": 0.5555555555555556,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3757",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3757.jpg",
+          "question": "người phụ nữ mặc áo caro vàng và đeo khẩu trang trắng đang làm gì ?",
+          "references": [
+            "cô ấy đang đi mua sắm"
+          ],
+          "final_answer": "Khung cảnh: Người phụ nữ mặc áo caro vàng và đeo khẩu trang trắng đang đứng và quan sát.",
+          "model_raw": "Người phụ nữ mặc áo caro vàng và đeo khẩu trang trắng đang đứng và quan sát.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.8081858750010724,
+          "token_recall": 0.16666666666666666,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_220",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_220.jpg",
+          "question": "đây là biển hiệu của ai ?",
+          "references": [
+            "của thẩm mỹ viện koreana"
+          ],
+          "final_answer": "Khung cảnh: Thẩm mỹ viện Koreana Beauty Clinic.",
+          "model_raw": "Thẩm mỹ viện Koreana Beauty Clinic.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.4249610420010868,
+          "token_recall": 0.8,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_194",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_194.jpg",
+          "question": "buổi sáng cửa hàng bán món gì ?",
+          "references": [
+            "cửa hàng bán bánh mì"
+          ],
+          "final_answer": "Khung cảnh: Quán cơm xuất hộp.",
+          "model_raw": "Quán cơm xuất hộp.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.5785955839965027,
+          "token_recall": 0.0,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3468",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3468.jpg",
+          "question": "hai chậu cây được đặt tại đâu ?",
+          "references": [
+            "hai chậu cây được đặt ở hai bên cầu thang"
+          ],
+          "final_answer": "Khung cảnh: Hai chậu cây được đặt ở hai góc trái và góc phải của bức ảnh.",
+          "model_raw": "Hai chậu cây được đặt ở hai góc trái và góc phải của bức ảnh.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.889980125000875,
+          "token_recall": 0.7,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3897",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3897.jpg",
+          "question": "người đàn ông đi trên đường mang áo màu gì ?",
+          "references": [
+            "người đàn ông mang áo màu xanh dương"
+          ],
+          "final_answer": "Khung cảnh: Người đàn ông đi trên đường mang áo màu xanh.",
+          "model_raw": "Người đàn ông đi trên đường mang áo màu xanh.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.546863042000041,
+          "token_recall": 0.875,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3853",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3853.jpg",
+          "question": "ở gần tòa nhà đang xây có những thứ gì màu vàng được dựng lên cao ?",
+          "references": [
+            "đó là những chiếc cần cẩu"
+          ],
+          "final_answer": "Khung cảnh: Có hai xe tải màu vàng được dựng lên cao.",
+          "model_raw": "Có hai xe tải màu vàng được dựng lên cao.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.760320250003133,
+          "token_recall": 0.0,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_270",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_270.jpg",
+          "question": "công ty cổ phần bảo hiểm tên là gì ?",
+          "references": [
+            "tên là bưu điện"
+          ],
+          "final_answer": "Khung cảnh: Tổng công ty CP Bảo hiểm Điều điện.",
+          "model_raw": "Tổng công ty CP Bảo hiểm Điều điện.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.3250629589965683,
+          "token_recall": 0.25,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3430",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3430.jpg",
+          "question": "nhân viên y tế đang làm gì ?",
+          "references": [
+            "đang kiểm tra covid cho người đàn ông"
+          ],
+          "final_answer": "Khung cảnh: Nhân viên y tế đang thực hiện xét nghiệm mũi cho một người.",
+          "model_raw": "Nhân viên y tế đang thực hiện xét nghiệm mũi cho một người.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.482399874999828,
+          "token_recall": 0.375,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3408",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3408.jpg",
+          "question": "những người này đang đứng ở đâu ?",
+          "references": [
+            "ở trong một ngôi chùa"
+          ],
+          "final_answer": "Khung cảnh: Những người này đang đứng ở trước một ngôi đền hoặc đền thờ.",
+          "model_raw": "Những người này đang đứng ở trước một ngôi đền hoặc đền thờ.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.6817457910001394,
+          "token_recall": 0.6,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_306",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_306.jpg",
+          "question": "cửa tiệm này bán gì ?",
+          "references": [
+            "cửa tiệm này bán chăn - ga - gối - đệm hàn quốc"
+          ],
+          "final_answer": "Khung cảnh: Cửa tiệm này bán các sản phẩm nội thất và đồ đệm.",
+          "model_raw": "Cửa tiệm này bán các sản phẩm nội thất và đồ đệm.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.84959712500131,
+          "token_recall": 0.5,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3497",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3497.jpg",
+          "question": "có bao nhiêu chiếc xe buýt đang chạy trên đường ?",
+          "references": [
+            "có một chiếc xe buýt đang chạy trên đường"
+          ],
+          "final_answer": "Khung cảnh: Có một chiếc xe buýt đang chạy trên đường.",
+          "model_raw": "Có một chiếc xe buýt đang chạy trên đường.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.5844341249976424,
+          "token_recall": 1.0,
+          "contains_gt": true
+        },
+        {
+          "id": "openvivqa_493",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_493.jpg",
+          "question": "tt . quế cách đây bao xa ?",
+          "references": [
+            "tt . quế cách đây 2 km"
+          ],
+          "final_answer": "Chưa phát hiện được khung cảnh hoặc vật thể rõ ràng phía trước.",
+          "model_raw": "",
+          "backend_ok": false,
+          "backend_error": "MLX-VLM trả lời không đúng một đến ba câu",
+          "latency_sec": 2.685565833999135,
+          "token_recall": 0.0,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3401",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3401.jpg",
+          "question": "có bao nhiêu cây cầu dẫn đến cổng thành ?",
+          "references": [
+            "có một cây cầu"
+          ],
+          "final_answer": "Khung cảnh: Có hai cây cầu dẫn đến cổng thành.",
+          "model_raw": "Có hai cây cầu dẫn đến cổng thành.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.4900102079991484,
+          "token_recall": 0.75,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3751",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3751.jpg",
+          "question": "người đàn ông này đang làm gì ?",
+          "references": [
+            "ông ấy đang đẩy xe hàng"
+          ],
+          "final_answer": "Khung cảnh: Người đàn ông đang đẩy xe đẩy đầy giấy vệ sinh và các sản phẩm khác.",
+          "model_raw": "Người đàn ông đang đẩy xe đẩy đầy giấy vệ sinh và các sản phẩm khác.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 3.0940306249976857,
+          "token_recall": 0.6666666666666666,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_221",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_221.jpg",
+          "question": "phó chủ khảo tên là gì ?",
+          "references": [
+            "phan hữu tạt"
+          ],
+          "final_answer": "Khung cảnh: Phó chủ khảo tên là Nguyễn Văn Thạch.",
+          "model_raw": "Phó chủ khảo tên là Nguyễn Văn Thạch.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.7287922089963104,
+          "token_recall": 0.0,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3462",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3462.jpg",
+          "question": "đèn trong siêu thị phát ra ánh sáng màu gì ?",
+          "references": [
+            "đèn trong siêu thị phát ra ánh sáng màu trắng"
+          ],
+          "final_answer": "Khung cảnh: Ánh sáng màu trắng.",
+          "model_raw": "Ánh sáng màu trắng.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.1468777500049328,
+          "token_recall": 0.4,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3297",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3297.jpg",
+          "question": "bàn ăn này được dọn với bao nhiêu chén nước chấm ?",
+          "references": [
+            "có hai chén nước chấm"
+          ],
+          "final_answer": "Khung cảnh: Bàn ăn này được dọn với hai chén nước chấm.",
+          "model_raw": "Bàn ăn này được dọn với hai chén nước chấm.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.852628749998985,
+          "token_recall": 0.8,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3406",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3406.jpg",
+          "question": "những người này đang tham quan triển lãm vào buổi nào ?",
+          "references": [
+            "những người này đang tham quan triển lãm vào buổi tối"
+          ],
+          "final_answer": "Khung cảnh: Không xác định rõ từ ảnh.",
+          "model_raw": "Không xác định rõ từ ảnh.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.497366083000088,
+          "token_recall": 0.0,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_446",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_446.jpg",
+          "question": "đi bao nhiêu km nữa là tới tả phìn hồ ?",
+          "references": [
+            "đi tầm 5 km nữa"
+          ],
+          "final_answer": "Khung cảnh: 5km.",
+          "model_raw": "5km.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.4348413339976105,
+          "token_recall": 0.0,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_458",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_458.jpg",
+          "question": "nội dung chính của tấm băng rôn này là gì ?",
+          "references": [
+            "nội dung chính của tấm băng rôn này là tuyển nhân viên gấp"
+          ],
+          "final_answer": "Khung cảnh: Tuyển nhân viên gấp (lương cao).",
+          "model_raw": "Tuyển nhân viên gấp (lương cao).",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.7024807080015307,
+          "token_recall": 0.3076923076923077,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_452",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_452.jpg",
+          "question": "cửa hàng ở tỉnh nào ?",
+          "references": [
+            "ở tỉnh bạc liêu"
+          ],
+          "final_answer": "Khung cảnh: Bạc Liêu.",
+          "model_raw": "Bạc Liêu.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.5080233750049956,
+          "token_recall": 0.5,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_85",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_85.jpg",
+          "question": "trẻ em phải đội gì khi đi xe máy ?",
+          "references": [
+            "trẻ em phải đội mũ bảo hiểm khi đi xe máy"
+          ],
+          "final_answer": "Khung cảnh: Trẻ em phải đội mũ bảo hiểm khi đi xe máy.",
+          "model_raw": "Trẻ em phải đội mũ bảo hiểm khi đi xe máy.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.753241625003284,
+          "token_recall": 1.0,
+          "contains_gt": true
+        },
+        {
+          "id": "openvivqa_3339",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3339.jpg",
+          "question": "người phụ nữ đang làm gì ?",
+          "references": [
+            "đang nghe điện thoại và sử dụng máy tính"
+          ],
+          "final_answer": "Khung cảnh: Người phụ nữ đang nói chuyện trên điện thoại.",
+          "model_raw": "Người phụ nữ đang nói chuyện trên điện thoại.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.697628125002666,
+          "token_recall": 0.3333333333333333,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3823",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3823.jpg",
+          "question": "có mấy người đang đi ?",
+          "references": [
+            "có một người đang đi"
+          ],
+          "final_answer": "Khung cảnh: Không xác định rõ từ ảnh.",
+          "model_raw": "Không xác định rõ từ ảnh.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.568609957997978,
+          "token_recall": 0.0,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_167",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_167.jpg",
+          "question": "siêu thị điện máy này tên gì ?",
+          "references": [
+            "siêu thị chợ lớn"
+          ],
+          "final_answer": "Khung cảnh: Chợ Lớn.",
+          "model_raw": "Chợ Lớn.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.534970874999999,
+          "token_recall": 0.5,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_217",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_217.jpg",
+          "question": "khách đến đây gửi xe ở đâu ?",
+          "references": [
+            "khách đến đây gửi xe bên chung cư"
+          ],
+          "final_answer": "Khung cảnh: Gửi xe ở trước cửa quán.",
+          "model_raw": "Gửi xe ở trước cửa quán.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.626385042000038,
+          "token_recall": 0.25,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_319",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_319.jpg",
+          "question": "quán ăn này nằm ở số nhà bao nhiêu ?",
+          "references": [
+            "17 / 9"
+          ],
+          "final_answer": "Khung cảnh: Quán ăn này nằm ở số nhà 17/9.",
+          "model_raw": "Quán ăn này nằm ở số nhà 17/9.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 3.2100334170027054,
+          "token_recall": 1.0,
+          "contains_gt": true
+        },
+        {
+          "id": "openvivqa_359",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_359.jpg",
+          "question": "cửa hàng huy hùng phát chuyên kinh doanh mặt hàng gì ?",
+          "references": [
+            "cửa hàng huy hùng phát chuyên kinh doanh xe máy"
+          ],
+          "final_answer": "Khung cảnh: Cửa hàng Huy Hùng Phát chuyên kinh doanh xe máy.",
+          "model_raw": "Cửa hàng Huy Hùng Phát chuyên kinh doanh xe máy.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.5565113329939777,
+          "token_recall": 1.0,
+          "contains_gt": true
+        },
+        {
+          "id": "openvivqa_100",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_100.jpg",
+          "question": "khu chợ này tên gì ?",
+          "references": [
+            "chợ hà đông"
+          ],
+          "final_answer": "Khung cảnh: Chợ Thống Phong.",
+          "model_raw": "Chợ Thống Phong.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.5627073330033454,
+          "token_recall": 0.3333333333333333,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3625",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3625.jpg",
+          "question": "những căn nhà bên kia sông có màu gì ?",
+          "references": [
+            "những căn nhà bên kia sông có màu vàng"
+          ],
+          "final_answer": "Khung cảnh: Những căn nhà bên kia sông có màu vàng.",
+          "model_raw": "Những căn nhà bên kia sông có màu vàng.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 3.168000915997254,
+          "token_recall": 1.0,
+          "contains_gt": true
+        },
+        {
+          "id": "openvivqa_3373",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3373.jpg",
+          "question": "đây là gì ?",
+          "references": [
+            "đây là một khu chợ nổi"
+          ],
+          "final_answer": "Khung cảnh: Đây là một cảnh chợ nổi.",
+          "model_raw": "Đây là một cảnh chợ nổi.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.516473625000799,
+          "token_recall": 0.8333333333333334,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3928",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3928.jpg",
+          "question": "người đàn ông đang đứng ở cửa hàng nào ?",
+          "references": [
+            "đang đứng trong cửa hàng vật liệu xây dựng"
+          ],
+          "final_answer": "Khung cảnh: Người đàn ông đang đứng ở cửa hàng hóa mỹ phẩm.",
+          "model_raw": "Người đàn ông đang đứng ở cửa hàng hóa mỹ phẩm.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.806435958998918,
+          "token_recall": 0.4444444444444444,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_572",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_572.jpg",
+          "question": "tốc độ tải lên trung bình của mobifone là bao nhiêu ?",
+          "references": [
+            "là 2 , 61 mbit / s"
+          ],
+          "final_answer": "Chưa phát hiện được khung cảnh hoặc vật thể rõ ràng phía trước.",
+          "model_raw": "",
+          "backend_ok": false,
+          "backend_error": "MLX-VLM trả lời không đúng một đến ba câu",
+          "latency_sec": 3.0421722499959287,
+          "token_recall": 0.0,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_519",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_519.jpg",
+          "question": "những đầu đạn này đang được lưu giữ tại đâu ?",
+          "references": [
+            "những đầu đạn này đang được lưu giữ tại bảo tàng công binh"
+          ],
+          "final_answer": "Khung cảnh: Đầu đạn được lưu giữ tại Bảo tàng Công binh.",
+          "model_raw": "Đầu đạn được lưu giữ tại Bảo tàng Công binh.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.693407874998229,
+          "token_recall": 0.7692307692307693,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3695",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3695.jpg",
+          "question": "người đàn ông giơ điện thoại ra trước khay thịt nhằm mục đích gì ?",
+          "references": [
+            "chụp ảnh sản phẩm"
+          ],
+          "final_answer": "Khung cảnh: Người đàn ông đang sử dụng điện thoại để kiểm tra thông tin về thịt trong khay.",
+          "model_raw": "Người đàn ông đang sử dụng điện thoại để kiểm tra thông tin về thịt trong khay.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.7904257080008392,
+          "token_recall": 0.0,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3372",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3372.jpg",
+          "question": "người phụ nữ đang đi đâu ?",
+          "references": [
+            "đang đi mua sắm trong siêu thị"
+          ],
+          "final_answer": "Khung cảnh: Người phụ nữ đang đi dạo trong siêu thị.",
+          "model_raw": "Người phụ nữ đang đi dạo trong siêu thị.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.316693667002255,
+          "token_recall": 0.7142857142857143,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3763",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3763.jpg",
+          "question": "có bao nhiêu chiếc bình ở hàng dưới của tủ bên phải ?",
+          "references": [
+            "có ba chiếc bình"
+          ],
+          "final_answer": "Khung cảnh: Có 4 chiếc bình ở hàng dưới của tủ bên phải.",
+          "model_raw": "Có 4 chiếc bình ở hàng dưới của tủ bên phải.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.772603250006796,
+          "token_recall": 0.75,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3860",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3860.jpg",
+          "question": "có bao nhiêu bộ bàn ghế cùng màu với nhau ?",
+          "references": [
+            "có hai bộ bàn ghế cùng màu với nhau"
+          ],
+          "final_answer": "Khung cảnh: Có hai bộ bàn ghế cùng màu với nhau.",
+          "model_raw": "Có hai bộ bàn ghế cùng màu với nhau.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.614954958000453,
+          "token_recall": 1.0,
+          "contains_gt": true
+        },
+        {
+          "id": "openvivqa_3551",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3551.jpg",
+          "question": "bạn nữ đang đứng ở quầy nào ?",
+          "references": [
+            "quầy bán sữa tắm"
+          ],
+          "final_answer": "Khung cảnh: Quầy chăm sóc thú cưng.",
+          "model_raw": "Quầy chăm sóc thú cưng.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.6102293750009267,
+          "token_recall": 0.25,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_198",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_198.jpg",
+          "question": "căn nhà cho thuê có tổng cộng bao nhiêu tầng ?",
+          "references": [
+            "căn nhà có năm tầng"
+          ],
+          "final_answer": "Khung cảnh: Căn nhà cho thuê có tổng cộng 11 tầng.",
+          "model_raw": "Căn nhà cho thuê có tổng cộng 11 tầng.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.665554125000199,
+          "token_recall": 0.8,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3478",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3478.jpg",
+          "question": "căn nhà bên phải có màu gì ?",
+          "references": [
+            "căn nhà có màu vàng"
+          ],
+          "final_answer": "Khung cảnh: Nhà bên phải có màu vàng.",
+          "model_raw": "Nhà bên phải có màu vàng.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.4336059170018416,
+          "token_recall": 0.8,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_284",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_284.jpg",
+          "question": "cuốn sách có tên là gì ?",
+          "references": [
+            "cuốn sách có tên là sài gòn chợ lớn"
+          ],
+          "final_answer": "Khung cảnh: Sài Gòn Chợ Lớn.",
+          "model_raw": "Sài Gòn Chợ Lớn.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 3.0931847090032534,
+          "token_recall": 0.4444444444444444,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3847",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3847.jpg",
+          "question": "bạn nữ này đang đứng ở đâu ?",
+          "references": [
+            "ở hành lang dọc theo một bờ biển"
+          ],
+          "final_answer": "Khung cảnh: Nữ giới này đang đứng trên một cầu thang hoặc ban công, hướng ra biển và thành phố.",
+          "model_raw": "Nữ giới này đang đứng trên một cầu thang hoặc ban công, hướng ra biển và thành phố.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.8555873750010505,
+          "token_recall": 0.25,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3503",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3503.jpg",
+          "question": "hai bạn trẻ đang đứng ở đâu ?",
+          "references": [
+            "trong siêu thị"
+          ],
+          "final_answer": "Khung cảnh: Hai bạn trẻ đang đứng ở một quầy hàng trong một siêu thị.",
+          "model_raw": "Hai bạn trẻ đang đứng ở một quầy hàng trong một siêu thị.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.5174096250048024,
+          "token_recall": 1.0,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_460",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_460.jpg",
+          "question": "số điện thoại của c . linh là bao nhiêu ?",
+          "references": [
+            "0938385737"
+          ],
+          "final_answer": "Khung cảnh: Không xác định rõ từ ảnh.",
+          "model_raw": "Không xác định rõ từ ảnh.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.382319083000766,
+          "token_recall": 0.0,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3299",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3299.jpg",
+          "question": "em bé mặc áo vàng đang ngồi ở đâu ?",
+          "references": [
+            "em bé mặc áo vàng đang ngồi trong xe đẩy"
+          ],
+          "final_answer": "Khung cảnh: Bé gái mặc áo vàng đang ngồi trong xe đẩy hàng hóa.",
+          "model_raw": "Bé gái mặc áo vàng đang ngồi trong xe đẩy hàng hóa.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.7892949160013814,
+          "token_recall": 0.9,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_43",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_43.jpg",
+          "question": "cửa hàng bán cái gì ?",
+          "references": [
+            "bán thuốc"
+          ],
+          "final_answer": "Khung cảnh: Cửa hàng bán các loại thuốc và sản phẩm chăm sóc sức khỏe.",
+          "model_raw": "Cửa hàng bán các loại thuốc và sản phẩm chăm sóc sức khỏe.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.8145162079963484,
+          "token_recall": 1.0,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3364",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3364.jpg",
+          "question": "có bao nhiêu cái đèn phía trước cô gái ?",
+          "references": [
+            "có một cái đèn phía trước cô gái"
+          ],
+          "final_answer": "Khung cảnh: Cô gái có hai đèn phía trước.",
+          "model_raw": "Cô gái có hai đèn phía trước.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.6862629170063883,
+          "token_recall": 0.75,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_287",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_287.jpg",
+          "question": "nước uống thảo dược hương quế là gì ?",
+          "references": [
+            "là thực phẩm bảo vệ sức khỏe"
+          ],
+          "final_answer": "Khung cảnh: Nước uống thảo dược hương quế là một sản phẩm thực phẩm bảo vệ sức khỏe.",
+          "model_raw": "Nước uống thảo dược hương quế là một sản phẩm thực phẩm bảo vệ sức khỏe.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 3.086633332997735,
+          "token_recall": 1.0,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_534",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_534.jpg",
+          "question": "kế bên cửa hàng bán hoa là cửa hàng gì ?",
+          "references": [
+            "là một phòng nha khoa"
+          ],
+          "final_answer": "Khung cảnh: Cửa hàng bán hoa.",
+          "model_raw": "Cửa hàng bán hoa.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.567674292004085,
+          "token_recall": 0.0,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3583",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3583.jpg",
+          "question": "có thứ gì nằm ngay góc tường cạnh màn cửa ?",
+          "references": [
+            "chậu cây"
+          ],
+          "final_answer": "Khung cảnh: Có một bình hoa nằm ngay góc tường cạnh màn cửa.",
+          "model_raw": "Có một bình hoa nằm ngay góc tường cạnh màn cửa.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.8169390830007615,
+          "token_recall": 0.0,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_412",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_412.jpg",
+          "question": "địa chỉ của cửa hàng trường điệp là gì ?",
+          "references": [
+            "cửa hàng có địa chỉ là 304 / 1 , ấp quảng phát , xã quảng tiến , huyện trảng bom , tỉnh đồng nai"
+          ],
+          "final_answer": "Khung cảnh: Cửa hàng Trường Điệp nằm trên đường số 11, phường 11, quận Gò Vấp, thành phố Hồ Chí Minh.",
+          "model_raw": "Cửa hàng Trường Điệp nằm trên đường số 11, phường 11, quận Gò Vấp, thành phố Hồ Chí Minh.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.9490076250003767,
+          "token_recall": 0.1,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_3710",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_3710.jpg",
+          "question": "người đàn ông mặc áo thun đỏ đang làm gì ?",
+          "references": [
+            "đang đi tìm xe"
+          ],
+          "final_answer": "Khung cảnh: Người đàn ông mặc áo thun đỏ đang đứng và nhìn qua cổng.",
+          "model_raw": "Người đàn ông mặc áo thun đỏ đang đứng và nhìn qua cổng.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.6821781670005294,
+          "token_recall": 0.25,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_352",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_352.jpg",
+          "question": "cửa tiệm hớt tóc nằm ở đâu ?",
+          "references": [
+            "ở kế bên cửa điệm nghi đình"
+          ],
+          "final_answer": "Khung cảnh: Cửa tiệm hớt tóc nằm ở góc giữa hai cửa hàng, phía bên phải.",
+          "model_raw": "Cửa tiệm hớt tóc nằm ở góc giữa hai cửa hàng, phía bên phải.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.968939667000086,
+          "token_recall": 0.42857142857142855,
+          "contains_gt": false
+        },
+        {
+          "id": "openvivqa_531",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/openvivqa_531.jpg",
+          "question": "xe taxi này của thương hiệu nào ?",
+          "references": [
+            "xe taxi này của thương hiệu thành lợi"
+          ],
+          "final_answer": "Khung cảnh: Thành Lợi GROUP.",
+          "model_raw": "Thành Lợi GROUP.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.692166791006457,
+          "token_recall": 0.25,
+          "contains_gt": false
+        }
+      ],
+      "samples_describe": [
+        {
+          "id": "ktvic_9b360cf200",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_9b360cf200.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "có một cô gái đang ngồi trên một chiếc xe đạp",
+            "có một cô gái đang đi xe đạp ở phía trước một quán nước",
+            "có những chiếc lồng đèn được treo ở trước mái hiên của quán nước",
+            "ở trước quán nước có sự xuất hiện của những chiếc đèn lồng",
+            "ở phía trước quán nước có một cô gái đang ngồi xe đạp"
+          ],
+          "final_answer": "Khung cảnh: Phía trước có một người phụ nữ đang đạp xe đạp.",
+          "model_raw": "Phía trước có một người phụ nữ đang đạp xe đạp.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 3.2219727500050794,
+          "content_precision": 0.6
+        },
+        {
+          "id": "ktvic_a5ead342a4",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_a5ead342a4.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "có một người phụ nữ mặc áo trắng đang cầm trên tay một túi thịt",
+            "có nhiều người đang đứng xung quanh quầy hàng thịt",
+            "có nhiều người đang đứng ở quầy hàng thịt trong siêu thị",
+            "đây là khung cảnh ở một quầy hàng thịt trong siêu thị",
+            "có một túi thịt đang được cầm trên tay của cô gái mặc áo trắng"
+          ],
+          "final_answer": "Khung cảnh: Có người đang mua thực phẩm tươi sống trong một cửa hàng.",
+          "model_raw": "Có người đang mua thực phẩm tươi sống trong một cửa hàng.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.288108666994958,
+          "content_precision": 0.14285714285714285
+        },
+        {
+          "id": "ktvic_180b34270a",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_180b34270a.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "có một nhóm người đang đứng ở trước một cái cổng chào",
+            "có một nhóm người xuất hiện ở khu vực cổng chào",
+            "ở khu vực cổng chào có sự xuất hiện của một nhóm người",
+            "ở khu vực cổng chào có một nhóm người đang đứng cùng nhau",
+            "có một nhóm người đang tụ tập trước cổng chào"
+          ],
+          "final_answer": "Khung cảnh: Có nhiều người đứng bên đường, một số người đang cầm hoa. Trên đường có biển hiệu hướng dẫn đến Biên thu phí du lịch hồ Ba Bể.",
+          "model_raw": "Có nhiều người đứng bên đường, một số người đang cầm hoa. Trên đường có biển hiệu hướng dẫn đến Biên thu phí du lịch hồ Ba Bể.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 3.078451708999637,
+          "content_precision": 0.047619047619047616
+        },
+        {
+          "id": "ktvic_5ffad1b27c",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_5ffad1b27c.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "có một vài người đang đứng ở một quầy hàng quần áo",
+            "có một vài người đang lựa áo ở cửa hàng quần áo",
+            "có nhiều mặt hàng quần áo được bày bán trong khu chợ",
+            "trong khu chợ có nhiều quầy hàng bán quần áo",
+            "có một vài người đang đứng ở quầy hàng bán quần áo"
+          ],
+          "final_answer": "Khung cảnh: Phía trước có một người đang đứng và một người đang đứng.",
+          "model_raw": "Phía trước có một người đang đứng và một người đang đứng.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.830756791998283,
+          "content_precision": 1.0
+        },
+        {
+          "id": "ktvic_bf61fd4c5b",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_bf61fd4c5b.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "một cô gái mặc áo trắng đang đứng giữa cánh đồng",
+            "một cô gái mặc áo trắng đang tạo dáng trên cánh đồng",
+            "trên cánh đồng có sự xuất hiện của một cô gái mặc áo trắng",
+            "trên cánh đồng có một cô gái mặc áo trắng",
+            "có một cô gái mặc đồ trắng xuất hiện ở trên cánh đồng"
+          ],
+          "final_answer": "Khung cảnh: Cô gái đang đứng giữa cánh đồng hoa.",
+          "model_raw": "Cô gái đang đứng giữa cánh đồng hoa.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.689355083995906,
+          "content_precision": 0.8571428571428571
+        },
+        {
+          "id": "ktvic_b82750a838",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_b82750a838.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "có một cây thông noel được đặt ở sảnh của toà nhà",
+            "có một cây thông noel được trang trí ở khu vực sảnh",
+            "ở khu vực sảnh của toà nhà có một cây thông noel",
+            "có một cây thông noel xuất hiện ở khụ vực sảnh của toà nhà",
+            "một cô gái mặc đồ màu xanh đang đứng một bên cây thông"
+          ],
+          "final_answer": "Khung cảnh: Trước có một cây thông Noel màu trắng và đỏ, phía trên có một ngôi sao.",
+          "model_raw": "Trước có một cây thông Noel màu trắng và đỏ, phía trên có một ngôi sao.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.9689790409975103,
+          "content_precision": 0.5
+        },
+        {
+          "id": "ktvic_a0c3639700",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_a0c3639700.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "có một vài người đang dứng bên quầy hàng đồ trang trí giáng sinh",
+            "ở bên quầy hàng đồ trang trí giáng sinh có một nhóm người mua hàng",
+            "có một cô bé mặc áo đỏ đang cầm một món đồ trang trí",
+            "người phụ nữ đội mũ bảo hiểm hồng đang cầm một món đồ trang trí giáng sinh",
+            "có một món đồ trang trí giáng sinh ở trên tay người phụ nữ"
+          ],
+          "final_answer": "Khung cảnh: Đối tượng nổi bật nhất là một chiếc xe đạp màu đỏ.",
+          "model_raw": "Đối tượng nổi bật nhất là một chiếc xe đạp màu đỏ.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.490088291000575,
+          "content_precision": 0.1
+        },
+        {
+          "id": "ktvic_732394bafb",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_732394bafb.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "đây là khung cảnh được chụp ở một thác nước",
+            "có nhiều người đang vui chơi ở dưới thác nước",
+            "có nhiều người xuất hiện ở dưới khu vực thác nước",
+            "ở dưới chân thác nước có nhiều người đang vui chơi",
+            "ở dưới chân thác nước có sự xuất hiện của nhiều người"
+          ],
+          "final_answer": "Khung cảnh: Phía trước có thác nước và hồ nước.",
+          "model_raw": "Phía trước có thác nước và hồ nước.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.473775749997003,
+          "content_precision": 0.75
+        },
+        {
+          "id": "ktvic_b361af1ee5",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_b361af1ee5.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "có nhiều sản phẩm sữa được bày bán trên các kệ hàng",
+            "có nhiều sản phẩm sữa được bày ra ở trên các kệ hàng",
+            "cửa hàng có bán nhiều sản phẩm sữa đóng hộp",
+            "có nhiều sản phẩm sữa xuất hiện ở trên các kệ hàng",
+            "ở trên các kệ hàng có nhiều sản phẩm sữa"
+          ],
+          "final_answer": "Khung cảnh: Có nhiều sản phẩm trên kệ, bao gồm sữa và các loại thực phẩm.",
+          "model_raw": "Có nhiều sản phẩm trên kệ, bao gồm sữa và các loại thực phẩm.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.9493989589973353,
+          "content_precision": 0.6
+        },
+        {
+          "id": "ktvic_8828da802e",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_8828da802e.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "một cô gái đội mũ đen đang đứng bên cạnh bức tường",
+            "một cô gái đội mũ đen đang dựa lưng vào bức tường",
+            "có một chiếc máy ảnh ở trên tay của cô gái",
+            "có một cái máy ảnh đang được cầm bởi một cô gái",
+            "cô gái đội mũ đen đang cầm trên tay một cái máy ảnh"
+          ],
+          "final_answer": "Khung cảnh: Phía trước có một người đang cầm máy ảnh.",
+          "model_raw": "Phía trước có một người đang cầm máy ảnh.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.6982513340044534,
+          "content_precision": 1.0
+        },
+        {
+          "id": "ktvic_d2e236a3e1",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_d2e236a3e1.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "có một người phụ nữ đang ngồi ở phía trước căn nhà cũ",
+            "có một người phụ nữ đang ngồi trước cửa sổ",
+            "có nhiều loại hàng hoá được bày ra ở khu vực cửa sổ",
+            "ở khu vực cửa sổ có sự xuất hiện của nhiều loại hàng hoá",
+            "ở trước cửa sổ có sự xuất hiện của một bà lão"
+          ],
+          "final_answer": "Chưa phát hiện được khung cảnh hoặc vật thể rõ ràng phía trước.",
+          "model_raw": "",
+          "backend_ok": false,
+          "backend_error": "MLX-VLM trả lời không đúng một đến ba câu",
+          "latency_sec": 3.778789042000426,
+          "content_precision": 0.0
+        },
+        {
+          "id": "ktvic_55e3b40aad",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_55e3b40aad.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "đây là khung cảnh nhìn từ trên cao của một ngã tư",
+            "có một ngã tư đường xuất hiện trong bức ảnh",
+            "có nhiều xe cộ đang di chuyển ở khu vực ngã tư",
+            "có nhiều xe cộ đang lưu thông ở khu vực ngã tư",
+            "ở trên ngã tư đường có nhiều xe cộ đang di chuyển"
+          ],
+          "final_answer": "Khung cảnh: Phía trước có nhiều người đang di chuyển bằng xe đạp và xe máy. Có nhiều cờ và băng rôn treo trên đường.",
+          "model_raw": "Phía trước có nhiều người đang di chuyển bằng xe đạp và xe máy. Có nhiều cờ và băng rôn treo trên đường.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 3.1062549999987823,
+          "content_precision": 0.5
+        },
+        {
+          "id": "ktvic_bc79aa6cae",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_bc79aa6cae.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "có một nhóm người đang tham quan bên trong một bảo tàng",
+            "có một nhóm khách đang tham quan bên trong bảo tàng",
+            "có những bức tượng được trưng bày bên trong bảo tàng",
+            "ở bên trong bảo tàng có một đoàn khách tham quan",
+            "có một nhóm người đang tụ tập ở bên trong bảo tàng"
+          ],
+          "final_answer": "Khung cảnh: Phía trước có một bức tượng và một biển hướng dẫn.",
+          "model_raw": "Phía trước có một bức tượng và một biển hướng dẫn.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.553303415996197,
+          "content_precision": 0.25
+        },
+        {
+          "id": "ktvic_40dfeeae9f",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_40dfeeae9f.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "có nhiều gói hàng được bày ra bên trên quầy hàng",
+            "có một người đàn ông đang cầm trên tay một gói hàng",
+            "người phụ nữ đối diện nam thanh niên mặc áo xám đang lựa hàng",
+            "có một người phụ nữ đang đứng trước gian hàng",
+            "có một người phụ nữ xuất hiện ở gian hàng có hai người đàn ông"
+          ],
+          "final_answer": "Khung cảnh: Trên bàn có nhiều gói hàng hóa.",
+          "model_raw": "Trên bàn có nhiều gói hàng hóa.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.2905496250023134,
+          "content_precision": 0.6
+        },
+        {
+          "id": "ktvic_683d395af2",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_683d395af2.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "có một người đang đạp xe đạp ở trên đường",
+            "có một người đang di chuyển bằng xe đạp trên đường",
+            "ở trên đường có một người đang đạp xe đạp",
+            "có những hàng cây tre xuất hiện ở một bên đường",
+            "ở bên người đang đạp xe đạp có một hàng cây tre"
+          ],
+          "final_answer": "Khung cảnh: Phía trước có một người đi xe đạp.",
+          "model_raw": "Phía trước có một người đi xe đạp.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.489688458001183,
+          "content_precision": 0.6666666666666666
+        },
+        {
+          "id": "ktvic_e5a9a0fdc0",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_e5a9a0fdc0.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "đây là khung cảnh xuất hiện ở phía trước một căn nhà",
+            "có một căn nhà cao tầng xuất hiện ở trong bức ảnh",
+            "ở trong bức ảnh có sự xuất hiện của một căn nhà cao tầng",
+            "có một chiếc xe máy xuất hiện ở trong căn nhà",
+            "đây là bức ảnh chụp ở phía trước của một căn nhà cao tầng"
+          ],
+          "final_answer": "Khung cảnh: Phía trước có một ngôi nhà hai tầng với cửa chính mở ra. Trên nóc có mái ngói màu xanh lá. Phía trước nhà có một khoảng đất thoáng và một số cây xanh.",
+          "model_raw": "Phía trước có một ngôi nhà hai tầng với cửa chính mở ra. Trên nóc có mái ngói màu xanh lá. Phía trước nhà có một khoảng đất thoáng và một số cây xanh.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 3.6162289589992724,
+          "content_precision": 0.15
+        },
+        {
+          "id": "ktvic_2993638655",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_2993638655.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "có một cậu bé đội mũ đang vẽ một bức tranh",
+            "có một cậu bé đội mũ đang cầm bút để vẽ",
+            "có một cây bút vẽ xuất hiện trên tay cậu bé đội mũ",
+            "có một bức tranh đang được vẽ bởi cậu bé đội mũ",
+            "cậu bé đội mũ đang có hành động vẽ tranh"
+          ],
+          "final_answer": "Khung cảnh: Cô gái đang vẽ trên một bức tranh treo trên một khung treo.",
+          "model_raw": "Cô gái đang vẽ trên một bức tranh treo trên một khung treo.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 3.3683978330009268,
+          "content_precision": 0.3333333333333333
+        },
+        {
+          "id": "ktvic_5c1ef4ce60",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_5c1ef4ce60.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "có một chàng trai đang đứng trước cổng vào một khu di tích",
+            "đây là khung cảnh chụp vào buổi đêm ở khu vực cổng vào khu di tích",
+            "ở cổng vào khu di tích có một chàng trai mặc áo đen",
+            "một nam thanh niên mặc áo đen đang di chuyển lên bậc thềm",
+            "một nam thanh niên mặc áo đen đang ở khu vực cổng vào khu di tích"
+          ],
+          "final_answer": "Khung cảnh: Phía trước có một ngôi đền với kiến trúc độc đáo, được chiếu sáng trong đêm.",
+          "model_raw": "Phía trước có một ngôi đền với kiến trúc độc đáo, được chiếu sáng trong đêm.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 3.1725457909997203,
+          "content_precision": 0.1111111111111111
+        },
+        {
+          "id": "ktvic_c0434a9679",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_c0434a9679.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "có nhiều người đang di chuyển ở lối đi vào khu di tích",
+            "có một nhóm người đang di chuyển về phía cửa vào khu di tích",
+            "đây là hình ảnh chụp lối vào của một ngôi chùa",
+            "đây là khung cảnh xuất hiện ở lối vào của một khu di tích",
+            "có những chậu cây được đặt ở hai bên của khu di tích"
+          ],
+          "final_answer": "Khung cảnh: Phía trước có một con đường trải dài với hai bên là hàng rào và nhiều chậu hoa. Trên đường có nhiều người đi bộ.",
+          "model_raw": "Phía trước có một con đường trải dài với hai bên là hàng rào và nhiều chậu hoa. Trên đường có nhiều người đi bộ.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 3.1173159160025534,
+          "content_precision": 0.4
+        },
+        {
+          "id": "ktvic_41b7dc77df",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_41b7dc77df.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "đây là khung cảnh xuất hiện trước một quán cà phê",
+            "ở trước quán cà phê có sự xuất hiện của một người đàn ông",
+            "đây là bức ảnh chụp mặt trước của một quán cà phê",
+            "có một quán cà phê xuất hiện ở trong bức ảnh",
+            "có một người đàn ông ngồi ở trước cửa của toà nhà"
+          ],
+          "final_answer": "Khung cảnh: Phía trước có một quán cà phê với tên \"Hog's Cafe\" và một số xe máy đậu bên ngoài.",
+          "model_raw": "Phía trước có một quán cà phê với tên \"Hog's Cafe\" và một số xe máy đậu bên ngoài.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 3.1281559170020046,
+          "content_precision": 0.23076923076923078
+        },
+        {
+          "id": "ktvic_7730070b36",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_7730070b36.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "có nhiều nugời đang di chuyển vào trong con ngõ",
+            "đây là khung cảnh xuất hiện ở lối vào một con phố",
+            "có một bức tường cũ ở đầu của con phố",
+            "ở đầu của con phố có một bức tường thành cũ",
+            "có nhiều người đang xuất hiện ở trên con phố"
+          ],
+          "final_answer": "Khung cảnh: Phía trước có nhiều xe máy và xe đạp điện đậu trên đường.",
+          "model_raw": "Phía trước có nhiều xe máy và xe đạp điện đậu trên đường.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.708854374999646,
+          "content_precision": 0.125
+        },
+        {
+          "id": "ktvic_dea50ce886",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_dea50ce886.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "có nhiều người xuất hiện ở bên trong một khu chợ",
+            "đây là khung cảnh xuất hiện ở bên trong một khu chợ",
+            "có nhiều xe cộ đang di chuyển bên trong khu chợ",
+            "ở trong khu chợ có nhiều xe cộ đang di chuyển",
+            "có nhiều người đang chạy xe máy ở trong khu chợ"
+          ],
+          "final_answer": "Khung cảnh: Phía trước có nhiều người đang mua bán, có xe máy và xe đạp.",
+          "model_raw": "Phía trước có nhiều người đang mua bán, có xe máy và xe đạp.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.739845083997352,
+          "content_precision": 0.5714285714285714
+        },
+        {
+          "id": "ktvic_21edb5f048",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_21edb5f048.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "có nhiều người đang di chuyển ở trên con phố",
+            "có nhiều người đang đi bộ ở trên con phố",
+            "có một vài người bán hàng rong đang di chuyển ở trên phố",
+            "có một người phụ nữ đang vác đòn gánh ở bên đường",
+            "có một nhóm người đang xuất hiện ở trên đường"
+          ],
+          "final_answer": "Khung cảnh: Có một người đàn ông mặc áo đen và quần trắng, người phụ nữ mặc áo xanh và quần trắng, và một người đàn ông mặc áo đen và quần trắng.",
+          "model_raw": "Có một người đàn ông mặc áo đen và quần trắng, người phụ nữ mặc áo xanh và quần trắng, và một người đàn ông mặc áo đen và quần trắng.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 3.0831516249963897,
+          "content_precision": 0.09523809523809523
+        },
+        {
+          "id": "ktvic_7c52d87ab5",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_7c52d87ab5.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "có một vài người đang di chuyển ở trên đường",
+            "ở trên đường có sự xuất hiện của ba người đang di chuyển",
+            "có một người đang đứng ở khu vực cổng vào có mái tranh",
+            "có một cái cổng chào có mái tranh ở một bên đường",
+            "một người phụ nữ đang ngước lên khu vực cổng chào có mái tranh"
+          ],
+          "final_answer": "Khung cảnh: Phía trước có hai người mặc áo len và một người đứng trước một ngôi nhà nhỏ.",
+          "model_raw": "Phía trước có hai người mặc áo len và một người đứng trước một ngôi nhà nhỏ.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.5491517080008634,
+          "content_precision": 0.125
+        },
+        {
+          "id": "ktvic_b328b7e1be",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_b328b7e1be.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "có một hòn đảo xuất hiện ở trên bãi biển",
+            "ở trên biển có sự xuất hiện của một hòn đảo",
+            "có một mũi tên màu đỏ xuất hiện trong bức ảnh",
+            "có những con tàu đang đậu trên biển trong bức ảnh ở góc dưới trái",
+            "ở góc dưới trái có một bức ảnh chụp những con tàu trên biển"
+          ],
+          "final_answer": "Khung cảnh: Phía trước có một tàu biển với nhiều cờ.",
+          "model_raw": "Phía trước có một tàu biển với nhiều cờ.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.526880416997301,
+          "content_precision": 0.5
+        },
+        {
+          "id": "ktvic_cad5ba32da",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_cad5ba32da.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "ba bức ảnh chụp một cặp đôi đang ở trên phố",
+            "có ba bức ảnh đều chụp ảnh của một cặp đôi mặc đồ trắng",
+            "có một cặp đôi mặc đồ trắng ở trong mỗi bức ảnh",
+            "có một cặp đôi đang cầm trên tay những trái dâu trong mỗi bức ảnh",
+            "ở trong mỗi bức ảnh có một cặp đôi đang cầm những quả dâu"
+          ],
+          "final_answer": "Khung cảnh: Phía trước có một cặp đôi mặc áo dài trắng, đang đứng trên đường phố. Họ đang đeo tai nghe và đang cười. Phía sau họ là một con đường hai chiều với nhiều cửa hàng và biển quảng cáo.",
+          "model_raw": "Phía trước có một cặp đôi mặc áo dài trắng, đang đứng trên đường phố. Họ đang đeo tai nghe và đang cười. Phía sau họ là một con đường hai chiều với nhiều cửa hàng và biển quảng cáo.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 3.3612899579966324,
+          "content_precision": 0.19230769230769232
+        },
+        {
+          "id": "ktvic_ec3ff6aa26",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_ec3ff6aa26.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "một nhóm người đang đứng trước một bức tượng đồng",
+            "có một nhóm người đang đeo tai nghe trước một bức tượng",
+            "một bức tượng xuất hiện ở trước mặt của nhóm người",
+            "có những bức tượng được trưng bày ở trong căn phòng",
+            "có một nhóm người xuất hiện ở trước bức tượng đồng"
+          ],
+          "final_answer": "Khung cảnh: Phía trước có một bức tượng gỗ có nhiều đầu, được đặt trên một đài.",
+          "model_raw": "Phía trước có một bức tượng gỗ có nhiều đầu, được đặt trên một đài.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.9790727910003625,
+          "content_precision": 0.16666666666666666
+        },
+        {
+          "id": "ktvic_aa79249a5f",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_aa79249a5f.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "có những chiếc xe đạp được đặt ở bên bãi cỏ",
+            "có một cái cầu trượt được đặt ở trong bãi cỏ",
+            "có một cái cầu trượt được đặt trong sân chơi",
+            "ở trong sân chơi có sự xuất hiện của một cái cầu trượt",
+            "có một cái cầu trượt được đặt ở trong khu vực có bãi cỏ"
+          ],
+          "final_answer": "Khung cảnh: Phía trước có một khu vực đạp xe và một khu vực chơi trẻ em.",
+          "model_raw": "Phía trước có một khu vực đạp xe và một khu vực chơi trẻ em.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.521494459004316,
+          "content_precision": 0.7777777777777778
+        },
+        {
+          "id": "ktvic_7753a40d30",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_7753a40d30.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "có một vài người đang di chuyển ở trên con đường làng",
+            "có một vài người đang đi bộ trên con đường làng",
+            "ở trên con đường làng có sự xuất hiện của một cái cổng làng",
+            "có một cái cổng làng ở trên con đường làng",
+            "ở một bên của con đường là một con sông"
+          ],
+          "final_answer": "Khung cảnh: Phía trước có một con đường dẫn đến cổng nhà thờ, hai bên đường có cây cỏ và cây tre.",
+          "model_raw": "Phía trước có một con đường dẫn đến cổng nhà thờ, hai bên đường có cây cỏ và cây tre.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.777054040998337,
+          "content_precision": 0.35714285714285715
+        },
+        {
+          "id": "ktvic_5514452396",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_5514452396.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "một ông cụ mặc áo dài đen đang gõ trống",
+            "có một ông cụ mặc áo dài đen đang đứng trước cái trống",
+            "ở trước cái trống có một ông cụ mặc áo dài đen",
+            "có một nhóm người đang tụ tập ở khu vực các bậc thềm",
+            "ở trên các bậc thềm có nhiều người đang tụ tập"
+          ],
+          "final_answer": "Khung cảnh: Phía trước có một chiếc thùng gỗ lớn.",
+          "model_raw": "Phía trước có một chiếc thùng gỗ lớn.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.752556833998824,
+          "content_precision": 0.0
+        },
+        {
+          "id": "ktvic_f16178ba59",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_f16178ba59.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "có hai người mặc áo xanh đang cầm trái cây",
+            "có hai người mặc áo xanh đang cầm trái cây ở trên tay",
+            "ở trên tay của người phụ nữ áo xanh là những túi lưới đựng hoa quả",
+            "có nhiều mặt hàng hoa quả được bày bán trước mặt hai nhân viên áo xanh",
+            "ở trước mặt hai nhân viên áo xanh là các loại trái cây"
+          ],
+          "final_answer": "Chưa phát hiện được khung cảnh hoặc vật thể rõ ràng phía trước.",
+          "model_raw": "",
+          "backend_ok": false,
+          "backend_error": "MLX-VLM chạm giới hạn token; bỏ câu trả lời có thể bị cắt",
+          "latency_sec": 6.142640875004872,
+          "content_precision": 0.0
+        },
+        {
+          "id": "ktvic_67f93a9b2e",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_67f93a9b2e.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "một cô gái đang đứng bên cửa hàng đồ trang trí",
+            "có một người phụ nữ đang đứng ở cửa hàng đồ trang trí",
+            "có nhiều mặt hàng đồ trang trí xuất hiện ở một bên người phụ nữ",
+            "ở một bên người phụ nữ là những mặt hàng đồ trang trí",
+            "có nhiều mặt hàng đồ trang trí được bày bán ở khu vực cô gái đang đứng"
+          ],
+          "final_answer": "Khung cảnh: Phía trước có một cô gái mặc áo dài, đang cầm một chiếc đèn lồng.",
+          "model_raw": "Phía trước có một cô gái mặc áo dài, đang cầm một chiếc đèn lồng.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.5979255420024856,
+          "content_precision": 0.2222222222222222
+        },
+        {
+          "id": "ktvic_592d014c43",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_592d014c43.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "cô gái mặc áo đỏ đang cầm trên tay một cái hộp",
+            "có một cái hộp ở trên tay cô gái mặc áo đỏ",
+            "ở trên tay cô gái mặc áo đỏ có một cái hộp",
+            "có mmột vài người đang đứng bên một cái kệ hàng trưng bày sữa",
+            "có nhiều sản phẩm sữa được trưng bày ở trước mặt những người phụ nữ"
+          ],
+          "final_answer": "Khung cảnh: Có hai người đang đứng và một số sản phẩm trên kệ.",
+          "model_raw": "Có hai người đang đứng và một số sản phẩm trên kệ.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.6148436660005245,
+          "content_precision": 0.6666666666666666
+        },
+        {
+          "id": "ktvic_56a96e5676",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_56a96e5676.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "có nhiều xe cộ đang lưu thông ở trên đường",
+            "có một nhóm những chiếc xe máy đang di chuyển xung quanh chiếc ô tô",
+            "có một nhóm những chiếc xe máy đang di chuyển xung quanh chiếc xe hơi",
+            "có một cái cột có treo lá cờ ở một bên đường",
+            "có một lá cờ được treo ở cái cột một bên đường"
+          ],
+          "final_answer": "Khung cảnh: Phía trước có nhiều xe máy và người đứng.",
+          "model_raw": "Phía trước có nhiều xe máy và người đứng.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.519026500005566,
+          "content_precision": 0.75
+        },
+        {
+          "id": "ktvic_f3cad8082b",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_f3cad8082b.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "có một con tàu xuất hiện ở trên mặt nước",
+            "có những chậu cây cảnh xuất hiện ở trên con tàu",
+            "có những chậu cây cảnh được chở ở trên con tàu",
+            "ở trên mặt nước có một con tàu đang chở theo những chậu cây cảnh",
+            "ở trên sông có sự xuất hiện của một con tàu chở cây cảnh"
+          ],
+          "final_answer": "Khung cảnh: Phía trước có một chiếc thuyền nhỏ với hai chiếc lều nhỏ.",
+          "model_raw": "Phía trước có một chiếc thuyền nhỏ với hai chiếc lều nhỏ.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.8096529579997878,
+          "content_precision": 0.0
+        },
+        {
+          "id": "ktvic_f475bdf0d6",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_f475bdf0d6.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "có hai người phụ nữ đang đứng ở trên bãi cát",
+            "có một người phụ nữ đang cầm một chiếc điện thoại trên tay",
+            "trên tay người phụ nữ đang che ô là một chiếc điện thoại",
+            "có một chiếc điện thoại ở trên tay người phụ nữ đang che ô",
+            "có một người phụ nữ đang đứng ở khu vực cổng chào"
+          ],
+          "final_answer": "Khung cảnh: Có hai người phụ nữ đang chơi với đồ chơi trên bãi biển. Một người mặc váy ngắn và một người mặc váy dài. Trên bãi biển có nhiều đồ chơi màu sắc và hình dạng khác nhau.",
+          "model_raw": "Có hai người phụ nữ đang chơi với đồ chơi trên bãi biển. Một người mặc váy ngắn và một người mặc váy dài. Trên bãi biển có nhiều đồ chơi màu sắc và hình dạng khác nhau.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 3.445163374999538,
+          "content_precision": 0.20833333333333334
+        },
+        {
+          "id": "ktvic_3e9d97a6f3",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_3e9d97a6f3.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "có một cô gái đang ngồi ở trên một mỏm đá",
+            "có một cô gái đội mũ đỏ đang ngồi trên mỏm đá",
+            "ở trên mỏm đá có một cô gái đội mũ màu đỏ",
+            "có một chiếc ô tô đang xuất hiện ở trên đường",
+            "có một chiếc ô tô đang chạy ở dưới chân núi"
+          ],
+          "final_answer": "Chưa phát hiện được khung cảnh hoặc vật thể rõ ràng phía trước.",
+          "model_raw": "",
+          "backend_ok": false,
+          "backend_error": "MLX-VLM trả lời rỗng hoặc chưa có dấu kết câu rõ ràng",
+          "latency_sec": 2.726923459005775,
+          "content_precision": 0.0
+        },
+        {
+          "id": "ktvic_1188bec91e",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_1188bec91e.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "có những bức tượng được trưng bày ở trong căn phòng",
+            "có những bức tượng được trưng bày trong bảo tàng",
+            "ở trong bảo tàng có một nhóm du khách tham quan",
+            "có một nhóm người đang đứng nghe một người đàn ông đội mũ đen thuyết trình",
+            "ở trước mặt nhóm du khách có những bức tượng"
+          ],
+          "final_answer": "Khung cảnh: Phía trước có một bức tượng đá và một nhóm người đang tham quan.",
+          "model_raw": "Phía trước có một bức tượng đá và một nhóm người đang tham quan.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.9018549999964307,
+          "content_precision": 0.8
+        },
+        {
+          "id": "ktvic_f2a6bd631a",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_f2a6bd631a.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "có nhiều sản phẩm đồ trang trí giáng sinh xuất hiện ở bên đường",
+            "đây là khung cảnh xuất hiện ở trước các quầy hàng đồ trang trí giáng sinh",
+            "có nhiều mặt hàng đồ trang trí giáng sinh được bày bán trong các quầy hàng",
+            "có nhiều món đồ trang trí giáng sinh xuất hiện ở trong các quầy hàng",
+            "có những cây thông noel đang xuất hiện ở bên đường"
+          ],
+          "final_answer": "Khung cảnh: Phía trước có nhiều cây thông Noel trang trí, đèn lồng và các món quà.",
+          "model_raw": "Phía trước có nhiều cây thông Noel trang trí, đèn lồng và các món quà.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.9759008750042995,
+          "content_precision": 0.7
+        },
+        {
+          "id": "ktvic_f3c704ec73",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_f3c704ec73.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "có một người phụ nữ đang mỉm cười bên trong quầy hàng",
+            "có một người phụ nữ đang mỉm cười trong quầy đồ ăn",
+            "có nhiều loại nguyên liệu xuất hiện ở trước mặt người phụ nữ áo nâu",
+            "người phụ nữ mặc áo nâu đang trong trạng thái mỉm cười",
+            "có một người phụ nữ mặc áo nâu đang mỉm cười"
+          ],
+          "final_answer": "Khung cảnh: Có một người phụ nữ mặc áo đỏ, đang ngồi trước một bàn đầy thức ăn. Trên bàn có nhiều loại thực phẩm, bao gồm bánh mì, rau, và một số món ăn khác. Ngoài ra, còn có một chiếc nồi và một cốc nước.",
+          "model_raw": "Có một người phụ nữ mặc áo đỏ, đang ngồi trước một bàn đầy thức ăn. Trên bàn có nhiều loại thực phẩm, bao gồm bánh mì, rau, và một số món ăn khác. Ngoài ra, còn có một chiếc nồi và một cốc nước.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 4.058744499998284,
+          "content_precision": 0.26666666666666666
+        },
+        {
+          "id": "ktvic_023f2b58f3",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_023f2b58f3.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "có nhiều người đang đứng ở phía trước toà nhà",
+            "ở phía trước của toà nhà có nhiều người đang tụ tập",
+            "có nhiều người đang tụ tập ở phía trước toà nhà",
+            "có nhiều người đang đứng ở khu vực phía trước toà nhà",
+            "có nhiều người xuất hiện ở phía trước của toà nhà"
+          ],
+          "final_answer": "Khung cảnh: Phía trước có một cửa hàng thời trang với biển hiệu \"Mai Hường\" và một số người đứng bên ngoài.",
+          "model_raw": "Phía trước có một cửa hàng thời trang với biển hiệu \"Mai Hường\" và một số người đứng bên ngoài.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 3.070518041997275,
+          "content_precision": 0.08333333333333333
+        },
+        {
+          "id": "ktvic_f5824efbf2",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_f5824efbf2.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "có nhiều người đang xuất hiện ở trong một khu chợ đêm",
+            "có nhiều cửa hàng bán quần áo ở trong khu chợ",
+            "có nhiều cửa hàng trong khu chợ bày bán các mặt hàng quần áo",
+            "đây là khung cảnh xuất hiện ở một khu chợ đêm",
+            "có nhiều người đang ở trước những cửa hàng quần áo"
+          ],
+          "final_answer": "Khung cảnh: Đối tượng nổi bật: quần áo và giày dép.",
+          "model_raw": "Đối tượng nổi bật: quần áo và giày dép.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.753029667001101,
+          "content_precision": 0.25
+        },
+        {
+          "id": "ktvic_8997d56551",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_8997d56551.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "có nhiều người đang múa ở trên phố đi bộ",
+            "có nhiều người đang biểu diễn nghệ thuật trên phố đi bộ",
+            "ở trên phố đi bộ có nhiều người đang biểu diễn nghệ thuật",
+            "ở trên phố đi bộ có nhiều người đang nhảy múa",
+            "có nhiều người đang xuất hiện ở trên phố đi bộ"
+          ],
+          "final_answer": "Khung cảnh: Phía trước có nhiều người đang di chuyển trên đường.",
+          "model_raw": "Phía trước có nhiều người đang di chuyển trên đường.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.391034166001191,
+          "content_precision": 0.25
+        },
+        {
+          "id": "ktvic_52be2bf19d",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_52be2bf19d.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "có một người phụ nữ đang nhìn vào tủ đồ ăn",
+            "có một người phụ nữ đứng trước tủ đồ ăn",
+            "ở trước tủ đồ ăn có một cô gái đội mũ bảo hiểm trắng",
+            "có một cô gái đội mũ bảo hiểm trắng đang cầm một ly nước",
+            "có một cô gái đội mũ bảo hiểm trắng đang nhìn về tủ đồ ăn"
+          ],
+          "final_answer": "Khung cảnh: Phía trước có một người đang đứng và một kệ hàng.",
+          "model_raw": "Phía trước có một người đang đứng và một kệ hàng.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.4444672919998993,
+          "content_precision": 0.3333333333333333
+        },
+        {
+          "id": "ktvic_bfdc84bb49",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_bfdc84bb49.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "một cô gái mặc áo vàng đang đưa tờ giấy cho một người mặc áo đen",
+            "có một người mặc áo đen đang đứng đối diện cô gái mặc áo vàng",
+            "có hai cô gái đang đứng đối diện nhau ở quầy thu ngân",
+            "ở quầy thu ngân có hai cô gái đang nhìn nhau",
+            "có hai cô gái đang cùng cầm một tờ giấy ở khu vực tính tiền"
+          ],
+          "final_answer": "Khung cảnh: Phía trước có một nhân viên bán hàng đang giao dịch với khách hàng.",
+          "model_raw": "Phía trước có một nhân viên bán hàng đang giao dịch với khách hàng.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.691460249996453,
+          "content_precision": 0.0
+        },
+        {
+          "id": "ktvic_c3fbd8e1ad",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_c3fbd8e1ad.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "có hai cô gái đang đứng ở một bên quầy hàng đồ uống",
+            "có những chiếc thùng được trưng bày ở trên kệ hàng",
+            "có hai cô gái đang nhìn về phía một cái hộp màu xanh dương",
+            "có một cái hộp màu xanh dương được cầm trên tay cô gái mặc áo đỏ",
+            "ở trên tay cô gái mặc áo đỏ có một cái hộp màu xanh dương"
+          ],
+          "final_answer": "Khung cảnh: Có nhiều hộp nước ngọt và bia.",
+          "model_raw": "Có nhiều hộp nước ngọt và bia.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.471048375002283,
+          "content_precision": 0.2
+        },
+        {
+          "id": "ktvic_e9a65c0c1e",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_e9a65c0c1e.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "đây là khung cảnh chụp vào buổi đêm ở trước một toà nhà",
+            "có hình ảnh một con gấu ở mặt trước của toà nhà",
+            "ở mặt trước của toà nhà có sự xuất hiện của một con gấu",
+            "có nhiều người xuất hiện ở phía trước của toà nhà",
+            "ở phía trước của toà nhà có nhiều người đang đứng"
+          ],
+          "final_answer": "Khung cảnh: Phía trước có một quảng trường với nhiều người tụ tập, chụp ảnh và tham quan. Có một số người mặc trang phục mùa đông.",
+          "model_raw": "Phía trước có một quảng trường với nhiều người tụ tập, chụp ảnh và tham quan. Có một số người mặc trang phục mùa đông.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 3.0566206660005264,
+          "content_precision": 0.14285714285714285
+        },
+        {
+          "id": "ktvic_a34bfbeadd",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_a34bfbeadd.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "có một nhóm bạn trẻ đang ở trong căn phòng trưng bày",
+            "có một nhóm bạn trẻ xuất hiện trong căn phòng trưng bày",
+            "ở trong căn phòng trưng bày có một nhóm bạn trẻ",
+            "có một nhóm bạn trẻ đang tham quan bên trong căn phòng",
+            "có một nhóm bạn mặc áo xanh đang nhìn vào những tấm bảng thông tin"
+          ],
+          "final_answer": "Khung cảnh: Có nhiều bảng thông tin và hình ảnh trong triển lãm.",
+          "model_raw": "Có nhiều bảng thông tin và hình ảnh trong triển lãm.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.4108822909984156,
+          "content_precision": 0.5
+        },
+        {
+          "id": "ktvic_cf8bf80286",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_cf8bf80286.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "đây là khung cảnh xuất hiện ở bên trong một siêu thị",
+            "có một cặp đôi đang cùng cầm một cái giỏ màu xanh dương",
+            "có một cái giỏ màu xanh ở trên tay cô gái mặc áo vàng",
+            "có một chàng trai mặc áo xám đang đứng cạnh cô gái mặc áo vàng",
+            "có một cô gái mặc áo vàng đang cầm trên tay một cái giỏ màu xanh"
+          ],
+          "final_answer": "Khung cảnh: Có hai người đang mua sắm trong siêu thị. Một người đang đứng nhìn, trong khi người kia đang cầm một chiếc túi xách.",
+          "model_raw": "Có hai người đang mua sắm trong siêu thị. Một người đang đứng nhìn, trong khi người kia đang cầm một chiếc túi xách.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 3.401139791996684,
+          "content_precision": 0.3076923076923077
+        },
+        {
+          "id": "ktvic_5935dca99e",
+          "image_path": "/private/tmp/claude-501/-Users-lenhat-Do-An-Tot-Nghiep/ac8d5b34-cc61-4d7f-b9d0-e4c5bfe2db01/scratchpad/vqa_images_after/ktvic_5935dca99e.jpg",
+          "question": "Phía trước có gì?",
+          "references": [
+            "một cô gái đang đứng ở trên thành của tầng thượng",
+            "một cô gái đang đứng tạo dáng ở trên tầng thượng của toà nhà",
+            "có nhiều ngôi nhà cao tầng ở xa xa của khung hình",
+            "ở phía trước của cô gái có những dãy nhà cao tầng",
+            "ở trên tầng thượng của toà nhà có một cô gái mặc áo trắng"
+          ],
+          "final_answer": "Khung cảnh: Có một người đứng trên một rooftop.",
+          "model_raw": "Có một người đứng trên một rooftop.",
+          "backend_ok": true,
+          "backend_error": null,
+          "latency_sec": 2.4424189170022146,
+          "content_precision": 0.5
+        }
+      ]
+    }
+  }
+}

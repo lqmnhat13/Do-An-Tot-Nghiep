@@ -1,0 +1,4481 @@
+{
+  "config_engine": "vision",
+  "results": {
+    "vision": {
+      "vintext_vi_scene": {
+        "num_images": 150,
+        "status": {
+          "ok": 149,
+          "rejected_quality": 1,
+          "error": 0,
+          "no_text": 0
+        },
+        "word_micro_strict": {
+          "precision": 0.7737819025522041,
+          "recall": 0.6800917665052256,
+          "f1": 0.7239180572513906
+        },
+        "word_micro_no_accent": {
+          "precision": 0.861368909512761,
+          "recall": 0.7570736681111394,
+          "f1": 0.8058608058608059
+        },
+        "per_image_f1": {
+          "n": 150,
+          "mean": 0.7116087479160627,
+          "median": 0.75,
+          "p90": 0.9680392156862744,
+          "min": 0.0,
+          "max": 1.0
+        },
+        "latency_sec": {
+          "n": 149,
+          "mean": 0.21082889794674975,
+          "median": 0.14152479200129164,
+          "p90": 0.5036489414022084,
+          "min": 0.05866341599903535,
+          "max": 0.8937615409959108
+        },
+        "error_messages": [
+          "Kích thước ảnh quá nhỏ"
+        ],
+        "examples": [
+          {
+            "image": "im1398.jpg",
+            "gt": "MB MB TRẦN HƯNG ĐẠO TẦNG 2 Sàn giao dịch Khách hàng cá nhân cao cấp TẦNG 5 Ban Giám Đốc Phòng kinh doanh",
+            "pred": "MB. MB TRÂN HƯNG ĐẠO. TANG 2 San giao dich. Khach hang ca nhan cao cap. TẦNG 5 Ban Giám Đốc. Phòng kinh doanh.",
+            "f1": 0.625,
+            "f1_no_accent": 1.0
+          },
+          {
+            "image": "im1416.jpg",
+            "gt": "T H V L ĐÀI PHÁT THANH VÀ TRUYỀN HÌNH VĨNH LONG",
+            "pred": "THVL. ĐÀI PHÁT THANH VÀ TRUYỀN HÌNH VĨNH LONG.",
+            "f1": 0.762,
+            "f1_no_accent": 0.762
+          },
+          {
+            "image": "im1221.jpg",
+            "gt": "GIỚI THIỆU NHÀ ĐẤT ĐỦ MỌI DIỆN TÍCH",
+            "pred": "GIỚI THIỆU. NHÀ ĐẤT. ĐỦ MỌI DIỆN TÍCH.",
+            "f1": 1.0,
+            "f1_no_accent": 1.0
+          },
+          {
+            "image": "im1333.jpg",
+            "gt": "TRÍ TRÍ BÁN GIÀY DA MAY GIÀY DÉP S",
+            "pred": "TRÍ. TRI. BÁN GIÀY DA -. MAY GIÀY DÉP.",
+            "f1": 0.824,
+            "f1_no_accent": 0.941
+          },
+          {
+            "image": "im1462.jpg",
+            "gt": "VIETNAM ESPORTS G CAFÉ C A TRUNG TÂM HỖ TRỢ VÀ CHĂM SÓC KHÁCH HÀNG GCAFÉ CYBERPAY Địa Chỉ: 510 Trần Đại Nghĩa, Phường 4, Tp. Vĩnh Long Điện Thoại: (070) 3883939 (070) 38879",
+            "pred": "VD SPORTS Ccafé $c. TRUNG TÂM HỖ TRỢ. VÀ CHĂM SÓC KHÁCH HÀNG. GCAFÉ - CYBERPAY. Điện thoại: (070) 3 883 939 - (070) 3 887 9. Địa Chỉ: 51D Trần Đại Nghĩa, Phường 4, Tp. Vinh Long.",
+            "f1": 0.714,
+            "f1_no_accent": 0.743
+          },
+          {
+            "image": "im1449.jpg",
+            "gt": "ĐOẠN ĐƯỜNG HAY XẢY RA TAI NẠN",
+            "pred": "ĐOẠN ĐƯỜNG HAY. XÁY RA TAI NẠN.",
+            "f1": 0.857,
+            "f1_no_accent": 1.0
+          },
+          {
+            "image": "im1408.jpg",
+            "gt": "Welcome to Win Won Cafe Sinh tố Trà sữa Cơm Văn Phòng Cơm Chay 0946.121.412 / f Nguyen Dieu Hien Add: 24A Nguyễn Thị Huỳnh Phú Nhuận Nhận Giao Hàng Tận Nơi",
+            "pred": "1.oa. Welcome to. Win - Won. Cafe - Sinh tố - Trà sữa - Cơm Văn Phòng - Cơm Chay. 0946.121.412/©Nguyen Dieu Hien. Add: 24A Nguyễn Thị Huỳnh - Phú Nhuận. Nhận Giao Hàng Tận Nơi.",
+            "f1": 0.955,
+            "f1_no_accent": 0.955
+          },
+          {
+            "image": "im1356.jpg",
+            "gt": "BIDV NGÂN HÀNG ĐẦU TƯ VÀ PHÁT TRIỂN VIỆT NAM ĐẦU TƯ VÀ PHÁT TRIỂN VIỆT NAM and Development of Vietnam LÃNH O RANTEE H VỤ THẺ BÁN NGOẠI TỆ EXCHANGE N HÀNG ĐIỆN TỬ NGÂN HÀNG ĐẦU TƯ VÀ PHÁT TRIỂN VIỆT NAM Bank for Investment and Development of Vietnam BIDV Bạn trẻ trung và trí tuệ Bạn muốn vươn xa tron",
+            "pred": "mup hiệu sủ. BIDV. NGÂN HÀNG ĐẦU TƯ VÀ PHÁT TRIỂN VIỆT NAM. NGÂN HÀNG. O LÂNH. ANTEE. H VỤ THỂ. Bạn trẻ trung và tới toệ. BIDV - CARD. \\ BÁN NGOẠI TỆ. Dạn muón vuơn xa trong cu Bạn muốn năng động. Hành trang cho. Dịch vự. N HÀNG ĐIỆN TỬ. ân tượng hon.",
+            "f1": 0.503,
+            "f1_no_accent": 0.594
+          }
+        ],
+        "per_image": [
+          {
+            "image": "im1398.jpg",
+            "latency_sec": 0.6692998340004124,
+            "f1": 0.625,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1416.jpg",
+            "latency_sec": 0.09420016699732514,
+            "f1": 0.761904761904762,
+            "f1_no_accent": 0.761904761904762,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1221.jpg",
+            "latency_sec": 0.08440683300432283,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1333.jpg",
+            "latency_sec": 0.13200366700039012,
+            "f1": 0.823529411764706,
+            "f1_no_accent": 0.9411764705882353,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1462.jpg",
+            "latency_sec": 0.14737925000372343,
+            "f1": 0.7142857142857144,
+            "f1_no_accent": 0.7428571428571428,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1449.jpg",
+            "latency_sec": 0.12999125000351341,
+            "f1": 0.8571428571428571,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1408.jpg",
+            "latency_sec": 0.12989904199639568,
+            "f1": 0.955223880597015,
+            "f1_no_accent": 0.955223880597015,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1356.jpg",
+            "latency_sec": 0.1971889159976854,
+            "f1": 0.5032258064516129,
+            "f1_no_accent": 0.5935483870967743,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1445.jpg",
+            "latency_sec": 0.20063733300048625,
+            "f1": 0.9166666666666666,
+            "f1_no_accent": 0.9583333333333334,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1384.jpg",
+            "latency_sec": 0.08802837500115857,
+            "f1": 0.7317073170731706,
+            "f1_no_accent": 0.7804878048780488,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1312.jpg",
+            "latency_sec": 0.15266833300120197,
+            "f1": 0.6956521739130435,
+            "f1_no_accent": 0.717391304347826,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1459.jpg",
+            "latency_sec": 0.07647704199916916,
+            "f1": 0.7142857142857143,
+            "f1_no_accent": 0.7142857142857143,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1272.jpg",
+            "latency_sec": 0.1290567079995526,
+            "f1": 0.8351648351648352,
+            "f1_no_accent": 0.8791208791208792,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1345.jpg",
+            "latency_sec": 2.8330032364465296e-06,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "BAD_QUALITY",
+            "error": "Kích thước ảnh quá nhỏ"
+          },
+          {
+            "image": "im1488.jpg",
+            "latency_sec": 0.130003417005355,
+            "f1": 0.5517241379310345,
+            "f1_no_accent": 0.6206896551724138,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1249.jpg",
+            "latency_sec": 0.08694495799863944,
+            "f1": 0.7391304347826085,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1329.jpg",
+            "latency_sec": 0.3371121669988497,
+            "f1": 0.9494949494949495,
+            "f1_no_accent": 0.9696969696969697,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1473.jpg",
+            "latency_sec": 0.08779270800005179,
+            "f1": 0.5714285714285715,
+            "f1_no_accent": 0.5714285714285715,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1276.jpg",
+            "latency_sec": 0.05866341599903535,
+            "f1": 0.875,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1359.jpg",
+            "latency_sec": 0.08350237500417279,
+            "f1": 0.75,
+            "f1_no_accent": 0.75,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1251.jpg",
+            "latency_sec": 0.08811816699744668,
+            "f1": 0.5555555555555556,
+            "f1_no_accent": 0.7222222222222222,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1238.jpg",
+            "latency_sec": 0.7536380419987836,
+            "f1": 0.7058823529411765,
+            "f1_no_accent": 0.823529411764706,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1370.jpg",
+            "latency_sec": 0.14960558299935656,
+            "f1": 0.8260869565217391,
+            "f1_no_accent": 0.9565217391304348,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1442.jpg",
+            "latency_sec": 0.07130483299988555,
+            "f1": 0.6,
+            "f1_no_accent": 0.9500000000000001,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1252.jpg",
+            "latency_sec": 0.16521379099867772,
+            "f1": 0.6428571428571429,
+            "f1_no_accent": 0.7142857142857143,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1382.jpg",
+            "latency_sec": 0.09270649999962188,
+            "f1": 0.7499999999999999,
+            "f1_no_accent": 0.7999999999999999,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1423.jpg",
+            "latency_sec": 0.186834167005145,
+            "f1": 0.9411764705882353,
+            "f1_no_accent": 0.9411764705882353,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1362.jpg",
+            "latency_sec": 0.07268370800011326,
+            "f1": 0.9285714285714286,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1305.jpg",
+            "latency_sec": 0.06803183299780358,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1492.jpg",
+            "latency_sec": 0.4245301670016488,
+            "f1": 0.8333333333333333,
+            "f1_no_accent": 0.8333333333333333,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1427.jpg",
+            "latency_sec": 0.22721679099777248,
+            "f1": 0.8807339449541284,
+            "f1_no_accent": 0.8990825688073394,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1467.jpg",
+            "latency_sec": 0.10152004200062947,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1334.jpg",
+            "latency_sec": 0.18312929199601058,
+            "f1": 0.5,
+            "f1_no_accent": 0.6666666666666666,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1232.jpg",
+            "latency_sec": 0.07797791700431844,
+            "f1": 0.6666666666666666,
+            "f1_no_accent": 0.6666666666666666,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1208.jpg",
+            "latency_sec": 0.14014412499818718,
+            "f1": 0.7179487179487181,
+            "f1_no_accent": 0.7948717948717948,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1248.jpg",
+            "latency_sec": 0.1388616250042105,
+            "f1": 0.6,
+            "f1_no_accent": 0.72,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1405.jpg",
+            "latency_sec": 0.3124048329991638,
+            "f1": 0.7777777777777778,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1201.jpg",
+            "latency_sec": 0.11942495800030883,
+            "f1": 0.5,
+            "f1_no_accent": 0.6666666666666666,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1453.jpg",
+            "latency_sec": 0.1966442500051926,
+            "f1": 0.75,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1371.jpg",
+            "latency_sec": 0.46541816699755145,
+            "f1": 0.5517241379310346,
+            "f1_no_accent": 0.5517241379310346,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1325.jpg",
+            "latency_sec": 0.11737854200328002,
+            "f1": 0.6250000000000001,
+            "f1_no_accent": 0.8750000000000001,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1367.jpg",
+            "latency_sec": 0.08068533299956471,
+            "f1": 0.875,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1233.jpg",
+            "latency_sec": 0.16061229100159835,
+            "f1": 0.8686868686868686,
+            "f1_no_accent": 0.9292929292929293,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1298.jpg",
+            "latency_sec": 0.13021916699653957,
+            "f1": 0.8157894736842106,
+            "f1_no_accent": 0.8947368421052632,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1314.jpg",
+            "latency_sec": 0.17713100000401028,
+            "f1": 0.9841269841269841,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1262.jpg",
+            "latency_sec": 0.06660462499712594,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1406.jpg",
+            "latency_sec": 0.20233429200015962,
+            "f1": 0.8275862068965517,
+            "f1_no_accent": 0.896551724137931,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1448.jpg",
+            "latency_sec": 0.2583081249977113,
+            "f1": 0.3448275862068966,
+            "f1_no_accent": 0.41379310344827586,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1237.jpg",
+            "latency_sec": 0.2270578750030836,
+            "f1": 0.7777777777777778,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1454.jpg",
+            "latency_sec": 0.8260872920000111,
+            "f1": 0.25396825396825395,
+            "f1_no_accent": 0.28571428571428575,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1340.jpg",
+            "latency_sec": 0.08539916700101458,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1315.jpg",
+            "latency_sec": 0.2832205829981831,
+            "f1": 0.6,
+            "f1_no_accent": 0.66,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1224.jpg",
+            "latency_sec": 0.199553582999215,
+            "f1": 0.8085106382978724,
+            "f1_no_accent": 0.8936170212765958,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1498.jpg",
+            "latency_sec": 0.07069083300302736,
+            "f1": 0.3333333333333333,
+            "f1_no_accent": 0.6666666666666666,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1282.jpg",
+            "latency_sec": 0.7526630830034264,
+            "f1": 0.33333333333333337,
+            "f1_no_accent": 0.4393939393939394,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1425.jpg",
+            "latency_sec": 0.09559058400191134,
+            "f1": 0.8571428571428571,
+            "f1_no_accent": 0.8571428571428571,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1331.jpg",
+            "latency_sec": 0.17265245899761794,
+            "f1": 0.5139664804469275,
+            "f1_no_accent": 0.5698324022346368,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1439.jpg",
+            "latency_sec": 0.6241355830061366,
+            "f1": 0.7037037037037038,
+            "f1_no_accent": 0.7777777777777778,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1326.jpg",
+            "latency_sec": 0.0964144169993233,
+            "f1": 0.5499999999999999,
+            "f1_no_accent": 0.675,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1228.jpg",
+            "latency_sec": 0.20380154200393008,
+            "f1": 0.5652173913043478,
+            "f1_no_accent": 0.6956521739130435,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1278.jpg",
+            "latency_sec": 0.10495400000218069,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1342.jpg",
+            "latency_sec": 0.10658920800051419,
+            "f1": 0.8571428571428571,
+            "f1_no_accent": 0.8571428571428571,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1275.jpg",
+            "latency_sec": 0.1514205839994247,
+            "f1": 0.75,
+            "f1_no_accent": 0.7916666666666667,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1381.jpg",
+            "latency_sec": 0.11431137500039767,
+            "f1": 0.6363636363636364,
+            "f1_no_accent": 0.7272727272727274,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1469.jpg",
+            "latency_sec": 0.13362645899906056,
+            "f1": 0.75,
+            "f1_no_accent": 0.875,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1341.jpg",
+            "latency_sec": 0.09955212500062771,
+            "f1": 0.4705882352941177,
+            "f1_no_accent": 0.5294117647058824,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1286.jpg",
+            "latency_sec": 0.16690541700518224,
+            "f1": 0.8108108108108109,
+            "f1_no_accent": 0.8378378378378377,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1409.jpg",
+            "latency_sec": 0.24204408400692046,
+            "f1": 0.7397260273972603,
+            "f1_no_accent": 0.8767123287671232,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1339.jpg",
+            "latency_sec": 0.13209795900183963,
+            "f1": 0.7865168539325843,
+            "f1_no_accent": 0.8764044943820225,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1253.jpg",
+            "latency_sec": 0.07535129199823132,
+            "f1": 0.8,
+            "f1_no_accent": 0.8500000000000001,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1464.jpg",
+            "latency_sec": 0.07669950000126846,
+            "f1": 0.9310344827586207,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1355.jpg",
+            "latency_sec": 0.06332212500274181,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1435.jpg",
+            "latency_sec": 0.07838220800476847,
+            "f1": 0.9032258064516129,
+            "f1_no_accent": 0.9032258064516129,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1351.jpg",
+            "latency_sec": 0.2508975829987321,
+            "f1": 0.6834170854271358,
+            "f1_no_accent": 0.7437185929648242,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1274.jpg",
+            "latency_sec": 0.14835329099878436,
+            "f1": 0.21052631578947367,
+            "f1_no_accent": 0.21052631578947367,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1456.jpg",
+            "latency_sec": 0.11024391600221861,
+            "f1": 0.8461538461538461,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1496.jpg",
+            "latency_sec": 0.13190475000010338,
+            "f1": 0.47058823529411764,
+            "f1_no_accent": 0.7058823529411764,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1353.jpg",
+            "latency_sec": 0.11212737500318326,
+            "f1": 0.9,
+            "f1_no_accent": 0.9,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1430.jpg",
+            "latency_sec": 0.10623533300531562,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1299.jpg",
+            "latency_sec": 0.12631566599884536,
+            "f1": 0.5263157894736842,
+            "f1_no_accent": 0.631578947368421,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1446.jpg",
+            "latency_sec": 0.15539791700575734,
+            "f1": 0.8636363636363636,
+            "f1_no_accent": 0.8636363636363636,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1348.jpg",
+            "latency_sec": 0.15332008300174493,
+            "f1": 0.6451612903225806,
+            "f1_no_accent": 0.7741935483870968,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1455.jpg",
+            "latency_sec": 0.1448731249984121,
+            "f1": 0.9,
+            "f1_no_accent": 0.9500000000000001,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1438.jpg",
+            "latency_sec": 0.1371117909948225,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1465.jpg",
+            "latency_sec": 0.1616023340029642,
+            "f1": 0.8571428571428571,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1485.jpg",
+            "latency_sec": 0.0895200000013574,
+            "f1": 0.8771929824561403,
+            "f1_no_accent": 0.9473684210526316,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1411.jpg",
+            "latency_sec": 0.14619945899903541,
+            "f1": 0.8000000000000002,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1499.jpg",
+            "latency_sec": 0.8787190830043983,
+            "f1": 0.5507246376811594,
+            "f1_no_accent": 0.6376811594202899,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1209.jpg",
+            "latency_sec": 0.09598374999768566,
+            "f1": 0.606060606060606,
+            "f1_no_accent": 0.7878787878787877,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1357.jpg",
+            "latency_sec": 0.17341941699851304,
+            "f1": 0.8108108108108109,
+            "f1_no_accent": 0.918918918918919,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1369.jpg",
+            "latency_sec": 0.07703237500390969,
+            "f1": 0.4,
+            "f1_no_accent": 0.4,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1267.jpg",
+            "latency_sec": 0.10180745899560861,
+            "f1": 0.8571428571428571,
+            "f1_no_accent": 0.8571428571428571,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1322.jpg",
+            "latency_sec": 0.1102507500036154,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1218.jpg",
+            "latency_sec": 0.14420358299685176,
+            "f1": 0.8656716417910447,
+            "f1_no_accent": 0.9104477611940298,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1223.jpg",
+            "latency_sec": 0.11453629100287799,
+            "f1": 0.5,
+            "f1_no_accent": 0.7142857142857143,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1374.jpg",
+            "latency_sec": 0.1390459579997696,
+            "f1": 0.17391304347826086,
+            "f1_no_accent": 0.34782608695652173,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1394.jpg",
+            "latency_sec": 0.10725462500704452,
+            "f1": 0.7999999999999999,
+            "f1_no_accent": 0.9333333333333333,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1234.jpg",
+            "latency_sec": 0.10305841700028395,
+            "f1": 0.8799999999999999,
+            "f1_no_accent": 0.9066666666666667,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1239.jpg",
+            "latency_sec": 0.16474804199970094,
+            "f1": 0.8444444444444444,
+            "f1_no_accent": 0.9777777777777777,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1210.jpg",
+            "latency_sec": 0.3291958749978221,
+            "f1": 0.41379310344827586,
+            "f1_no_accent": 0.5862068965517242,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1447.jpg",
+            "latency_sec": 0.21040604099835036,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1380.jpg",
+            "latency_sec": 0.577069416998711,
+            "f1": 0.9666666666666667,
+            "f1_no_accent": 0.9666666666666667,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1432.jpg",
+            "latency_sec": 0.16478954199556028,
+            "f1": 0.7692307692307692,
+            "f1_no_accent": 0.923076923076923,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1375.jpg",
+            "latency_sec": 0.12277312499645632,
+            "f1": 0.7,
+            "f1_no_accent": 0.8,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1301.jpg",
+            "latency_sec": 0.1697695830007433,
+            "f1": 0.26666666666666666,
+            "f1_no_accent": 0.39999999999999997,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1437.jpg",
+            "latency_sec": 0.4633494579975377,
+            "f1": 0.4347826086956522,
+            "f1_no_accent": 0.46376811594202894,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1335.jpg",
+            "latency_sec": 0.48879320800188,
+            "f1": 0.9285714285714286,
+            "f1_no_accent": 0.9285714285714286,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1271.jpg",
+            "latency_sec": 0.1014102909975918,
+            "f1": 0.7096774193548389,
+            "f1_no_accent": 0.8387096774193549,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1468.jpg",
+            "latency_sec": 0.10091570900112856,
+            "f1": 0.9166666666666666,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1261.jpg",
+            "latency_sec": 0.368650833996071,
+            "f1": 0.7932960893854749,
+            "f1_no_accent": 0.8938547486033519,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1256.jpg",
+            "latency_sec": 0.13053591700008838,
+            "f1": 0.7368421052631579,
+            "f1_no_accent": 0.9473684210526315,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1422.jpg",
+            "latency_sec": 0.17371612500573974,
+            "f1": 0.5581395348837209,
+            "f1_no_accent": 0.6976744186046512,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1470.jpg",
+            "latency_sec": 0.13697420900280122,
+            "f1": 0.5,
+            "f1_no_accent": 0.5,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1308.jpg",
+            "latency_sec": 0.16773887499584816,
+            "f1": 0.6666666666666667,
+            "f1_no_accent": 0.8717948717948718,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1349.jpg",
+            "latency_sec": 0.11202800000319257,
+            "f1": 0.6250000000000001,
+            "f1_no_accent": 0.8750000000000001,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1393.jpg",
+            "latency_sec": 0.10325649999867892,
+            "f1": 0.9803921568627451,
+            "f1_no_accent": 0.9803921568627451,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1316.jpg",
+            "latency_sec": 0.15709470799629344,
+            "f1": 0.5365853658536585,
+            "f1_no_accent": 0.7804878048780488,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1327.jpg",
+            "latency_sec": 0.08390137500100536,
+            "f1": 0.8750000000000001,
+            "f1_no_accent": 0.8750000000000001,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1478.jpg",
+            "latency_sec": 0.14791141699970467,
+            "f1": 0.9487179487179487,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1365.jpg",
+            "latency_sec": 0.13227170900063356,
+            "f1": 0.76,
+            "f1_no_accent": 0.84,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1399.jpg",
+            "latency_sec": 0.14119137499801582,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1292.jpg",
+            "latency_sec": 0.11126474999764469,
+            "f1": 0.5833333333333334,
+            "f1_no_accent": 0.75,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1222.jpg",
+            "latency_sec": 0.13215737500286195,
+            "f1": 0.9803921568627451,
+            "f1_no_accent": 0.9803921568627451,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1284.jpg",
+            "latency_sec": 0.12933983300172258,
+            "f1": 0.8518518518518519,
+            "f1_no_accent": 0.9629629629629629,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1414.jpg",
+            "latency_sec": 0.5856226670002798,
+            "f1": 0.8400000000000001,
+            "f1_no_accent": 0.8799999999999999,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1230.jpg",
+            "latency_sec": 0.3031622089984012,
+            "f1": 0.7500000000000001,
+            "f1_no_accent": 0.923076923076923,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1460.jpg",
+            "latency_sec": 0.15232437499798834,
+            "f1": 0.8846153846153846,
+            "f1_no_accent": 0.9615384615384615,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1388.jpg",
+            "latency_sec": 0.161743500000739,
+            "f1": 0.8823529411764706,
+            "f1_no_accent": 0.8823529411764706,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1483.jpg",
+            "latency_sec": 0.0967148330018972,
+            "f1": 0.7169811320754718,
+            "f1_no_accent": 0.7924528301886793,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1434.jpg",
+            "latency_sec": 0.14152479200129164,
+            "f1": 0.75,
+            "f1_no_accent": 0.9375,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1415.jpg",
+            "latency_sec": 0.12570224999944912,
+            "f1": 0.6666666666666666,
+            "f1_no_accent": 0.7407407407407408,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1263.jpg",
+            "latency_sec": 0.8937615409959108,
+            "f1": 0.9199999999999999,
+            "f1_no_accent": 0.9199999999999999,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1205.jpg",
+            "latency_sec": 0.135554125001363,
+            "f1": 0.9230769230769231,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1270.jpg",
+            "latency_sec": 0.7419875830019009,
+            "f1": 0.6363636363636364,
+            "f1_no_accent": 0.6363636363636364,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1397.jpg",
+            "latency_sec": 0.711391459000879,
+            "f1": 0.5499999999999999,
+            "f1_no_accent": 0.5499999999999999,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1257.jpg",
+            "latency_sec": 0.17828383400046732,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1296.jpg",
+            "latency_sec": 0.14675708299910184,
+            "f1": 0.5,
+            "f1_no_accent": 0.5249999999999999,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1244.jpg",
+            "latency_sec": 0.8667657919941121,
+            "f1": 0.8125,
+            "f1_no_accent": 0.875,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1461.jpg",
+            "latency_sec": 0.16906516599556198,
+            "f1": 0.7777777777777778,
+            "f1_no_accent": 0.9777777777777777,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1310.jpg",
+            "latency_sec": 0.5630718750035157,
+            "f1": 0.18918918918918923,
+            "f1_no_accent": 0.35135135135135137,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1216.jpg",
+            "latency_sec": 0.09114429200417362,
+            "f1": 0.8,
+            "f1_no_accent": 0.8,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1226.jpg",
+            "latency_sec": 0.39567562499723863,
+            "f1": 0.5,
+            "f1_no_accent": 0.6153846153846154,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1479.jpg",
+            "latency_sec": 0.3329378749986063,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1395.jpg",
+            "latency_sec": 0.17509875000541797,
+            "f1": 0.6705882352941176,
+            "f1_no_accent": 0.7999999999999999,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1212.jpg",
+            "latency_sec": 0.16939458300475962,
+            "f1": 0.26666666666666666,
+            "f1_no_accent": 0.39999999999999997,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1347.jpg",
+            "latency_sec": 0.10920987500139745,
+            "f1": 0.863013698630137,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1337.jpg",
+            "latency_sec": 0.6193076249983278,
+            "f1": 0.5815602836879433,
+            "f1_no_accent": 0.624113475177305,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1219.jpg",
+            "latency_sec": 0.5906909580007778,
+            "f1": 0.8958333333333334,
+            "f1_no_accent": 0.9375,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1207.jpg",
+            "latency_sec": 0.2094849589993828,
+            "f1": 0.6206896551724138,
+            "f1_no_accent": 0.7586206896551724,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "im1436.jpg",
+            "latency_sec": 0.17999925000185613,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          }
+        ],
+        "language": "vi",
+        "wall_sec": 32.64564514160156
+      },
+      "icdar2015_en_scene": {
+        "num_images": 150,
+        "status": {
+          "ok": 129,
+          "rejected_quality": 0,
+          "error": 0,
+          "no_text": 21
+        },
+        "word_micro_strict": {
+          "precision": 0.4482758620689655,
+          "recall": 0.5586776859504132,
+          "f1": 0.49742457689477554
+        },
+        "word_micro_no_accent": {
+          "precision": 0.4496021220159151,
+          "recall": 0.5603305785123966,
+          "f1": 0.498896247240618
+        },
+        "per_image_f1": {
+          "n": 150,
+          "mean": 0.45375476386132213,
+          "median": 0.44957983193277307,
+          "p90": 0.9526315789473682,
+          "min": 0.0,
+          "max": 1.0
+        },
+        "latency_sec": {
+          "n": 150,
+          "mean": 0.13377254666018415,
+          "median": 0.13506575000064913,
+          "p90": 0.156686174999777,
+          "min": 0.07363795900164405,
+          "max": 0.19371391599997878
+        },
+        "error_messages": [],
+        "examples": [
+          {
+            "image": "img_489.jpg",
+            "gt": "ANK origo creation rom ature",
+            "pred": "origo. creation*. rom. atur %DOnEH.",
+            "f1": 0.6,
+            "f1_no_accent": 0.6
+          },
+          {
+            "image": "img_277.jpg",
+            "gt": "ROYAL SELANGOR",
+            "pred": "ROYAL. SELANGOR.",
+            "f1": 1.0,
+            "f1_no_accent": 1.0
+          },
+          {
+            "image": "img_449.jpg",
+            "gt": "EXODUS SHOWING NOW SHOWING NOW EXIT AND KINOS",
+            "pred": "",
+            "f1": 0.0,
+            "f1_no_accent": 0.0
+          },
+          {
+            "image": "img_59.jpg",
+            "gt": "SALE TEMT NOW TEMT",
+            "pred": "TENT. SALE. OF NOW.",
+            "f1": 0.5,
+            "f1_no_accent": 0.5
+          },
+          {
+            "image": "img_293.jpg",
+            "gt": "coffee club",
+            "pred": "SUHPO*. coffee clubt.",
+            "f1": 0.4,
+            "f1_no_accent": 0.4
+          },
+          {
+            "image": "img_117.jpg",
+            "gt": "SELANGOR",
+            "pred": "KOlAL. SELANGOR.",
+            "f1": 0.667,
+            "f1_no_accent": 0.667
+          },
+          {
+            "image": "img_218.jpg",
+            "gt": "ROBINSONS Elizabeth MAC BIOTHERM SALE",
+            "pred": "",
+            "f1": 0.0,
+            "f1_no_accent": 0.0
+          },
+          {
+            "image": "img_334.jpg",
+            "gt": "FedEx ORCHARD",
+            "pred": "",
+            "f1": 0.0,
+            "f1_no_accent": 0.0
+          }
+        ],
+        "per_image": [
+          {
+            "image": "img_489.jpg",
+            "latency_sec": 0.13330062499881024,
+            "f1": 0.6,
+            "f1_no_accent": 0.6,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_277.jpg",
+            "latency_sec": 0.12028424999880372,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_449.jpg",
+            "latency_sec": 0.07363795900164405,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_59.jpg",
+            "latency_sec": 0.13204208300157916,
+            "f1": 0.5,
+            "f1_no_accent": 0.5,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_293.jpg",
+            "latency_sec": 0.13870775000395952,
+            "f1": 0.4,
+            "f1_no_accent": 0.4,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_117.jpg",
+            "latency_sec": 0.14049687499937136,
+            "f1": 0.6666666666666666,
+            "f1_no_accent": 0.6666666666666666,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_218.jpg",
+            "latency_sec": 0.07381004199851304,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_334.jpg",
+            "latency_sec": 0.14437558299687225,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_322.jpg",
+            "latency_sec": 0.135449499997776,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_286.jpg",
+            "latency_sec": 0.14263037500495557,
+            "f1": 0.5714285714285715,
+            "f1_no_accent": 0.5714285714285715,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_72.jpg",
+            "latency_sec": 0.15564795800310094,
+            "f1": 0.5,
+            "f1_no_accent": 0.5,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_460.jpg",
+            "latency_sec": 0.14845362499909243,
+            "f1": 0.4,
+            "f1_no_accent": 0.4,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_481.jpg",
+            "latency_sec": 0.139147874993796,
+            "f1": 0.4,
+            "f1_no_accent": 0.4,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_239.jpg",
+            "latency_sec": 0.11967945899959886,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_319.jpg",
+            "latency_sec": 0.09322920800332213,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_264.jpg",
+            "latency_sec": 0.12115312500100117,
+            "f1": 0.8,
+            "f1_no_accent": 0.8,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_368.jpg",
+            "latency_sec": 0.11252541699650465,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_6.jpg",
+            "latency_sec": 0.0873426250036573,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_67.jpg",
+            "latency_sec": 0.12658987499889918,
+            "f1": 0.6666666666666666,
+            "f1_no_accent": 0.6666666666666666,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_2.jpg",
+            "latency_sec": 0.13880204199813306,
+            "f1": 0.8695652173913044,
+            "f1_no_accent": 0.8695652173913044,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_331.jpg",
+            "latency_sec": 0.08089937500335509,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_163.jpg",
+            "latency_sec": 0.13049524999951245,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_229.jpg",
+            "latency_sec": 0.1299810000055004,
+            "f1": 0.888888888888889,
+            "f1_no_accent": 0.888888888888889,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_8.jpg",
+            "latency_sec": 0.14662837499781745,
+            "f1": 0.8,
+            "f1_no_accent": 0.8,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_447.jpg",
+            "latency_sec": 0.13885566699900664,
+            "f1": 0.8,
+            "f1_no_accent": 0.8,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_142.jpg",
+            "latency_sec": 0.1402364169989596,
+            "f1": 0.2564102564102564,
+            "f1_no_accent": 0.2564102564102564,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_384.jpg",
+            "latency_sec": 0.11995150000439025,
+            "f1": 0.4,
+            "f1_no_accent": 0.4,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_468.jpg",
+            "latency_sec": 0.09558808300062083,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_214.jpg",
+            "latency_sec": 0.15349112499825424,
+            "f1": 0.5454545454545454,
+            "f1_no_accent": 0.5454545454545454,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_68.jpg",
+            "latency_sec": 0.15794445799838286,
+            "f1": 0.5625,
+            "f1_no_accent": 0.5625,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_344.jpg",
+            "latency_sec": 0.13951408299908508,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_424.jpg",
+            "latency_sec": 0.1319675000049756,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_472.jpg",
+            "latency_sec": 0.14114225000230363,
+            "f1": 0.4,
+            "f1_no_accent": 0.4,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_377.jpg",
+            "latency_sec": 0.13862762499775272,
+            "f1": 0.25,
+            "f1_no_accent": 0.25,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_64.jpg",
+            "latency_sec": 0.1392011249990901,
+            "f1": 0.3333333333333333,
+            "f1_no_accent": 0.3333333333333333,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_167.jpg",
+            "latency_sec": 0.12088966600276763,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_241.jpg",
+            "latency_sec": 0.12034408400359098,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_144.jpg",
+            "latency_sec": 0.16617670800042106,
+            "f1": 0.1818181818181818,
+            "f1_no_accent": 0.1818181818181818,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_435.jpg",
+            "latency_sec": 0.15313570800208254,
+            "f1": 0.9411764705882353,
+            "f1_no_accent": 0.9411764705882353,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_132.jpg",
+            "latency_sec": 0.12150324999674922,
+            "f1": 0.8,
+            "f1_no_accent": 0.8,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_491.jpg",
+            "latency_sec": 0.13099683299515164,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_414.jpg",
+            "latency_sec": 0.15520674999424955,
+            "f1": 0.4,
+            "f1_no_accent": 0.4,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_251.jpg",
+            "latency_sec": 0.13571441599924583,
+            "f1": 0.4848484848484849,
+            "f1_no_accent": 0.4848484848484849,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_316.jpg",
+            "latency_sec": 0.12769229200057453,
+            "f1": 0.6666666666666666,
+            "f1_no_accent": 0.6666666666666666,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_357.jpg",
+            "latency_sec": 0.15576512499683304,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_145.jpg",
+            "latency_sec": 0.1323125830022036,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_262.jpg",
+            "latency_sec": 0.17813691699848277,
+            "f1": 0.8,
+            "f1_no_accent": 0.8,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_3.jpg",
+            "latency_sec": 0.13029837499925634,
+            "f1": 0.8571428571428571,
+            "f1_no_accent": 0.8571428571428571,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_244.jpg",
+            "latency_sec": 0.13872033300140174,
+            "f1": 0.8571428571428571,
+            "f1_no_accent": 0.8571428571428571,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_380.jpg",
+            "latency_sec": 0.1319898329966236,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_394.jpg",
+            "latency_sec": 0.15320387500105426,
+            "f1": 0.8333333333333333,
+            "f1_no_accent": 0.8333333333333333,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_193.jpg",
+            "latency_sec": 0.12904749999870546,
+            "f1": 0.6666666666666666,
+            "f1_no_accent": 0.6666666666666666,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_353.jpg",
+            "latency_sec": 0.1279073330006213,
+            "f1": 0.5,
+            "f1_no_accent": 0.5,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_86.jpg",
+            "latency_sec": 0.12428845900285523,
+            "f1": 0.3333333333333333,
+            "f1_no_accent": 0.3333333333333333,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_302.jpg",
+            "latency_sec": 0.14834766599960858,
+            "f1": 0.22222222222222224,
+            "f1_no_accent": 0.4444444444444445,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_499.jpg",
+            "latency_sec": 0.0895435419952264,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_339.jpg",
+            "latency_sec": 0.11689679200208047,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_219.jpg",
+            "latency_sec": 0.08106324999971548,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_127.jpg",
+            "latency_sec": 0.12040529100340791,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_470.jpg",
+            "latency_sec": 0.13166633299988462,
+            "f1": 0.25,
+            "f1_no_accent": 0.25,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_351.jpg",
+            "latency_sec": 0.13661883400345687,
+            "f1": 0.4,
+            "f1_no_accent": 0.4,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_105.jpg",
+            "latency_sec": 0.1282904170002439,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_141.jpg",
+            "latency_sec": 0.16504991699912352,
+            "f1": 0.12903225806451613,
+            "f1_no_accent": 0.12903225806451613,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_430.jpg",
+            "latency_sec": 0.1448689579992788,
+            "f1": 0.5,
+            "f1_no_accent": 0.5,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_487.jpg",
+            "latency_sec": 0.14295362499979092,
+            "f1": 0.25,
+            "f1_no_accent": 0.25,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_283.jpg",
+            "latency_sec": 0.15203054200537736,
+            "f1": 0.5,
+            "f1_no_accent": 0.5,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_426.jpg",
+            "latency_sec": 0.1434369170019636,
+            "f1": 0.4,
+            "f1_no_accent": 0.4,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_48.jpg",
+            "latency_sec": 0.1504385420048493,
+            "f1": 0.380952380952381,
+            "f1_no_accent": 0.380952380952381,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_89.jpg",
+            "latency_sec": 0.15671587499673478,
+            "f1": 0.6666666666666666,
+            "f1_no_accent": 0.6666666666666666,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_407.jpg",
+            "latency_sec": 0.1605878330010455,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_388.jpg",
+            "latency_sec": 0.1391606250035693,
+            "f1": 0.5714285714285715,
+            "f1_no_accent": 0.5714285714285715,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_1.jpg",
+            "latency_sec": 0.07470733300579013,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_381.jpg",
+            "latency_sec": 0.13168358400434954,
+            "f1": 0.4000000000000001,
+            "f1_no_accent": 0.4000000000000001,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_326.jpg",
+            "latency_sec": 0.1413357079945854,
+            "f1": 0.30769230769230765,
+            "f1_no_accent": 0.30769230769230765,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_480.jpg",
+            "latency_sec": 0.143051374994684,
+            "f1": 0.9473684210526316,
+            "f1_no_accent": 0.9473684210526316,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_252.jpg",
+            "latency_sec": 0.13076612500299234,
+            "f1": 0.6923076923076923,
+            "f1_no_accent": 0.6923076923076923,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_210.jpg",
+            "latency_sec": 0.12789270900248084,
+            "f1": 0.6666666666666666,
+            "f1_no_accent": 0.6666666666666666,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_9.jpg",
+            "latency_sec": 0.13274391700542765,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_249.jpg",
+            "latency_sec": 0.15438670900039142,
+            "f1": 0.6666666666666665,
+            "f1_no_accent": 0.6666666666666665,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_423.jpg",
+            "latency_sec": 0.11944916699576424,
+            "f1": 0.25,
+            "f1_no_accent": 0.25,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_128.jpg",
+            "latency_sec": 0.12472900000284426,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_187.jpg",
+            "latency_sec": 0.13962324999738485,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_360.jpg",
+            "latency_sec": 0.1555742500058841,
+            "f1": 0.25000000000000006,
+            "f1_no_accent": 0.25000000000000006,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_200.jpg",
+            "latency_sec": 0.09233441700052936,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_209.jpg",
+            "latency_sec": 0.17811045800044667,
+            "f1": 0.26666666666666666,
+            "f1_no_accent": 0.26666666666666666,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_47.jpg",
+            "latency_sec": 0.15995558300346602,
+            "f1": 0.6666666666666667,
+            "f1_no_accent": 0.6666666666666667,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_164.jpg",
+            "latency_sec": 0.15307579199725296,
+            "f1": 0.47058823529411764,
+            "f1_no_accent": 0.47058823529411764,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_7.jpg",
+            "latency_sec": 0.15854541700537084,
+            "f1": 0.2222222222222222,
+            "f1_no_accent": 0.2222222222222222,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_35.jpg",
+            "latency_sec": 0.11106779099645792,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_305.jpg",
+            "latency_sec": 0.13856462499825284,
+            "f1": 0.761904761904762,
+            "f1_no_accent": 0.761904761904762,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_140.jpg",
+            "latency_sec": 0.13958879199344665,
+            "f1": 0.1818181818181818,
+            "f1_no_accent": 0.1818181818181818,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_136.jpg",
+            "latency_sec": 0.16094858299766202,
+            "f1": 0.25,
+            "f1_no_accent": 0.25,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_246.jpg",
+            "latency_sec": 0.12886454199906439,
+            "f1": 0.12500000000000003,
+            "f1_no_accent": 0.12500000000000003,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_333.jpg",
+            "latency_sec": 0.1314947499995469,
+            "f1": 0.9090909090909091,
+            "f1_no_accent": 0.9090909090909091,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_324.jpg",
+            "latency_sec": 0.13468200000352226,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_149.jpg",
+            "latency_sec": 0.1269742500007851,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_238.jpg",
+            "latency_sec": 0.1466162080032518,
+            "f1": 0.6363636363636364,
+            "f1_no_accent": 0.6363636363636364,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_51.jpg",
+            "latency_sec": 0.13041354199958732,
+            "f1": 0.6666666666666666,
+            "f1_no_accent": 0.6666666666666666,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_233.jpg",
+            "latency_sec": 0.12513066599785816,
+            "f1": 0.8571428571428571,
+            "f1_no_accent": 0.8571428571428571,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_70.jpg",
+            "latency_sec": 0.09216374999959953,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_156.jpg",
+            "latency_sec": 0.1400441250007134,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_495.jpg",
+            "latency_sec": 0.13140487499913434,
+            "f1": 0.4,
+            "f1_no_accent": 0.4,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_88.jpg",
+            "latency_sec": 0.13229758299712557,
+            "f1": 0.5333333333333333,
+            "f1_no_accent": 0.5333333333333333,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_348.jpg",
+            "latency_sec": 0.14383224999619415,
+            "f1": 0.6666666666666666,
+            "f1_no_accent": 0.6666666666666666,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_52.jpg",
+            "latency_sec": 0.1272035420042812,
+            "f1": 0.8000000000000002,
+            "f1_no_accent": 0.8000000000000002,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_69.jpg",
+            "latency_sec": 0.1424979169969447,
+            "f1": 0.8,
+            "f1_no_accent": 0.8,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_458.jpg",
+            "latency_sec": 0.13135883300128626,
+            "f1": 0.2857142857142857,
+            "f1_no_accent": 0.2857142857142857,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_37.jpg",
+            "latency_sec": 0.1691121249969001,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_231.jpg",
+            "latency_sec": 0.12209974999859696,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_303.jpg",
+            "latency_sec": 0.0854152499960037,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_74.jpg",
+            "latency_sec": 0.13330683400272392,
+            "f1": 0.8,
+            "f1_no_accent": 0.8,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_374.jpg",
+            "latency_sec": 0.13582266600133153,
+            "f1": 0.4,
+            "f1_no_accent": 0.4,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_98.jpg",
+            "latency_sec": 0.1434181250006077,
+            "f1": 0.9090909090909091,
+            "f1_no_accent": 0.9090909090909091,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_245.jpg",
+            "latency_sec": 0.14610070899652783,
+            "f1": 0.5714285714285715,
+            "f1_no_accent": 0.5714285714285715,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_364.jpg",
+            "latency_sec": 0.15755883300153073,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_21.jpg",
+            "latency_sec": 0.19371391599997878,
+            "f1": 0.29411764705882354,
+            "f1_no_accent": 0.29411764705882354,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_232.jpg",
+            "latency_sec": 0.13377875000151107,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_184.jpg",
+            "latency_sec": 0.14800858299713582,
+            "f1": 0.5,
+            "f1_no_accent": 0.5,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_186.jpg",
+            "latency_sec": 0.14645720800035633,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_185.jpg",
+            "latency_sec": 0.15666895899630617,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_113.jpg",
+            "latency_sec": 0.16117400000075577,
+            "f1": 0.6666666666666666,
+            "f1_no_accent": 0.6666666666666666,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_484.jpg",
+            "latency_sec": 0.1397837080003228,
+            "f1": 0.8571428571428571,
+            "f1_no_accent": 0.8571428571428571,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_401.jpg",
+            "latency_sec": 0.09228658299980452,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_498.jpg",
+            "latency_sec": 0.12849083299806807,
+            "f1": 0.8571428571428571,
+            "f1_no_accent": 0.8571428571428571,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_318.jpg",
+            "latency_sec": 0.14680533399950946,
+            "f1": 0.6666666666666666,
+            "f1_no_accent": 0.6666666666666666,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_130.jpg",
+            "latency_sec": 0.11107125000125961,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_14.jpg",
+            "latency_sec": 0.14655170799960615,
+            "f1": 0.7272727272727272,
+            "f1_no_accent": 0.7272727272727272,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_411.jpg",
+            "latency_sec": 0.14417375000630273,
+            "f1": 0.5,
+            "f1_no_accent": 0.5,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_159.jpg",
+            "latency_sec": 0.14203220899798907,
+            "f1": 0.28571428571428575,
+            "f1_no_accent": 0.28571428571428575,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_168.jpg",
+            "latency_sec": 0.1288670829962939,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_116.jpg",
+            "latency_sec": 0.12419424999825424,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_467.jpg",
+            "latency_sec": 0.08930516699911095,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_421.jpg",
+            "latency_sec": 0.14992766700015636,
+            "f1": 0.588235294117647,
+            "f1_no_accent": 0.588235294117647,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_456.jpg",
+            "latency_sec": 0.12140591599745676,
+            "f1": 0.7272727272727272,
+            "f1_no_accent": 0.7272727272727272,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_413.jpg",
+            "latency_sec": 0.12550316700071562,
+            "f1": 0.42857142857142855,
+            "f1_no_accent": 0.42857142857142855,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_28.jpg",
+            "latency_sec": 0.12731579100363888,
+            "f1": 0.8571428571428572,
+            "f1_no_accent": 0.8571428571428572,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_46.jpg",
+            "latency_sec": 0.12799004100088496,
+            "f1": 0.28571428571428575,
+            "f1_no_accent": 0.28571428571428575,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_340.jpg",
+            "latency_sec": 0.11964558300678618,
+            "f1": 0.5,
+            "f1_no_accent": 0.5,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_226.jpg",
+            "latency_sec": 0.11739816699991934,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_34.jpg",
+            "latency_sec": 0.14565079100430012,
+            "f1": 0.3333333333333333,
+            "f1_no_accent": 0.3333333333333333,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_207.jpg",
+            "latency_sec": 0.12909695800044574,
+            "f1": 0.6666666666666666,
+            "f1_no_accent": 0.6666666666666666,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_199.jpg",
+            "latency_sec": 0.15668287500011502,
+            "f1": 0.8571428571428571,
+            "f1_no_accent": 0.8571428571428571,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_434.jpg",
+            "latency_sec": 0.15679354200256057,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_370.jpg",
+            "latency_sec": 0.13871729200036498,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_292.jpg",
+            "latency_sec": 0.13381487500009825,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_366.jpg",
+            "latency_sec": 0.1509539999970002,
+            "f1": 0.8333333333333334,
+            "f1_no_accent": 0.8333333333333334,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_225.jpg",
+            "latency_sec": 0.12599866700475104,
+            "f1": 0.4,
+            "f1_no_accent": 0.4,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_306.jpg",
+            "latency_sec": 0.10554687500552973,
+            "f1": 0.0,
+            "f1_no_accent": 0.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_483.jpg",
+            "latency_sec": 0.12393670799792744,
+            "f1": 0.6666666666666666,
+            "f1_no_accent": 0.6666666666666666,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "img_403.jpg",
+            "latency_sec": 0.1469569999972009,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          }
+        ],
+        "language": "en",
+        "wall_sec": 20.514580011367798
+      },
+      "sroie_en_receipt": {
+        "num_images": 150,
+        "status": {
+          "ok": 150,
+          "rejected_quality": 0,
+          "error": 0,
+          "no_text": 0
+        },
+        "word_micro_strict": {
+          "precision": 0.9064292182312104,
+          "recall": 0.9376561199000832,
+          "f1": 0.9217782779966235
+        },
+        "word_micro_no_accent": {
+          "precision": 0.9065754389495396,
+          "recall": 0.9377601998334721,
+          "f1": 0.9219041772184278
+        },
+        "per_image_f1": {
+          "n": 150,
+          "mean": 0.9170617068107189,
+          "median": 0.9321565867128702,
+          "p90": 0.9691346454233053,
+          "min": 0.5909090909090909,
+          "max": 1.0
+        },
+        "latency_sec": {
+          "n": 150,
+          "mean": 1.000748803053284,
+          "median": 0.2282508955031517,
+          "p90": 5.9300681869041,
+          "min": 0.13205775000096764,
+          "max": 6.398521625000285
+        },
+        "error_messages": [],
+        "examples": [
+          {
+            "image": "X51006438346",
+            "gt": "HIGH FIVE ENTERPRISE COMPANY NO : 1351865-X JALAN BIDARA 68100 SITE : 2059 TELEPHONE : 03-61363779 GST NO : 001215471616 INVOICE NUMBER: 01000683964 43.40 LITRE PUMP # 11 FUELSAVE 95 RM 95.48 C 2.200 RM / LITRE TOTAL RM 95.48 CASH RM 100.00 ROUNDING RM 0.02- CHANGE RM 4.50 RELIEF GST RM 0.00 TOTAL G",
+            "pred": "HIGH FIVE ENTERPRISE. Company No : 1351865-X. Jalan Bidara, Taman Bidara, Selayang. 68100, Batu Caves, Selangor. Site : 2059. Telephon: 001215471616 GST No : 03-61363779. Invoice number: 01000683964. 43.40 litre Pump # 11. FuelSave 90. RM. 95.48 C. 2.200 RM / litre. Total. RM. 95.48. Cash. RM. 100.0",
+            "f1": 0.859,
+            "f1_no_accent": 0.859
+          },
+          {
+            "image": "X51006556740",
+            "gt": "GARDENIA BAKERIES (KL) SDN BHD (139386 X) LOT 3 40300 SHAH ALAM TEL: 03- 55423228 GST ID: 000381399040 TAX INVOICE / ADJUSTMENT NOTE CASH INV NO.: 7801F714 VE0514 DATE: 01/08/2017 MAKASSAR FRESH MARKET SDN BHD GROUND FLOOR JALAN SS 15/4B 47500 SUBANG JAYA VE05: RIDZUAN(11900) DD: 01/08/2017 12:05 DE",
+            "pred": "GARDENIA BAKERIES (KL) SDN BHD (139386 X). Lot 3, Jalan Pelabur 23/1,. 40300 Shah Alfm, Selangor. Tel: 03- 55423228 Fax:03- 55423213. GST ID: 000381399040. TAX INVOICE / ADJUSTMENT NOTE. Cash Inv No.: 7801F714. V E05 14. Date: 01/08/2017. MAKASSAR FRESH MARKET SDN BHD. GROUND FLOOR, NO. 4 & 6,. JALA",
+            "f1": 0.915,
+            "f1_no_accent": 0.915
+          },
+          {
+            "image": "X51005433518",
+            "gt": "UNIHAKKA INTERNATIONAL SDN BHD 07 MAR 2018 18:22 (867388-U) 12 TAMPOI TAX INVOICE INVOICE # : OR18030702170417 ITEM QTY TOTAL SR I00100000035- 1 MEAT + 3 VEGE $7.10 1 $7.10 SR I00100000015- VEGETABLE $1.10 1 $1.10 TOTAL AMOUNT: $8.20 GST @6%: $0.46 NETT TOTAL: $8.20 PAYMENT MODE AMOUNT CASH $8.20 CH",
+            "pred": "A03026. Item. Qty. Total. $7.10. $7.10. $1.10. $1.10. Total Amount: $8.20. GST @6%: $0.46. Nett Total: $8.20. Payment Mode. Amount. CASH. $8.20. Change. $0.00. GST Summary. Tax($). SR = GST @6%. 0.46. BAR WANG RICE@PERMAS JAYA. (Price Inclusive Of GST). Thank You & Come Again! Like and Follow Us on ",
+            "f1": 0.763,
+            "f1_no_accent": 0.763
+          },
+          {
+            "image": "X51005806692",
+            "gt": "TAX INVOICE GREAT ZONE HOUSEHOLD CENTRE SDN BHD (801049-U) 60 & 62. JALAN CIKU 86000 GST REG.: 001833082880 DOCUMENT NO. : DATE : DEBTOR : MEMBER : TERMINAL : CASHIER : KLG0201130227 18/02/2018 06:08:59 PM KLG0201 KLG2 DESC U.PRICE DISC AMOUNT TAX QTY RM RM CODE 200SHEET COMPACT SERVIETTES (NTE) 1 P",
+            "pred": "Tax Invoice. GREAT ZONE HOUSEHOLD CENTRE SDN BHD. (801049-U). 60 & 62. Jalan Ciku,. 86000, KLUANG. GST Reg.: 001833082880. Document No. KLG0201130227. Date : 18/02/2018 06:08:59 PM. Debtor : Member. Terminal. KLG0201. Cashier : KLG2. DESC. U. PRICE. Disc AMOUNT TAX. QTY. RM. RM CODE. 200SHEET COMPAC",
+            "f1": 0.993,
+            "f1_no_accent": 0.993
+          },
+          {
+            "image": "X51006619869",
+            "gt": "HOME'S HARMONY @ 1 UTAMA SHOPPING CENTRE MONSIEUR ( M ) SDN. BHD. ( 121889-W ) ( GST REG. NO. 000992739328 ) LOT S319A 1 UTAMA SHOPPING CENTRE - PHASE 2 PERSIARAN BANDAR UTAMA 47800 PETALING JAYA. MALAYSIA TEL. 03-7729 9662 FAX. 03-7726 8124 TAX INVOICE 12/06/2016-13:30:10-28-NORBAIZURA BT-101 -002 ",
+            "pred": "HOME'S HARMONY @ 1 UTAMA SHOPPING CENTRE'. MONSIEUR ( M ) SDN. BHD, ( 121889-W ). ( GST REG. NO. 000992739328 ). Lot 9319A, 2nd Floor,. 1 Utama Shopping Centre - Phase 2. Persiaran Bandar Utama,. 47800 Petaling Jaya. Malaysia. Tel. 03-7729 9662 Fax. 03-7726 8124. ********** TAX INVOICE **********. 1",
+            "f1": 0.982,
+            "f1_no_accent": 0.982
+          },
+          {
+            "image": "X51006619700",
+            "gt": "MR. D.I.Y. (KUCHAI) SDN BHD CO-REG:750441-W LOT 1851-A & 1851-B KAWASAN PERINDUSTRIAN BALAKONG 43300 SERI KEMBANGAN (GST ID NO :000473792512) (KEPONG) -TAX INVOICE- ANTI SLIP MAT 820# 30*50CM*VS *S MH22/3 - 6/120 9067301 3 X ITEM(S) : 1 QTY(S):3 TOTAL INCL. GST@6% CASH CHANGE RM 8.10 RM 10.10 RM 2.0",
+            "pred": "MR. D.I.Y. (KUCHAI) SDN BHD. Co-REG:750441-W. LOT 1851-A & 1851-B, JALAN KPB 6,. KAWASAN PERINDUSTRIAN BALAKONG,. 43300 SERI KEMBANGAN, SELANGOR. (GST ID No #000473792512). (KEPONG). -TAX INVOICE-. ANTI SLIP MAT 820# 30*50CM*VS. *S. MH22/3 - 6/120. 9067301. 3 X 2.70. 8.10. Item(s) : 1. Qty(s) : 3. T",
+            "f1": 0.98,
+            "f1_no_accent": 0.98
+          },
+          {
+            "image": "X51006556610",
+            "gt": "PINGHWAI TRADING SDN BHD (1211036-W) NO.2 KEPONG ENTERPRENUERS PARK OFF JALAN KEPONG. 52100 KUALA LUMPUR. TEL : 603-62591420 FAX : 603-62592420 GST ID : 001371123712 TAX INVOICE BILL TO : MAKASSAR FRESH MARKET S/B DOC NO. : CS00017430 DATE: 22/08/2017 CASHIER : USER TIME: 15:01:00 SALESPERSON : REF.",
+            "pred": "PINGHWAI TRADING SDN BHD. (1211036-W). NO.2, JALAN METRO PERDANA TIMUR 11. KEPONG ENTERPRENUERS PARK,. OFF JALAN KEPONG,. 52100 KUALA LUMPUR. TEL: 603-62591420 FAX: 603-62592420. GST ID : 001371123712. TAX INVOICE. Bill To : MAKASSAR FRESH MARKET S/B. Doc No. : CS00017430. Date: 22/08/2017. Cashier.",
+            "f1": 0.966,
+            "f1_no_accent": 0.966
+          },
+          {
+            "image": "X51006329388",
+            "gt": "BEMED (SP) SDN. BHD. NO.49 SUBANG PERDANA 40150 SHAH ALAM 03-7845 8155 GST REG : 001734164480 CASH RECEIPT CB# : 58273599475 02/JAN/2017 10:49:25 CASHIER : BE () QTY CODE&DESC PRICE TOTAL ALPHA LIPID LIFE LINE 450MG 450G 1 165.00 165 SR 1 TYPE: 1 SUBTOTAL: 165.00 ROUNDING ADJ: 0.00 TOTAL INCLUSIVE G",
+            "pred": "BEMED (SP) SDN. BHD. No.49, Jalan Dinar C U3/G,. Subang Perdana,. 40150 Shah Alam, Selangor D.E. 03-7845 8155. GST Reg : 001734164460. CASH RECEIPT. CB# : 58273599475 02/Jan/2017 10:49:25. Cashier : be (). Qy Code&Desc. Price Total. ALPHA LIPID LIFE LINE 450MG 450G. 1 184810. 105.00. 105 SR. Type: 1",
+            "f1": 0.844,
+            "f1_no_accent": 0.844
+          }
+        ],
+        "per_image": [
+          {
+            "image": "X51006438346",
+            "latency_sec": 0.2525964579981519,
+            "f1": 0.8585858585858585,
+            "f1_no_accent": 0.8585858585858585,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006556740",
+            "latency_sec": 0.2643787089982652,
+            "f1": 0.9150943396226415,
+            "f1_no_accent": 0.9150943396226415,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005433518",
+            "latency_sec": 0.20965112499834504,
+            "f1": 0.7625000000000001,
+            "f1_no_accent": 0.7625000000000001,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005806692",
+            "latency_sec": 0.41774520800390746,
+            "f1": 0.9934354485776805,
+            "f1_no_accent": 0.9934354485776805,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006619869",
+            "latency_sec": 0.28383825000491925,
+            "f1": 0.9823008849557523,
+            "f1_no_accent": 0.9823008849557523,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006619700",
+            "latency_sec": 0.2817651660006959,
+            "f1": 0.9803921568627451,
+            "f1_no_accent": 0.9803921568627451,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006556610",
+            "latency_sec": 0.22919358299986925,
+            "f1": 0.9662162162162162,
+            "f1_no_accent": 0.9662162162162162,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006329388",
+            "latency_sec": 0.1880732080026064,
+            "f1": 0.8444444444444443,
+            "f1_no_accent": 0.8444444444444443,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006619564",
+            "latency_sec": 0.3141789590008557,
+            "f1": 0.922509225092251,
+            "f1_no_accent": 0.922509225092251,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006414425",
+            "latency_sec": 6.201115915995615,
+            "f1": 0.8584474885844748,
+            "f1_no_accent": 0.8584474885844748,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51007231346",
+            "latency_sec": 6.072182750001957,
+            "f1": 0.7722772277227722,
+            "f1_no_accent": 0.7722772277227722,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005745213",
+            "latency_sec": 0.20768325000244658,
+            "f1": 0.7304347826086957,
+            "f1_no_accent": 0.7304347826086957,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006619790",
+            "latency_sec": 0.2869909579967498,
+            "f1": 0.9535864978902954,
+            "f1_no_accent": 0.9535864978902954,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005677327",
+            "latency_sec": 0.21762650000164285,
+            "f1": 0.9739130434782609,
+            "f1_no_accent": 0.9739130434782609,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006008105",
+            "latency_sec": 0.29674429100123234,
+            "f1": 0.9649805447470817,
+            "f1_no_accent": 0.9649805447470817,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51008042780",
+            "latency_sec": 0.24812791599833872,
+            "f1": 0.9359605911330049,
+            "f1_no_accent": 0.9359605911330049,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005568895",
+            "latency_sec": 0.22812166600488126,
+            "f1": 0.9971671388101983,
+            "f1_no_accent": 0.9971671388101983,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51007433809",
+            "latency_sec": 0.276563207997242,
+            "f1": 0.9416342412451363,
+            "f1_no_accent": 0.9416342412451363,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005763999",
+            "latency_sec": 0.23606020900479052,
+            "f1": 0.9627791563275435,
+            "f1_no_accent": 0.9627791563275435,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006828201",
+            "latency_sec": 0.21534499999688705,
+            "f1": 0.9574468085106383,
+            "f1_no_accent": 0.9574468085106383,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51007339127",
+            "latency_sec": 0.27191450000100303,
+            "f1": 0.9825783972125435,
+            "f1_no_accent": 0.9825783972125435,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X510056849111",
+            "latency_sec": 0.15461800000048243,
+            "f1": 0.9333333333333333,
+            "f1_no_accent": 0.9333333333333333,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006334742",
+            "latency_sec": 0.247505250001268,
+            "f1": 0.8974358974358974,
+            "f1_no_accent": 0.8974358974358974,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005582745",
+            "latency_sec": 0.2547151249964372,
+            "f1": 0.9469026548672567,
+            "f1_no_accent": 0.9469026548672567,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005447844",
+            "latency_sec": 0.20675749999645632,
+            "f1": 0.9219330855018587,
+            "f1_no_accent": 0.9219330855018587,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006387737",
+            "latency_sec": 0.19973595900228247,
+            "f1": 0.871508379888268,
+            "f1_no_accent": 0.871508379888268,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006619506",
+            "latency_sec": 0.24712029100192012,
+            "f1": 0.6304347826086957,
+            "f1_no_accent": 0.6304347826086957,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51007103597",
+            "latency_sec": 0.2514072080011829,
+            "f1": 0.9565217391304348,
+            "f1_no_accent": 0.9565217391304348,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005587261",
+            "latency_sec": 0.28988987499906216,
+            "f1": 0.932806324110672,
+            "f1_no_accent": 0.932806324110672,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006401940",
+            "latency_sec": 0.28449045900197234,
+            "f1": 0.9294605809128631,
+            "f1_no_accent": 0.9294605809128631,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006556826",
+            "latency_sec": 0.23587024999869755,
+            "f1": 0.9131652661064426,
+            "f1_no_accent": 0.9131652661064426,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006334819",
+            "latency_sec": 0.18371570800081827,
+            "f1": 0.7707317073170732,
+            "f1_no_accent": 0.7707317073170732,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51007339161",
+            "latency_sec": 0.2786667079999461,
+            "f1": 0.9381107491856677,
+            "f1_no_accent": 0.9381107491856677,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51007846303",
+            "latency_sec": 6.398521625000285,
+            "f1": 0.8817204301075268,
+            "f1_no_accent": 0.8817204301075268,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005724623",
+            "latency_sec": 0.24467033399560023,
+            "f1": 0.8728522336769761,
+            "f1_no_accent": 0.8728522336769761,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006913032",
+            "latency_sec": 6.063709708003444,
+            "f1": 0.8559322033898304,
+            "f1_no_accent": 0.8559322033898304,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51008099086",
+            "latency_sec": 0.20371024999622023,
+            "f1": 0.9395348837209302,
+            "f1_no_accent": 0.9395348837209302,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006556865",
+            "latency_sec": 0.24517337499855785,
+            "f1": 0.8940568475452196,
+            "f1_no_accent": 0.8940568475452196,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006647933",
+            "latency_sec": 0.1781645410010242,
+            "f1": 0.9171270718232044,
+            "f1_no_accent": 0.9171270718232044,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005806695",
+            "latency_sec": 0.295789165997121,
+            "f1": 0.9879518072289156,
+            "f1_no_accent": 0.9879518072289156,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005444040",
+            "latency_sec": 0.22838012500142213,
+            "f1": 0.9377289377289377,
+            "f1_no_accent": 0.9377289377289377,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006912998",
+            "latency_sec": 5.980596666995552,
+            "f1": 0.9871794871794872,
+            "f1_no_accent": 0.9871794871794872,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005230657",
+            "latency_sec": 0.23765908399946056,
+            "f1": 0.9411764705882353,
+            "f1_no_accent": 0.9411764705882353,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005568894",
+            "latency_sec": 0.2378502080027829,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006555833",
+            "latency_sec": 0.2546992080024211,
+            "f1": 0.8820224719101123,
+            "f1_no_accent": 0.8820224719101123,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X00016469670",
+            "latency_sec": 0.18846225000015693,
+            "f1": 0.9508196721311476,
+            "f1_no_accent": 0.9508196721311476,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51007339163",
+            "latency_sec": 0.28667016699910164,
+            "f1": 0.984984984984985,
+            "f1_no_accent": 0.984984984984985,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006619760",
+            "latency_sec": 0.2632472500044969,
+            "f1": 0.7772511848341234,
+            "f1_no_accent": 0.7772511848341234,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006387931",
+            "latency_sec": 0.1934442499987199,
+            "f1": 0.8248587570621468,
+            "f1_no_accent": 0.8248587570621468,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005757308",
+            "latency_sec": 0.28133825000259094,
+            "f1": 0.9461756373937676,
+            "f1_no_accent": 0.9461756373937676,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006349085",
+            "latency_sec": 0.24936583399539813,
+            "f1": 0.9612403100775193,
+            "f1_no_accent": 0.9612403100775193,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005444041",
+            "latency_sec": 0.2765664580001612,
+            "f1": 0.9455587392550143,
+            "f1_no_accent": 0.9455587392550143,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005719898",
+            "latency_sec": 0.22339562499837484,
+            "f1": 0.967741935483871,
+            "f1_no_accent": 0.967741935483871,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51007103687",
+            "latency_sec": 0.2151417909990414,
+            "f1": 0.9552238805970149,
+            "f1_no_accent": 0.9552238805970149,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005745298",
+            "latency_sec": 0.2211152919990127,
+            "f1": 0.9533678756476685,
+            "f1_no_accent": 0.9533678756476685,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005757282",
+            "latency_sec": 0.2735514589949162,
+            "f1": 0.8776371308016878,
+            "f1_no_accent": 0.8776371308016878,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005677333",
+            "latency_sec": 0.20358587500231806,
+            "f1": 0.9496402877697842,
+            "f1_no_accent": 0.9496402877697842,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006912959",
+            "latency_sec": 5.970238583999162,
+            "f1": 0.9339207048458149,
+            "f1_no_accent": 0.9339207048458149,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006557173",
+            "latency_sec": 0.2338277079979889,
+            "f1": 0.8978494623655914,
+            "f1_no_accent": 0.8978494623655914,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005568892",
+            "latency_sec": 0.21411724999779835,
+            "f1": 0.7889908256880734,
+            "f1_no_accent": 0.7889908256880734,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005568866",
+            "latency_sec": 0.21414495800127042,
+            "f1": 0.9690721649484537,
+            "f1_no_accent": 0.9690721649484537,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006335818",
+            "latency_sec": 0.20140395800262922,
+            "f1": 0.900709219858156,
+            "f1_no_accent": 0.900709219858156,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006619863",
+            "latency_sec": 0.21751450000010664,
+            "f1": 0.9487179487179489,
+            "f1_no_accent": 0.9487179487179489,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006619704",
+            "latency_sec": 0.2910750419978285,
+            "f1": 0.9368770764119602,
+            "f1_no_accent": 0.9368770764119602,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005621482",
+            "latency_sec": 0.2037063749958179,
+            "f1": 0.9343434343434343,
+            "f1_no_accent": 0.9343434343434343,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006329183",
+            "latency_sec": 0.20583337499556364,
+            "f1": 0.9415384615384615,
+            "f1_no_accent": 0.9415384615384615,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51007846289",
+            "latency_sec": 5.966385166997497,
+            "f1": 0.9023569023569024,
+            "f1_no_accent": 0.9023569023569024,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006327953",
+            "latency_sec": 0.16860216700297315,
+            "f1": 0.8867924528301886,
+            "f1_no_accent": 0.8867924528301886,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005675103",
+            "latency_sec": 0.1887931670062244,
+            "f1": 0.9496402877697843,
+            "f1_no_accent": 0.9496402877697843,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51007579725",
+            "latency_sec": 0.1716179170034593,
+            "f1": 0.9340659340659341,
+            "f1_no_accent": 0.9340659340659341,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51007846304",
+            "latency_sec": 5.928707791004854,
+            "f1": 0.8869565217391303,
+            "f1_no_accent": 0.8869565217391303,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006857137",
+            "latency_sec": 0.1621888330046204,
+            "f1": 0.9171974522292994,
+            "f1_no_accent": 0.9171974522292994,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51007846290",
+            "latency_sec": 6.117387209000299,
+            "f1": 0.896551724137931,
+            "f1_no_accent": 0.896551724137931,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51007225406",
+            "latency_sec": 0.17360766600177158,
+            "f1": 0.9488372093023255,
+            "f1_no_accent": 0.9488372093023255,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006248253",
+            "latency_sec": 0.2379573750004056,
+            "f1": 0.9509803921568627,
+            "f1_no_accent": 0.9509803921568627,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006557115",
+            "latency_sec": 0.22772012499626726,
+            "f1": 0.9137055837563451,
+            "f1_no_accent": 0.9137055837563451,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51007339105",
+            "latency_sec": 0.22869266699854052,
+            "f1": 0.9616724738675958,
+            "f1_no_accent": 0.9616724738675958,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51009568881",
+            "latency_sec": 0.24454904100275598,
+            "f1": 0.9224489795918367,
+            "f1_no_accent": 0.9224489795918367,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006334927",
+            "latency_sec": 0.16028287500375882,
+            "f1": 0.9696969696969697,
+            "f1_no_accent": 0.9696969696969697,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005757292",
+            "latency_sec": 0.20593854199978523,
+            "f1": 0.9405940594059405,
+            "f1_no_accent": 0.9405940594059405,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006311714",
+            "latency_sec": 0.25072266699862666,
+            "f1": 0.9446494464944649,
+            "f1_no_accent": 0.9446494464944649,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005719888",
+            "latency_sec": 0.15928045799955726,
+            "f1": 0.9581395348837211,
+            "f1_no_accent": 0.9581395348837211,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005719895",
+            "latency_sec": 0.254396167001687,
+            "f1": 0.9664429530201342,
+            "f1_no_accent": 0.9664429530201342,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005719889",
+            "latency_sec": 0.17795729199860943,
+            "f1": 0.9247311827956989,
+            "f1_no_accent": 0.9247311827956989,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005361908",
+            "latency_sec": 0.272361124996678,
+            "f1": 0.9067796610169491,
+            "f1_no_accent": 0.9067796610169491,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51007846268",
+            "latency_sec": 5.8790132499998435,
+            "f1": 0.8991596638655462,
+            "f1_no_accent": 0.8991596638655462,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006619509",
+            "latency_sec": 0.1524847079999745,
+            "f1": 0.9402985074626865,
+            "f1_no_accent": 0.9402985074626865,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005447841",
+            "latency_sec": 0.1982461669977056,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005568890",
+            "latency_sec": 0.20463829199434258,
+            "f1": 0.9315068493150683,
+            "f1_no_accent": 0.9315068493150683,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005676534",
+            "latency_sec": 0.18762704199616564,
+            "f1": 0.966542750929368,
+            "f1_no_accent": 0.966542750929368,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005684949",
+            "latency_sec": 0.14079387499805307,
+            "f1": 0.9261744966442952,
+            "f1_no_accent": 0.9261744966442952,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005365187",
+            "latency_sec": 0.26923037500091596,
+            "f1": 0.9484029484029484,
+            "f1_no_accent": 0.9484029484029484,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51007231372",
+            "latency_sec": 5.942311749997316,
+            "f1": 0.9747292418772563,
+            "f1_no_accent": 0.9747292418772563,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006502535",
+            "latency_sec": 0.1476190419998602,
+            "f1": 0.9238578680203046,
+            "f1_no_accent": 0.9238578680203046,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006008090",
+            "latency_sec": 0.2919453330032411,
+            "f1": 0.9574468085106382,
+            "f1_no_accent": 0.9574468085106382,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005757220",
+            "latency_sec": 0.24245720899489243,
+            "f1": 0.943661971830986,
+            "f1_no_accent": 0.943661971830986,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005742110",
+            "latency_sec": 0.16410049999831244,
+            "f1": 0.9570552147239264,
+            "f1_no_accent": 0.9570552147239264,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006556734",
+            "latency_sec": 0.21806787500099745,
+            "f1": 0.9295039164490861,
+            "f1_no_accent": 0.9295039164490861,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006008083",
+            "latency_sec": 0.2588713340010145,
+            "f1": 0.9078014184397163,
+            "f1_no_accent": 0.9078014184397163,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006557187",
+            "latency_sec": 0.21764991699456004,
+            "f1": 0.9049999999999999,
+            "f1_no_accent": 0.9049999999999999,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51007339638",
+            "latency_sec": 0.2441390419990057,
+            "f1": 0.8652482269503546,
+            "f1_no_accent": 0.8652482269503546,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006401977",
+            "latency_sec": 0.26259379200200783,
+            "f1": 0.8743169398907105,
+            "f1_no_accent": 0.8743169398907105,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005568885",
+            "latency_sec": 0.2167806669967831,
+            "f1": 0.8181818181818182,
+            "f1_no_accent": 0.8181818181818182,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51007339159",
+            "latency_sec": 0.2264408339979127,
+            "f1": 0.9539473684210527,
+            "f1_no_accent": 0.9539473684210527,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005663309",
+            "latency_sec": 0.17930866700044135,
+            "f1": 0.8953488372093024,
+            "f1_no_accent": 0.8953488372093024,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006619703",
+            "latency_sec": 0.22948887499660486,
+            "f1": 0.9128205128205129,
+            "f1_no_accent": 0.9128205128205129,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006327960",
+            "latency_sec": 0.1690922080015298,
+            "f1": 0.8952380952380952,
+            "f1_no_accent": 0.8952380952380952,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51007846310",
+            "latency_sec": 5.969414708000841,
+            "f1": 0.9196141479099679,
+            "f1_no_accent": 0.9196141479099679,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005711446",
+            "latency_sec": 0.16381245899538044,
+            "f1": 0.9417475728155339,
+            "f1_no_accent": 0.9417475728155339,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006556806",
+            "latency_sec": 0.21699004199763294,
+            "f1": 0.9279538904899136,
+            "f1_no_accent": 0.9279538904899136,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51008030561",
+            "latency_sec": 0.20494270799827063,
+            "f1": 0.914798206278027,
+            "f1_no_accent": 0.914798206278027,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005675099",
+            "latency_sec": 0.17922374999761814,
+            "f1": 0.9277566539923955,
+            "f1_no_accent": 0.9277566539923955,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005230616",
+            "latency_sec": 0.20079329200234497,
+            "f1": 0.9407894736842106,
+            "f1_no_accent": 0.9407894736842106,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006414532",
+            "latency_sec": 6.051453500003845,
+            "f1": 0.9329073482428115,
+            "f1_no_accent": 0.9329073482428115,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005676542",
+            "latency_sec": 0.1836257500035572,
+            "f1": 0.935064935064935,
+            "f1_no_accent": 0.935064935064935,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005442382",
+            "latency_sec": 0.16685604200029047,
+            "f1": 0.5909090909090909,
+            "f1_no_accent": 0.5909090909090909,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006401853",
+            "latency_sec": 0.2030213750040275,
+            "f1": 0.9625668449197862,
+            "f1_no_accent": 0.9625668449197862,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005663274",
+            "latency_sec": 0.1727167909994023,
+            "f1": 0.9433962264150944,
+            "f1_no_accent": 0.9433962264150944,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006857540",
+            "latency_sec": 0.2120932920006453,
+            "f1": 0.9461756373937676,
+            "f1_no_accent": 0.9461756373937676,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006555819",
+            "latency_sec": 0.21752116700372426,
+            "f1": 0.9298701298701297,
+            "f1_no_accent": 0.9298701298701297,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005568887",
+            "latency_sec": 0.20356995800102595,
+            "f1": 0.8841201716738197,
+            "f1_no_accent": 0.8841201716738197,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51008042787",
+            "latency_sec": 0.2915290829987498,
+            "f1": 0.9669421487603305,
+            "f1_no_accent": 0.9669421487603305,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005741929",
+            "latency_sec": 0.1929151250005816,
+            "f1": 0.8974358974358975,
+            "f1_no_accent": 0.905982905982906,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006556648",
+            "latency_sec": 0.22281708400259959,
+            "f1": 0.9177718832891245,
+            "f1_no_accent": 0.9177718832891245,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005361906",
+            "latency_sec": 0.24104583299777005,
+            "f1": 0.9182389937106918,
+            "f1_no_accent": 0.9182389937106918,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005442334",
+            "latency_sec": 0.16248291700321715,
+            "f1": 0.8855721393034826,
+            "f1_no_accent": 0.8855721393034826,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006647984",
+            "latency_sec": 0.20345649999944726,
+            "f1": 0.940119760479042,
+            "f1_no_accent": 0.940119760479042,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51007846372",
+            "latency_sec": 5.963181999999506,
+            "f1": 0.9082568807339451,
+            "f1_no_accent": 0.9082568807339451,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006556809",
+            "latency_sec": 0.22029208300227765,
+            "f1": 0.9273182957393483,
+            "f1_no_accent": 0.9273182957393483,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006392167",
+            "latency_sec": 0.21734083400224335,
+            "f1": 0.9368029739776952,
+            "f1_no_accent": 0.9368029739776952,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006857126",
+            "latency_sec": 0.22422966599697247,
+            "f1": 0.9464285714285714,
+            "f1_no_accent": 0.9464285714285714,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005288570",
+            "latency_sec": 0.13205775000096764,
+            "f1": 0.9861111111111112,
+            "f1_no_accent": 0.9861111111111112,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006556654",
+            "latency_sec": 0.2326841250032885,
+            "f1": 0.917098445595855,
+            "f1_no_accent": 0.917098445595855,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006008206",
+            "latency_sec": 0.20734995800012257,
+            "f1": 0.9447236180904522,
+            "f1_no_accent": 0.9447236180904522,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51007231276",
+            "latency_sec": 0.7100216670005466,
+            "f1": 0.9137055837563451,
+            "f1_no_accent": 0.9137055837563451,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005806719",
+            "latency_sec": 0.277482332996442,
+            "f1": 0.9119999999999999,
+            "f1_no_accent": 0.9119999999999999,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51007231331",
+            "latency_sec": 5.916400499998417,
+            "f1": 0.8559322033898306,
+            "f1_no_accent": 0.8644067796610169,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006388081",
+            "latency_sec": 0.2259431249985937,
+            "f1": 0.8979591836734694,
+            "f1_no_accent": 0.8979591836734694,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005361923",
+            "latency_sec": 0.31426216600084445,
+            "f1": 0.8407643312101911,
+            "f1_no_accent": 0.8407643312101911,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005230648",
+            "latency_sec": 0.21223374999681255,
+            "f1": 0.9217391304347827,
+            "f1_no_accent": 0.9217391304347827,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51007846266",
+            "latency_sec": 5.826361708001059,
+            "f1": 0.91,
+            "f1_no_accent": 0.91,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51007846283",
+            "latency_sec": 6.243407250003656,
+            "f1": 0.9372384937238494,
+            "f1_no_accent": 0.9372384937238494,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51007231343",
+            "latency_sec": 5.895742665998114,
+            "f1": 0.923076923076923,
+            "f1_no_accent": 0.923076923076923,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51008099088",
+            "latency_sec": 0.14857329100050265,
+            "f1": 0.9529411764705883,
+            "f1_no_accent": 0.9529411764705883,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006556723",
+            "latency_sec": 0.20245779099786887,
+            "f1": 0.9154929577464789,
+            "f1_no_accent": 0.9187279151943463,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51007846360",
+            "latency_sec": 6.06601570800558,
+            "f1": 0.8531468531468531,
+            "f1_no_accent": 0.8531468531468531,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005442388",
+            "latency_sec": 0.16675975000543986,
+            "f1": 0.746031746031746,
+            "f1_no_accent": 0.746031746031746,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005724552",
+            "latency_sec": 0.20138404200406512,
+            "f1": 0.9782608695652174,
+            "f1_no_accent": 0.9782608695652174,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51005433556",
+            "latency_sec": 0.20278295899333898,
+            "f1": 0.9556313993174061,
+            "f1_no_accent": 0.9556313993174061,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "X51006912976",
+            "latency_sec": 6.073965249997855,
+            "f1": 0.9035294117647059,
+            "f1_no_accent": 0.9035294117647059,
+            "quality_status": "OK",
+            "error": null
+          }
+        ],
+        "language": "en",
+        "wall_sec": 152.1325318813324
+      },
+      "synthetic_vi_document": {
+        "num_images": 60,
+        "status": {
+          "ok": 60,
+          "rejected_quality": 0,
+          "error": 0,
+          "no_text": 0
+        },
+        "word_micro_strict": {
+          "precision": 0.989451476793249,
+          "recall": 0.989451476793249,
+          "f1": 0.989451476793249
+        },
+        "word_micro_no_accent": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "per_image_f1": {
+          "n": 60,
+          "mean": 0.9892557185883758,
+          "median": 1.0,
+          "p90": 1.0,
+          "min": 0.92,
+          "max": 1.0
+        },
+        "latency_sec": {
+          "n": 60,
+          "mean": 0.15931784096671134,
+          "median": 0.1628283334976004,
+          "p90": 0.1756232997009647,
+          "min": 0.10928299999795854,
+          "max": 0.22574083300423808
+        },
+        "error_messages": [],
+        "examples": [
+          {
+            "image": "doc09_clean.jpg",
+            "gt": "Quý khách vui lòng xếp hàng theo thứ tự. Nhân viên sẽ hỗ trợ trong giây lát. Xin cảm ơn!",
+            "pred": "Quý khách vui lòng xếp hàng theo thứ tự. Nhân viên sẽ hỗ trợ trong giây lát. Xin cảm ơn!",
+            "f1": 1.0,
+            "f1_no_accent": 1.0
+          },
+          {
+            "image": "doc04_clean.jpg",
+            "gt": "Lịch học tuần này Thứ hai: Toán cao cấp, phòng 302 Thứ tư: Vật lý đại cương, phòng 105 Thứ sáu: Tiếng Anh chuyên ngành",
+            "pred": "Lịch học tuần này. Thứ hai: Toán cao cấp, phòng 302. Thứ tư: Vật lý đại cương, phòng 105. Thứ sáu: Tiếng Anh chuyên ngành.",
+            "f1": 1.0,
+            "f1_no_accent": 1.0
+          },
+          {
+            "image": "doc08_clean.jpg",
+            "gt": "Hạn sử dụng: 12/2026 Thành phần: nước, đường, hương cam tự nhiên. Sản xuất tại Việt Nam.",
+            "pred": "Hạn sử dụng: 12/2026. Thành phần: nước, đường, hương cam tự nhiên. Sản xuất tại Việt Nam.",
+            "f1": 1.0,
+            "f1_no_accent": 1.0
+          },
+          {
+            "image": "doc09_shadow.jpg",
+            "gt": "Quý khách vui lòng xếp hàng theo thứ tự. Nhân viên sẽ hỗ trợ trong giây lát. Xin cảm ơn!",
+            "pred": "Quý khách vui lòng xếp hàng theo thứ tự. Nhân viên sẽ hỗ trợ trong giây lát. Xin cảm ơn!",
+            "f1": 1.0,
+            "f1_no_accent": 1.0
+          },
+          {
+            "image": "doc04_shadow.jpg",
+            "gt": "Lịch học tuần này Thứ hai: Toán cao cấp, phòng 302 Thứ tư: Vật lý đại cương, phòng 105 Thứ sáu: Tiếng Anh chuyên ngành",
+            "pred": "Lịch học tuần này. Thứ hai: Toán cao cấp, phòng 302. Thứ tư: Vật lý đại cương, phòng 105. Thứ sáu: Tiếng Anh chuyên ngành.",
+            "f1": 1.0,
+            "f1_no_accent": 1.0
+          },
+          {
+            "image": "doc00_shadow.jpg",
+            "gt": "THÔNG BÁO Kể từ ngày 15 tháng 10, thư viện mở cửa từ 7 giờ 30 đến 21 giờ. Bạn đọc vui lòng xuất trình thẻ khi vào cửa.",
+            "pred": "THÔNG BÁO. Kể từ ngày 15 tháng 10, thư viện mở cửa từ 7 giờ 30 đến 21 giờ. Bạn đọc vui lòng xuất trình thẻ khi vào cửa.",
+            "f1": 1.0,
+            "f1_no_accent": 1.0
+          },
+          {
+            "image": "doc02_noise_jpeg.jpg",
+            "gt": "Phòng khám Đa khoa Hoà Bình Địa chỉ: 25 đường Nguyễn Trãi, quận Thanh Xuân, Hà Nội Điện thoại: 024 3856 7890",
+            "pred": "Phòng khám Đa khoa Hoà Bình. Địa chỉ: 25 đường Nguyễn Trãi, quận Thanh Xuân, Hà Nội. Điện thoại: 024 3856 7890.",
+            "f1": 1.0,
+            "f1_no_accent": 1.0
+          },
+          {
+            "image": "doc05_shadow.jpg",
+            "gt": "CẢNH BÁO Sàn ướt, trơn trượt. Xin vui lòng đi chậm và bám tay vịn cầu thang.",
+            "pred": "CẢNH BÁO. Sàn ướt, trơn trượt. Xin vui lòng đi chậm và bám tay vịn câu thang.",
+            "f1": 0.941,
+            "f1_no_accent": 1.0
+          }
+        ],
+        "per_image": [
+          {
+            "image": "doc09_clean.jpg",
+            "latency_sec": 0.16752237500622869,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc04_clean.jpg",
+            "latency_sec": 0.1614599160020589,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc08_clean.jpg",
+            "latency_sec": 0.16524133300117683,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc09_shadow.jpg",
+            "latency_sec": 0.15497441699699266,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc04_shadow.jpg",
+            "latency_sec": 0.15967320799973095,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc00_shadow.jpg",
+            "latency_sec": 0.16970437500276603,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc02_noise_jpeg.jpg",
+            "latency_sec": 0.1673710420000134,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc05_shadow.jpg",
+            "latency_sec": 0.1665435830000206,
+            "f1": 0.9411764705882353,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc05_perspective.jpg",
+            "latency_sec": 0.1514180000012857,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc04_perspective.jpg",
+            "latency_sec": 0.15797558299527736,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc03_perspective.jpg",
+            "latency_sec": 0.15747987500071758,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc05_clean.jpg",
+            "latency_sec": 0.15062616700015496,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc03_noise_jpeg.jpg",
+            "latency_sec": 0.1681913330030511,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc06_perspective.jpg",
+            "latency_sec": 0.1552698329978739,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc02_perspective.jpg",
+            "latency_sec": 0.165312333003385,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc08_noise_jpeg.jpg",
+            "latency_sec": 0.16090045800228836,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc01_shadow.jpg",
+            "latency_sec": 0.15916337499947986,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc03_clean.jpg",
+            "latency_sec": 0.17043133299739566,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc07_perspective.jpg",
+            "latency_sec": 0.17383433400391368,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc01_clean.jpg",
+            "latency_sec": 0.16593991599802393,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc06_blur.jpg",
+            "latency_sec": 0.1738269580018823,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc08_camera_640x480.jpg",
+            "latency_sec": 0.13168674999906216,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc05_noise_jpeg.jpg",
+            "latency_sec": 0.17416504099674057,
+            "f1": 0.9411764705882353,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc01_blur.jpg",
+            "latency_sec": 0.16777925000496907,
+            "f1": 0.9642857142857143,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc08_perspective.jpg",
+            "latency_sec": 0.1637979999941308,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc06_noise_jpeg.jpg",
+            "latency_sec": 0.16000670900393743,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc00_noise_jpeg.jpg",
+            "latency_sec": 0.18547250000119675,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc03_blur.jpg",
+            "latency_sec": 0.16602350000175647,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc09_blur.jpg",
+            "latency_sec": 0.152672291995259,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc02_camera_640x480.jpg",
+            "latency_sec": 0.144381208003324,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc00_blur.jpg",
+            "latency_sec": 0.15906220799661241,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc01_camera_640x480.jpg",
+            "latency_sec": 0.12154404199827695,
+            "f1": 0.9642857142857143,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc07_blur.jpg",
+            "latency_sec": 0.16565524999896297,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc01_noise_jpeg.jpg",
+            "latency_sec": 0.17143195900280261,
+            "f1": 0.9642857142857143,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc05_camera_640x480.jpg",
+            "latency_sec": 0.1139797499999986,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc03_shadow.jpg",
+            "latency_sec": 0.17340100000001257,
+            "f1": 0.9655172413793104,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc07_noise_jpeg.jpg",
+            "latency_sec": 0.17326179199881153,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc08_blur.jpg",
+            "latency_sec": 0.17504133300099056,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc02_blur.jpg",
+            "latency_sec": 0.15618062500288943,
+            "f1": 0.9545454545454546,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc02_shadow.jpg",
+            "latency_sec": 0.16870258400012972,
+            "f1": 0.9545454545454546,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc06_shadow.jpg",
+            "latency_sec": 0.15468862499983516,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc06_camera_640x480.jpg",
+            "latency_sec": 0.11079862499900628,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc00_perspective.jpg",
+            "latency_sec": 0.18086100000073202,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc00_clean.jpg",
+            "latency_sec": 0.16185866700107,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc09_camera_640x480.jpg",
+            "latency_sec": 0.10928299999795854,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc04_noise_jpeg.jpg",
+            "latency_sec": 0.16935124999872642,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc04_blur.jpg",
+            "latency_sec": 0.22574083300423808,
+            "f1": 0.96,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc03_camera_640x480.jpg",
+            "latency_sec": 0.11622025000542635,
+            "f1": 0.9655172413793104,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc09_noise_jpeg.jpg",
+            "latency_sec": 0.16120291699917288,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc09_perspective.jpg",
+            "latency_sec": 0.16142291700089118,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc08_shadow.jpg",
+            "latency_sec": 0.19379858300089836,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc01_perspective.jpg",
+            "latency_sec": 0.18113966700184392,
+            "f1": 0.9642857142857143,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc00_camera_640x480.jpg",
+            "latency_sec": 0.12192475000483682,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc07_camera_640x480.jpg",
+            "latency_sec": 0.11843920899991645,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc07_clean.jpg",
+            "latency_sec": 0.18846383300115122,
+            "f1": 0.92,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc07_shadow.jpg",
+            "latency_sec": 0.16596162499627098,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc06_clean.jpg",
+            "latency_sec": 0.15484537499287399,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc04_camera_640x480.jpg",
+            "latency_sec": 0.11924899999576155,
+            "f1": 1.0,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc05_blur.jpg",
+            "latency_sec": 0.14967508399422513,
+            "f1": 0.9411764705882353,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          },
+          {
+            "image": "doc02_clean.jpg",
+            "latency_sec": 0.16703970799426315,
+            "f1": 0.9545454545454546,
+            "f1_no_accent": 1.0,
+            "quality_status": "OK",
+            "error": null
+          }
+        ],
+        "language": "vi",
+        "wall_sec": 9.77781081199646
+      }
+    }
+  }
+}

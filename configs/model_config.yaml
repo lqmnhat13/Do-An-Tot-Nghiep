@@ -49,12 +49,16 @@ detection:
     - "cell phone"
 
 depth:
-  model_name: "depth_anything_v2_small"
-  hf_repo_id: "depth-anything/Depth-Anything-V2-Small-hf"
-  local_dir: "models/weights/depth_anything_v2_small"
+  # Metric-Indoor cho khoảng cách theo mét. Bản relative (Depth-Anything-V2-Small-hf +
+  # representation: relative_depth) chuẩn hoá theo frame nên bỏ sót vật gần
+  # (NYU: chỉ 16% vật trong 1.5 m được HIGH) -> xem evaluation/REAL_DATA_EVALUATION.md.
+  model_name: "depth_anything_v2_metric_indoor_small"
+  hf_repo_id: "depth-anything/Depth-Anything-V2-Metric-Indoor-Small-hf"
   device: "mps" # mps | cpu
-  representation: "relative_depth" # relative_depth | metric_depth
-  near_is_larger: true # Depth Anything V2 outputs inverse/relative depth where larger is closer
+  representation: "metric_depth" # relative_depth | metric_depth
+  # Hệ số nhân mét. Model ước lượng xa hơn thực tế, độ lệch tuỳ camera/độ phân giải.
+  # 0.60 đo trên NYU (Kinect) ở 256px; hãy hiệu chỉnh lại bằng scripts/calibrate_depth.py.
+  metric_scale: 0.60
   percentile_roi: 80 # lấy phân vị 80% trong vùng ROI đã co viền
   roi_erosion_ratio: 0.15 # co viền 15% để tránh nhiễu phông nền
   input_height: 256 # kích thước suy luận tối ưu cho Apple Silicon (50ms ~ 20 FPS)

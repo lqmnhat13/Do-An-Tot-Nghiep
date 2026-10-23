@@ -153,6 +153,7 @@ class MLXVLMBackend(VQABackend):
         "Nếu được hỏi mô tả khung cảnh, nêu đối tượng nổi bật rồi bổ sung vị trí, "
         "hành động hoặc chi tiết dễ nhận thấy nếu ảnh thực sự cho thấy; không bịa thêm để viết dài.\n"
         "Nếu câu hỏi là ‘có gì’, ưu tiên tối đa ba đối tượng nổi bật.\n"
+        "Khi mô tả khung cảnh, nếu trong ảnh có người hoặc con vật thì luôn nhắc đến.\n"
         "Nếu không chắc chắn, trả lời ‘Không xác định rõ từ ảnh.’\n"
         "Trả lời bằng tiếng Việt, một hoặc hai câu, tối đa 40 từ; "
         "chỉ dùng câu thứ hai khi có thêm thông tin hữu ích và chắc chắn.\n"
@@ -260,9 +261,11 @@ class MLXVLMBackend(VQABackend):
         ending = text.rstrip('\"\u201d\u2019\u0027)')
         if not ending or not ending.endswith((".", "!", "?")) or ending.endswith("..."):
             raise RuntimeError("MLX-VLM trả lời rỗng hoặc chưa có dấu kết câu rõ ràng")
-        # Require one or two complete sentences; do not rewrite partial output.
-        if not re.fullmatch(r"[^.!?…\n]+[.!?](?:[ \t]+[^.!?…\n]+[.!?])?", ending):
-            raise RuntimeError("MLX-VLM trả lời không đúng một hoặc hai câu")
+        # Require one to three complete sentences; do not rewrite partial output. The prompt
+        # asks for 1-2, but rejecting a complete third sentence discarded 9% of valid answers
+        # (OpenViVQA/KTVIC); the 45-word cap below still bounds speech length.
+        if not re.fullmatch(r"[^.!?…\n]+[.!?](?:[ \t]+[^.!?…\n]+[.!?]){0,2}", ending):
+            raise RuntimeError("MLX-VLM trả lời không đúng một đến ba câu")
         # Vietnamese word budget is measured by whitespace-separated units.
         if len(text.split()) > 45:
             raise RuntimeError("MLX-VLM trả lời quá 45 từ")

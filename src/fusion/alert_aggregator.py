@@ -16,7 +16,7 @@ class AlertAggregator:
     Bộ tổng hợp và lựa chọn cảnh báo nguy cơ quan trọng nhất.
     Tuân thủ mục 4.3 của Kế hoạch:
     - Chỉ tổng hợp cảnh báo HIGH; MEDIUM/LOW không kích hoạt âm thanh hoặc cooldown.
-    - Báo hướng và độ gần tương đối, không khẳng định khoảng cách mét.
+    - Báo hướng và mức gần bằng lời (proximity_desc), không đọc khoảng cách mét.
     - Lọc bỏ dữ liệu stale/degraded trước khi xếp hạng hoặc kích hoạt cooldown.
     - Cảnh báo có thời hạn hiệu lực rõ ràng (expires_at) ràng buộc với tuổi dữ liệu nguồn.
     """

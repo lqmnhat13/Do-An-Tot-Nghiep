@@ -1,6 +1,6 @@
 {
   "project": "Do-An-Tot-Nghiep Multimodal Assistive System",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "updated_at": "2026-10-23",
   "models": {
     "yolov8n": {
@@ -15,6 +15,17 @@
       "device": "mps",
       "status": "active"
     },
+    "depth_anything_v2_metric_indoor_small": {
+      "task": "monocular_metric_depth_estimation",
+      "framework": "transformers",
+      "hf_repo": "depth-anything/Depth-Anything-V2-Metric-Indoor-Small-hf",
+      "location": "Hugging Face cache",
+      "representation": "metric_depth",
+      "metric_scale": "configs/model_config.yaml depth.metric_scale (calibrate per camera: scripts/calibrate_depth.py)",
+      "license": "Apache-2.0",
+      "device": "mps",
+      "status": "active"
+    },
     "depth_anything_v2_small": {
       "task": "monocular_depth_estimation",
       "framework": "transformers",
@@ -23,7 +34,7 @@
       "representation": "relative_depth",
       "license": "Apache-2.0",
       "device": "mps",
-      "status": "active"
+      "status": "legacy (depth.representation: relative_depth)"
     },
     "qwen2_5_vl_3b_instruct_4bit": {
       "task": "visual_question_answering",
@@ -50,7 +61,7 @@
       "checkpoints": ["~/.EasyOCR/model/craft_mlt_25k.pth", "~/.EasyOCR/model/latin_g2.pth"],
       "license": "Apache-2.0",
       "device": "mps",
-      "status": "fallback (used when Apple Vision is unavailable)"
+      "status": "fallback (used when Apple Vision fails to load or to read)"
     },
     "blip_image_captioning_base": {
       "task": "image_captioning",
