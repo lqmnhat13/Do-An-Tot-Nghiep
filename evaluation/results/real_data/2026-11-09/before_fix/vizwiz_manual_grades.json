@@ -1,0 +1,81 @@
+{
+ "grader": "1 người chấm (tác giả công cụ đánh giá), đối chiếu gt_top3 tiếng Anh; ảnh xem khi cần",
+ "scale": {
+  "correct": "đúng trọng tâm",
+  "partial": "đúng một phần / sai chi tiết",
+  "wrong_*": "sai",
+  "refused": "trả lời 'Không xác định' với câu trả lời được",
+  "honest_unknown": "ảnh không trả lời được và model nói không xác định",
+  "hallucinated": "ảnh không trả lời được nhưng model bịa"
+ },
+ "vqa": {
+  "1": "partial",
+  "2": "correct",
+  "4": "correct",
+  "8": "refused",
+  "9": "partial",
+  "10": "partial",
+  "11": "correct",
+  "14": "correct",
+  "19": "correct",
+  "20": "wrong_hallucinated",
+  "22": "correct",
+  "25": "wrong_validator_rejected",
+  "27": "correct",
+  "29": "partial",
+  "30": "partial",
+  "35": "partial",
+  "40": "correct",
+  "42": "correct",
+  "43": "correct",
+  "44": "correct",
+  "45": "honest_unknown",
+  "46": "honest_unknown",
+  "47": "honest_unknown",
+  "48": "honest_unknown",
+  "49": "honest_unknown",
+  "50": "honest_unknown",
+  "51": "honest_unknown",
+  "52": "honest_unknown",
+  "53": "honest_unknown",
+  "56": "honest_unknown",
+  "58": "fallback_no_answer",
+  "54": "hallucinated",
+  "55": "hallucinated",
+  "59": "answered_plausible"
+ },
+ "ocr_on_reading_questions": {
+  "2": "correct",
+  "20": "correct",
+  "30": "correct",
+  "40": "correct",
+  "42": "correct",
+  "59": "correct",
+  "45": "honest_no_text",
+  "48": "quality_guidance",
+  "51": "read_text_gt_unanswerable",
+  "53": "garbage_text"
+ },
+ "notes": {
+  "1": "Night Time là thuốc ho/cảm, model gọi là 'thuốc ngủ'",
+  "20": "VQA bịa 'Live and Let Die'; OCR đọc đúng Clive/Dirk Cussler",
+  "25": "giá '1.29' bị validator coi là ranh giới câu",
+  "30": "VQA đọc sai chữ trên biển; OCR đọc đúng",
+  "35": "Nestea -> 'Nestlé'",
+  "54": "bịa thông báo 'Update'",
+  "55": "bịa số model 'HP'",
+  "29": "thêm chuột/bàn phím không có trong ảnh"
+ },
+ "summary": {
+  "answerable_20": {
+   "correct": 11,
+   "partial": 6,
+   "wrong_or_refused": 3
+  },
+  "unanswerable_14": {
+   "honest": 12,
+   "hallucinated": 2
+  },
+  "ocr_reading_6_answerable_correct": 6
+ }
+}

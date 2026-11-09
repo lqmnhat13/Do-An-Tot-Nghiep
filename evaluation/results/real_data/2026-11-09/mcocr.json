@@ -1,0 +1,3156 @@
+{
+ "vision": {
+  "n": 120,
+  "bad_quality": 0,
+  "latency_median_s": 0.205,
+  "latency_p90_s": 0.237,
+  "field_recall": {
+   "store": {
+    "exact": 0.571,
+    "no_accent": 0.967,
+    "n": 91
+   },
+   "address": {
+    "exact": 0.248,
+    "no_accent": 0.648,
+    "n": 105
+   },
+   "date": {
+    "exact": 0.923,
+    "no_accent": 0.923,
+    "n": 78
+   },
+   "total": {
+    "exact": 0.977,
+    "no_accent": 0.977,
+    "n": 88
+   },
+   "items": {
+    "exact": 0.444,
+    "no_accent": 0.778,
+    "n": 9
+   }
+  },
+  "rows": [
+   {
+    "i": 0,
+    "shape": [
+     1366,
+     1024
+    ],
+    "quality": "OK",
+    "latency": 1.38,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "THE BLUES. Cữa hàng: INDOCHINA PLAZA. Địa chỉ: TANG 2, INDOCHINA PLAZA, HANOI. PHIỀU BÁN LẺ. MSP:B1308200004 - INDOCHINA-PC. Ngày: 13/08/20 - 07:03. 1 893491202519 QN1-JP1L16-026. 1. 299,000. 299,000 VNĐ. .... Tổng số tiền: 299,000 VNĐ. Giảm giá: 0 %. 0 VNĐ. Còn lại: 299,000 VNĐ. Thanh toán bằng tiền mặt. Vui lòng giữ lại phiếu sau khi thanh toán và khi đổi hàng. Hàng mua rồi dược đổi lại trong vò",
+    "gt": {
+     "Tên cửa hàng": "THE BLUES",
+     "Địa chỉ": "Tầng 2, Indochina Plaza, Hanoi",
+     "Ngày": "13/08/20",
+     "Tổng số tiền": 299000
+    }
+   },
+   {
+    "i": 1,
+    "shape": [
+     1024,
+     472
+    ],
+    "quality": "OK",
+    "latency": 0.2,
+    "hits": {
+     "store": [
+      false
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true
+     ],
+     "items": [
+      true,
+      true,
+      true,
+      true,
+      false
+     ]
+    },
+    "text": "PHÔ MÓ. Tổ 7 khu Tân Lập 4 - P Cẩm Thủy -. Tp: Cẩm Phá - Quảng Ninh. ĐT: 0858.931.931. HÓA ĐƠN BÁN HÀNG. Số HD130820-0032 - Bản MANG VÊ(A]. 13/ 08 /2020 - 21 20. Khách hàng. SĐT. Địa chỉ: Đơn giá. SL Thành tiền. Hồng trà. 25,000. 1. 25.000. Trà sữa Socola. 25.000. 1. 25,000. Trà sữa Việt quất. 25.000. 1. 25,000. Nem rán (bé). 30.000. 1. 30.000. Viên hải sảm. 30,000. 1. 30 000. Cộng tiền hàng: 135,",
+    "gt": {
+     "Tên cửa hàng": "PHỞ MÓ",
+     "Địa chỉ": "Tổ 7 Khu Tân Lập 4 - P.Cẩm Thủy - Tp.Cẩm Phả - Quảng Ninh",
+     "Ngày": "13/08/2020",
+     "Sản phẩm": [
+      "Hồng trà",
+      "Trà sữa Socola",
+      "Trà sữa Việt quất",
+      "Nem rán (bé)",
+      "Viên hải sản"
+     ],
+     "Tổng cộng": "135.000"
+    }
+   },
+   {
+    "i": 2,
+    "shape": [
+     1280,
+     720
+    ],
+    "quality": "OK",
+    "latency": 0.24,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ]
+    },
+    "text": "VM+ QNH 112 Thanh Niên. Số 112 Thanh Niên, P. Cảm Thành. VinCommerce. TP. Cảm Phá, Quảng Ninh. 024.71066866-39671. HOA ĐƠN BẢN HÃNG. Ngày bần: 11/08/2020 17:22. HĐ:00181128. Quầy :001. NVBH:09015348. Mật hàng. Đơn giá SL. T. Tiền. HẠNH PHÚC NƯỚc măm 60N 500ML T12. 8935015716702. 119.700. 1 119.700. TỔNG TIỀN PHẢI T. TOÁN. 119.700. TỔNG TIỀN ĐÃ GIẨM. TIỀN KHÁCH TRÁ. 119.700. TIEN MẶT. 119.700. TIỀN",
+    "gt": {
+     "Tên cửa hàng": "VinCommerce",
+     "Địa chỉ": "VM+ GNH 112 Thanh Niên\nSố 112 Thanh Niên, P. Cẩm Thành\nTP. Cẩm Phả, Quảng Ninh"
+    }
+   },
+   {
+    "i": 3,
+    "shape": [
+     1024,
+     576
+    ],
+    "quality": "OK",
+    "latency": 0.16,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ]
+    },
+    "text": "VM+ QNH 1060-1062 Trần Phú. Số 1060-1062 Đường Trần Phú. VinCommerce. TP. Cảm Phả, Quảng Ninh. 02471066866-49301. Ngày : 15/08/2020. Thời gian: 11:02. Giao dịch treo. Quầy : 001. NVBH: 09024144. Tên NV:4930POS1. Số GD treo:430. 000. Samsung Triple Camera. Chụp bằng Galaxy M21.",
+    "gt": {
+     "Tên cửa hàng": "VinCommerce",
+     "Địa chỉ": "VM+ QNH 1060-1062 Trần Phú \nSố 1060-1062 Đường Trần Phú \nTP. Cẩm Phả, Quảng Ninh \n02471066866- 49301",
+     "Ngày": "15/08/2020"
+    }
+   },
+   {
+    "i": 4,
+    "shape": [
+     1024,
+     472
+    ],
+    "quality": "OK",
+    "latency": 0.17,
+    "hits": {
+     "store": [
+      false
+     ],
+     "address": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "PHÔ MÔ. Tổ 7 khu Tân Lập 4 - P.Cẩm Thủy -. Tp. Cẩm Phả - Quảng Ninh. ĐT: 0858.931.931. HÓA ĐƠN BẢN HÀNG. Số: HD130820-0016 - Bản : MANG VÊ(A]. 13/08 / 2020 - 20 21. Khách hàng: SĐT. Địa chỉ: Đơn giả. SL Thành tiền. Trà Đào Nha Đam. 15.000. 15.000. Cộng tiền hàng: 15,000. Chiết khẩu: Tổng cộng: 15,000. Tiền khách đưa: 15,000. Tiên thừa: Mười lăm nghìn đồng chẵn. Cảm òn và hẹn gặp lại! Powered by PO",
+    "gt": {
+     "Tên cửa hàng": "PHỞ MỞ",
+     "Địa chỉ": "Tổ 7 khu Tân Lập 4 - P.Cẩm Thủy - Tp.Cẩm Phả - Quảng Ninh",
+     "Tổng cộng": "15.000"
+    }
+   },
+   {
+    "i": 5,
+    "shape": [
+     1280,
+     590
+    ],
+    "quality": "OK",
+    "latency": 0.21,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ]
+    },
+    "text": "VM+ QNH 86 Trần Phú. Số 86 Dường Tran Phú, P. Câm Tây. VinCommerce. TP Cẩm Pha, T. Quang Ninh. 024.71068868 43331. HOA ƠN BÁN HÃNG. Ngày bán:08/08/2020 08:39. H:00078511. Quây : 001. NVBH:09020168. Mặt hàng. ơn gia SL. T. Tiền. PLAYMORE Kẹo The Vị Dưa Hấu gói 12g. 8859578600400. 10.600. 10.600. TỔNG TIÊN PHẢI T. TOÁN. 10.600. TỔNG TIỀN Ã GIẢM. TIỀN KHÁCH TRA. 10.600. TIÊN MẶT. 20.000. TIỄN TRA LẠI",
+    "gt": {
+     "Tên cửa hàng": "VinCommerce",
+     "Địa chỉ": "VM+ CNH 85 Trần Phú\nSố 36 Đường Trần Phú, P. Cẩm Tây\nTP Cẩm Phả, T. Quảng Ninh."
+    }
+   },
+   {
+    "i": 6,
+    "shape": [
+     1280,
+     960
+    ],
+    "quality": "OK",
+    "latency": 0.31,
+    "hits": {
+     "store": [
+      false
+     ],
+     "date": [
+      true
+     ]
+    },
+    "text": "BIEU THI BACH HOA TONG HOP. Bố 5 Cẩm Tây - Cẩm Phá - ON. Del 02023731109 - Websife: www.sleshittp.va. Giờ lam viẹe: 7:30 Ta 32:00 hamg bạny. HÓA DƠN BẢN HÀNG. MST: 5700062701. Tên hàng SL DVT Đơn giá Thành tiển. 8938521659106. Nước giột uhy hương ngân họà can tim NT. CATI 168,000 168.000. 8956000440053. Bia Hà Nội lon 330ml T24 (văng) NT. pre. 11,000 55,000. 8934698001343. Patê gan Ha Long 170g T2",
+    "gt": {
+     "Tên cửa hàng": "Biểu Thi Bạch Hoà Tổng Hợp",
+     "Ngày": "31.10"
+    }
+   },
+   {
+    "i": 7,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.23,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      true
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "MINIMART ANAN. Chợ Sủi Phú Thị Gia Lâm. T'el: HÓA ĐƠN BÁN HÀNG. Tên hàng SL ĐVT Đơn giá Thành tiên. 8934839124106 kdr closeup dừa, thảo dược, NO. 2 HOP. 36,000. 72,000. Tổng số: 2. Tổng cộng : 72,000. Tiền khách trá: VND. 72,000. Số GD: 000AC2212008001643 Ngày: 12/08/2020-13:22. Thu ngân: BH3. Xin cầm ơn và hẹn gặp lại quý khách !",
+    "gt": {
+     "Tên cửa hàng": "MINIMART ANAN",
+     "Địa chỉ": "Chợ Sủi Phú Thị Gia Lâm",
+     "Ngày": "12/08/2020-13:22",
+     "Tổng cộng": 72000
+    }
+   },
+   {
+    "i": 8,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.22,
+    "hits": {
+     "store": [
+      false
+     ],
+     "address": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "NHÀ SÁCH GD-TC CẦM PHẢ. ĐC: 212 Đường Trần Phú-Cẩm Phả. Nhân viên thu ngân: ĐT 0333363328 - Fax 0333863328. Thời gian: 10:43:32 - 11/08/2020. Tên hang. SL Giá Ck ThUnh tiên. 5- Ngư văn địa. 30 21.500 18 645.000đ. Tổng công: 30. 645.000đ. Chiết khẩu bán hàng: 116.100đ. Tổng số thanh toán. 528.900đ. XIN CẨM ƠN QUÍ KHÁCH!",
+    "gt": {
+     "Tên cửa hàng": "NHÀ SÁCH GD-TC CẨM PHẢ",
+     "Địa chỉ": "212 Đường Trần Phú-Cẩm Phả",
+     "Tổng cộng": "645.000"
+    }
+   },
+   {
+    "i": 9,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.23,
+    "hits": {},
+    "text": "VM+ QNH Tô 7, Khu Minh Tiến A. Tô 7, Khu Minh Tiên A. VinCommerce P. Cam Bình, TP. Câm Pha, QNH. 02471066866-51561. HÓA ƠN BÁN HÀNG. Ngày bán: 14/08/2020 14:54. H:00032773. Quầy : 001. NVBH: 09025438. Mặt hàng. on gia SL. T. Tiển. Kem que Yeah cacao T42. 8936011775403. 12.500. 1. 12.500. TỔNG TIỀN PHẢI T. TOÁN. 12.500. TỔNG TIỂN Ã GIÁM. TIỀN KHÁCH TR. 12.500. TIỀN MẶT. 12.500. TIỀN TRÃ LẠI. (Giá đ",
+    "gt": {}
+   },
+   {
+    "i": 10,
+    "shape": [
+     1366,
+     1024
+    ],
+    "quality": "OK",
+    "latency": 0.21,
+    "hits": {
+     "date": [
+      true
+     ]
+    },
+    "text": "CHAMPI. Tòa nhà C1 - KTX Khu B - ĐHQG TP.HCM. Tel:07 6336 5665. PHIẾU THANH TOÁN. HĐ: I141. Số Thẻ : STT - 01. ày: 02.06.2019. Giờ vào: 19.24. iu ngân: Ca 2. Giờ ra: 19.25. Tên món. SL Đ. Giá. T.Tiền. 1 Xôi Trắng. 10 000. 10 000. thêm) + Xôi Trắng (Phần. 3 000. 3 000. + Thịt Xá xíu. 1. 8 000. 8 000. 2 Xôi Nấm. 1 15 000. 15 000. + Thịt cuộn. 1. 8 000. 8 000. Thành tiền: 44 000. Tiền chiết khấu. 10%",
+    "gt": {
+     "Ngày": "02.06.2019"
+    }
+   },
+   {
+    "i": 11,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.24,
+    "hits": {
+     "store": [
+      false
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ]
+    },
+    "text": "SCTC CÔ THỎ 104 TRẦN PHÚ - CẨM. PHÁ. 104 Trần Phú - phường Cẩm Tây - Thành phố Cẩm. Phá - Quảng Ninh. Hotline: 0963133818. HÓA ĐƠN THANH TOÁN. Số: 2003000916. Số chờ: 12 hòa. Ngày: 10/08/2020 (08:45 CH - 08:15 CH). Thu ngân: thư ngan 1041p. %. #. Tên món SL. ĐG. TT. Sữa chua uần. 1 châu đường. 30.000. 30.000. den. 2 Trân châu. 10.000. 10.000. đường đen. Tổng thanh toán. 40.000đ. Tiền mặt. 40.000d.",
+    "gt": {
+     "Tên cửa hàng": "SCTC Cỏ Thỏ 104 Trần Phú - Cẩm Phả",
+     "Địa chỉ": "104 Trần Phú - phường Cẩm Tây - Thành phố Cẩm Phả - Quảng Ninh",
+     "Ngày": "10/08/2020"
+    }
+   },
+   {
+    "i": 12,
+    "shape": [
+     768,
+     1024
+    ],
+    "quality": "OK",
+    "latency": 0.18,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "VM+ QNH Dưán KDC lần biển coc 6 DA khu DCLB cọc 8, P. Cẩm Sơn Vin Commerce TP. Câm Phá, T. Quang Ninh 024.71066866-44561 HÓA ƠN BÁN HÀNG Ngày bán: 15/08/2020 10:59 H: 00073384 Quầy : 001 NVBH: 09021212 Mặt hàng ơn giá SL T. Tiền Tim gà CP 500g 1100015000015 75.900 75.900 TỔNG TIỀN PHẢI T. TOÁN 75.900 TỔNG TIỀN Ã GIẢM TIẾN KHÁCH TRẢ 75.900 TIỀN MẶT 77.000 TIẾN TRẢ LẠI 1.100 (Giá đã bao gồm thuế GTG",
+    "gt": {
+     "Tên cửa hàng": "VinCommerce",
+     "Địa chỉ": "V/M-CNH Dự án KDC Đan viện cóc 6\nĐại khu DCLB & P. Cẩm Sơn\nTP. Cẩm Phả, T. Quảng Ninh",
+     "Tổng tiền": "75.900"
+    }
+   },
+   {
+    "i": 13,
+    "shape": [
+     1024,
+     576
+    ],
+    "quality": "OK",
+    "latency": 0.19,
+    "hits": {
+     "total": [
+      true
+     ]
+    },
+    "text": "VIA+ QNH TỔ 8 Khu 38 Cẩm Trung. T6 8, Khu 38, P. Càm Trung. Vin Commerce TP. Cảm Phá, T. Quảng linh. 024171066866: 49871. HOA ƠN BẢN HÀNG. Ngày bán: 12/08/2020 21:44 H:00046000. quay: 001. NVBH: 09024527. Mặt hàng. ơn giá SL ToTien. OKAMURA dụng cu cạo 1ưỡi as-tC2p. 4983435758400 22.000 1 22.000. TỔNG TIỀN PHẢI 1.TOÁN. 22.000. TONG TIỀN Ã GIẢM. TIỀN KHÁCH TRẢ. 22.000. TIỀN MẶT. 22.000. TIEN TRẢ LẠ",
+    "gt": {
+     "Tổng tiền": "22.000"
+    }
+   },
+   {
+    "i": 14,
+    "shape": [
+     1024,
+     576
+    ],
+    "quality": "OK",
+    "latency": 0.23,
+    "hits": {
+     "total": [
+      true
+     ]
+    },
+    "text": "629429. T1 NVI5156001. NGAY #1H1 ROANI: 14/08/2020. NGÀY 1€ THCNG:14/08/2020 12118. ******* Dare 6б & th vocns*. MÔ TÀ. SO TIÊN. 18ng triớc thut. 4.365.462. Tông thui. 338,004. tổng sau thuê. 4.703.465. mái trà VINID. 111.000. Payoo/Cosmo. Tổng thành toàn. 4.814.468. THANI TOÁN -. MO TA. SO TIÊN. TIEN MẶT. 4.418.966. PMi bên thứ 3 Biên nhận thanh toán. + 160. VinIp. 7.000. Thê ghi nợ Thể trà trước",
+    "gt": {
+     "Tổng tiền": "4.750.466"
+    }
+   },
+   {
+    "i": 15,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.22,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true,
+      true
+     ]
+    },
+    "text": "MINIMART ANAN. Chợ Sùi Phú Thị Gia Làm. Tel: HÓA ĐƠN BÁN HÀNG. Tên hàng SL ĐVT Đơn giá Thành tiền. 291005480000 Mì hảohảo 75g NT. Giá đăng ký: 3,500. Giá bán: 30 GOI. 3, 167. 95,010. 291007210000 Sữa đặc ông thọ đỏ, xanh VN NT. 2 HOP. 22,000. 44,000. 291009420000 Thuốc lá Thăng Long mềm NT. 1 GOI. 8,500. 8,500. Tổng số: 33. Tổng cộng. 147,510. Tổng tiền : 147,510. Tiền khách trá: VND. 147,600. Tiề",
+    "gt": {
+     "Tên cửa hàng": "MINIMART ANAN",
+     "Địa chỉ": "Chợ Sủi Phù Thị Gia Lâm",
+     "Tổng cộng": "147.510",
+     "Tổng tiền": "147.510",
+     "Ngày": "12/08/2020-15:20"
+    }
+   },
+   {
+    "i": 16,
+    "shape": [
+     1024,
+     576
+    ],
+    "quality": "OK",
+    "latency": 0.2,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ]
+    },
+    "text": "VM+ QNH Tồ 8 Khu 3B Cẩm Trung. Tô 8, Khu 3B, P. Câm Trung. VinCommerce. TP. Căm Phả, T. Quang Ninh. 024.71066866- 49871. HÓA ƠN BÁN HÃNG. Ngày bán: 13/08/2020 17:31. H:00046123. Quầy :001. NVBH: 09024524. Mặt hàng. ơn giá SL. T. Tiền. BIC Bật lửa J3-màu. 3086120600389. 10.000. 1. 10.000. TỔNG TIỀN PHẢI T. TOÁN. 10.000. TỔNG TIỀN A GIẢM. TIỂN KHÁCH TRẢ. 10.000. TIỀN MẶT. 10.000. TIỀN TRẢ LẠI. (Giá ",
+    "gt": {
+     "Tên cửa hàng": "VinCommerce",
+     "Địa chỉ": "VM+ QNH Tổ 8 Khu 3B Cẩm Trung\nTổ 8, Khu 3B, P. Cẩm Trung\nTP. Cẩm Phả, T. Quảng Ninh\n024.71066866-49871"
+    }
+   },
+   {
+    "i": 17,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.22,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "FIWE. MINIMART ANAN. Chợ Sủi Phủ Thị Gia Lâm. Tel: HÓA ĐƠN BÁN HÀNG. Tên hàng SL ĐVT Đơn giá 5oodr Thành tiên. 8934755010156 BVS diana mỏng cánh NT. 2 GO I. 17,000. 34,000. Tổng số: 2. Tổng cộng : 34,000. Tiền khách trả: VND. 34,000. Số GD: 000AC2212008002311 Ngày: 16/08/2020-17:29. Thu ngân: BH3. Xin cám ơn và hẹn gặp lại quý khách !",
+    "gt": {
+     "Tên cửa hàng": "MINIMART ANAN",
+     "Địa chỉ": "Chợ Sủi Phú Thị Gia Lâm",
+     "Tổng cộng": 34000,
+     "Ngày": "16/08/2020"
+    }
+   },
+   {
+    "i": 18,
+    "shape": [
+     1024,
+     576
+    ],
+    "quality": "OK",
+    "latency": 0.22,
+    "hits": {
+     "total": [
+      false
+     ]
+    },
+    "text": "G, VAY-TRA GOP BẢO. Vietcombank. UGN U INMAT_10/ 000. MAT LT : TO U VNI 38 P CAM TRUNG. EN HIN. 2990254 MID: 000101406002190 CHR PHA QUANG MINI. TI0: THE. MASTER AKD. ****-3112(C). ETEN: MINH TOAN TRAM. ERAY H.HAN. 09/22. JÊN. THANH TOÀN. SO LI: 006115 SO H SON: 000724. 17:05/2020 GIO-. 11:13:58. 350 T.C.: 001511001648 HÀ QUẾN CHỦ: 481631. ỄTỔNG CÔNG: UND110,898. APP: Mastercard. -AID: A0000000041",
+    "gt": {
+     "Tổng cộng": "110.898 VND"
+    }
+   },
+   {
+    "i": 19,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.24,
+    "hits": {
+     "store": [
+      false
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ]
+    },
+    "text": "CỬA HÀNG NĂM OÁNH. Thòn Phú Thuy, Xã Phú Thị, Huyện Gia Lâm, TP Hà Nội. 0869322496- 02438765210. HÓA ĐƠN BẢN HÀNG. Ngày: 11-08-2020. Số: SON55296. Thành tiền. Đơn giá. SL. Đưởng tinh luyện xuất khẩu 1kg 14,000 - 90 420,000. 30. Đường vàng xuất khẩu 1kg 14,000. 420,000. 16E0g. 30. Cộng tiên hàng. 840,000. Cẩm ơn quý khách. Hẹn sặp lại!",
+    "gt": {
+     "Tên cửa hàng": "CỬA HÀNG NAM OÁNH",
+     "Địa chỉ": "Thôn Phú Thủy, Xã Phú Thủy, Huyện Gia Lâm, TP Hà Nội",
+     "Ngày": "11-08-2020"
+    }
+   },
+   {
+    "i": 20,
+    "shape": [
+     1024,
+     472
+    ],
+    "quality": "OK",
+    "latency": 0.17,
+    "hits": {
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "PHÔ MÔ. Tỏ 7 khu Tân Lập 4 - P.Cẩm Thủy -. Tp. Cẩm Phả - Quảng Ninh. ĐT: 0858.931.931. HÓA ĐƠN BÁN HÀNG. Số HD130820-0042 - Bàn : B.33(A]. 13 / 08 / 2020 - 22 : 06. Khách hàng: SĐT: Địa chỉ: Đơn gia. SL Thánh tiền. Trà chanh Up Sz. 20,000. 1. 20,000. Hướng dương. 10,000. 10.000. Cộng tiền hàng: 30,000. Chiết khẩu: Tổng cộng: 30,000. Tiền khách đưa. 30.000. Tiền thừa: Ba mươi nghìn đồng chẵn. Cảm o",
+    "gt": {
+     "Địa chỉ": "Tổ 7 khu Tấn Lập 4 - P.Cẩm Thuỷ - Tp.Cẩm Phả - Quảng Ninh",
+     "Ngày": "13/08/2020",
+     "Tổng cộng": "30.000"
+    }
+   },
+   {
+    "i": 21,
+    "shape": [
+     1280,
+     590
+    ],
+    "quality": "OK",
+    "latency": 0.18,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ]
+    },
+    "text": "VM+ QNH Tổ 8 Khu 3B Câm Trung. Tô 8. Khu 3B, P. Cảm Trung. VinCommerce. TP. Cầm Phả, T. Quang Ninh. 024.71066866- 49871. Ngày : 14/08/2020. Thơi gian:09:02. Giao dịch treo. Quầy : 001. NVBH:09024524. Tên NV: 4987CHT. Số GD treo:677. Samsung Triple Camera. Chup bang Salaxy N.",
+    "gt": {
+     "Tên cửa hàng": "VinCommerce",
+     "Địa chỉ": "VM+ QNH Tổ 8 Khu 3B Cẩm Trung\nTổ 8, Khu 3B, P. Cẩm Trung\nTP. Cẩm Phả, T. Quảng Ninh\n024.71066866- 49871",
+     "Ngày": "14/08/2020"
+    }
+   },
+   {
+    "i": 22,
+    "shape": [
+     1024,
+     576
+    ],
+    "quality": "OK",
+    "latency": 0.26,
+    "hits": {
+     "date": [
+      false
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "áo cáo x. POS: TR14987F001 R 10:0104 015404-007. 50.6812. NVt#I/00024524. TOn NV14867CHT. NGÀY KINH DOMI 0/2079. NGẤY HỂ THÔNG 12/0 72020 22111. Doan 6б a true eas. NO TIÊN. tổng trước thui. 8.285.225. 10ng thui. 090.850. Tông sau thut. 8.965.075. PhẢi trà VINID. 186.000. Payoo/Cosso. Tổng thành toán. 0.171.075. *REEHa CaREman= THANI TOAN. NOT TÀ. SỐ TIEN. TIỀN MẶT PHI bên thứ 3. 4, 980, 075. Biên",
+    "gt": {
+     "Ngày": "12/06/2020",
+     "Tổng tiền": "9.785.000"
+    }
+   },
+   {
+    "i": 23,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.23,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      false
+     ],
+     "total": [
+      true,
+      true
+     ]
+    },
+    "text": "MINIMART ANAN. Chợ Sôi Phú Thị Gia Làm. Tel: HÓA ĐƠN BÁN HÀNG. Tên hàng SL ĐVT Đơn giá Thành tiển. 291041030000 SĐN fami hộp 200ml NO. Giá đăng ký: 4,500. Giá bán: 12 HO P. 4,000. 48,000. 291017950000 Mì kokomi Tôm gà NT. Giá đăng ký: 2,500. Giá bán: 30. GO I. 2,133. 63,990. Tổng số: 42. Tổng cộng : 111,990. Tổng tiền : 111,990. Tiền khách trá: VND. 111,990. Mã thể: A 10000001285. (0) nguyễn thị t",
+    "gt": {
+     "Tên cửa hàng": "MINIMART ANAN",
+     "Địa chỉ": "Chợ Sủi Phú Thị Gia Lâm",
+     "Tổng cộng": "111,990",
+     "Tổng tiền": "111,990",
+     "Ngày": "16/08/2020"
+    }
+   },
+   {
+    "i": 24,
+    "shape": [
+     1280,
+     720
+    ],
+    "quality": "OK",
+    "latency": 0.24,
+    "hits": {
+     "store": [
+      false
+     ],
+     "address": [
+      true
+     ]
+    },
+    "text": "SIEU THI BACH HOA TONG HOP. Số 5 Cẩm Tây - Cẩm Phả - QN. Tel: 0203.3731199 - Website: www.sieuthittpan. Giờ lầm việc: 7:30 -> 22:00 hàng ngày. HÓA ĐƠN BÁN HÀNG. MST: 5700662791. Tên hàng SL ĐVT Đơn giá Thành tiế 1. 8938504350210. Kem que thập cẩm Tràng Tiền (Hộp 10 q NT. HOP. 34,000. 34,000. Tổng số. 1.00. Tổng cộng (đã gồm VAT): 34,000. Tiền khách trả: VND. 50,000. Tiền trả lại VND: 16,000. Số GD",
+    "gt": {
+     "Tên cửa hàng": "Siêu thị Bách Hóa Tổng Hợp",
+     "Địa chỉ": "Số 5 Cẩm Tây - Cẩm Phả - QN",
+     "Ngày": "t"
+    }
+   },
+   {
+    "i": 25,
+    "shape": [
+     1280,
+     960
+    ],
+    "quality": "OK",
+    "latency": 0.3,
+    "hits": {
+     "store": [
+      false
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ]
+    },
+    "text": "cooslf. Co.opMart HAU GIANG. Ma so thue: 0305781492. Dat hang qua Di: 026.3,60,913,. Dien thoai Email: hgmarkê Hotle: g hàng king@coopmart.vn 900555568 028.39.600.254. Email: chamsookfachkang@coopmart.vn. Website: www. a, com . vn. PHIEU TIN. Co gia tri xuat Hoa don quat ngay. Nhar vien: Thuy Quay : 01. Ngay: 21/05/2020 :50:01. AD: 07414. 08904669240229 NG LIX dam dac 3.8kg. VAT 10%. 95.200.00. B5",
+    "gt": {
+     "Tên cửa hàng": "Co.opmart Hậu Giang",
+     "Địa chỉ": "198 Hậu Giang, P.6, Q.6, TpHCM",
+     "Ngày": "21/05/2020"
+    }
+   },
+   {
+    "i": 26,
+    "shape": [
+     1024,
+     576
+    ],
+    "quality": "OK",
+    "latency": 0.16,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ]
+    },
+    "text": "VM+ QNH Tô 7, Khu Minh Tiến A. Tô 7, Khu Minh Tiền A. VinCommerce P. Cẩm Bình, TP. Cảm Pha, QNH. 02471068856- 51561. Ngãy: 14/08/2020. Thời gian: 17:09. Giao dich treo. Quầy : 001. NVBH: 09025438. Tên NV:5156P0S2. Số GD treo: 130. Samsung Triple Camera. Chụp bằng Galaxy M21.",
+    "gt": {
+     "Tên cửa hàng": "VinCommerce",
+     "Địa chỉ": "VM+ ONH Tổ 7, Khu Minh Tiến A\nTổ 7, Khu Minh Tiến A\nP. Cẩm Bình, TP. Cẩm Phả, Quảng Ninh",
+     "Ngày": "14/08/2020"
+    }
+   },
+   {
+    "i": 27,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.25,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "MINIMART ANAN. Chợ Sối Phú Thị Gia Làm. Tel: HÓA ĐƠN BÁN HÀNG. Tên hàng SL ĐVT. Đơn giá Thành tiền. 8938017364113 Tương ới chinsu 250g NT. CHA. 12,000. 12,000. 291043790000 sữa đà lạt milk gói 220ml NO. 1 GOI. 6,500. 6,500. 291018880000 Bánh mì ruốc stass hải chấu NT. CAI. 4,500. 4,500. Tổng số: 23,000. Tổng cộng : Tiền khách trả: VND. 23,000. Số GD: 000AB2212008002584 Ngày: 10/08/2020-17:22. Thu ",
+    "gt": {
+     "Tên cửa hàng": "MINIMART ANAN",
+     "Địa chỉ": "Chợ Sủi Phú Thị Gia Lâm",
+     "Tổng cộng": "23.000",
+     "Ngày": "10/08/2020-17:22"
+    }
+   },
+   {
+    "i": 28,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.22,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true,
+      true
+     ]
+    },
+    "text": "MINIMART ANAN. Chợ Sủi Phú Thị Gia Lâm. Del: HÓA ĐƠN BÁN HÀNG. Tên hàng SL ĐVT Đơn giá Thành tiền. 291016540000 Sữa kun cam ,dầu110ml NT. Giá đăng ký: 4,250. Giá bán: 48 HO P. 3,855. 185,040. Tổng số: 48. Tổng cộng : 185,040. Tổng tiền : 185,040. Tiền khách trả: VND. 500,000. iền trả lại VND: 314,960. Số GD: 000AC2212008001610 Ngày: 12/08/2020-12:28. Thu ngân: BH3. Xin cám ơn và hẹn gặp lại quý kh",
+    "gt": {
+     "Tên cửa hàng": "MINIMART ANAN",
+     "Địa chỉ": "Chợ Sủi Phú Thứ Gia Lâm",
+     "Tổng cộng": 185040,
+     "Tổng tiền": 185040,
+     "Ngày": "12/08/2020-12:28"
+    }
+   },
+   {
+    "i": 29,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.22,
+    "hits": {
+     "store": [
+      false
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      false
+     ]
+    },
+    "text": "CỬA HÀNG NĂM OẢNH. Thòn Phủ Thuy, Xã Phú Thị, Huyện Gio Lam, TP Hà Nội. 0869322496 - 02438765210. HOA: DON BAN HANG. Số: SON55319. Ngav: I1-08-2020. SL. Đơn giá. Thành tiền. Tầm Lớt Ông Giá 20m. 2. 99,000. 198,000. GVS VN Airline L0C. 4. 39,000. 156,000. Cộng tiên hàng. 354,000. Cẩm ơn quý khách. Hẹn gặp lại!",
+    "gt": {
+     "Tên cửa hàng": "CỬA HÀNG NẮM OANH",
+     "Địa chỉ": "Thôn Phú Thủy, Xã Phú Thủy, Huyện Gia Lâm, TP Hà Nội",
+     "Ngày": "11-08-2020"
+    }
+   },
+   {
+    "i": 30,
+    "shape": [
+     1024,
+     576
+    ],
+    "quality": "OK",
+    "latency": 0.2,
+    "hits": {
+     "address": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "Tiệm trà. Thanh. Xuân. 244/23a Huỳnh Văn Bánh, P.11, Q.PN. Pass Wifi: thanhxuan. Tel:0888212505. PHIẾU THANH TOÁN. Số chứng từ: I00017 - 554301. Vị tri: Ăn Tại Chỗ - Tret. Ngày/ giờ vào: 05.10.2020 18.33. Ngày/ giờ ra: 05.10.2020 18.34. Thu ngân: Administrators. Tên món. SL Đ. Giá T. Tiền. Trà Tá La. 1 42 000 42 000. Tổng: 1. 42 000. Tiền chiế khẩu: 10%. 4 200. Tổng tiền (VAT): 37 800. Tiền Thanh ",
+    "gt": {
+     "Địa chỉ": "244/23a Huỳnh Văn Bánh, P.11, Q.PN",
+     "Tổng tiền": 42000
+    }
+   },
+   {
+    "i": 31,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.21,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      false
+     ]
+    },
+    "text": "MINIMART ANAN. Chợ Sủi Phủ Thị Gia Làm. Tel: HÓA ĐƠN BÁN HÀNG. Tên hàng SL ĐVT Đơn giá Thành tiền. 291015010000 mắm ông tây 2I NT. CH. 28,000. 56,000. Tổng số: 2. 200000. Tổng cộng : Tiền khách trả từ TK: Tiền khách trả: VND VND. 56,000 50,000 6,000. 00000. Mã thể: A 10000000528 (0) nguyễn thị hoa. Điêm mua: 5. Điểm hiện thời: 1,942. Hạng hiện thời: Giá trị thưởng tích lũy: 3,372. Số GD: 000AB2212",
+    "gt": {
+     "Tên cửa hàng": "MINIMART ANAN",
+     "Địa chỉ": "Chợ Sủi Phú Thị Gia Lâm",
+     "Tổng cộng": 58000,
+     "Ngày": "12/08/2020-13:00"
+    }
+   },
+   {
+    "i": 32,
+    "shape": [
+     1365,
+     1024
+    ],
+    "quality": "OK",
+    "latency": 0.18,
+    "hits": {
+     "store": [
+      false
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ]
+    },
+    "text": "CỬA HÀNG NĂM OÁNH. Thôn Phú Thuy, Xã Phú Thị, Huyện Gia Lâm, TP Hà Nội. 0869322496 - 02438765210. HÓA ĐƠN BÁN HÀNG. Số: SON55711. Ngàv: 12-08-2020. SL. Đơn giá. Thành tiền. LFB ST bảo vệ vượt trội 850g. 123,000. 123,000. Bông tăm AZ3. 1. 12,000. 12,000. Cộng tiên hàng. 135,000. Cám ơn quý khách. Hẹn gặp lại!",
+    "gt": {
+     "Tên cửa hàng": "CỬA HÀNG NĂM OANH",
+     "Địa chỉ": "Thôn Phú Thủy, Xã Phú Thị, Huyện Gia Lâm, TP Hà Nội",
+     "Ngày": "12-08-2020"
+    }
+   },
+   {
+    "i": 33,
+    "shape": [
+     1024,
+     576
+    ],
+    "quality": "OK",
+    "latency": 0.18,
+    "hits": {
+     "address": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "tôm nay tà sinh. 18-4. Tiệm đo. Thanh. Xuân. 244/23a Huỳnh Văn Bánh, P.11, Q.PN. Pass Wifi: thanhxuan. Tel:0888212505. PHIẾU THANH TOÁN. Số chứng từ: I00001 - 552401. Vị trí: Ăn Tại Chỗ - B4. Ngay/ giờ vào: 05.10.2020 08.56. Ngày/ giờ ra: 05.10.2020 08.57. Thu ngân: Administrators. Tên món. SL Đ. Giá T. Tiền. Bac Xiu. 1 35 000 35 000. Mì trộn. 1 29 000 29 000. Tổng: 2. 64 000. Tông tiền (VAT): 64 ",
+    "gt": {
+     "Địa chỉ": "244/23a Huỳnh Văn Bánh, P.11, Q.PN",
+     "Tổng tiền": "64 000"
+    }
+   },
+   {
+    "i": 34,
+    "shape": [
+     768,
+     1024
+    ],
+    "quality": "OK",
+    "latency": 0.15,
+    "hits": {
+     "store": [
+      false
+     ],
+     "address": [
+      true
+     ],
+     "date": [
+      false
+     ]
+    },
+    "text": "TT. 25.000 25.000đ 40.000d 15.000đ. SCTC CÔ THỎ 104 TRẦN PHÚ - CẨM PHÁ 104 Trần Phú - phường Cẩm Tây - Thành phố Cẩm Phả - Quảng Ninh Hotline: 0963133818 HÓA ĐƠN THANH TOÁN Số: 2003000946 Số chờ: 16 hàng Ngày: 10/08/2020 (09:17 CH - 09:17 CH) Thu ngân: thu ngạn 104tp Tên món ĐG SL Sữa chua trân 25.000l 1 | châu truyễn thống Tổng thanh toán Tiền mặt Trá lại khách Trân trọng cảm ơn! CUKCUK - Một sản",
+    "gt": {
+     "Tên cửa hàng": "SCTCC THƠ 104 TRẦN PHÚ - CẦM PHÁ",
+     "Địa chỉ": "104 Trần Phú - phường Cẩm Tây - Thành phố Cẩm Phả - Quảng Ninh",
+     "Ngày": "16 tháng 10 năm 2020"
+    }
+   },
+   {
+    "i": 35,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.21,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ]
+    },
+    "text": "THE COFFEE HOUSE. 403 Phan Huy Ich, P.14, Q.Gò Vấp. Số: 23. Thời gian:30.09.2020 08.25 Số HĐ: 19809053042020. Thu ngân: cash1. Khách hàng: Phan. TT. Tên món. SL. Đ. Giá. T.Tiền. Cà Phê Sữa Đá. 1 (Vừa). 1. 35 000. 35 000. Bánh Mì Gà Kim. 2. 32 000. 32 000. Quất (Cay). Thành tiên: 67 000/. + Giảm giá: 18 000. Thanh Toán : 49 000. Tiên khách đưa : 67 000. Tiền thừa : 18 000. + Tiền mặt VND. 49 000.",
+    "gt": {
+     "Tên cửa hàng": "THE COFFEE HOUSE",
+     "Địa chỉ": "403 Phan Huy Ích, P.14, Q.Gò Vấp"
+    }
+   },
+   {
+    "i": 36,
+    "shape": [
+     1365,
+     1024
+    ],
+    "quality": "OK",
+    "latency": 0.18,
+    "hits": {
+     "store": [
+      false
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ]
+    },
+    "text": "CỬA HÀNG NĂM OÁNH. Thôn Phú Thuy, Xã Phú Thị, Huyện Gia Lầm, TP Hà Nội. 0869322496 - 02438765210. HÓA ĐƠN BÁN HÀNG. Sô: SON55402. Ngày: 11-08-2020. SL. Đơn giá. Thành tiền. Bia 333 330ml. 10. 9,834. 98,340. Cộng tiên hàng. 98,340. Cám ơn quý khách. Hẹn gặp lại!",
+    "gt": {
+     "Tên cửa hàng": "CỬA HÀNG NĂM OANH",
+     "Địa chỉ": "Thôn Phú Thủy, Xã Phú Thí, Huyện Gia Lâm, TP Hà Nội",
+     "Ngày": "11-08-2020"
+    }
+   },
+   {
+    "i": 37,
+    "shape": [
+     1024,
+     472
+    ],
+    "quality": "OK",
+    "latency": 0.15,
+    "hits": {
+     "store": [
+      false
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "PHÔ MỎ. Tổ 7 khu Tân Lập 4 - P.Cẩm Thủy -. Tp. Cẩm Phả - Quảng Ninh. ĐT: 0858.931.931. HÓA ĐƠN BÁN HÀNG. HD130820-0027 - Bân: B 34(A]. 13 /08 / 2020-20: 34. Khách hàng: SĐT: Địa chỉ: Đơn giá. SL. Thành tiền. Trà chanh nha đam. 15 000. 1. 15,000. Cộng tiền hàng: 15,000. Chiết khẩu: Tông cộng: 15,000. Tiền khách đưa: 15 000. Tiền thừa: Mười lăm nghìn đồng chẵn. Cam ơn và hẹn gặp lai! Powered by POS3",
+    "gt": {
+     "Tên cửa hàng": "PHỞ MÓ",
+     "Địa chỉ": "Tổ 7 khu Tân Lập 4 - P. Cẩm Thuỷ - Tp. Cẩm Phả - Quảng Ninh",
+     "Ngày": "13/08/2020",
+     "Tổng cộng": "15.000"
+    }
+   },
+   {
+    "i": 38,
+    "shape": [
+     576,
+     1024
+    ],
+    "quality": "OK",
+    "latency": 0.17,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ]
+    },
+    "text": "+ Tiên mặt VND Tiền thừa : Tiền khách dưa : Thanh Toán : Thành tiên: 1 Bạc Xỉu (Lớn) Tên món Khách hàng: Thu ngân: cash1. 38 000 12 000 50 000 38 000 38 000 38 000 T.Tiền SL Thời gian:30.09.2020 09.21 Số HĐ: 19809053132020 403 Phan Huy Ich, P.14, Q.Gò Vấp. 38 000 Đ. Giá. 23 Số: THE COFFEE HOUSE.",
+    "gt": {
+     "Tên cửa hàng": "THE COFFEE HOUSE",
+     "Địa chỉ": "403 Phan Huy Ích, P.14, Q.Gò Vấp"
+    }
+   },
+   {
+    "i": 39,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.2,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "NHÀ SÁCH GD-TC CẨM PHẢ. ĐC: 212 Đường Trần Phú-Cẩm Phả. Nhân viên thu ngân: ĐT 0333863328 - Fax 0333863328. Thời gian:09:23:28 - 11/08/2020. Tên hàng. Ck ThUnh tiên. Vở kẻ ngang. 10 10.000. 100.000đ. Tổng cộng: 10. 100.000đ. Chiết khấu bán hàng: Ođ. Tổng số thanh toán: 100.000đ. XIN CẢM ƠN QUÍ KHÁCH!",
+    "gt": {
+     "Tên cửa hàng": "NHÀ SÁCH GD-TC CẨM PHẢ",
+     "Địa chỉ": "212 Đường Trần Phú-Cẩm Phả",
+     "Tổng cộng": "100.000đ"
+    }
+   },
+   {
+    "i": 40,
+    "shape": [
+     768,
+     1024
+    ],
+    "quality": "OK",
+    "latency": 0.17,
+    "hits": {
+     "address": [
+      false
+     ],
+     "date": [
+      false
+     ]
+    },
+    "text": "TT 70.000 35.000 10.000 10.000 30.000 155.000đ 200.000đ 45.000đ. SCTC CÔ THỎ 104 TRẦN PHÚ - CẨM PHÁ 104 Tràn Phú phường Cẩm Tây - Thành phố Cẩm Phả - Quảng Ninh Hotline: 0963133818 HÓA ĐƠN THANH TOÁN (MANG VỀ) Số: 2003000861 So chở: 15 Ngày: 10/08/2020 (07:35 CH - 07:35 CH) Thu ngân: thu ngàn 104tp ĐG SL Tên món 35.000 Sữra chưa kiwi Sữa chua việt 35.000 quất 10.000 Nha dam Trấn châu 10.000 đường ",
+    "gt": {
+     "Địa chỉ": "104 Trần Phú - phường Cẩm Tây - Thành phố Cẩm Phả",
+     "Ngày": "10/10/2020"
+    }
+   },
+   {
+    "i": 41,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.22,
+    "hits": {
+     "address": [
+      false
+     ]
+    },
+    "text": "Guitar Cafe. Tel. 098 526 8359. 28 Phan Chu Trinh, Hiệp Phú, Quận 9, Hô. Ngày lập: 03/10/2020. Khu vực: Nhạc. Hóa đơn: HDL201003-0050. Bàn: S21. PHIÊU TÍNH TIÊN. Món Đơn giá Sô lượng. Tiền. thuocia Kent - gói. 30,000. 1. 30,000. Café (nóng/ đã) - Ly. 35,000. 1. 35,000. - Thành tiên: 65,000. Cảm ơn quý khách, hen gặp lại ! . 1.801: 3. Tho gen: Abendhan s. t heh Tar.",
+    "gt": {
+     "Địa chỉ": "28 Phan Chu Trinh, Hiệp Phú, Quận 9, Hồ"
+    }
+   },
+   {
+    "i": 42,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.22,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "MINIMART ANAN. Chợ Sôi Phủ Thị Gia Lâm. Tel: HÓA ĐƠN BÁN HÀNG. Tên hàng SL ĐVT Đơn giá Thành tiền. 8936081960082 màng bọc thức ăn minh thanh NT. HOP. 40,000. 40,000. Tổng số: 1. Tổng công. 40,000. Tiền khách trả: VND. 500,000. Tiền trả lại VND: 460,000. Mã thể: A 10000000326. (0) nguyễn thùy linh. Điem mua: 4. Điểm hiện thời: 1,360. Hạng hiện thời: Giá trị thưởng tích lũy: 45,533. Số GD: 000AB2212",
+    "gt": {
+     "Tên cửa hàng": "MINIMART ANAN",
+     "Địa chỉ": "Chợ Sủi Phú Thọ Gia Lâm",
+     "Tổng cộng": 40000,
+     "Ngày": "10/08/2020-17:12"
+    }
+   },
+   {
+    "i": 43,
+    "shape": [
+     1365,
+     1024
+    ],
+    "quality": "OK",
+    "latency": 0.19,
+    "hits": {
+     "store": [
+      false
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "CỬA HÀNG NĂM OÁNH. Thôn Phú Thuy, Xã Phú Thị, Huyện Gia Lám, TP Hà Nội. 0869322496 - 02438765210. HÓA ĐƠN BÁN HÀNG. Số: SON55659. Ngày: 12-08-2020. SI. Đơn giá. Thành tiền. Sữa tươi Milo 180 ml. 6,500. 52,000. Cộng tiên hàng. 52,000. Cám ơn quý khách. Hẹn gặp lại!",
+    "gt": {
+     "Tên cửa hàng": "CỬA HÀNG NĂM OANH",
+     "Địa chỉ": "Thôn Phú Thuy, Xã Phú Thị, Huyện Gia Lâm, TP Hà Nội",
+     "Ngày": "12-08-2020",
+     "Tổng tiền": "52.000"
+    }
+   },
+   {
+    "i": 44,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.26,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true,
+      true
+     ]
+    },
+    "text": "NIW •NOr. O 141, nựa ts. A PETAINI. G. MINIMART ANAN. Chợ Sủi Phú Thị Gia Làm. Tel: HÓA ĐƠN BÁN HÀNG. Tôn hàng SL ĐVT Đơn giá. Thành tiên. 8934839103903 KDR PS trẻ em dầu 35g NT. 1 HOP. 6,000. 6,000. 291005580000 Mi omachi sườn 80g NT. 5 GOI. 6,000. 30,000. 291036100000 sữa đàn bỏ ít đường VNM 110 NG. Giá đăng ký: 5,000. Giá bán: 48 HOP. 4,417 212.016. Tổng số: 54. Tổng cộng: 248,016. Tổng tiền : ",
+    "gt": {
+     "Tên cửa hàng": "MINIMART ANAN",
+     "Địa chỉ": "Chợ Sủi Phú Thị Gia Lâm",
+     "Tổng cộng": "248,016",
+     "Tổng tiền": "248,016",
+     "Ngày": "09/08/2020-17:35"
+    }
+   },
+   {
+    "i": 45,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.23,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true,
+      true
+     ]
+    },
+    "text": "MINIMART ANAN. Chợ Sôi Phú Thị Gia Làm. Tel: HÓA ĐƠN BÁN HÀNG. Tên hàng SL ĐVT Đơn giá Thành tiên. 291005950000 milo to 180ml NT. Giá đăng ký: 7,000. Giá bán: 4 HOP. 6,500. 26,000. Tổng số: Tổng công : 26,000. Tổng tiền : 26,000. Tiển khách trả: VND. 202,000. Tiền trả lại VND: 176,000. Số GD: 000AB2212008002424 Ngày: 09/08/2020-21:02. Thu ngân: BH5. Xin cám ơn và hẹn gặp lại quý khách !",
+    "gt": {
+     "Tên cửa hàng": "MINIMART ANAN",
+     "Địa chỉ": "Chợ Sủi Phú Thị Gia Lâm",
+     "Tổng cộng": "26.000",
+     "Tổng tiền": "26.000",
+     "Ngày": "09/08/2020-21:02"
+    }
+   },
+   {
+    "i": 46,
+    "shape": [
+     768,
+     1024
+    ],
+    "quality": "OK",
+    "latency": 0.14,
+    "hits": {
+     "store": [
+      false
+     ],
+     "address": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "Ck Thũnh tiềng 5.000đ 5.000đ Od 5.000đ. NHÀ SÁCH GD-TC CẨM PHẢ ĐC: 212 Đường Trần Phú-Cẩm Phả Nhân viên thu ngân: ĐT 0333863328 - Fax 0333863328 Thời gian: 09:41:46 - 11/08/2020 Giá SL Tên hàng 5.000 0 VPP Loai 5K Tổng cộng: Chiết khấu bán hàng: Tổng số thanh toán: XIN CẢM ƠN QUÍ KHÁCH!",
+    "gt": {
+     "Tên cửa hàng": "NHÀ SÁCH GD-TC CẦM PHÁ",
+     "Địa chỉ": "212 Đường Trần Phú-Cẩm Phả",
+     "Tổng cộng": "5.000"
+    }
+   },
+   {
+    "i": 47,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.2,
+    "hits": {
+     "store": [
+      false
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "CỬA HÀNG NĂM OÁNH. Thôn Phú Thuy, Xã Phí Thị, Huyện Gia Làm, TP Hà Nội. 0869322496 - 02438765210. HÓA ĐƠN BÁN HÀNG. Sô: SON55153. Ngav: 10-08-2020. SL. Đơn giá. Thành tiền. Thẻ ĐT Viettel 100K. 98,000. 98,000. Công tiên hàng. 98,000. Cẩm ơn quý khách. Hẹn gặp lại!",
+    "gt": {
+     "Tên cửa hàng": "CỬA HÀNG NAM OANH",
+     "Địa chỉ": "Thôn Phú Thủy, Xã Phú Thị, Huyện Gia Lâm, TP Hà Nội",
+     "Ngày": "10-08-2020",
+     "Tổng tiền": "98.000"
+    }
+   },
+   {
+    "i": 48,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.2,
+    "hits": {
+     "store": [
+      false
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ]
+    },
+    "text": "CỬA HÀNG NĂM OÁNH. Thôn Phu Thuy, Xã Phú Thị, Hhyện Gia Lâm, TP Hà Nội. 0869322496 - 02438765210. THA ĐƠN BÁN HÀNG. Sô: SON65159. Ngav: 10-08-2020. SL. Đơn giá. Thành tiền. Tương cà Chinsu 250g. 12:000. 12,000. Cộng tiên hàng. 12,000. Cầm ơn quý khách. Hẹn gặp lại!",
+    "gt": {
+     "Tên cửa hàng": "CỬA HÀNG NĂM OANH",
+     "Địa chỉ": "Thôn Phù Thủy, Xã Phù Thị, Huyện Gia Lâm, TP Hà Nội",
+     "Ngày": "10-08-2020"
+    }
+   },
+   {
+    "i": 49,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.22,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "MINIMART ANAN. Chợ Sối Phú Thị Gia Làm. HÓA ĐƠN BÁN HÀNG. Tên hàng SL ĐVT Đơn giá Thành tiên. 291008530000 Nước Lavie 500ml NT. CHA. 4,000. 4,000. 291007150000 Sữa đàn bò đường VNM 110ml NT. Giá đăng ký: 5,000. Giá bản: 48 HOP. 4,417 212,016. Tổng số: 49. Tổng cộng: 216,016. Tổng tiền : 216,1)16. Tiền khách trả: VND. 216,016. Má thẻ: A10000000450. (0) là thị hà. Điêm mua: 21. Điểm hiện thời: 2,457",
+    "gt": {
+     "Tên cửa hàng": "MINIMART ANAN",
+     "Địa chỉ": "Chợ Sài Phú Thị Gia Lâm",
+     "Tổng cộng": "216.016",
+     "Ngày": "09/08/2020"
+    }
+   },
+   {
+    "i": 50,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.22,
+    "hits": {
+     "address": [
+      false
+     ]
+    },
+    "text": "VM+ QNH 1060-1062 Trần Phú. Số 1080-1082 Đường Trần Phu. VinCommerce. TP. Cầm Phá, Quảng Ninh. 02471066866-49301. HÓA ƠN BÁN HÀNG. Ngày bán: 14/08/2020 17:38. H: 00064463. Quầy : 001. NVBH:09024146. Mặt hàng. ơn gia SL. T. Tiền. VMHOME Bông tăm dài BD02. 8934954008602. 40.000 1. 40.000. TỔNG TIỀN PHẢI T. TOÁN. 40.000. TỔNG TIỀN Ã GIẢM. TIỀN KHÁCH TRẢ. 40.000. TIỀN MẶT. 100.000. TIỀN TRÁ LẠI. 60.00",
+    "gt": {
+     "Địa chỉ": "VM+ QNH 1060-1062 Trần Phú\nSố 1060-1062 Đường Trần Phú\nT.P. Cẩm Phả, Quảng Ninh"
+    }
+   },
+   {
+    "i": 51,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.23,
+    "hits": {
+     "address": [
+      false
+     ]
+    },
+    "text": "VM+ QNH Số 463 Tô 66 Khu Diêm Thủy. Số 483, Tổ 68, Khu Diêm Thuy. VinCommerce. P. Cầm Đồng. TP. Càm Phá. 02471066866- 53761. HÓA ƠN BÁN HÀNG. Ngày bán: 15/08/2020 08:59. H:00023836. Quây: 001. NVBH: 09026650. Mặt hàng. ơn gia SL. T. Tiền. CHOLIMEX Sôt ướp thịt nướng lo 200g T32. 8934637514734. 20.100. 1. 20.100. VMNK Tao Cherish NZL, size 90-120. 111.000/KG x 0,498 KG. 2658812004983. 55.278. 1. 55",
+    "gt": {
+     "Địa chỉ": "VM+ QNH Số 463 Tổ 86 Khu Diêm Thủy\nSố 463, Tổ 86, Khu Diêm Thủy\nP. Cẩm Đông, TP. Cẩm Phả\n02471066866- 53761"
+    }
+   },
+   {
+    "i": 52,
+    "shape": [
+     1365,
+     1024
+    ],
+    "quality": "OK",
+    "latency": 0.19,
+    "hits": {
+     "store": [
+      false
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ]
+    },
+    "text": "CỬA HÀNG NĂM OÁNH. Thên Phú Thuy, Xã Phú Thi, Huyện Gia Lám, TP Hà Nội. 0869322496 - 02438765210. .... HOA ĐƠN BÁN HÀNG. Sô: SONS5655. Ngày: 12-08-2020. SL. Đơn giá. Thành tiền. NG Ariel Dịu nhẹ 3.1L. 145,000. 145,000. BVS Sensi Cool móng cánh 8m. 18,500. 18,500. BVS Diana dày ke siêu thẩm. 14,500. 14,500. Cộng tiền hàng. 178,000. Cám ơn quý khách. Hẹn gặp lại!",
+    "gt": {
+     "Tên cửa hàng": "CỬA HÀNG NĂM OANH",
+     "Địa chỉ": "Thôn Phú Thủy, Xã Phú Thị, Huyện Gia Lâm, TP Hà Nội",
+     "Ngày": "12-08-2020"
+    }
+   },
+   {
+    "i": 53,
+    "shape": [
+     1280,
+     590
+    ],
+    "quality": "OK",
+    "latency": 0.18,
+    "hits": {
+     "store": [
+      false
+     ],
+     "address": [
+      false
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "NHÀ SÁCH GD-TC CẨM PHẢ. ĐC: 212 Đường Trần Phú-Cẩm Phả. Nhân viên thu ngân: ĐT 0333863328 - Fax 0333863328. Thời gian:09:06:32 - 14/08/2020. Tên hàng. SL Giá Ck Thinh tiên. Bộ Hồ sơ. 4 5.000. 20.000đ. Tổng cộng: 4. 20.000đ. Chiết khấu bán hàng: Ođ. Tổng số thanh toán: 20.000đ. XIN CẢM ƠN QUÍ KHÁCH! Samsung Triple Camera. Chụp băng Galaxy M21.",
+    "gt": {
+     "Tên cửa hàng": "NHÀ SÁCH GD-TC CẨM PHÀ",
+     "Địa chỉ": "212 Đường Trần Phú-Cẩm Phà",
+     "Tổng cộng": "20.000đ"
+    }
+   },
+   {
+    "i": 54,
+    "shape": [
+     1024,
+     576
+    ],
+    "quality": "OK",
+    "latency": 0.16,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ]
+    },
+    "text": "×. THE COFFEE HOUSE. 403 Phan Huy Ich, P.14, Q.Gò Vấp. Số: 26. Thời gian:30.09.2020 09.34 Số HĐ: 19809053162020. Thu ngân: cash1. Khách hàng: Hai Doan. Tên món. SL Đ. Giá. T. Tiền. Oolong Sen An. 1 Nhiên - Đá (Vừa). 1. 52 000/. 52 000. Thành tiên: 52000. Thanh Toán : 52000. Tiên khách đưa : 52 000. Tiền thừa : + Tiền mặt VND. 52 000.",
+    "gt": {
+     "Tên cửa hàng": "THE COFFEE HOUSE",
+     "Địa chỉ": "403 Phan Huy Ích, P.14, Q.Gò Vấp"
+    }
+   },
+   {
+    "i": 55,
+    "shape": [
+     1365,
+     1024
+    ],
+    "quality": "OK",
+    "latency": 0.19,
+    "hits": {
+     "store": [
+      false
+     ],
+     "address": [
+      false
+     ]
+    },
+    "text": "CỬA HÀNG NĂM OÁNH. Thôn Phú Thuy, Xã Phú Thị, Huyện Gia Lám, TP Hà Nội. 0869322496 - 02438765210. HÓA ĐƠN BÁN HÀNG. Sô: SON55367. Ngày: 11-08-2020. SL. Đơn giá. Thành tiền. SC c? đường VNM 100g. 4. 5,250. 21,000. ST cao khỏc đường 110ml. 12. 4,000. 48,000. Cộng tiền hàng. 69,000. Cảm ơn quý khách. Hẹn gặp lại!",
+    "gt": {
+     "Tên cửa hàng": "CỬA HÀNG NẮM OANH",
+     "Địa chỉ": "Thôn Phú Thủy, Xã Phú Thị, Huyện Gia Lâm, TP Hà Nội"
+    }
+   },
+   {
+    "i": 56,
+    "shape": [
+     1366,
+     1024
+    ],
+    "quality": "OK",
+    "latency": 0.25,
+    "hits": {},
+    "text": "Saigon Co.op. Co.op Food HN THE K-PARK. Ma so thue: 0309129418-115. Tang 1,SH42 - Toa K3,Cong trinh chung cu. ket hop dich vu tren o dat H-CT2 thuoc. Du an Dau tu xay dung Khu nha o Hi Brand. tai Khu do thi moi Van Phu,. P. Phu La, Q. Ha Dong, Tp Ha Noi. Email: cfthekpark@coopfood.vn. Website: www.saigonco-op.com.vn. PHIEU TINH TIEN. Co gia tri xuat Hoa don GTGT trong ngay. Quay: 02. Ngay: 23/09/2",
+    "gt": {}
+   },
+   {
+    "i": 57,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.19,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "MINIMART ANAN. Chợ Sủi Phú Thị Gia Làm. l'el: HÓA ĐƠN BÁN HÀNG. Tên hàng SL ĐVT Đơn giá Thành tiên. 291038840000 bò khô miếng nguyên thanh t NO. GO I. 40,000. 40,000. 8938504306071 đậu phộng, đậu hà lan pure NO. GO I. 24,000. 24,000. 291020130000 bánh cùi dừa NT. 1. GO I. 17,000. 17,000. Tổng số: Tổng cộng : 81,000. Tiên khách trả: VND. 500,000. iền trả lại VND: 419,000. Số GD: 000AC2212008001619 ",
+    "gt": {
+     "Tên cửa hàng": "MINIMART ANAN",
+     "Địa chỉ": "Chợ Sủi Phú Thứ Gia Lâm",
+     "Tổng cộng": "81,000",
+     "Ngày": "12/08/2020-12:42"
+    }
+   },
+   {
+    "i": 58,
+    "shape": [
+     1024,
+     472
+    ],
+    "quality": "OK",
+    "latency": 0.15,
+    "hits": {
+     "store": [
+      false
+     ],
+     "address": [
+      false
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "PHÔ MÔ. Tổ 7 khu Tân Lập 4 - P. Cẩm Thủy -. Tp. Cẩm Phá - Quảng Ninh. ĐT: 0858.931.931. HÓA DƠN BẦN HÀNG. Số HD130820-0041 - Bán : B.34[A]. 13 / 08 / 2020 - 22 04. Khách hàng: SĐT. Địa chi: Đơn giá. SL Thành tiền. Trà chanh nha dam. 15.000. 15,000. Cộng tiền hàng: 15,000. Chiết khẩu: Tông công: 15,000. Tiền khách đưa: 15,000. Tiền thừa: Mưôi làm nghìn đồng chẵn. Cảm ơn và hẹn gặp lại! Powered by P",
+    "gt": {
+     "Tên cửa hàng": "PHỞ MÓ",
+     "Địa chỉ": "Tổ 7 khu Tân Lập 4 - P. Cẩm Thủy - Tp. Cẩm Phả - Quảng Ninh",
+     "Tổng cộng": "15.000"
+    }
+   },
+   {
+    "i": 59,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.19,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "MINIMART ANAN. Chợ Sùi Phú Thị Gia Làm. Tel: HÓA ĐƠN BÁN HÀNG. Tên hàng SL ĐVT Đơn giá Thành tiền. 8934572281623 chả con tồm vissan 300g NO. 1 GO I. 47,000. 47,000. Tổng số: 1. Tổng cộng : 47,000. Tiền khách trả: VND. 47,000. Số GD: 000AB2212008003087 Ngày: 12/08/2020-13:24. Thu ngân: BH4. Xin cóm ơn và hẹn gặp lại quý khách !",
+    "gt": {
+     "Tên cửa hàng": "MINIMART ANAN",
+     "Địa chỉ": "Chợ Sủi Phú Thị Gia Lâm",
+     "Tổng cộng": "47.000",
+     "Ngày": "12/08/2020"
+    }
+   },
+   {
+    "i": 60,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.21,
+    "hits": {
+     "address": [
+      true
+     ]
+    },
+    "text": "Guitar Cafe. Tel 098 526 8359. 28 Phan Chu Trinh, Hiệp Phú, Quận 9, Hồ. Ngày lập: 02/10/2020. Khu vực: Tầng trệt. Hóa đơn: HDL201002 0014. Bàn: T02. PHIỂU TÍNH TIỄN. Món Đơn giá Số lượng. Tiền. Café (nóng/ đá) - Ly. 25,000. 1. 25,000. Pạc xỉu (n/đ) - Ly. 30,000. 1. 30,000. Thuốc lá Craven A (mèo) - Gói. 30,000. 30,000. Thành tiên: 85,000. Cảm ơn quý khách, hẹn gàp lại ! 1102020 171022. T mt 1. The",
+    "gt": {
+     "Địa chỉ": "28 Phan Chu Trinh, Hiệp Phú, Quận 9, Hồ"
+    }
+   },
+   {
+    "i": 61,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.21,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      true
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "MINIMART ANAN. Chợ Sủi Phú Thị Gia Lâm. Tel: HÓA ĐƠN BÁN HÀNG. Tên hàng SL ĐVT Đơn giá Thành tiên. ...... 291012390000 xúc xích ep 10c NT. TUI. 32,000. 64,000. Tổng số: 2. Tổng công : 64,000. Tiền khách trả: VND. 500,000. Tiền trả lại VND: 436,()00. Số GD: 000AC2212008001180 Ngày: 09/08/2020-19:46. Thu ngân: BH3. Xin cầm ơn và hẹn gặp lại quý khách |.",
+    "gt": {
+     "Tên cửa hàng": "MINIMART ANAN",
+     "Địa chỉ": "Chợ Sủi Phú Thị Gia Lâm",
+     "Tổng cộng": "64.000",
+     "Ngày": "09/08/2020"
+    }
+   },
+   {
+    "i": 62,
+    "shape": [
+     1024,
+     576
+    ],
+    "quality": "OK",
+    "latency": 0.18,
+    "hits": {
+     "store": [
+      false
+     ],
+     "address": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "Tism Bo. Thanh. Xuân. 244/23a Huỳnh Văn Bánh, P.11, Q.PN. Pass Wifi: thanhxuan. Tel:0888212505. PHIẾU THANH TOÁN. Số chứng từ: 100018 - 554401. Vị trí: Ăn Tại Chỗ - Tret. Ngày/ giờ vào: 05.10.2020 19.36. Ngày/ giờ ra: 05.10.2020 19.38. Thu ngân: Administrators. Tên món. SL Đ. Giá T. Tiền. Soda Đào. 1 39 000 39 000. Trà sữa Tây Bắc. 1 39 000 39 000. Trà sữa Tây Bắc. 1 39 000 39 000. Trà sữa Tây Bắc",
+    "gt": {
+     "Tên cửa hàng": "Tiệm ăn Thanh Xuân",
+     "Địa chỉ": "244/23a Huỳnh Văn Bánh, P.11, Q.PN",
+     "Tổng tiền": "156 000"
+    }
+   },
+   {
+    "i": 63,
+    "shape": [
+     1024,
+     576
+    ],
+    "quality": "OK",
+    "latency": 0.17,
+    "hits": {
+     "address": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "Tiem. Thanh. Xuân. 244/23a Huỳnh Văn Bánh, P.11, Q.PN. Pass Wifi: thanhxuan. Tel:0888212505. PHIẾU THANH TOÁN. Số chứng từ: I00038 - 540101. Vị trí: Ăn Tại Chố - Tret. Ngày/ giờ vào: 30.09.2020 20.10. Ngày/ giờ ra: 30.09.2020 20.13. Thu ngân: Administrators. Tên món. SL Đ. Giá. T.Tiền. Thanh Xuần. 1 39 000 39 000. Thanh Xuân. 1 39 000 39 000/. Đậu hủ chiên sả ớt. 1 19 000 19 000. Tổng: 97 000. Tiề",
+    "gt": {
+     "Địa chỉ": "244/23a Huỳnh Văn Bánh, P.11, Q.PN",
+     "Tổng tiền": "97 000"
+    }
+   },
+   {
+    "i": 64,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.19,
+    "hits": {
+     "store": [
+      false
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      false
+     ]
+    },
+    "text": "CƯA HÀNG NĂM OÁNH. Thôn Phú Thuy, Xã Phú Thị, Huyện Gia Lâm, TP Hà Nội. 0569323496 - 02438765210. HÓA ĐƠN BÁN HÀNG. S6: SON55334. Ngày: 11-0x-2020. SL. Đơn gia. Thành tiên. Sữa tươi Mil: 480 ml. 4. 6,500. 26,000. Bánh mỳ ruốc KĐ 80g. 3. 10,000. 30,000. Lương khô 5+ Hải châu 70g. 2. 5,000. 10.000. Xúc xích CP heo 100g. 2. 8,000. 16.000. Cộng tiên hàng. 82,000. Cẩm ơn quý khách. Hẹn gặp lại!",
+    "gt": {
+     "Tên cửa hàng": "CỬA HÀNG NĂM OANH",
+     "Địa chỉ": "Thôn Phú Thủy, Xã Phú Thị, Huyện Gia Lâm, TP Hà Nội",
+     "Ngày": "11-08-2020"
+    }
+   },
+   {
+    "i": 65,
+    "shape": [
+     1024,
+     576
+    ],
+    "quality": "OK",
+    "latency": 0.17,
+    "hits": {
+     "store": [
+      false
+     ],
+     "address": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "NHÀ SÁCH GD-TC CẨM PHẢ. ĐC: 212 Đường Trần Phú-Cẩm Phả. Nhân viên thu ngân: ĐT 0333863328 - Fax 0333863328. Thời gian:21:24:03 - 14/08/2020. Tên hàng. SL Giá Ck ThUnh tiến. Bút chữ A. 1 3.000. 3.000đ. Bút bi 032 +G 300 + 1 5.000. 5.000đ. Vở 4 ôly Campus. 19.000. 19.000đ. Vở Campus 4 ô ly. 19.000. 19.000đ. Tổng cộng: 4. 46.000đ. Chiết khẩu bán hàng: Od. Tổng số thanh toán: 46.000đ. XIN CẢM ƠN QUÍ K",
+    "gt": {
+     "Tên cửa hàng": "NHÀ SÁCH GD-TC CẨM PHÀ",
+     "Địa chỉ": "212 Đường Trần Phú-Cẩm Phả",
+     "Tổng cộng": "46.000đ"
+    }
+   },
+   {
+    "i": 66,
+    "shape": [
+     1024,
+     576
+    ],
+    "quality": "OK",
+    "latency": 0.16,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "NHÀ SÁCH GD-TC CẨM PHẢ. ĐC: 212 Đường Trần Phú-Cẩm Phả. Nhân viên thu ngân: ĐT 0333863328 - Fax 0333863328. Thời gian: 10:05:55 - 15/08/2020. Tên hàng. SL Giả Ck ThỮnh tiền. 360 động từ bất. 1 18.000. 18.000đ. Tổng cộng: 1. 18.000đ. Chiết khẩu bán hàng: Od. Tổng số thanh toán: 18.000đ. XIN CẨM ƠN QUÍ KHÁCH! Samsung Triple Camera. Chụp bằng Galaxy M21.",
+    "gt": {
+     "Tên cửa hàng": "NHÀ SÁCH GD-TC CẨM PHẢ",
+     "Địa chỉ": "212 Đường Trần Phú-Cẩm Phả",
+     "Tổng cộng": "18.000đ"
+    }
+   },
+   {
+    "i": 67,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.21,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      true
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "MINIMART ANAN. Chợ Sủi Phú Thị Gia Lâm. Tel: HÓA ĐƠN BÁN HÀNG. Tên hàng SL ĐVT Đơn giá Thành tiên. 8934755014154 BVS Diana hàng ngày 12k NT. CAI. 13,000. 13,000. 8934755016035 BVS Libera 8p NT. 4 GO I. 8,000. 32,000. 291003580000 DX Sunsilk dây NT. 2 GO I. 10,000. 20,000. 291003330000 DG Sunsilk dây NT. GO I. 10,000. 10,000. 8934868147473 NRC sunlight chanh túi 1,4I NT. 1 GO I. 30,000. 30,000. Tổn",
+    "gt": {
+     "Tên cửa hàng": "MINIMART ANAN",
+     "Địa chỉ": "Chợ Sủi Phú Thị Gia Lâm",
+     "Tổng cộng": "105,000",
+     "Ngày": "12/08/2020-12:10"
+    }
+   },
+   {
+    "i": 68,
+    "shape": [
+     1024,
+     576
+    ],
+    "quality": "OK",
+    "latency": 0.17,
+    "hits": {
+     "date": [
+      true
+     ]
+    },
+    "text": "MILANO COFFEE. Milano Coffee Vietnam @ www.milanocoffee.com. vn. 186 Cây Trâm, P. 11, Q.Gò Vấp, TP.HCM. HÓA ĐƠN THANH TOÁN. 5 hóa đơn: 00198 - 22108506 02.10.2020 15.30 Thu ngân: CA 2 Bản: SO - 02. Tên món. SL Đ. Giá T. Tiền. Cà phê sửa hạt dề (M)) 19 000/ 19 000. (MV). 19 000. Tổng: 19 000. Tiền Thanh Toán : CASH(VND) - 19 000. + Khach tra: 19 000. + Trà khách: Wifi: Milano Coffee Premium. Milano",
+    "gt": {
+     "Ngày": "02.10.2020"
+    }
+   },
+   {
+    "i": 69,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.22,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "MINIMART ANAN. Chợ Sùi Phủ Thị Gia Lâm. Tel: HÓA ĐƠN BÁN HÀNG. Tên hàng SL ĐVT Đơn giá Thành tiền. 291015520000 Mì chính ajingon 1,8kg NT. GO I. 102,000. 102,000. 291039260000 hạt nêm chinsu gói 1kg NO. GO I. 36,000. 36,000. Tổng số: 2. Tổng cộng : 138,000. Tiền khách trả: VND. 138,000. Số GD: 000AB2212008003181 Ngày: 13/08/2020-02:58. Thu ngân: BH2. Xin cám ơn và hẹn gặp lại quý khách !",
+    "gt": {
+     "Tên cửa hàng": "MINIMART ANAN",
+     "Địa chỉ": "Chợ Súi Phú Thị Gia Lâm",
+     "Tổng cộng": "138,000",
+     "Ngày": "13/08/2020-02:58"
+    }
+   },
+   {
+    "i": 70,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.22,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      true
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true,
+      true
+     ]
+    },
+    "text": "MINIMART ANAN. Chợ Sủi Phú Thị Gia Lâm. Tel: HOA ĐƠN BÁN HÀNG. Tên hàng SL ĐVT Đơn giá Thành tiền. 8934673581349 Sữa đàn bò ít đường VNM 180 NT. Giá đăng ký: 7,250. Giá bán. HO P. 7,000. 56,000. 291007960000 Sữa chua Mộc Châu 100g NT. 2. HO P. 5,000. 10,000. Tổng số: 10. Tổng cộng : 66,000. Tổng tiền : 66,000. Tiền khách trả: VND. 200,000. Tiền trả lại VND: 134,000. Số GD: 000AB2212008002770 Ngày:",
+    "gt": {
+     "Tên cửa hàng": "MINIMART ANAN",
+     "Địa chỉ": "Chợ Sủi Phú Thị Gia Lâm",
+     "Tổng cộng": "66,000",
+     "Tổng tiền": "66,000",
+     "Ngày": "11/08/2020"
+    }
+   },
+   {
+    "i": 71,
+    "shape": [
+     1365,
+     1024
+    ],
+    "quality": "OK",
+    "latency": 0.18,
+    "hits": {
+     "store": [
+      false
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ]
+    },
+    "text": "CỬA HÀNG NĂM OÁNH. Thôn Phú Thuy, Xã Phú Thị, Huyện Gia Lâm, TP Hà Nội. 0869322496 - 02438765210. HÓA ĐƠN BÁN HÀNG. Sô: SON55632. Ngày: 12-08-2020. SL. Đơn giá. Thành tiền. Simply 5 L/4. 210,000. 210,000. Cộng tiên hàng. 210,000. Cảm ơn quý khách. Hẹn gặp lại!",
+    "gt": {
+     "Tên cửa hàng": "CỬA HÀNG NẮM OANH",
+     "Địa chỉ": "Thôn Phú Thủy, Xã Phú Thủy, Huyện Gia Lâm, TP Hà Nội",
+     "Ngày": "12-08-2020"
+    }
+   },
+   {
+    "i": 72,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.26,
+    "hits": {
+     "date": [
+      true
+     ],
+     "total": [
+      true,
+      true
+     ]
+    },
+    "text": "MINIMART ANAN. Chợ Sủi Phu Thị Gia Làm. Pel: HÓA ĐƠN BÁN HÀNG. Tên hàng SL ĐVT. Đơn giá Thành tiên. 291008420000 SDN Fami gói 200ml NT. Giá đăng ký: 3,500. Giá bán: 5 NGAI. 3,300 16,500. 291000650000 Bim Marinboy các màu 30g NT. HOP. 9,000. 9,000. 8934762070402 keo mút pop NT. 1 COT. 7,000. 7,000. 8934595060564 keo chip chip pooz 100g NT. 1 GOT. 8,000. 8,000. 8934696000698 Xúc xích Everyday hạ lon",
+    "gt": {
+     "Tổng cộng": "112.000",
+     "Tổng tiền": "112.000",
+     "Ngày": "09/08/2020-09:17"
+    }
+   },
+   {
+    "i": 73,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.2,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true,
+      true
+     ]
+    },
+    "text": "MINIMART ANAN. Chợ Sủi Phú Thị Gia Lâm. Tel: HÓA ĐƠN BÁN HÀNG. Tên hàng SL ĐVT Đơn giá Thành tiền. 291005480000 Mì hảohảo 75g NT. Giá đăng ký: 3,500. Giá bản: 30 GO I. 3,167. 95,010. 291007210000 Sữa đặc ông thọ đỏ, xanh VN NT. 2 HO P. 22,000. 44,000. 291009420000 Thuốc lá Thăng Long mềm NT. 1 GOI. 8,500. 8,500. Tổng số: 33. Tổng cộng : 147,510. Tổng tiền : 147,510. Tiền khách trả: VND. 147,600. T",
+    "gt": {
+     "Tên cửa hàng": "MINIMART ANAN",
+     "Địa chỉ": "Chợ Sủi 1 Phú Thọ Gia Lâm",
+     "Tổng cộng": "147.510",
+     "Tổng tiền": "147.510",
+     "Ngày": "12/08/2020-15:20"
+    }
+   },
+   {
+    "i": 74,
+    "shape": [
+     1024,
+     472
+    ],
+    "quality": "OK",
+    "latency": 0.17,
+    "hits": {
+     "store": [
+      false
+     ],
+     "address": [
+      false
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "PHÔ MÔ. Tổ 7 khu Tân Lập 4 - P. Cẩm Thủy -. Tp. Cẩm Phá - Quảng Ninh. ĐT: 0858.931.931. HÓA ĐƠN BẢN HÀNG. Số : HD130820-0006 - Bản : MANG VỀ(A). 13/08/ 2020 - 18 44. Khách hàng: SĐT. Địe chỉ: Đơn giá. SL Thành tiền. Trà chanh Up Sz. 20,000. 1. 20.000. Trà quất Up Sz. 20.000. 1. 20,000. Nước ép dưa hầu. 20,000. 1. 20.000. Cộng tiền hàng: 60,000. Chiết khẩu: Tổng cộng: 60,000. Tiền khách đưa: 60.000",
+    "gt": {
+     "Tên cửa hàng": "PHỐ MÓ",
+     "Địa chỉ": "Tổ 7 khu Tân Lập 4 - P.Cẩm Thuỷ - Tp.Cẩm Phả - Quảng Ninh",
+     "Tổng cộng": "60.000"
+    }
+   },
+   {
+    "i": 75,
+    "shape": [
+     1366,
+     1024
+    ],
+    "quality": "OK",
+    "latency": 0.2,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      true
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "MARUMART. 170A Xuân Diệu, P. Quảng An, Q. Tây Hồ Hà nội. 024.37616870. HÓA ĐƠN BÁN HÀNG. Số: 120AA118171 Ngày 15/08/2020 12:15 pm. NVBH: XD-Lê Văn Hùng. Kho. Shop Xuân Diệu. Tên KH: nguyền thị thanh thủy. ĐT: 0904858400. Tền/Mã hàng. SL Đơn gié: C.K. Tổng tiền. 9414263007569 1,00 149.000. a 149.000. Kem Vani -. VANILLA. CLASSIC 480ml. (Đon vị VNĐ) Tổng tiền hàng. 149.000. Tổng chiết khẩu. Tổng tiề",
+    "gt": {
+     "Tên cửa hàng": "MARUMART",
+     "Địa chỉ": "170A Xuân Diệu, P. Quảng An, Q. Tây Hồ Hà Nội",
+     "Ngày": "15/08/2020",
+     "Tổng tiền": "149.000"
+    }
+   },
+   {
+    "i": 76,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.22,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true,
+      true
+     ]
+    },
+    "text": "MINIMART ANAN. Chợ Sủi Phú Thị Gia Làm. HÓA ĐƠN BÁN HÀNG. Tên hàng SL ĐVT Đơn giá Thành tiên. 8858870101004 keo dẻo jelly trộn 500g NT. GO I. 59,000. 59,000. 8935039500509 Mi chính ajnomoto 454g NT. GO I. 31,000. 31,000. 8934988030020 Dầu cái lân 1 L NT. CH. 25,000. 25,000. 8934841901863 Sữa CGHL dầu 180ml NT. Giá đăng kỷ: 7,000. Giá bán: 6,750. 27,000. * 8936012060300 Sữá Mộc Châu đường 180ml NT.",
+    "gt": {
+     "Tên cửa hàng": "MINIMART ANAN",
+     "Địa chỉ": "Chợ Sủi Phú Thị Gia Lâm",
+     "Tổng cộng": "11",
+     "Tổng tiền": "168,000",
+     "Ngày": "11/08/2020-21:19"
+    }
+   },
+   {
+    "i": 77,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.22,
+    "hits": {
+     "date": [
+      true
+     ]
+    },
+    "text": "CỬA HÀNG NĂM OÁNH. Thơn Phú: Thuy, Xã Phú Thị, Huyện Gia Làm, TP Hà Nợt. 00860322496 - 02438765210. HÓA ĐƠN BẢN HÀNG. Số: SON55298. Ngày: 11-08-2020. SL. Đơn giá. Thành tiền. Giây Posy 3 lớp c? lời 10C. 64,000. 64.000. BVS Kotex Style ko cánh 8m. 15,000. 15.000. BVS Kotex Style cánh 8M. 16,000. 16,000. BVS Sensi Cool mong cánh 8m. 18,500. 18,500. Bánh bông lan nho Kinh Đó 38g. 4,500. 18,000. Cộng ",
+    "gt": {
+     "Ngày": "11-08-2020"
+    }
+   },
+   {
+    "i": 78,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.21,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "MINIMART ANAN. Chợ Sủi Phủ Thị Gia Làm. Tel: HÓA ĐƠN TRẢ LẠI HÀNG. Tên hàng. SL ĐVT Đơn giá Thành tiền. 291020080000 hướng dương 0,4kg NT. 1. BIC. 25,000. 25,000. Tổng số: Tổng cộng : 25,000. Tiền trả lại VND: 25,000. Mã thẻ: A10000001633. (0) nguyễn thị yến. Điêm mua: -2. Điểm hiện thời: 037. Hạng hiện thời: Giá trị thưởng tích lũy: 34,265. Số GD: 000AC2222008000003 Ngày: 12/08/2020-14:37. Thu ng",
+    "gt": {
+     "Tên cửa hàng": "MINIMART ANAN",
+     "Địa chỉ": "Chợ Sủi Phú Thị Gia Lâm",
+     "Tổng cộng": "25,000",
+     "Ngày": "12/08/2020"
+    }
+   },
+   {
+    "i": 79,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.21,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      true
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "MINIMART ANAN. Chợ Sủi Phú Thị Gia Lâm. Tel: HÓA ĐƠN BÁN HÀNG. Tân hàng... SL ĐVT Đơn giá, Thành tiền. 8992753800254 sữa đặc GGHL túi 560g NO. 1 TOI. 33,000 33,000. 8934696000674 Xúc xích Everyday hạ long NT. 1 PGOT 25,000 25,000. 291043270000 bánh ml hoa cức NO. O CAL 30,000 30,000. Tổng số: Tổng cộng. 88,000. Tiền khách trả: VND. 88,000. Số GD: 000AC2212008001284 Ngày: 10/08/2020-17:20. Thu ngân",
+    "gt": {
+     "Tên cửa hàng": "MINIMART ANAN",
+     "Địa chỉ": "Chợ Sủi Phú Thị Gia Lâm",
+     "Tổng cộng": "88.000",
+     "Ngày": "10/08/2020-17:20"
+    }
+   },
+   {
+    "i": 80,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.2,
+    "hits": {
+     "store": [
+      false
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ]
+    },
+    "text": "CỬA HÀNG NĂM OÁNH. Thôn Pha Thuy, Xã Phú Thị, Huyện Gia Lám, TP Hà Nội. 0869322496 - 02438765210. HÓA DƠN BẢN HÀNG. Sô: SON55129. Ngày: 10-08-2020. SI. Đơn giá. Thành tiên. Xuc xich CP8 cây. 2. 46,000. 92,000. Cộng tiên hàng. 92,000. Cám ơn quý khách. Hẹn gặp lại!",
+    "gt": {
+     "Tên cửa hàng": "CỬA HÀNG NĂM OANH",
+     "Địa chỉ": "Thôn Phố Thuỷ, Xã Phố Thuỷ, Huyện Gia Lâm, TP Hà Nội",
+     "Ngày": "10-08-2020"
+    }
+   },
+   {
+    "i": 81,
+    "shape": [
+     768,
+     1024
+    ],
+    "quality": "OK",
+    "latency": 0.14,
+    "hits": {
+     "store": [
+      false
+     ],
+     "address": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "Ck ThUnh tiền 10.000đ 10.000đ 20.000đ Ođ 20.000đ. NHÀ SÁCH GD-TC CẨM PHẢ ĐC: 212 Đường Trần Phú-Cẩm Phả Nhân viên thu ngân: ĐT 0333863328 - Fax 0333863328 Thời gian:09:23:19 - 11/08/2020 Tên hàng Giá Nhãn vở conan, 10.000 Nhãn vở 12cung 10.000 Tổng cộng: Chiết khẩu bán hàng: Tổng số thanh toán: XIN CẨM ƠN QUÍ KHÁCH!",
+    "gt": {
+     "Tên cửa hàng": "NHÀ SÁCH GD-TC CẦM PHÁ",
+     "Địa chỉ": "212 Đường Trần Phú-Cẩm Phả",
+     "Tổng cộng": "20.000"
+    }
+   },
+   {
+    "i": 82,
+    "shape": [
+     768,
+     1024
+    ],
+    "quality": "OK",
+    "latency": 0.15,
+    "hits": {
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ]
+    },
+    "text": "CUKCUK - Một sản phẩm của MISA Trần trọng cảm ơn! Trá lại khách Tiền mật 100.000đ Tổng thanh toán 100.000đ thống châu truyễn 25.000 100.000 Sữa chua trần Tên món SL ĐG TT Thu ngần: thu ngàn 104tp Ngày: 10/08/2020 (08:08 CH - 08:08 CH) So chờ: 12 Số: 2003000880 HÓA ĐƠN THANH TOÁN Hotline: 0963133818 Phá - Quảng Ninh 104 Trần Phú - phường Cẩm Tây - Thành phố Cẩm PHÁ SCTC CÔ THỎ 104 TRẦN PHÚ - CẨM.",
+    "gt": {
+     "Địa chỉ": "104 Trần Phú - phường Cẩm Tây - Thành phố Cẩm Phả - Quảng Ninh",
+     "Ngày": "10/08/2020"
+    }
+   },
+   {
+    "i": 83,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.21,
+    "hits": {
+     "store": [
+      false
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ]
+    },
+    "text": "CỬA HÀNG NĂM OẢNH. Thòn Phú: Thủy, Xã Phí Thị, Huyện Gia Lầm, TP Hà Nội. 0869322496 - 02438765210. HOA ĐƠN BÁN HÀNG. Số: SON55316. Ngàv: 11-08-2020. SL. Đơn giá. Thành tiền. DG Clear men MLBH 650g. 120,000. 120,000. LFB ST bảo vệ vượt trội 850g. 123,000. 123,000. Cộng tiên hàng. 243,000. Cẩm ơn quý khách. Hẹn gặp lại!",
+    "gt": {
+     "Tên cửa hàng": "CỬA HÀNG NĂM OANH",
+     "Địa chỉ": "Thôn Phú Thủy, Xã Phú Thị, Huyện Gia Lâm, TP Hà Nội",
+     "Ngày": "11-08-2020"
+    }
+   },
+   {
+    "i": 84,
+    "shape": [
+     1366,
+     1024
+    ],
+    "quality": "OK",
+    "latency": 0.23,
+    "hits": {},
+    "text": "Saigon Co.op. Ma so thue: 0309129418-115 Co.op Food HN THE K-PARK. Tang 1,SH42 - Toa K3, Cong trinh chung cu ket hop dich vu tren o dat H-CT2 thuoc. Du an Dau tu xay dung Khu nha o Hi Brand. tai Khu do thi moi Van Phu,. P. Phu La, Q. Ha Dong, Tp Ha No1. Email: cfthekpark@coopfood.vn. Website: www.saigonco-op.com.vn. PHIEU TINH TIEN. Co gia tri xuat Hoa don GTGT trong ngay. Quay: 02. Ngay: 17/09/20",
+    "gt": {}
+   },
+   {
+    "i": 85,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.23,
+    "hits": {
+     "address": [
+      false
+     ]
+    },
+    "text": "Guitar Cafe. Tel. 098 526 8359. 28 Phan Chủ Trinh, Hiệp Phú, Quận 9, Hồ. Ngày lập: 03/10/2020. Khu vưc: Nhạc : Hóa đơn: HDL201003-0045. Bàn: S09. PHIỀU TÍNH TIỀN. Món Đơn giá Số lượng. Tiền. Sinh tố Dâu tây - Ly. 55,000. 55,000. Lipton da - Ly. 45,000. 1. 45,000. Thành tiền: 100,000. Cảm ơn quý khách, hẹn gặp tại t. S Mzte20200-101. Мат Генн Ві одАн.",
+    "gt": {
+     "Địa chỉ": "28 Phan Chu Trinh, Hiệp Phú, Quận 9, Hồ"
+    }
+   },
+   {
+    "i": 86,
+    "shape": [
+     1024,
+     576
+    ],
+    "quality": "OK",
+    "latency": 0.16,
+    "hits": {
+     "address": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "Hiệm tra. hanh. Xuân. 244/23a Huỳnh Văn Bánh, P.11, Q.PN. Pass Wifi: thanhxuan. Tel:0888212505. PHIẾU THANH TOÁN. Số chứng từ: I00026 - 538601. Vị trí: Ăn Tại Chỗ - Tret. Ngày/ giờ vào: 30.09.2020 18.31. Ngày/ giờ ra: 30.09.2020 18.33. Thu ngân: Administrators. Tên món. SL Đ. Giá T.Tiền. Bánh Cookies. 6 000. 6 000. Bánh Cookies. 1 6 000 6 000. Tổng: 2. 12 000. Tổng tiền (VAT): 12 000. Tiên Thanh T",
+    "gt": {
+     "Địa chỉ": "244/23a Huỳnh Văn Bánh, P.11, Q.PN",
+     "Tổng tiền": "12 000"
+    }
+   },
+   {
+    "i": 87,
+    "shape": [
+     1280,
+     590
+    ],
+    "quality": "OK",
+    "latency": 0.16,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ]
+    },
+    "text": "VM+ QNH 1060-1062 Trần Phú. Số 1080-1062 Đường Trần Phú. VinCommerce. TP. Cẩm Phá, Quảng Ninh. 02471066866- 49301. Ngày : 12/08/2020. Thơi gian: 16:04. Giao dịch treo. Quầy : 001. NVBH:09024146. Tên NV: 4930P0S3. Số GD treo:395. Samsung Triple Camera. Chup bang Galaxy M21.",
+    "gt": {
+     "Tên cửa hàng": "VinCommerce",
+     "Địa chỉ": "VM+ QNH 1060-1062 Trần Phú, Số 1060-1062 Đường Trần Phú, TP. Cẩm Phả, Quảng Ninh, 02471066866-49301",
+     "Ngày": "12/08/2020"
+    }
+   },
+   {
+    "i": 88,
+    "shape": [
+     1280,
+     960
+    ],
+    "quality": "OK",
+    "latency": 0.17,
+    "hits": {
+     "store": [
+      false
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ]
+    },
+    "text": "CỬA HÀNG NĂM OÁNH. Thôn Phú Thuy, Xã Phú Thị, Huyện Gia Lâm, TP Hà Nội. 0869322496 - 02438765210. HÓA ĐƠN BÁN HÀNG. Số: SON55749. Ngày: 12-08-2020. SI. Đơn giá. Thành tiền. Nước Gạo Rang TH 300ml. 6. 12,000. 72,000. Cộng tiên hàng. 72,000. • Cám ơn quý khách. Hẹn gặp lại!",
+    "gt": {
+     "Tên cửa hàng": "CỬA HÀNG NĂM OANH",
+     "Địa chỉ": "Thôn Phú Thủy, Xã Phú Thị, Huyện Gia Lâm, TP Hà Nội",
+     "Ngày": "12-08-2020"
+    }
+   },
+   {
+    "i": 89,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.21,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "MINIMART ANAN. Chợ Sôi Phủ Thị Gia Lâm. Tel: HÓA ĐƠN BÁN HÀNG. Tên hàng SL ĐVT Đơn giá Thành tiền. 291025600000 bin panas onic NT. 80 DOU. 7,000. 210,000. Tổng số: 30. Tổng công : 210,000. Tiền khách trả: VND. 210,000. Mã thể: A 10000001650. (0) lê thị bích thủy. 21. Điêm mua: Điểm hiện thời: *. 67. Hạng hiện thời: Giá trị thưởng tích lũy: 6,730. Số GD: 000AB2212008003077 Ngày: 12/08/2020-13:10. T",
+    "gt": {
+     "Tên cửa hàng": "MINIMART ANAN",
+     "Địa chỉ": "Chợ Sủi Phú Thị Già Lâm",
+     "Tổng cộng": "210.000",
+     "Ngày": "12/08/2020"
+    }
+   },
+   {
+    "i": 90,
+    "shape": [
+     1280,
+     590
+    ],
+    "quality": "OK",
+    "latency": 0.19,
+    "hits": {
+     "store": [
+      false
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "SIEU THI BACH HOA TONG HOP. So 5 Cẩm Tây - Cầm Phá - QN. Tel: 0203.3731199 - Website: www.sieutbittp.vn. Giờ làm việc: 7:30 -> 22:00 hang ngày. HÓA ĐƠN BÁN HÀNG. MIST: 5700662791. Ten hàng SL ĐVT Đơn giá Thanh tiên. 8936036024166. Bìm Bim Cor Chip các vị 38g (Thùng 8 T2. (GO E. 5,000. 5,000. Tổng số -1.00. Tổng công (đã gồm VAT): 5,000. Tiên khách trá: VND. 5,000. Số GD: 000AD2212008000602 Ngày: 0",
+    "gt": {
+     "Tên cửa hàng": "SIÊU THỊ BẠCH HOÀ TÔNG HỢP",
+     "Địa chỉ": "Số 5 Cẩm Tây - Cẩm Phả - QN",
+     "Tổng cộng": "1.00",
+     "Ngày": "09/08/2020-17"
+    }
+   },
+   {
+    "i": 91,
+    "shape": [
+     1024,
+     576
+    ],
+    "quality": "OK",
+    "latency": 0.17,
+    "hits": {
+     "date": [
+      true
+     ]
+    },
+    "text": "MILANO COFFEE. t@ www.milanocoffee.com.vn. \" Milano Coffee Vietnam •. 186 Cây Trâm, P.11, Q.Gò Vấp, TP.HCM. HÓA ĐƠN THANH TOÁN. 5 hóa đơn: 00202 - 22108906. Thu ngân: CA 2. 02.10.2020 16.36. Bàn: SO - 10. Tên món OE SL Đ. Giá T. Tien. Ca phe sữa hat de (5). 19 000 19 000. Tổng: 1. 19 000. Tiền chiết khâu: 5%. 950. Tiên Thanh Toán : 18 050. CASH(VND) - 18 050. + Khách tra: 18 050. + Tra khach: Thôn",
+    "gt": {
+     "Ngày": "02.10.2020"
+    }
+   },
+   {
+    "i": 92,
+    "shape": [
+     1024,
+     472
+    ],
+    "quality": "OK",
+    "latency": 0.15,
+    "hits": {
+     "store": [
+      false
+     ],
+     "address": [
+      false
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "PHÔ MÔ. Tổ 7 khu Tân Lập 4 - P.Cẩm Thủy -. Tp. Cẩm Phá - Quảng Ninh. ĐT: 0858.931.931. HÓA ĐƠN BẢN HÀNG. Số HD130820-0045 - Ban MANG VÊ[A]. 13/08 / 2020 - 22 : 50. Khách hàng. SĐT: Địa chỉ: Đơn giá. SL. Thành tiền. Khô gà. 25.000. 25,000. bảnh tráng. 15,000. 1. 15.000. Cộng tiền hàng: 40,000. Chiết khẩu: Tổng cộng: 40,000. Tiền khách đưa: 40,000. Tiền thừa: Bôn mươi nghìn đồng chẵn. Câm ơn và hẹn ",
+    "gt": {
+     "Tên cửa hàng": "PHỞ MÓ",
+     "Địa chỉ": "Tổ 7 khu Tân Lập 4 - P. Cẩm Thuỷ - Tp.Cẩm Phả - Quảng Ninh",
+     "Tổng cộng": "40.000"
+    }
+   },
+   {
+    "i": 93,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.21,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "MINIMART ANAN. Chợ Súi Phủ Thị Gia Làm. Tel: HÓA ĐƠN BÁN HÀNG. Tên hàng SL ĐVT Đơn giá. Thành tiên. 291030170000 xà bông dove NO. HOP 17,000 17,000. 8934563138165 Ml hảohảo 75g NT. 4 -GO I. 3,500 14,000. 8935060600056 Thạch Natty Long Hải 37g NT. GO T. 14,000 14:000. 8934868141457 NRC Sunlight trà xanh túi 8 NT. GOT. 23,000 23,000. Tổng số. Tổng cộng. 88,000. Tiến khách trà: VND. 200,1)00. Tiền tr",
+    "gt": {
+     "Tên cửa hàng": "MINIMART ANAN",
+     "Địa chỉ": "Chợ Sủi Phú Thọ Gia Lâm",
+     "Tổng cộng": "88.000",
+     "Ngày": "10/08/2020-17:22"
+    }
+   },
+   {
+    "i": 94,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.21,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "MINIMART ANAN. Chợ Sủi Phu Thị Gia Lâm. tel: HÓA ĐƠN BÁN HÀNG. Tên hàng SL ĐVT Đơn giá Thành tiên. 8936063783562 bánh cá mặn tân việt NO. 1 GO I. 12,000. 12,000. 8936011771085 Kem ốc merino quê vani NT. HOP. 14,000. 42,000. 8935047600239 Thuốc lá Thăng Long mềm NT. 1 GOI. 8,500. 8,500. Tổng số: 5. Tổng cộng : 62,500. Tiền khách trả: VND. 500,000). Tiền trả lại VND: 437,500. Số GD: 000AC22120080015",
+    "gt": {
+     "Tên cửa hàng": "MINIMART - ANAN",
+     "Địa chỉ": "Chợ Sủi Phú Thị Gia Lâm",
+     "Tổng cộng": "62.500",
+     "Ngày": "11/08/2020-20:57"
+    }
+   },
+   {
+    "i": 95,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.21,
+    "hits": {
+     "store": [
+      false
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ],
+     "items": [
+      false,
+      false,
+      false,
+      false
+     ]
+    },
+    "text": "CỬA HÀNG NĂM OÁNH. Thôn Phu Thuy, Xô Phú Thị, Huyện Gia Làm, TP Hà Nội. 0869522496 - 02438765210. Sac Sue d cadio CHad. HÓA ĐƠN BÁN HÀNG. Số: SON55343. Ngay: 11-08-2020. SL. Đơn giá. Thành tiền. Đường tinh luyện xuất khẩu 1kg. 14,000. 14,000. My Omachi sườn bò. 5. 5,800. 29,000. Mầm Nam ugư 750ml. 34,000. 34.000. Dâm gạo trung thành 500ml. 12,000. 12.000. Cộng tiên hàng. 89,000. Cẩm ơn quý khách. ",
+    "gt": {
+     "Tên cửa hàng": "CỬA HÀNG NAM OANH",
+     "Địa chỉ": "Thôn Phú Thủy, Xã Phú Thủy, Huyện Gia Lâm, TP Hà Nội",
+     "Ngày": "11-08-2020",
+     "Sản phẩm": [
+      "Dưỡng tinh luyện xuất khẩu 1kg",
+      "Mỹ Omachi suon,bo",
+      "Mầm Nâm ngư 750ml",
+      "Dấm gạo trung thành 500ml"
+     ]
+    }
+   },
+   {
+    "i": 96,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.24,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      true
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true,
+      true
+     ]
+    },
+    "text": "MINIMART ANAN. Chợ Sủi Phú Thị Gia Lâm. Tel: HÓA ĐƠN BÁN HÀNG. Tên hàng SL ĐVT Đơn giá Thành tiên. 291008350000 SCU susu dâu VNM 110ml NT. Giá đăng ký: 4,500. Giá bản: 98 HOP. 3,917 188,016. 8935049002635 sữa pha sản nutrifood đỏ 18 NT. HOP. 10,500 84,000. 291008360000 SCU susu chai dầu VNM 80ml NT. Giá đăng ký: 4,500. Giá ban: CHA. 4,000. 24,000. Tổng số: 62. Tổng cộng: 296,016. Tổng tiền : 296,0",
+    "gt": {
+     "Tên cửa hàng": "MINIMART ANAN",
+     "Địa chỉ": "Chợ Sủi Phú Thị Gia Lâm",
+     "Tổng cộng": "296,016",
+     "Tổng tiền": "296,016",
+     "Ngày": "09/08/2020-20:06"
+    }
+   },
+   {
+    "i": 97,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.24,
+    "hits": {
+     "address": [
+      true
+     ],
+     "date": [
+      true
+     ]
+    },
+    "text": "SCTC CÔ THỎ 104 TRẦN PHÚ - CẨM. PHẢ. 104 Trần Phú - phường Cẩm Tây - Thành phố Cẩm. Phá - Quảng Ninh. Hotline: 0963133818. HÓA ĐƠN THANH TOÁN. (MANG VỀ). Số: 2003000927. Số chờ: 12. Ngày: 10/08/2020 (08:57 CH - 08:57 CH). Thu ngân: thu ngan 104tp. %. Tên món. SL ĐG. TT. 1 Sira chua việt. 35.000. 35.000. quất. 2 Sữa chua dầu. 35.000. 35.000. З Sữa chua xoài. 35.000. 35.000. 4 Sữa chua. 25:000. 25.0",
+    "gt": {
+     "Địa chỉ": "104 Trần Phú - phường Cẩm Tây - Thành phố Cẩm Phá - Quảng Ninh",
+     "Ngày": "10/08/2020"
+    }
+   },
+   {
+    "i": 98,
+    "shape": [
+     1024,
+     576
+    ],
+    "quality": "OK",
+    "latency": 0.16,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "NHÀ SÁCH GD-TC CẨM PHẢ. ĐC: 212 Đường Trần Phú-Cẩm Phả. Nhân viên thu ngân: ĐT 0333863328 - Fax 0333863328. Thời gian: 17:48:43 - 09/08/2020. Tên hàng. SL Giá TCk Thữnh tiền. ruốt chỉ khúc M&G 2 6.000. 12.000đ. Tổng cộng: 2. 12.000đ. Chiết khẩu bán hàng: Od. Tổng số thanh toán: 12.000đ. QUÍ KHÁCH! 00. Samsung Triple Camera. Chụp bằng Galaxy M21.",
+    "gt": {
+     "Tên cửa hàng": "NHÀ SÁCH GD-TC CẨM PHẢ",
+     "Địa chỉ": "212 Đường Trần Phú-Cẩm Phả",
+     "Tổng cộng": "12.000đ"
+    }
+   },
+   {
+    "i": 99,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.21,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "MINIMART ANAN. Chợ Sủi Phú Thị Gia Làm. Tel: HÓA ĐƠN BÂN HANG. Tên hàng. SL ĐVT. Đơn giá Thành tiên. 291032440000 gvs posy 10 NO. 1. GO I. 65,000. 65,000. 291016070000 xúc xích cp 8, 10 dài NT. 1. TUI. 46,000. 46,000. Tổng số: 2. 111,000. Tổng cộng : Tiền khách trá: VND. 111,000. Số GD: 000AC2212008001442 Ngày: 11/08/2020-12:05. Thu ngần: BH2. Xin cám ơn và hẹn gặp lại quý khách !",
+    "gt": {
+     "Tên cửa hàng": "MINIMART ANAN",
+     "Địa chỉ": "Chợ Sủi Phú Thứ Gia Lâm",
+     "Tổng cộng": "111,000",
+     "Ngày": "11/08/2020-12:05"
+    }
+   },
+   {
+    "i": 100,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.21,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true,
+      true
+     ]
+    },
+    "text": "MINIMART ANAN. Chợ Sủi Phú Thị Gia Làm. HÓA ĐƠN BÁN HÀNG. Tên hàng SL ĐVT Đơn giá Thành tiên. 291010470000 kem tràng tiến sấu riêng. x NT. Giá đăng kỳ: 8,000. Giá bán: 10 CAY. 5,500. 55,000. 291021670000 Sữa kun socola, trắng 110ml NT. 20: HOP. 4,250. 85,000. 8934673601825 Sữa chua nha đam 100g NT. Giá đăng ký: 7,000. Giá bắn: 12 HOP. 6,500. 78,000. 8936114080084 Keo cao su DM Io NT. 1 HOP. 18,000",
+    "gt": {
+     "Tên cửa hàng": "MINIMART ANAN",
+     "Địa chỉ": "Chợ Sổi Phú Thị Gia Lâm",
+     "Tổng cộng": "236.000",
+     "Tổng tiền": "236.000",
+     "Ngày": "10/08/2020-18:17"
+    }
+   },
+   {
+    "i": 101,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.22,
+    "hits": {
+     "date": [
+      true
+     ],
+     "total": [
+      true,
+      true
+     ]
+    },
+    "text": "MINIMART ANAN. Chợ Sôi Phú Thị Gia Làm. Tel: 00000000 291005480000 Mì hảohảo 75g NT Tên hàng HÓA ĐƠN BÁN HÀNG SL ĐVT Đơn giá Thành tiền. Giá đăng ký: 3,500. Giá bán: 30 GO I. 3,167. 95,010. 291001210000 Bột canh hải châu 190g NT. GO T. 3,500. 21,000. Tổng số: 36. - 116,010. Tổng công : 116,010. Tổng tiền : Tiền khách trả: VND. 116,010. Mã thể: A 10000000071. (0) Nguyến thị chín. 11. Điêm mua: 2,32",
+    "gt": {
+     "Tổng cộng": "116,010",
+     "Tổng tiền": "116,010",
+     "Ngày": "12/08/2020-10:46"
+    }
+   },
+   {
+    "i": 102,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.21,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true,
+      true
+     ]
+    },
+    "text": "MINIMART ANAN. Chợ Sủi Phú Thị Gia Làm. Del: HÓA ĐƠN BÁN HÀNG. .Tên hàng SL. ĐVT Đơn giá Thành tiền. 291005950000 milo to 180ml NT. Giá đăng ký: 7,000. Giá bán: 4 HOP. 6,500. 26,000. 8936012060249 Sữa Mộc Châu đường 180ml N1. Giá đăng ký: 7,000. Giá bán: 4 HO P. 6,500. 26,000. Tổng số: 8. Tổng cộng : 52,()00. Tổng tiền : 52,000. Tiền khách trả: VN.D. 52,000. Số GD: 000AC2212008000969 Ngày: 09/08/2",
+    "gt": {
+     "Tên cửa hàng": "MINIMART ANAN",
+     "Địa chỉ": "Chợ Súi Phú Thị Gia Lâm",
+     "Tổng cộng": "52.000",
+     "Tổng tiền": "52.000",
+     "Ngày": "09/08/2020"
+    }
+   },
+   {
+    "i": 103,
+    "shape": [
+     1024,
+     576
+    ],
+    "quality": "OK",
+    "latency": 0.15,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ]
+    },
+    "text": "THE COFFEE HOUSE. 403 Phan Huy Ich, P.14, Q.Gò Vấp. Số: 23. Thời gian: 01.10.202007.28 Số HĐ: 19810000052020. Thu ngân: cash1. Khách hàng: Tên món. SL Đ. Giá. T. Tiền. 1 Bạc Xiu (Vừa). 1 35 000. 35 000 35 000. Thành tiên: 35 000. Thanh Toàn : 50 000. Tiên khách đưa : 15 000. Tiền thừa : 35 000. + Tiên mặt VND.",
+    "gt": {
+     "Tên cửa hàng": "THE COFFEE HOUSE",
+     "Địa chỉ": "403 Phan Huy Ích, P.14, Q.Gò Vấp"
+    }
+   },
+   {
+    "i": 104,
+    "shape": [
+     1024,
+     576
+    ],
+    "quality": "OK",
+    "latency": 0.18,
+    "hits": {
+     "date": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "Vietcombank. TEN ĐẠI LY: UGR VIMMART_4987_UMONH. ĐỊA CHÍ ĐAI LY : TO 8 KHU B P CAM TRUNG. AM PHA VUANG MIM. TID: 29902564 MID: 000101400002190. THE: DEBIT. **** **** ****-2243(S). TEN: PHAM NGOC THUY. NGAY H.HAN: ./*. THANH TOAN. SO LO: 000094 SO H DON: 000739. NGAY: 20/05/2020 GIO: 18:45:09. SO T.C.: 014118001676 MÀ CHUAN CHI: 305332. TỔNG CỘNG: UND75,500. CHỦ KY: KHONG YEU CAU. TOI XAC NHAN HOA ",
+    "gt": {
+     "Ngày": "20/05/2020",
+     "Tổng cộng": "75,500"
+    }
+   },
+   {
+    "i": 105,
+    "shape": [
+     1024,
+     472
+    ],
+    "quality": "OK",
+    "latency": 0.16,
+    "hits": {
+     "address": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "PHÔ MÓ. Tổ 7 khu Tân Lập 4 - P.Cẩm Thủy -. Tp. Cẩm Phả - Quảng Ninh. ĐT: 0858.931.931. HÓA ĐƠN BÁN HÀNG. Số : HD130820-0007 - Bàn : B 1[A]. 13 / 08 / 2020 - 18: 46. Khách hàng: SĐT: Địa chỉ: Đơn giá. SL. Thành tiền. Trà chanh. 10,000. 2. 20.000. Cộng tiền hàng: 20,000. Chiết khẩu: Tổng cộng: 20,000. Tiền khách đưa: 20.000. Tiền thưa: Hai mươi nghìn đồng chẵn. Cảm ơn và hẹn gặp lại! Powered by POS3",
+    "gt": {
+     "Địa chỉ": "Tổ 7 khu Tân Lập 4 - P. Cẩm Thủy - Tp. Cẩm Phả - Quảng Ninh",
+     "Tổng cộng": "20.000"
+    }
+   },
+   {
+    "i": 106,
+    "shape": [
+     576,
+     1024
+    ],
+    "quality": "OK",
+    "latency": 0.16,
+    "hits": {
+     "address": [
+      false
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "THERIo: B50-19,404 OT SAL Cảm ơn quy khách, hen gập lại : Thành tiền: 94,000 4,000 2,000 Khăn lạnh - Cái 45,000 90,000 Trà Hoa cúc mật ong (n/d) - Ly Đơn giá Số lượng Món Tiền PHIỀU TÍNH TIỂN Hoa đơn: HBL201004-0016 Bàn: S04 Ngày lập: 04/10/2020 Khu vực: Nhạc 28 Phan Chu Trinh, Hiệp Phú, Quận 9, Hồ Tel. 098 526 8359 Guitar Cafe.",
+    "gt": {
+     "Địa chỉ": "28 Phan Chu Trinh, Lập Phù, Quận 9, Hồ Chí Minh",
+     "Tổng tiền": "94.000"
+    }
+   },
+   {
+    "i": 107,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.22,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true,
+      true
+     ]
+    },
+    "text": "MINIMART ANAN. Chợ Sủi Phủ Thị Gia Lâm. Tel: HÓA ĐƠN BÁN HANG. Tên hàng SL ĐVT Đơn giá Thành tiền. 291007230000 Sữa đặc vỈ VNM NT. Giá đăng ký: -4,500. Giá bán: 120 HO P. 4,084. 490,080. Tổng số: 120. Tổng công. 490,080. Tổng tiền : 490,I)80. Tiền khách trả: VND. 490,080. Mã thẻ: A10000000110. (0) Hoàng Thanh Tuyên. Điêm mua: 49. Điệm hiện thời: 9,769. Hạng hiện thời: Giá trị thưởng tích lũy: 32,7",
+    "gt": {
+     "Tên cửa hàng": "MINIMART ANAN",
+     "Địa chỉ": "Chợ Sủi Phú Thị Gia Lâm",
+     "Tổng cộng": "490,080",
+     "Tổng tiền": "490,080",
+     "Ngày": "11/08/2020-06:34"
+    }
+   },
+   {
+    "i": 108,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.22,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "MINIMART ANAN. Chợ Sôi Phú Thị Gia Làm. Tel: HOA ĐƠN BÁN HÀNG. Tên hàng SL ĐVT Đơn giá Thành tiền. 291043160000 kem merino kool dầu NO. 10 ICAY. 7,000. 70,000. 291029430000 xúc xích visan trộn NO. 1 CHA. 9,000. 9,000. Tổng số: 11. Tổng cộng : 79,000. Tiền khách trả: VND. 200,000. Tiền trả lại VND: 121,000. Số GD: 000AB2212008002572 Ngày: 10/08/2020-16:57. Thu ngân: BH4. Xin cẩm ơn và hẹn gặp lại q",
+    "gt": {
+     "Tên cửa hàng": "MINIMART ANAN",
+     "Địa chỉ": "Chợ Sỉ Phú Thị Gia Lâm",
+     "Tổng cộng": "79.000",
+     "Ngày": "10/08/2020-16:57"
+    }
+   },
+   {
+    "i": 109,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.2,
+    "hits": {
+     "store": [
+      false
+     ],
+     "address": [
+      false
+     ]
+    },
+    "text": "CƯA HÀNG NĂM OÁNH. Thôn Phu Thuy, Xã Phú Thị, Huyện Gia Lâm, TP Hà Nội. 0869322496 - 02438765210. HÓA ĐƠN BÁN HÀNG. Số: SONS5292. Ngày: 11-08-2020. SL. Pơn giá. Thành tiên. BG Omo mactic của trên 3kg. 124.000. 124,000. KĐR Closeup Bạc Hà 180g. 1. 26,000. 26,000. Cộng tiên hàng. 150,000. Cầm ơn quý khách. Hẹn gặp lại!",
+    "gt": {
+     "Tên cửa hàng": "CỬA HÀNG NAM OANH",
+     "Địa chỉ": "Thôn Phú Thủy, Xã Phú Thí, Huyện Gia Lâm, TP Hà Nội"
+    }
+   },
+   {
+    "i": 110,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.21,
+    "hits": {
+     "store": [
+      false
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "PHÓ MỎ. Tổ 7 khu Tân Lập 4 - P.Cẩm Thủy -. Tp. Cẩm Phả - Quảng Ninh. ĐT: 0858.931.931. HÓA ĐƠN BÁN HÀNG. Số : HD110820-0050 - Bàn B.24[A]. 11 / 08 / 2020 - 22 . 07. Khách hàng. SET. Địa chim. Đơn giá. SL. Thành tiền. Trà quất. 10,000. 2. 20.000. Cộng tiền hàng: 20,000. Chiết khẩu: Tổng công: 20,000. Tiền khách đưa: 20.000. Tiền thù a. Hai mươi nghìn đồng chẵn. Căm ơn và hẹn gặp lại! Powered by POS",
+    "gt": {
+     "Tên cửa hàng": "PHÓ MÓ",
+     "Địa chỉ": "Tổ 7 khu Tân Lập 4 - P. Cẩm Thuỷ - Tp. Cẩm Phả - Quảng Ninh",
+     "Ngày": "11/08/2020",
+     "Tổng cộng": "20.000"
+    }
+   },
+   {
+    "i": 111,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.21,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true,
+      true
+     ]
+    },
+    "text": "MINIMART ANAN. Chợ Sủi Phú Thị Gia Lâm. el: HÓA ĐƠN BÁN HÀNG. Tên hàng SL ĐVT. Đơn giá Thành tiên. 291007150000 Sữa đàn bò đường VNM 110ml NT. Giá đăng ký: 5,000. Giá bán: 4. HO P. 4,500. 18,000. 291005020000 Kẹo sugus nho, cam NT. GO I. 5,000. 5,000. Tổng số: 5. Tổng cộng : 23,000. Tổng tiền : 23,000. Tiền khách trả: VND. 100,000. iền trả lại VND: 77,000. Số GD: 000AC2212008001402 Ngày: 11/08/202",
+    "gt": {
+     "Tên cửa hàng": "MINIMART ANAN",
+     "Địa chỉ": "Chợ Súi Phú Thị Gia Lâm",
+     "Tổng cộng": "23,000",
+     "Tổng tiền": "23,000",
+     "Ngày": "11/08/2020"
+    }
+   },
+   {
+    "i": 112,
+    "shape": [
+     1365,
+     1024
+    ],
+    "quality": "OK",
+    "latency": 0.18,
+    "hits": {
+     "store": [
+      false
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "CỬA HÀNG NĂM OÁNH. Thôn Phú Thuy, Xã Phú Thị, Huyện Gia Lâm, TP Hà Nội. 0869322496 - 02438765210. HÓA ĐƠN BÁN HÀNG. Sô: SON55765. Ngày: 12-08-2020. SL. Đơn. Thành tiền. TL Thăng Long Mêm. < 300. 8,300. Cộng tiên hàng. 8,300. Cám ơn quý khách. Hẹn gặp lại!",
+    "gt": {
+     "Tên cửa hàng": "CỬA HÀNG NẮM ƠN",
+     "Địa chỉ": "Thôn Phú Thủy, Xã Phú Thị, Huyện Gia Lâm, TP Hà Nội",
+     "Ngày": "12-08-2020",
+     "Tổng tiền": "8.300"
+    }
+   },
+   {
+    "i": 113,
+    "shape": [
+     1365,
+     1024
+    ],
+    "quality": "OK",
+    "latency": 0.19,
+    "hits": {
+     "store": [
+      false
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "CỬA HÀNG NĂM OÁNH. Thôn Phú Thuy, Xã Phú Thị, Huyện Gia Lâm, TP Hà Nội. 0869322496 - 02438765210. ..... HÓA DƠN BÁN HÀNG. Sô: SON46717. Ngày: 14-07-2020. SL. Đơn giá. Thành tiền. DG H&S C ramen MLBH 550ml. 128.000. 128,000. DG H&S MLBH 720ml. 2. 166,000. 332,000. DG H&S Ultramen NRT 170ml. 50,000. 50,000. DG H&S Ultramen 170ml. 50,000. 150,000. Cộng tiên hàng. 660,000. Cám ơn quý khách. Hẹn gặp lạ",
+    "gt": {
+     "Tên cửa hàng": "CỬA HÀNG NAM OANH",
+     "Địa chỉ": "Thôn Phú Thủy, Xã Phú Thị, Huyện Gia Lâm, TP Hà Nội",
+     "Ngày": "14-07-2020",
+     "Tổng tiền": 660000
+    }
+   },
+   {
+    "i": 114,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.2,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "MINIMART ANAN. Chợ Sui Phủ Thị Gia Làm. Tel: HÓA ĐƠN BÁN HÀNG. Tên hàng SL ĐVT Đơn giá Thành tiền. 291005850000 Mắm Nam ngư đệ nhị 900ml NT. 2 CHA. 14,000. 28,000. 291016070000 xúc xích cp 8, 10 dài NT. 1 TUI. 46,000. 46,000. Tổng số: Tổng cộng : 74,000. Tiển khách trả: VND. 200,000. Tiền trả lại VND: 126,000. Số GD: 000AC2212008001275 Ngày: 10/08/2020-16:51. Thu ngân: BH3. Xin cám ơn và hẹn gặp l",
+    "gt": {
+     "Tên cửa hàng": "MINIMART ANAN",
+     "Địa chỉ": "Chợ Sủi Phú Thị Gia Lâm",
+     "Ngày": "10/08/2020",
+     "Tổng cộng": "74.000"
+    }
+   },
+   {
+    "i": 115,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.22,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "MINIMART ANAN. Chợ Sủi Phủ Thị Gia Lâm. Pel: HÓA ĐƠN BẢN HÀNG. Tên hàng SL ĐVT Đơn giá Thành tiền. 8934755021046 bvs sofy siêu âm thoáng cán NO. 1. GO I. 30,000. 30,000. 8934755021022 bvs sofy siêu mỗng nhẹ hồng NO. 1. GO T. 34,000. 34,000. 8936017561833 Bánh nướng cắt Bảo Minh 160 NT. 1. GO I. 27,000. 27,000. Tổng số: Tổng cộng : 91,000. Tiền khách trả: VND. 500,000. Tiền trả lại VND: 409,000. Số",
+    "gt": {
+     "Tên cửa hàng": "MINIMART ANAN",
+     "Địa chỉ": "Chợ Sủi Phú Thị Gia Lâm",
+     "Tổng cộng": "91,000",
+     "Ngày": "13/08/2020"
+    }
+   },
+   {
+    "i": 116,
+    "shape": [
+     1365,
+     1024
+    ],
+    "quality": "OK",
+    "latency": 0.18,
+    "hits": {
+     "store": [
+      false
+     ],
+     "address": [
+      true
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "CỬA HÀNG NĂM OÁNH. Thôn Phú Thuy, Xã Phú Thị, Huyện Gia Lâm, TP Hà Nội. 0869322496 - 02438765210. HÓA ĐƠN BÁN HÀNG. Sô: SON55754. Ngày: 12-08-2020. SL. Đơn giá. Thành tiền. Che 1 lạng. 38,000. 380,000. GVS Watersilk 10C co lõi. 1. 65,000. 65,000. Cộng tiên hàng. 445,000. Cảm ơn quý khách. Hẹn gặp lại!",
+    "gt": {
+     "Tên cửa hàng": "CỬA HÀNG NẮM OANH",
+     "Địa chỉ": "Thôn Phú Thuy, Xã Phú Thị, Huyện Gia Lâm, TP Hà Nội",
+     "Ngày": "12-08-2020",
+     "Tổng tiền": "445.000"
+    }
+   },
+   {
+    "i": 117,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.22,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ],
+     "total": [
+      true
+     ]
+    },
+    "text": "MINIMART ANAN. Chợ Sối Phủ Thị Gia Lâm. el: HÓA ĐƠN BÁN HÀNG. Tên hàng SL ĐVT Đơn giá Thành tiền. 8934595060762 Kẹo chew gói nhỏ các loại 1 NT. GO T. 6,000. 6,000. 8935061800790 Thạch joy VF hoa quả 800g NT. >1 GO I. 20,000. 20,000. 8934564100369 Kẹo Dynamite bạc hà socola NT. 1 GO T. 22,000. 22,000. 291004940000 Kẹo Oishi các loại gói 90g NT. 2 CA I. 5,000. 10,000. 8936096670020 Bánh gạo one one ",
+    "gt": {
+     "Tên cửa hàng": "MINIMART ANAN",
+     "Địa chỉ": "Chợ Sủi Phú Thọ Gia Lâm",
+     "Tổng cộng": "95.000",
+     "Ngày": "13/08/2020-18:08"
+    }
+   },
+   {
+    "i": 118,
+    "shape": [
+     1365,
+     1024
+    ],
+    "quality": "OK",
+    "latency": 0.2,
+    "hits": {
+     "store": [
+      false
+     ],
+     "address": [
+      false
+     ],
+     "date": [
+      true
+     ]
+    },
+    "text": "CỬA HÀNG NĂM OÁNH. Thôn Phú Thuy, Xã Phú Thị, Huyện Gia Lâm, TP Hà Nội. 0869322496 - 02438765210. ..... HÓA DƠN BÁN HÀNG. Sô: SON46717. Ngày: 14-07-2020. SL. Đơn giá. Thành tiền. DG H&S C ramen MLBH 550ml. 128.000. 128,000. DG H&S MLBH 720ml. 2. 166,000. 332,000. DG H&S Ultramen NRT 170ml. 50,000. 50,000. DG H&S Ultramen 170ml. 50,000. 150,000. Cộng tiên hàng. 660,000. Cám ơn quý khách. Hẹn gặp lạ",
+    "gt": {
+     "Tên cửa hàng": "CỬA HÀNG NĂM OANH",
+     "Địa chỉ": "Thôn Phú Thủy, Xã Phú Thị, Huyện Gia Lâm, TP Hà Nội",
+     "Ngày": "14-07-2020"
+    }
+   },
+   {
+    "i": 119,
+    "shape": [
+     1024,
+     768
+    ],
+    "quality": "OK",
+    "latency": 0.2,
+    "hits": {
+     "store": [
+      true
+     ],
+     "address": [
+      false
+     ]
+    },
+    "text": "VM+ QNH Tô 7, Khu Minh Tiến A. Tó 7. Khu Minn Tiên A. VinCommerce P. Cam Bình TP. Cẩm Pha, CHH. 02471066888-51561. HÓA ƠN BÁN HÀNG. Ngày bán: 15/08/2020 11:21. H:00032925. Quầy : 001. NVBH: 09025435. Mặt hàng. ơn giá SL. T. Tiền. Lạc rang húng lìu Vạn ức gói 300g. 8936022570387. 44.200. 1. 44.200. TÔNG TIỀN PHẢI T. TOÁN. 44.200. TỔNG TIỀN Ã GIẢM. TIỄN KHÁCH TRẢ. 44.200. TIỀN MẶT. 44.200. TIỄN TRẢ ",
+    "gt": {
+     "Tên cửa hàng": "VinCommerce",
+     "Địa chỉ": "VM+ QNH Tổ 7, Khu Minh Tiến A\nTổ 7, Khu Minh Tiến A\nP. Cẩm Bình, TP. Cẩm Phả, Quảng Ninh"
+    }
+   }
+  ]
+ }
+}

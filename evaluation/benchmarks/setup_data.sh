@@ -24,6 +24,20 @@ dl $D/openvivqa/vlsp2023_dev_data.json $HF/uitnlp/OpenViVQA-dataset/resolve/main
 dl $D/ktvic/test-0.parquet $HF/Skyler215/KTVIC/resolve/main/data/test-00000-of-00006.parquet &
 wait
 
+# Bổ sung 2026-11-09: case khó TUM (người đi lại, mặt phẳng trơn sát camera, đi dài trong văn phòng),
+# VizWiz (ảnh/câu hỏi thật của người khiếm thị), MC-OCR 2021 (hoá đơn tiếng Việt thật). ~2.9 GB.
+mkdir -p $D/vizwiz $D/mcocr
+TUM3=https://cvg.cit.tum.de/rgbd/dataset/freiburg3
+for s in walking_xyz nostructure_notexture_near_withloop long_office_household; do
+  dl $D/tum/fr3_$s.tgz $TUM3/rgbd_dataset_freiburg3_$s.tgz &
+done
+dl $D/vizwiz/val0.parquet $HF/Multimodal-Fatima/VizWiz_validation/resolve/main/data/validation-00000-of-00005-4ff5ed7be47051bf.parquet &
+dl $D/mcocr/val.parquet $HF/DThai/mcocr-test/resolve/main/data/validation-00000-of-00001.parquet &
+wait
+for s in walking_xyz nostructure_notexture_near_withloop long_office_household; do
+  [ -d $D/tum/rgbd_dataset_freiburg3_$s ] || (cd $D/tum && tar xzf fr3_$s.tgz)
+done
+
 [ -d $D/vintext/vietnamese ] || (cd $D/vintext && unzip -q vintext.zip)
 [ -d $D/openvivqa/dev-images ] || (cd $D/openvivqa && unzip -q dev-images.zip)
 [ -d $D/icdar2015/test_images ] || (cd $D/icdar2015 && unzip -q ch4_test_images.zip -d test_images && unzip -q Challenge4_Test_Task1_GT.zip -d test_gt)

@@ -1,0 +1,85 @@
+{
+  "sequence": "rgbd_dataset_freiburg3_nostructure_notexture_near_withloop",
+  "dataset": "TUM RGB-D (cvg.cit.tum.de)",
+  "frames": 1093,
+  "duration_sec": 37.87894105911255,
+  "data_quality_counts": {
+    "VALID": 1093
+  },
+  "frame_level": {
+    "frames_with_near_obstacle_gt(<1.0m, any object)": 325,
+    "of_which_system_HIGH": 79,
+    "frames_without_near_obstacle": 768,
+    "of_which_system_HIGH(false_alarm_frames)": 150,
+    "generic_obstacle_frames": 229,
+    "generic_obstacle_frames_with_near_gt": 79
+  },
+  "object_level": {
+    "<= 1.0m": {
+      "limit_m": 1.0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "precision": null,
+      "recall": null
+    },
+    "<= 1.5m": {
+      "limit_m": 1.5,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "precision": null,
+      "recall": null
+    }
+  },
+  "object_gt_distance_by_risk": {},
+  "alert_classes_seen": {},
+  "spoken_alerts": {
+    "count": 6,
+    "per_minute": 9.503961566354155,
+    "samples": [
+      {
+        "t": 0.0,
+        "text": "Chú ý, có vật cản phía trước, ở rất gần"
+      },
+      {
+        "t": 8.712008953094482,
+        "text": "Chú ý, có vật cản phía trước, ở rất gần"
+      },
+      {
+        "t": 14.076097965240479,
+        "text": "Chú ý, có vật cản phía trước, ở rất gần"
+      },
+      {
+        "t": 28.02311897277832,
+        "text": "Chú ý, có vật cản phía trước, ở rất gần"
+      },
+      {
+        "t": 32.3400559425354,
+        "text": "Chú ý, có vật cản phía trước, ở rất gần"
+      },
+      {
+        "t": 37.20706605911255,
+        "text": "Chú ý, có vật cản phía trước, ở rất gần"
+      }
+    ]
+  },
+  "latency_ms": {
+    "detect": {
+      "n": 1093,
+      "mean": 18.418098334436053,
+      "median": 17.484666022937745,
+      "p90": 19.679650210309774,
+      "min": 16.375750012230128,
+      "max": 296.8438329990022
+    },
+    "depth": {
+      "n": 274,
+      "mean": 58.20813427409871,
+      "median": 56.574249494588,
+      "p90": 59.57454997696914,
+      "min": 51.40779202338308,
+      "max": 411.65083402302116
+    }
+  }
+}

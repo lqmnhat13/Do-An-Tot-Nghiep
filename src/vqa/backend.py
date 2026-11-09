@@ -267,8 +267,14 @@ class MLXVLMBackend(VQABackend):
         # Require one to three complete sentences; do not rewrite partial output. The prompt
         # asks for 1-2, but rejecting a complete third sentence discarded 9% of valid answers
         # (OpenViVQA/KTVIC); the 45-word cap below still bounds speech length.
-        if not re.fullmatch(r"[^.!?…\n]+[.!?](?:[ \t]+[^.!?…\n]+[.!?]){0,2}", ending):
+        # Dấu chấm/phẩy giữa hai chữ số (25.000 đồng, 12.05.2027, 1.29) không phải ranh giới câu.
+        sentences = re.sub(r"(?<=\d)[.,](?=\d)", "", ending)
+        if not re.fullmatch(r"[^.!?…\n]+[.!?](?:[ \t]+[^.!?…\n]+[.!?]){0,2}", sentences):
             raise RuntimeError("MLX-VLM trả lời không đúng một đến ba câu")
+        # Câu trả lời tiếng Anh sẽ bị giọng tiếng Việt đọc sai (2/40 mô tả cảnh NYU).
+        # Câu tiếng Việt từ 4 từ trở lên gần như luôn có chữ có dấu hoặc chữ đ.
+        if len(text.split()) >= 4 and not re.search(r"[^\x00-\x7F]", text):
+            raise RuntimeError("MLX-VLM trả lời không phải tiếng Việt")
         # Vietnamese word budget is measured by whitespace-separated units.
         if len(text.split()) > 45:
             raise RuntimeError("MLX-VLM trả lời quá 45 từ")

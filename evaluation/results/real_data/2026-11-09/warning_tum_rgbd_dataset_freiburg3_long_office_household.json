@@ -1,0 +1,150 @@
+{
+  "sequence": "rgbd_dataset_freiburg3_long_office_household",
+  "dataset": "TUM RGB-D (cvg.cit.tum.de)",
+  "frames": 2488,
+  "duration_sec": 87.13982009887695,
+  "data_quality_counts": {
+    "VALID": 2488
+  },
+  "frame_level": {
+    "frames_with_near_obstacle_gt(<1.0m, any object)": 761,
+    "of_which_system_HIGH": 616,
+    "frames_without_near_obstacle": 1727,
+    "of_which_system_HIGH(false_alarm_frames)": 682,
+    "generic_obstacle_frames": 464,
+    "generic_obstacle_frames_with_near_gt": 354
+  },
+  "object_level": {
+    "<= 1.0m": {
+      "limit_m": 1.0,
+      "tp": 404,
+      "fp": 708,
+      "fn": 13,
+      "precision": 0.36330935251798563,
+      "recall": 0.9688249400479616
+    },
+    "<= 1.5m": {
+      "limit_m": 1.5,
+      "tp": 1030,
+      "fp": 82,
+      "fn": 77,
+      "precision": 0.9262589928057554,
+      "recall": 0.9304426377597109
+    }
+  },
+  "object_gt_distance_by_risk": {
+    "HIGH": {
+      "n": 1112,
+      "mean": 1.0807893919430192,
+      "median": 1.093999981880188,
+      "p90": 1.4270000457763672,
+      "min": 0.5109999775886536,
+      "max": 2.618000030517578
+    },
+    "MEDIUM": {
+      "n": 754,
+      "mean": 1.7883315792292436,
+      "median": 1.7389999628067017,
+      "p90": 2.2119998931884766,
+      "min": 0.8489999771118164,
+      "max": 2.7230000495910645
+    }
+  },
+  "alert_classes_seen": {
+    "chair": 1053,
+    "dining table": 129,
+    "cell phone": 125,
+    "refrigerator": 186,
+    "tv": 201,
+    "dog": 28,
+    "cat": 60,
+    "laptop": 25,
+    "person": 39,
+    "sink": 18,
+    "bed": 2
+  },
+  "spoken_alerts": {
+    "count": 22,
+    "per_minute": 15.148068913869745,
+    "samples": [
+      {
+        "t": 4.323624134063721,
+        "text": "Chú ý, có ghế phía trước, ở rất gần"
+      },
+      {
+        "t": 7.846712112426758,
+        "text": "Chú ý, có tủ lạnh phía trước, ở rất gần"
+      },
+      {
+        "t": 11.895844221115112,
+        "text": "Chú ý, có tủ lạnh phía trước, ở rất gần"
+      },
+      {
+        "t": 16.083799123764038,
+        "text": "Chú ý, có tủ lạnh phía trước, ở rất gần"
+      },
+      {
+        "t": 19.60414409637451,
+        "text": "Chú ý, có ti vi phía trước, ở rất gần"
+      },
+      {
+        "t": 23.130983114242554,
+        "text": "Chú ý, có tủ lạnh phía trước, ở rất gần"
+      },
+      {
+        "t": 26.64371109008789,
+        "text": "Chú ý, có điện thoại bên phải, ở rất gần"
+      },
+      {
+        "t": 30.16369915008545,
+        "text": "Chú ý, có điện thoại phía trước, ở rất gần"
+      },
+      {
+        "t": 33.71586012840271,
+        "text": "Chú ý, có vật cản phía trước, ở rất gần"
+      },
+      {
+        "t": 37.74267506599426,
+        "text": "Chú ý, có vật cản phía trước, ở rất gần"
+      },
+      {
+        "t": 41.2557590007782,
+        "text": "Chú ý, có ghế phía trước, ở rất gần"
+      },
+      {
+        "t": 44.77569508552551,
+        "text": "Chú ý, có vật cản phía trước, ở rất gần"
+      },
+      {
+        "t": 48.29574012756348,
+        "text": "Chú ý, có ti vi phía trước, ở rất gần"
+      },
+      {
+        "t": 56.43980121612549,
+        "text": "Chú ý, có bồn rửa phía trước, ở rất gần"
+      },
+      {
+        "t": 60.399200201034546,
+        "text": "Chú ý, có ghế bên trái, ở rất gần"
+      }
+    ]
+  },
+  "latency_ms": {
+    "detect": {
+      "n": 2488,
+      "mean": 23.099735820946886,
+      "median": 21.939312980975956,
+      "p90": 25.911096314666796,
+      "min": 18.50070897489786,
+      "max": 305.75699999462813
+    },
+    "depth": {
+      "n": 622,
+      "mean": 58.401115272823766,
+      "median": 57.444687525276095,
+      "p90": 59.77401223499328,
+      "min": 51.386708044447005,
+      "max": 455.97200002521276
+    }
+  }
+}

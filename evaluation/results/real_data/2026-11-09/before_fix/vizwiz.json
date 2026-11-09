@@ -1,0 +1,944 @@
+[
+ {
+  "idx": 1,
+  "file": "VizWiz_val_00000153.jpg",
+  "type": "other",
+  "q_en": "Can you tell me which medicine this is please?",
+  "q_vi": "Đây là thuốc gì?",
+  "gt": [
+   [
+    "night time",
+    5
+   ],
+   [
+    "night time cough syrup",
+    2
+   ],
+   [
+    "night time for cold flu symptoms",
+    1
+   ]
+  ],
+  "answer": "Khung cảnh: Đây là thuốc ngủ Night Time.",
+  "backend_raw": "Đây là thuốc ngủ Night Time.",
+  "backend_error": null,
+  "latency": 8.5,
+  "shape": [
+   648,
+   484
+  ]
+ },
+ {
+  "idx": 2,
+  "file": "VizWiz_val_00000383.jpg",
+  "type": "other",
+  "q_en": "Well if this has a product name on it that I need to look up on the internet something no this so I just need something product name model or any information.",
+  "q_vi": "Tên sản phẩm này là gì?",
+  "gt": [
+   [
+    "05n5801 veritas set up blocks",
+    4
+   ],
+   [
+    "veritas set up blocks 05n5801",
+    2
+   ],
+   [
+    "veritas",
+    2
+   ]
+  ],
+  "answer": "Khung cảnh: Tên sản phẩm này là Veritas Set-Up Blocks.",
+  "backend_raw": "Tên sản phẩm này là Veritas Set-Up Blocks.",
+  "backend_error": null,
+  "latency": 2.75,
+  "shape": [
+   1632,
+   1224
+  ],
+  "ocr": "05N5801. Veritas® Set-Up Blocks. Made in Canada.",
+  "ocr_quality": "OK"
+ },
+ {
+  "idx": 4,
+  "file": "VizWiz_val_00000048.jpg",
+  "type": "other",
+  "q_en": "What store is this?",
+  "q_vi": "Đây là cửa hàng nào?",
+  "gt": [
+   [
+    "original pancake house",
+    8
+   ],
+   [
+    "pancake house",
+    2
+   ]
+  ],
+  "answer": "Khung cảnh: Đây là cửa hàng \"The Original Pancake House\".",
+  "backend_raw": "Đây là cửa hàng \"The Original Pancake House\".",
+  "backend_error": null,
+  "latency": 2.8,
+  "shape": [
+   648,
+   484
+  ]
+ },
+ {
+  "idx": 8,
+  "file": "VizWiz_val_00000096.jpg",
+  "type": "other",
+  "q_en": "Is this caffeinated or decaffeinated?",
+  "q_vi": "Đồ uống này có caffeine hay không?",
+  "gt": [
+   [
+    "caffeinated",
+    9
+   ],
+   [
+    "unanswerable",
+    1
+   ]
+  ],
+  "answer": "Khung cảnh: Không xác định rõ từ ảnh.",
+  "backend_raw": "Không xác định rõ từ ảnh.",
+  "backend_error": null,
+  "latency": 2.62,
+  "shape": [
+   2592,
+   1936
+  ]
+ },
+ {
+  "idx": 9,
+  "file": "VizWiz_val_00000356.jpg",
+  "type": "other",
+  "q_en": "Can you tell me what this medicine is, please?",
+  "q_vi": "Đây là thuốc gì?",
+  "gt": [
+   [
+    "night time",
+    3
+   ],
+   [
+    "night time cough syrup",
+    2
+   ],
+   [
+    "night time medicine",
+    2
+   ]
+  ],
+  "answer": "Khung cảnh: Đây là thuốc ngủ Night Time.",
+  "backend_raw": "Đây là thuốc ngủ Night Time.",
+  "backend_error": null,
+  "latency": 1.73,
+  "shape": [
+   324,
+   242
+  ]
+ },
+ {
+  "idx": 10,
+  "file": "VizWiz_val_00000549.jpg",
+  "type": "other",
+  "q_en": "Can you describe what this page looks like? Thank you.",
+  "q_vi": "Trang giấy này trông như thế nào?",
+  "gt": [
+   [
+    "white 2 lines text",
+    1
+   ],
+   [
+    "paper text",
+    1
+   ],
+   [
+    "typing",
+    1
+   ]
+  ],
+  "answer": "Khung cảnh: Trang giấy có chữ viết tay và một tia sáng.",
+  "backend_raw": "Trang giấy có chữ viết tay và một tia sáng.",
+  "backend_error": null,
+  "latency": 2.81,
+  "shape": [
+   1296,
+   968
+  ]
+ },
+ {
+  "idx": 11,
+  "file": "VizWiz_val_00000057.jpg",
+  "type": "other",
+  "q_en": "What is on the pillowcase?",
+  "q_vi": "Trên vỏ gối có gì?",
+  "gt": [
+   [
+    "texas",
+    6
+   ],
+   [
+    "texas logo",
+    1
+   ],
+   [
+    "sports team logo",
+    1
+   ]
+  ],
+  "answer": "Khung cảnh: Trên vỏ gối có chữ \"TEXAS\" và hình con trâu.",
+  "backend_raw": "Trên vỏ gối có chữ \"TEXAS\" và hình con trâu.",
+  "backend_error": null,
+  "latency": 2.9,
+  "shape": [
+   1296,
+   968
+  ]
+ },
+ {
+  "idx": 14,
+  "file": "VizWiz_val_00000209.jpg",
+  "type": "yes/no",
+  "q_en": "Do you see steak on this menu?",
+  "q_vi": "Thực đơn này có món bít tết không?",
+  "gt": [
+   [
+    "yes",
+    10
+   ]
+  ],
+  "answer": "Khung cảnh: Thực đơn này có món bít tết.",
+  "backend_raw": "Thực đơn này có món bít tết.",
+  "backend_error": null,
+  "latency": 2.8,
+  "shape": [
+   2592,
+   1936
+  ]
+ },
+ {
+  "idx": 19,
+  "file": "VizWiz_val_00000072.jpg",
+  "type": "other",
+  "q_en": "what does the sky look like in this photograph",
+  "q_vi": "Bầu trời trong ảnh trông như thế nào?",
+  "gt": [
+   [
+    "clear",
+    3
+   ],
+   [
+    "cloudy",
+    2
+   ],
+   [
+    "blue sky some clouds",
+    1
+   ]
+  ],
+  "answer": "Khung cảnh: Bầu trời trong ảnh có màu xanh lam trong sáng, có một số đám mây nhỏ.",
+  "backend_raw": "Bầu trời trong ảnh có màu xanh lam trong sáng, có một số đám mây nhỏ.",
+  "backend_error": null,
+  "latency": 3.08,
+  "shape": [
+   1296,
+   968
+  ]
+ },
+ {
+  "idx": 20,
+  "file": "VizWiz_val_00000241.jpg",
+  "type": "other",
+  "q_en": "Please tell me what the title of this book is? Thank you for your time.",
+  "q_vi": "Tên cuốn sách này là gì?",
+  "gt": [
+   [
+    "unanswerable",
+    4
+   ],
+   [
+    "clive cussler dirk cussler",
+    2
+   ],
+   [
+    "no",
+    1
+   ]
+  ],
+  "answer": "Khung cảnh: Tên cuốn sách này là \"Live and Let Die\".",
+  "backend_raw": "Tên cuốn sách này là \"Live and Let Die\".",
+  "backend_error": null,
+  "latency": 2.75,
+  "shape": [
+   2592,
+   1936
+  ],
+  "ocr": "PRIORITY 05/2/|1 Page 2 of. #1 NEW YORK TIMES-BESTSELLING AUTH. SLIVE. CUSSLER. AND DIRK CUSSLEF.",
+  "ocr_quality": "OK"
+ },
+ {
+  "idx": 22,
+  "file": "VizWiz_val_00000518.jpg",
+  "type": "other",
+  "q_en": "What is that?",
+  "q_vi": "Đó là cái gì?",
+  "gt": [
+   [
+    "computer monitor",
+    2
+   ],
+   [
+    "computer screen",
+    2
+   ],
+   [
+    "graph",
+    2
+   ]
+  ],
+  "answer": "Khung cảnh: Cái gì đó trên màn hình là một bảng dữ liệu với các đường cong và số liệu. Trên màn hình, có một chuột và bàn phím bên dưới.",
+  "backend_raw": "Cái gì đó trên màn hình là một bảng dữ liệu với các đường cong và số liệu. Trên màn hình, có một chuột và bàn phím bên dưới.",
+  "backend_error": null,
+  "latency": 3.5,
+  "shape": [
+   1296,
+   968
+  ]
+ },
+ {
+  "idx": 25,
+  "file": "VizWiz_val_00000781.jpg",
+  "type": "other",
+  "q_en": "What is the price of the french fries?",
+  "q_vi": "Khoai tây chiên giá bao nhiêu?",
+  "gt": [
+   [
+    "1.29 1.99",
+    4
+   ],
+   [
+    "$1.29 $1.99",
+    3
+   ],
+   [
+    "small 1.29 large 1.99",
+    1
+   ]
+  ],
+  "answer": "Chưa phát hiện được khung cảnh hoặc vật thể rõ ràng phía trước.",
+  "backend_raw": null,
+  "backend_error": "MLX-VLM trả lời không đúng một đến ba câu",
+  "latency": 2.77,
+  "shape": [
+   1296,
+   968
+  ]
+ },
+ {
+  "idx": 27,
+  "file": "VizWiz_val_00000130.jpg",
+  "type": "yes/no",
+  "q_en": "Can you see a bottle in this picture? And if so, what is it?",
+  "q_vi": "Trong ảnh có cái chai nào không? Nếu có thì là chai gì?",
+  "gt": [
+   [
+    "no",
+    7
+   ],
+   [
+    "unanswerable",
+    2
+   ],
+   [
+    "yes unknown",
+    1
+   ]
+  ],
+  "answer": "Khung cảnh: Không xác định rõ từ ảnh.",
+  "backend_raw": "Không xác định rõ từ ảnh.",
+  "backend_error": null,
+  "latency": 2.6,
+  "shape": [
+   1024,
+   768
+  ]
+ },
+ {
+  "idx": 29,
+  "file": "VizWiz_val_00000590.jpg",
+  "type": "other",
+  "q_en": "What is this?",
+  "q_vi": "Đây là cái gì?",
+  "gt": [
+   [
+    "laptop",
+    4
+   ],
+   [
+    "movie on hulu on laptop",
+    1
+   ],
+   [
+    "laptop computer screen showing 2 men",
+    1
+   ]
+  ],
+  "answer": "Khung cảnh: Một laptop mở với màn hình hiển thị một video. Trên bàn phím laptop, có một chuột và bàn phím. Trên đệm, có một chiếc khăn trải và một số đồ chơi.",
+  "backend_raw": "Một laptop mở với màn hình hiển thị một video. Trên bàn phím laptop, có một chuột và bàn phím. Trên đệm, có một chiếc khăn trải và một số đồ chơi.",
+  "backend_error": null,
+  "latency": 3.81,
+  "shape": [
+   1632,
+   1224
+  ]
+ },
+ {
+  "idx": 30,
+  "file": "VizWiz_val_00000589.jpg",
+  "type": "other",
+  "q_en": "Can you tell me what the plaque says? Thank you.",
+  "q_vi": "Tấm biển ghi gì?",
+  "gt": [
+   [
+    "delightful grandchildren",
+    3
+   ],
+   [
+    "unanswerable",
+    2
+   ],
+   [
+    "something about delightful grandchildren",
+    1
+   ]
+  ],
+  "answer": "Khung cảnh: Tấm biển ghi: \"FUTUNAS ARE MORE DADYFUL THAN GRANDCHILDREN.\"",
+  "backend_raw": "Tấm biển ghi: \"FUTUNAS ARE MORE DADYFUL THAN GRANDCHILDREN.\"",
+  "backend_error": null,
+  "latency": 3.14,
+  "shape": [
+   1296,
+   968
+  ],
+  "ocr": "Glass Greeting Plaques Plaque de souhaits en verre. FEW THINGS ARE MORE Delightful THAN Grandchildren FIGHTING OVER YOUR LAP. •HAVOCGIFTS™.",
+  "ocr_quality": "OK"
+ },
+ {
+  "idx": 35,
+  "file": "VizWiz_val_00000049.jpg",
+  "type": "other",
+  "q_en": "What kind of pop is this?",
+  "q_vi": "Đây là loại nước ngọt gì?",
+  "gt": [
+   [
+    "unanswerable",
+    3
+   ],
+   [
+    "nestea",
+    2
+   ],
+   [
+    "nestle tea",
+    1
+   ]
+  ],
+  "answer": "Khung cảnh: Đó là nước ngọt Nestlé.",
+  "backend_raw": "Đó là nước ngọt Nestlé.",
+  "backend_error": null,
+  "latency": 2.64,
+  "shape": [
+   2048,
+   1536
+  ]
+ },
+ {
+  "idx": 40,
+  "file": "VizWiz_val_00000136.jpg",
+  "type": "other",
+  "q_en": "Tell me what this screen says because the computers not functioning properly and it gave another sound",
+  "q_vi": "Màn hình này ghi gì?",
+  "gt": [
+   [
+    "printer not responding",
+    10
+   ]
+  ],
+  "answer": "Khung cảnh: Màn hình hiển thị lỗi \"Printer not responding\" trên máy tính.",
+  "backend_raw": "Màn hình hiển thị lỗi \"Printer not responding\" trên máy tính.",
+  "backend_error": null,
+  "latency": 2.66,
+  "shape": [
+   480,
+   360
+  ],
+  "ocr": "CODAK ESP 5200 Series ARO. DDAK AiO Printer. Printer not responding. 1. Make sure the printer is turned on. 2. Make sure the USB cable is connected to the. computer and printer. 3. Make sure the print queue is online. Order Supple. Cancel Printing.",
+  "ocr_quality": "OK"
+ },
+ {
+  "idx": 42,
+  "file": "VizWiz_val_00000144.jpg",
+  "type": "other",
+  "q_en": "What does this say?  Thank you.",
+  "q_vi": "Dòng chữ này ghi gì?",
+  "gt": [
+   [
+    "your computer at risk",
+    5
+   ],
+   [
+    "mcafee your computer at risk check status",
+    1
+   ],
+   [
+    "your computer at risk from mcafee message",
+    1
+   ]
+  ],
+  "answer": "Khung cảnh: Máy tính của bạn đang ở trạng thái nguy hiểm. Vui lòng kiểm tra trạng thái của bạn để xác định xem có vấn đề nào đang ảnh hưởng đến máy tính của bạn.",
+  "backend_raw": "Máy tính của bạn đang ở trạng thái nguy hiểm. Vui lòng kiểm tra trạng thái của bạn để xác định xem có vấn đề nào đang ảnh hưởng đến máy tính của bạn.",
+  "backend_error": null,
+  "latency": 3.75,
+  "shape": [
+   1296,
+   968
+  ],
+  "ocr": "N McAfee. Your Computer is at Risk. Please check your status so you can address any securly issues. ta keep your PC protected. Check status. Clipse. * PEO 342 PRE. 11/28/2011.",
+  "ocr_quality": "OK"
+ },
+ {
+  "idx": 43,
+  "file": "VizWiz_val_00000510.jpg",
+  "type": "other",
+  "q_en": "What is this?",
+  "q_vi": "Đây là cái gì?",
+  "gt": [
+   [
+    "computer on desk",
+    2
+   ],
+   [
+    "computer",
+    2
+   ],
+   [
+    "computer desk",
+    2
+   ]
+  ],
+  "answer": "Khung cảnh: Đây là một bàn làm việc có máy tính, bàn phím, chuột, và một số đĩa CD.",
+  "backend_raw": "Đây là một bàn làm việc có máy tính, bàn phím, chuột, và một số đĩa CD.",
+  "backend_error": null,
+  "latency": 3.25,
+  "shape": [
+   1632,
+   1224
+  ]
+ },
+ {
+  "idx": 44,
+  "file": "VizWiz_val_00000124.jpg",
+  "type": "other",
+  "q_en": "What drink is this?",
+  "q_vi": "Đây là đồ uống gì?",
+  "gt": [
+   [
+    "hint blackberry",
+    3
+   ],
+   [
+    "hint",
+    2
+   ],
+   [
+    "blackberry hint",
+    2
+   ]
+  ],
+  "answer": "Khung cảnh: Đó là một chai nước uống blackberry.",
+  "backend_raw": "Đó là một chai nước uống blackberry.",
+  "backend_error": null,
+  "latency": 2.68,
+  "shape": [
+   960,
+   720
+  ]
+ },
+ {
+  "idx": 45,
+  "file": "VizWiz_val_00000651.jpg",
+  "type": "unanswerable",
+  "q_en": "What does the writing say?",
+  "q_vi": "Chữ viết ghi gì?",
+  "gt": [
+   [
+    "unanswerable",
+    10
+   ]
+  ],
+  "answer": "Khung cảnh: Không xác định rõ từ ảnh.",
+  "backend_raw": "Không xác định rõ từ ảnh.",
+  "backend_error": null,
+  "latency": 2.63,
+  "shape": [
+   1296,
+   968
+  ],
+  "ocr": "Không phát hiện thấy chữ trong ảnh.",
+  "ocr_quality": "OK"
+ },
+ {
+  "idx": 46,
+  "file": "VizWiz_val_00000327.jpg",
+  "type": "unanswerable",
+  "q_en": "is there text on this side of the car?",
+  "q_vi": "Bên này của xe có chữ không?",
+  "gt": [
+   [
+    "unanswerable",
+    4
+   ],
+   [
+    "greenbacks greenberrys",
+    2
+   ],
+   [
+    "no",
+    1
+   ]
+  ],
+  "answer": "Khung cảnh: Không xác định rõ từ ảnh.",
+  "backend_raw": "Không xác định rõ từ ảnh.",
+  "backend_error": null,
+  "latency": 2.36,
+  "shape": [
+   480,
+   360
+  ]
+ },
+ {
+  "idx": 47,
+  "file": "VizWiz_val_00000636.jpg",
+  "type": "unanswerable",
+  "q_en": "Which lottery to get has two sets of numbers?",
+  "q_vi": "Vé số nào có hai dãy số?",
+  "gt": [
+   [
+    "unanswerable",
+    5
+   ],
+   [
+    "left 1",
+    2
+   ],
+   [
+    "left hand ticket",
+    1
+   ]
+  ],
+  "answer": "Khung cảnh: Không xác định rõ từ ảnh.",
+  "backend_raw": "Không xác định rõ từ ảnh.",
+  "backend_error": null,
+  "latency": 2.62,
+  "shape": [
+   1632,
+   1224
+  ]
+ },
+ {
+  "idx": 48,
+  "file": "VizWiz_val_00000755.jpg",
+  "type": "unanswerable",
+  "q_en": "What does this say? What does this say? What does it say?",
+  "q_vi": "Cái này ghi gì?",
+  "gt": [
+   [
+    "unanswerable",
+    9
+   ],
+   [
+    "notes",
+    1
+   ]
+  ],
+  "answer": "Khung cảnh: Không xác định rõ từ ảnh.",
+  "backend_raw": "Không xác định rõ từ ảnh.",
+  "backend_error": null,
+  "latency": 2.62,
+  "shape": [
+   1632,
+   1224
+  ],
+  "ocr": "Ảnh bị mờ hoặc rung tay, vui lòng giữ yên và chụp lại",
+  "ocr_quality": "BAD_QUALITY"
+ },
+ {
+  "idx": 49,
+  "file": "VizWiz_val_00000190.jpg",
+  "type": "unanswerable",
+  "q_en": "What software is this, and read any serial number if you can see one.",
+  "q_vi": "Đây là phần mềm gì? Đọc số serial nếu thấy.",
+  "gt": [
+   [
+    "unanswerable",
+    10
+   ]
+  ],
+  "answer": "Khung cảnh: Không xác định rõ từ ảnh.",
+  "backend_raw": "Không xác định rõ từ ảnh.",
+  "backend_error": null,
+  "latency": 2.63,
+  "shape": [
+   2592,
+   1936
+  ]
+ },
+ {
+  "idx": 50,
+  "file": "VizWiz_val_00000105.jpg",
+  "type": "unanswerable",
+  "q_en": "Has the text on the screen changed?",
+  "q_vi": "Chữ trên màn hình đã thay đổi chưa?",
+  "gt": [
+   [
+    "unanswerable",
+    6
+   ],
+   [
+    "no",
+    2
+   ],
+   [
+    "yes",
+    2
+   ]
+  ],
+  "answer": "Khung cảnh: Không xác định rõ từ ảnh.",
+  "backend_raw": "Không xác định rõ từ ảnh.",
+  "backend_error": null,
+  "latency": 2.6,
+  "shape": [
+   1296,
+   968
+  ]
+ },
+ {
+  "idx": 51,
+  "file": "VizWiz_val_00000658.jpg",
+  "type": "unanswerable",
+  "q_en": "What are those letters?",
+  "q_vi": "Những chữ cái đó là gì?",
+  "gt": [
+   [
+    "unanswerable",
+    8
+   ],
+   [
+    "sappy",
+    1
+   ],
+   [
+    "nappy",
+    1
+   ]
+  ],
+  "answer": "Khung cảnh: Không xác định rõ từ ảnh.",
+  "backend_raw": "Không xác định rõ từ ảnh.",
+  "backend_error": null,
+  "latency": 2.62,
+  "shape": [
+   1632,
+   1224
+  ],
+  "ocr": "Google. 9 - 8. euthorize Aleske 05a Federal Credit Inion (Alaska U5A) to cr (ACE) withdrewel (debit) on my deposit ac. Cleering House and epply this esourt pal Funds transter to the loan have cine. and thet the seras disclosed on the Promissory Note & Security Contract further understand that thi da",
+  "ocr_quality": "OK"
+ },
+ {
+  "idx": 52,
+  "file": "VizWiz_val_00000714.jpg",
+  "type": "unanswerable",
+  "q_en": "What's in this bucket? Chris, please, what flavor are there other? Thank you.",
+  "q_vi": "Trong xô này có gì?",
+  "gt": [
+   [
+    "unanswerable",
+    8
+   ],
+   [
+    "not bucket",
+    1
+   ],
+   [
+    "crispy chicken",
+    1
+   ]
+  ],
+  "answer": "Khung cảnh: Không xác định rõ từ ảnh.",
+  "backend_raw": "Không xác định rõ từ ảnh.",
+  "backend_error": null,
+  "latency": 2.63,
+  "shape": [
+   1296,
+   968
+  ]
+ },
+ {
+  "idx": 53,
+  "file": "VizWiz_val_00000202.jpg",
+  "type": "unanswerable",
+  "q_en": "Hello could you please tell me what this says? Thank you.",
+  "q_vi": "Cái này ghi gì?",
+  "gt": [
+   [
+    "unanswerable",
+    9
+   ],
+   [
+    "book",
+    1
+   ]
+  ],
+  "answer": "Khung cảnh: Không xác định rõ từ ảnh.",
+  "backend_raw": "Không xác định rõ từ ảnh.",
+  "backend_error": null,
+  "latency": 2.56,
+  "shape": [
+   648,
+   484
+  ],
+  "ocr": "(80019 15. VH E AP. LAU MiH Tricai 929 E D000 ThaN 19 Than Nani HaT Tale WH ThiE Trabe 20 tha 1a0t Sir the taron0 De bosely pul ii TE E RUy TS BiST. Vesfers pRIMMI? ea ti CHADHAE WIRIOH HEREH TRH FRUA THREH H HIStE H HAIN HAH • Hio Aida ErRain 3 Hou второй shina: Blue WHie tH CHiSe ae Bantes di King",
+  "ocr_quality": "OK"
+ },
+ {
+  "idx": 54,
+  "file": "VizWiz_val_00000406.jpg",
+  "type": "unanswerable",
+  "q_en": "Hi, please tell me what is showing in the message on my computer screen. Thank you.",
+  "q_vi": "Màn hình máy tính đang hiện thông báo gì?",
+  "gt": [
+   [
+    "unanswerable",
+    10
+   ]
+  ],
+  "answer": "Khung cảnh: Màn hình máy tính đang hiện thông báo 'Update'.",
+  "backend_raw": "Màn hình máy tính đang hiện thông báo 'Update'.",
+  "backend_error": null,
+  "latency": 2.77,
+  "shape": [
+   1632,
+   1224
+  ]
+ },
+ {
+  "idx": 55,
+  "file": "VizWiz_val_00000098.jpg",
+  "type": "unanswerable",
+  "q_en": "What is the model number of the computer?",
+  "q_vi": "Số model của máy tính là gì?",
+  "gt": [
+   [
+    "unanswerable",
+    10
+   ]
+  ],
+  "answer": "Khung cảnh: Số model của máy tính là HP.",
+  "backend_raw": "Số model của máy tính là HP.",
+  "backend_error": null,
+  "latency": 2.77,
+  "shape": [
+   2592,
+   1936
+  ]
+ },
+ {
+  "idx": 56,
+  "file": "VizWiz_val_00000623.jpg",
+  "type": "unanswerable",
+  "q_en": "What kind of soup is this?",
+  "q_vi": "Đây là loại súp gì?",
+  "gt": [
+   [
+    "unanswerable",
+    8
+   ],
+   [
+    "looks like campbells chunky",
+    1
+   ],
+   [
+    "campbell",
+    1
+   ]
+  ],
+  "answer": "Khung cảnh: Không xác định rõ từ ảnh.",
+  "backend_raw": "Không xác định rõ từ ảnh.",
+  "backend_error": null,
+  "latency": 2.63,
+  "shape": [
+   1296,
+   968
+  ]
+ },
+ {
+  "idx": 58,
+  "file": "VizWiz_val_00000065.jpg",
+  "type": "unanswerable",
+  "q_en": "Could you please tell me what's on my screen?  ",
+  "q_vi": "Màn hình của tôi có gì?",
+  "gt": [
+   [
+    "unanswerable",
+    5
+   ],
+   [
+    "no",
+    1
+   ],
+   [
+    "white black screen",
+    1
+   ]
+  ],
+  "answer": "Chưa phát hiện được khung cảnh hoặc vật thể rõ ràng phía trước.",
+  "backend_raw": null,
+  "backend_error": "MLX-VLM trả lời không đúng một đến ba câu",
+  "latency": 2.94,
+  "shape": [
+   1296,
+   968
+  ]
+ },
+ {
+  "idx": 59,
+  "file": "VizWiz_val_00000645.jpg",
+  "type": "unanswerable",
+  "q_en": "Please tell me what this says. Please tell me what this says.",
+  "q_vi": "Cái này ghi gì?",
+  "gt": [
+   [
+    "unanswerable",
+    7
+   ],
+   [
+    "computer monitor",
+    1
+   ],
+   [
+    "operating system to start press tab to select tool",
+    1
+   ]
+  ],
+  "answer": "Khung cảnh: Cái này ghi là màn hình khởi động của một máy tính.",
+  "backend_raw": "Cái này ghi là màn hình khởi động của một máy tính.",
+  "backend_error": null,
+  "latency": 2.91,
+  "shape": [
+   1632,
+   1224
+  ],
+  "ocr": "Windows Boot Manager. in operating system to start, or press TAB to select a tool: arrow keys to highlight your choice, then press ENTER.). Jows 7. dows Memory Diagnostic. ESC=Cance I. TAB =Menu. =Choose. MacBook Air.",
+  "ocr_quality": "OK"
+ }
+]

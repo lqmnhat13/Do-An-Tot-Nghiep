@@ -4,7 +4,7 @@
 
 Đồ án xây dựng một ứng dụng **chạy cục bộ trên macOS Apple Silicon** để mô tả môi trường qua âm thanh tiếng Việt. Camera cung cấp ảnh cho phát hiện vật thể, ước lượng **khoảng cách (mét, cần hiệu chỉnh theo camera)** và cảnh báo va chạm; OCR và hỏi đáp thị giác (VQA) chỉ chạy khi người dùng yêu cầu. Runtime không cần cloud API hay telemetry. Việc tải model là bước chuẩn bị riêng, cần mạng khi tài nguyên chưa có.
 
-**Trạng thái đối chiếu ngày 11/10/2026:** đã có ứng dụng tích hợp camera/video, detection, tracking, depth, đánh giá nguy cơ, OCR, VQA và âm thanh; bộ test offline trên máy phát triển chạy **135 test, tất cả đạt**. Đây vẫn là nguyên mẫu, chưa có đánh giá thực địa đủ để khẳng định độ tin cậy cho sử dụng độc lập. Các mục dưới mô tả mã nguồn và cấu hình hiện tại, không xem nội dung trong các file `PLAN_*.md` là chức năng đã hoàn thành.
+**Trạng thái đối chiếu ngày 09/11/2026:** đã có ứng dụng tích hợp camera/video, detection, tracking, depth, đánh giá nguy cơ, OCR, VQA và âm thanh; bộ test offline trên máy phát triển chạy **181 test, tất cả đạt**. Đây vẫn là nguyên mẫu, chưa có đánh giá thực địa đủ để khẳng định độ tin cậy cho sử dụng độc lập. Các mục dưới mô tả mã nguồn và cấu hình hiện tại, không xem nội dung trong các file `PLAN_*.md` là chức năng đã hoàn thành.
 
 > **Lưu ý an toàn:** Đây là nguyên mẫu nghiên cứu, không phải thiết bị dẫn đường đã được chứng nhận. Model có thể bỏ sót vật cản, đọc sai chữ hoặc mô tả sai ảnh. VQA không xác nhận đường đi an toàn; người dùng vẫn cần gậy dẫn đường, kỹ năng định hướng và hỗ trợ phù hợp.
 
@@ -110,19 +110,21 @@ python app.py --source dummy --no-gui --duration 5
 
 Nguồn `dummy` là ảnh giả lập, **không** chứng minh hệ thống hoạt động chính xác với camera thật.
 
-Runtime mặc định bật chính sách local-only qua `SECOND_EYE_OFFLINE=1`; các biến bổ sung ở trên áp dụng thêm chế độ offline cho thư viện. YOLO thiếu file trọng số sẽ làm khởi động thất bại. Depth thiếu cache trả bản đồ có mask không hợp lệ, vì vậy không đủ căn cứ phát cảnh báo. OCR thiếu engine/model trả lỗi; VQA thiếu model dùng fallback. Camera mở thất bại quá số lần thử có thể **tự chuyển sang dummy**: nếu thấy `Dummy Cam`, đó là ảnh giả lập, không phải camera đã phục hồi.
+Runtime mặc định bật chính sách local-only qua `SECOND_EYE_OFFLINE=1`; các biến bổ sung ở trên áp dụng thêm chế độ offline cho thư viện. YOLO thiếu file trọng số sẽ làm khởi động thất bại. Depth thiếu cache trả bản đồ có mask không hợp lệ, vì vậy không đủ căn cứ phát cảnh báo. OCR thiếu engine/model trả lỗi; VQA thiếu model dùng fallback. Camera thật bị mất tín hiệu **không** bị thay bằng ảnh giả lập: `CameraManager` tiếp tục thử kết nối lại, còn `SystemCoordinator` đọc thông báo "Mất tín hiệu camera. Cảnh báo vật cản đang tạm ngừng…" (nhắc lại mỗi 10 giây) và báo khi camera hoạt động trở lại.
+
+Giám sát sức khỏe chạy mỗi 0,5 giây (sau 5 giây khởi động). Ngoài mất camera (frame cũ hơn 2 giây), hệ thống nói ra khi depth không có kết quả hợp lệ quá `runtime.watchdog_timeout_sec` (mặc định 3 giây: depth treo, stale/degraded kéo dài, model depth không nạp được) hoặc luồng detection ngừng. Mất camera được báo ở mọi chế độ; lỗi depth/detection chỉ báo ở chế độ Cảnh báo. Trên kịch bản thử (`evaluation/benchmarks/eval_fault_scenarios.py`), rút webcam được báo sau 0,6 giây và depth treo được báo sau 3,2 giây.
 
 ## Sử dụng ứng dụng
 
 | Phím | Tác dụng |
 | --- | --- |
 | `Space` | Chụp frame mới và đọc chữ bằng OCR. |
-| `Q` | Hỏi VQA theo câu mặc định “Mô tả khung cảnh phía trước”. |
+| `Q` | Hỏi VQA theo câu mặc định “Phía trước có gì?”. Câu cũ “Mô tả khung cảnh phía trước” khiến Qwen2.5-VL-3B-4bit sinh câu ảo giác cố định và chạm giới hạn token (xem đánh giá). |
 | `C` | Chuyển về chế độ Cảnh báo, dừng lời OCR/VQA và hủy hiệu lực kết quả đang chờ. |
 | `S` | Dừng giọng đọc và hủy kết quả OCR/VQA đang chờ; giữ nguyên chế độ đã chọn. |
 | `Esc` | Thoát cửa sổ và dừng hệ thống. |
 
-Khởi động ở chế độ Cảnh báo. Khi được chấp nhận, `Space`/`Q` vừa chọn chế độ OCR/VQA vừa xử lý ảnh camera mới nhất, tuổi không quá **1 giây**; hoàn tất, lỗi hoặc thiếu ảnh đều giữ chế độ đó. Bấm lại để xử lý ảnh mới. Chỉ `C` bật lại cảnh báo từ nguồn ảnh sau lúc chuyển chế độ. Nếu worker cũ còn chạy, yêu cầu OCR/VQA mới bị từ chối; `C` vẫn chuyển về Cảnh báo ngay. `S`/`C` hủy hiệu lực kết quả muộn và ngắt âm thanh, nhưng không cưỡng bức dừng inference đang chạy hoặc giải phóng model khỏi RAM.
+Khởi động ở chế độ Cảnh báo. Khi được chấp nhận, `Space`/`Q` vừa chọn chế độ OCR/VQA vừa xử lý ảnh camera mới nhất, tuổi không quá **1 giây**; hoàn tất, lỗi hoặc thiếu ảnh đều giữ chế độ đó. Bấm lại để xử lý ảnh mới. Chỉ `C` bật lại cảnh báo từ nguồn ảnh sau lúc chuyển chế độ. Nếu worker cũ còn chạy, yêu cầu OCR/VQA mới bị từ chối; `C` vẫn chuyển về Cảnh báo ngay. `S`/`C` hủy hiệu lực kết quả muộn và ngắt âm thanh, nhưng không cưỡng bức dừng inference đang chạy hoặc giải phóng model khỏi RAM. Mỗi tác vụ có giới hạn thời gian (OCR 30 giây, VQA 60 giây gồm cả lần nạp model): quá hạn thì đọc "…quá thời gian. Vui lòng thử lại." và giải phóng worker để nhận yêu cầu mới. Riêng Apple Vision không trả về trong `ocr.read_timeout_sec` (mặc định 10 giây) thì chuyển sang EasyOCR.
 
 Các phím trên chỉ hoạt động khi cửa sổ GUI có focus. Ở chế độ `--no-gui`, dùng `Ctrl+C` để dừng; không có thao tác OCR/VQA qua phím tắt GUI. Nếu cần thử riêng OCR trên ảnh hoặc đổi câu hỏi VQA trên webcam, dùng các CLI phụ trong [CLI.md](CLI.md). Hai CLI phụ đó **không** chạy pipeline cảnh báo; để thử trải nghiệm đầy đủ, dùng `app.py`.
 
@@ -139,8 +141,8 @@ Các phím trên chỉ hoạt động khi cửa sổ GUI có focus. Ở chế đ
 Các điểm cần lưu ý khi điều chỉnh:
 
 - `--source`, `--weights`, `--device` ghi đè giá trị YAML tương ứng. Device chung điều khiển YOLO/depth và nhánh PyTorch/EasyOCR; `--device cpu` không chuyển backend MLX sang CPU.
-- `camera.buffer_size` chưa điều khiển bộ đệm: runtime hiện tạo hai buffer, mỗi buffer **2 frame**, giữ `drop-oldest`. Các khóa reconnect trong YAML chưa được truyền vào camera; lớp dùng mặc định 2 giây/lần và tối đa 5 lần trước điều kiện chuyển dummy.
-- `runtime.detection_interval_ms`, `depth_interval_ms`, `watchdog_timeout_sec` chưa nối vào worker: detection xử lý khi có frame, depth dùng khoảng nhịp 125 ms, watchdog dùng 3 giây. Các giá trị này không bảo đảm FPS thực tế.
+- `camera.buffer_size` chưa điều khiển bộ đệm: runtime hiện tạo hai buffer, mỗi buffer **2 frame**, giữ `drop-oldest`. `camera.reconnect_delay_sec` được dùng làm khoảng chờ giữa các lần thử kết nối lại (không giới hạn số lần); `max_reconnect_attempts` chỉ quyết định lúc ghi log.
+- `runtime.detection_interval_ms`, `depth_interval_ms` chưa nối vào worker: detection xử lý khi có frame, depth dùng khoảng nhịp 125 ms. `runtime.watchdog_timeout_sec` được dùng cho giám sát sức khỏe. Các giá trị này không bảo đảm FPS thực tế.
 - `audio.enabled`, `audio.engine`, `audio.enable_chimes`, `audio.min_alert_interval_sec` chưa nối vào điều phối âm thanh. Cooldown thực tế nằm trong cấu hình fusion: mặc định 4 giây mỗi track và 3,5 giây giữa cảnh báo. Dùng `--no-gui` để tắt cửa sổ; `runtime.enable_preview` chưa điều khiển việc này.
 - Các khóa device riêng từng model, `detection.model_name`, `detection.iou_threshold`, `detection.input_size`, `vqa.max_tokens` cấp ngoài và `ui.show_diagnostics` chưa được dùng làm tùy chọn runtime tương ứng. YOLO dùng mặc định IoU 0,45/input 640. `depth.representation` (`metric_depth` | `relative_depth`) và `depth.metric_scale` được dùng; khi đổi sang `relative_depth` phải đổi `hf_repo_id` về `Depth-Anything-V2-Small-hf`, và cảnh báo vật cản chung tự tắt vì cần mét. Giới hạn token MLX lấy từ **`vqa.mlx_vlm.max_tokens`** và luôn bị chặn ở 128.
 
@@ -153,7 +155,7 @@ HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 PYTHONPATH=. \
 python -m unittest discover -s tests -p 'test_*.py' -v
 ```
 
-**Kết quả kiểm tra ngày 11/10/2026:** lệnh chuẩn dùng `/opt/anaconda3/envs/ai-macbook/bin/python` chạy **135 test trong 12,468 giây**, kết thúc `OK`, mã thoát `0`. Suite bao phủ contracts, buffer, tracking, ROI, đồng bộ dữ liệu stale, hành lang, cảnh báo/âm thanh theo chế độ, OCR, guardrail VQA, adapter MLX, CLI, HUD, hủy kết quả muộn và shutdown. Có test pipeline với nguồn dummy và test Apple Vision trên ảnh chữ tạo sẵn; nhiều ca khác dùng mock/stub. Kết quả này không phải benchmark VQA model thật hay phép thử camera/loa ngoài đời. Lần chạy này không tái hiện lỗi native MLX/nanobind từng được ghi trong tài liệu cũ; chưa đủ để kết luận mọi tổ hợp dependency đều tránh được lỗi đó.
+**Kết quả kiểm tra ngày 09/11/2026:** lệnh chuẩn dùng `/opt/anaconda3/envs/ai-macbook/bin/python` chạy **181 test**, kết thúc `OK`. Test Apple Vision thật có thể chậm hơn 10 giây ở lần chạy đầu khi máy vừa khởi động (nạp model Vision lạnh). Suite bao phủ contracts, buffer, tracking, ROI, đồng bộ dữ liệu stale, hành lang, cảnh báo/âm thanh theo chế độ, OCR, guardrail VQA, adapter MLX, CLI, HUD, hủy kết quả muộn và shutdown. Có test pipeline với nguồn dummy và test Apple Vision trên ảnh chữ tạo sẵn; nhiều ca khác dùng mock/stub. Kết quả này không phải benchmark VQA model thật hay phép thử camera/loa ngoài đời. Lần chạy này không tái hiện lỗi native MLX/nanobind từng được ghi trong tài liệu cũ; chưa đủ để kết luận mọi tổ hợp dependency đều tránh được lỗi đó.
 
 Thử riêng các chức năng trên dữ liệu thật:
 
@@ -180,7 +182,7 @@ Báo cáo đang được quản lý trong Git tại `evaluation/results/eval_rep
 - Camera mờ, lóa, bị che, thiếu sáng, ngoài khung hình hoặc vật thể ngoài các lớp detection có thể gây bỏ sót. Không có cảnh báo không có nghĩa là an toàn.
 - OCR có thể đọc sai biển hiệu/chữ nhỏ; VQA có thể nhầm đối tượng, suy diễn hoặc trả lời quá ngắn/dài. Không dùng hai chức năng này làm nguồn xác nhận an toàn di chuyển.
 - OCR sắp thứ tự theo tọa độ dòng và khoảng cách chữ, chưa phân tích đầy đủ bố cục nhiều cột/bảng. EasyOCR chậm hơn Vision nhiều (0,5–7,6 s/ảnh) và kém chính xác hơn. Guardrail VQA phân loại ý định bằng biểu thức chính quy (hỏi người dùng có di chuyển được không, hỏi vật cản/nguy hiểm), không bảo đảm phát hiện mọi cách diễn đạt.
-- Dữ liệu detection/depth trễ hoặc không hợp lệ bị loại khỏi đánh giá rủi ro; hệ thống không phát cảnh báo dựa trên kết quả stale. Điều này cũng đồng nghĩa có thể **không có cảnh báo** khi dữ liệu kém chất lượng.
+- Dữ liệu detection/depth trễ hoặc không hợp lệ bị loại khỏi đánh giá rủi ro; hệ thống không phát cảnh báo dựa trên kết quả stale. Khi tình trạng này kéo dài quá 3 giây, hệ thống đọc thông báo "cảnh báo vật cản đang tạm ngừng" thay vì im lặng; trong khoảng 3 giây đầu vẫn có thể **không có cảnh báo**.
 - Xử lý trên M1 16 GB có thể thay đổi theo bộ model, tải hệ thống và trạng thái nóng/lạnh của model. Chưa có cam kết về latency, RAM hoặc độ chính xác cho mọi cảnh.
 
 ## Cấu trúc và tài liệu

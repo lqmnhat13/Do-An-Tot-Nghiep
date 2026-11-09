@@ -163,9 +163,11 @@ class CameraManager:
                     reconnect_attempts += 1
                     self._reconnect_counter += 1
                     self._is_alive = False
-                    if reconnect_attempts > self.max_reconnect_attempts:
-                        print(f"[CameraManager] Vượt quá số lần reconnect ({self.max_reconnect_attempts}), chuyển sang chế độ dummy.")
-                        self._is_dummy = True
+                    # Không chuyển sang ảnh giả lập: nhận diện trên ảnh giả sẽ che việc mất camera.
+                    # Tiếp tục thử kết nối; SystemCoordinator báo mất camera bằng giọng nói.
+                    if reconnect_attempts == self.max_reconnect_attempts + 1:
+                        print(f"[CameraManager] Chưa kết nối lại được sau {self.max_reconnect_attempts} "
+                              "lần, tiếp tục thử.")
                     time.sleep(self.reconnect_delay_sec)
                     continue
                 else:

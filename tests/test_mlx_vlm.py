@@ -13,6 +13,7 @@ from scripts import download_models
 from scripts.run_vqa_camera import VQACameraSession, build_parser
 from src.contracts.request import VQARequest
 from src.vqa.backend import MLXVLMBackend, LegacyCaptionBackend
+from src.vqa.formatting import VQA_UNAVAILABLE_ANSWER
 from src.vqa.vqa_service import VQAService
 
 
@@ -185,8 +186,7 @@ class TestMLXVLM(unittest.TestCase):
         self.generate.return_value = "Chiếc ghế đang"
         result = self.service().answer(self.request())
         self.assertTrue(result.success)
-        self.assertEqual(result.answer,
-                         "Chưa phát hiện được khung cảnh hoặc vật thể rõ ràng phía trước.")
+        self.assertEqual(result.answer, VQA_UNAVAILABLE_ANSWER)
 
     def test_missing_model_repo_id_and_incomplete_snapshot(self):
         for path in ("", str(self.path / "missing"), "owner/nonexistent-model"):

@@ -1,0 +1,119 @@
+{
+  "sequence": "rgbd_dataset_freiburg3_walking_xyz",
+  "dataset": "TUM RGB-D (cvg.cit.tum.de)",
+  "frames": 827,
+  "duration_sec": 28.824168920516968,
+  "data_quality_counts": {
+    "VALID": 827
+  },
+  "frame_level": {
+    "frames_with_near_obstacle_gt(<1.0m, any object)": 8,
+    "of_which_system_HIGH": 8,
+    "frames_without_near_obstacle": 819,
+    "of_which_system_HIGH(false_alarm_frames)": 106,
+    "generic_obstacle_frames": 0,
+    "generic_obstacle_frames_with_near_gt": 0
+  },
+  "object_level": {
+    "<= 1.0m": {
+      "limit_m": 1.0,
+      "tp": 19,
+      "fp": 117,
+      "fn": 0,
+      "precision": 0.13970588235294118,
+      "recall": 1.0
+    },
+    "<= 1.5m": {
+      "limit_m": 1.5,
+      "tp": 135,
+      "fp": 1,
+      "fn": 303,
+      "precision": 0.9926470588235294,
+      "recall": 0.3082191780821918
+    }
+  },
+  "object_gt_distance_by_risk": {
+    "HIGH": {
+      "n": 136,
+      "mean": 1.1991250067949295,
+      "median": 1.2294999957084656,
+      "p90": 1.4179999828338623,
+      "min": 0.9279999732971191,
+      "max": 1.8329999446868896
+    },
+    "LOW": {
+      "n": 624,
+      "mean": 2.365793912838667,
+      "median": 2.3980000019073486,
+      "p90": 2.8350000381469727,
+      "min": 1.4149999618530273,
+      "max": 3.3989999294281006
+    },
+    "MEDIUM": {
+      "n": 1048,
+      "mean": 1.7170927522291664,
+      "median": 1.6629999876022339,
+      "p90": 2.065000057220459,
+      "min": 1.1297999620437622,
+      "max": 3.2079999446868896
+    },
+    "NO_ALERT": {
+      "n": 703,
+      "mean": 2.7049399702511674,
+      "median": 2.680000066757202,
+      "p90": 2.8589999675750732,
+      "min": 1.1729999780654907,
+      "max": 8.413000106811523
+    }
+  },
+  "alert_classes_seen": {
+    "person": 578,
+    "chair": 827,
+    "tv": 1077,
+    "dining table": 1,
+    "refrigerator": 19,
+    "laptop": 5,
+    "cell phone": 3,
+    "dog": 1
+  },
+  "spoken_alerts": {
+    "count": 4,
+    "per_minute": 8.3263458752897,
+    "samples": [
+      {
+        "t": 5.558067083358765,
+        "text": "Chú ý, có người phía trước, ở rất gần"
+      },
+      {
+        "t": 13.869939088821411,
+        "text": "Chú ý, có người bên trái, ở rất gần"
+      },
+      {
+        "t": 19.166359901428223,
+        "text": "Chú ý, có người bên trái, ở rất gần"
+      },
+      {
+        "t": 22.754117012023926,
+        "text": "Chú ý, có người bên phải, ở rất gần"
+      }
+    ]
+  },
+  "latency_ms": {
+    "detect": {
+      "n": 827,
+      "mean": 24.62367954136896,
+      "median": 22.496125020552427,
+      "p90": 34.404108417220414,
+      "min": 17.684666032437235,
+      "max": 303.36512497160584
+    },
+    "depth": {
+      "n": 207,
+      "mean": 60.54211999255948,
+      "median": 58.36079199798405,
+      "p90": 60.91562518849969,
+      "min": 54.00854197796434,
+      "max": 448.6931670107879
+    }
+  }
+}

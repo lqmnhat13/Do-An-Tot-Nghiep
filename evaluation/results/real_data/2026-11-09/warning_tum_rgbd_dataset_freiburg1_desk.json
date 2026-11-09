@@ -1,0 +1,109 @@
+{
+  "sequence": "rgbd_dataset_freiburg1_desk",
+  "dataset": "TUM RGB-D (cvg.cit.tum.de)",
+  "frames": 596,
+  "duration_sec": 19.836385011672974,
+  "data_quality_counts": {
+    "VALID": 596
+  },
+  "frame_level": {
+    "frames_with_near_obstacle_gt(<1.0m, any object)": 414,
+    "of_which_system_HIGH": 310,
+    "frames_without_near_obstacle": 182,
+    "of_which_system_HIGH(false_alarm_frames)": 84,
+    "generic_obstacle_frames": 215,
+    "generic_obstacle_frames_with_near_gt": 213
+  },
+  "object_level": {
+    "<= 1.0m": {
+      "limit_m": 1.0,
+      "tp": 189,
+      "fp": 144,
+      "fn": 0,
+      "precision": 0.5675675675675675,
+      "recall": 1.0
+    },
+    "<= 1.5m": {
+      "limit_m": 1.5,
+      "tp": 328,
+      "fp": 5,
+      "fn": 8,
+      "precision": 0.984984984984985,
+      "recall": 0.9761904761904762
+    }
+  },
+  "object_gt_distance_by_risk": {
+    "HIGH": {
+      "n": 333,
+      "mean": 0.9789633710642118,
+      "median": 0.9348000288009644,
+      "p90": 1.2688000202178955,
+      "min": 0.4713999927043915,
+      "max": 1.7239999771118164
+    },
+    "MEDIUM": {
+      "n": 27,
+      "mean": 1.6656370339570221,
+      "median": 1.6898000240325928,
+      "p90": 1.8667999982833863,
+      "min": 1.1912000179290771,
+      "max": 2.404599905014038
+    }
+  },
+  "alert_classes_seen": {
+    "laptop": 193,
+    "tv": 82,
+    "chair": 13,
+    "dining table": 25,
+    "cell phone": 17,
+    "bed": 30
+  },
+  "spoken_alerts": {
+    "count": 6,
+    "per_minute": 18.148468069567787,
+    "samples": [
+      {
+        "t": 0.0,
+        "text": "Chú ý, có vật cản phía trước, ở rất gần"
+      },
+      {
+        "t": 5.168052911758423,
+        "text": "Chú ý, có ti vi bên phải, ở rất gần"
+      },
+      {
+        "t": 8.700153112411499,
+        "text": "Chú ý, có vật cản phía trước, ở rất gần"
+      },
+      {
+        "t": 12.268003940582275,
+        "text": "Chú ý, có máy tính xách tay phía trước, ở rất gần"
+      },
+      {
+        "t": 15.800019025802612,
+        "text": "Chú ý, có ti vi phía trước, ở rất gần"
+      },
+      {
+        "t": 19.30389094352722,
+        "text": "Chú ý, có vật cản phía trước, ở rất gần"
+      }
+    ]
+  },
+  "latency_ms": {
+    "detect": {
+      "n": 596,
+      "mean": 25.785100933351092,
+      "median": 23.769229504978284,
+      "p90": 37.915833498118445,
+      "min": 18.63341697026044,
+      "max": 281.77549998508766
+    },
+    "depth": {
+      "n": 149,
+      "mean": 60.551730449461445,
+      "median": 58.06020798627287,
+      "p90": 60.20327538717539,
+      "min": 54.3478750041686,
+      "max": 384.52795799821615
+    }
+  }
+}

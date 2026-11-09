@@ -1,3 +1,4 @@
+import threading
 import time
 import cv2
 from typing import Optional, List, Dict, Any, Tuple
@@ -23,12 +24,16 @@ class OCRService:
         min_confidence: float = 0.35,
         quality_checker: Optional[ImageQualityChecker] = None,
         engine: str = "easyocr",
+        read_timeout_sec: float = 10.0,
     ):
         self.languages = languages or ["vi", "en"]
         self.engine = engine
         self.use_gpu = use_gpu
         self.min_confidence = min_confidence
         self.quality_checker = quality_checker or ImageQualityChecker()
+        # Apple Vision từng không trả về (> 40 s) khi chạy trong app; quá hạn thì coi như lỗi
+        # lúc đọc và chuyển sang EasyOCR. 0 = không giới hạn.
+        self.read_timeout_sec = read_timeout_sec
         self._reader = None
         self._using_vision = False
         self._load_attempted = False
@@ -177,6 +182,28 @@ class OCRService:
 
         return " ".join(result_lines)
 
+    def _read(self, image: np.ndarray):
+        """Vision chạy ở luồng daemon có giới hạn thời gian; EasyOCR đọc trực tiếp."""
+        reader = self._reader
+        if not self._using_vision or not self.read_timeout_sec:
+            return reader.readtext(image)
+        box: Dict[str, Any] = {}
+
+        def run():
+            try:
+                box["result"] = reader.readtext(image)
+            except BaseException as exc:
+                box["error"] = exc
+
+        worker = threading.Thread(target=run, name="VisionOCRRead", daemon=True)
+        worker.start()
+        worker.join(self.read_timeout_sec)
+        if worker.is_alive():
+            raise TimeoutError(f"Vision không phản hồi sau {self.read_timeout_sec:.0f} s")
+        if "error" in box:
+            raise box["error"]
+        return box["result"]
+
     def process(self, request: OCRRequest) -> OCRResult:
         t0 = time.monotonic()
 
@@ -217,7 +244,7 @@ class OCRService:
 
             # 3. Chạy nhận dạng; Vision lỗi lúc chạy (không chỉ lúc nạp) cũng chuyển sang EasyOCR
             try:
-                raw_results = self._reader.readtext(processed_image)
+                raw_results = self._read(processed_image)
             except Exception as exc:
                 if not self._using_vision:
                     raise

@@ -1,0 +1,21 @@
+[
+ {
+  "scenario": "depth_hang (người đứng 0.9 m, depth treo từ giây 1.5) — trước khi sửa, 12 s quan sát",
+  "spoken": [
+   {
+    "t": 0.0,
+    "text": "Hệ thống đã sẵn sàng hỗ trợ bạn."
+   },
+   {
+    "t": 0.1,
+    "text": "Chú ý, có người phía trước, ở rất gần"
+   }
+  ],
+  "observation": "Không có câu nào sau giây 0.1; HUD chuyển DEGRADED từ giây ~3.6; risk của người = UNDETERMINED."
+ },
+ {
+  "scenario": "camera_unplug (CameraManager, webcam trả lỗi sau 30 frame, reconnect_delay 0.2 s) — trước khi sửa",
+  "spoken": [],
+  "observation": "Sau 5 lần thử, CameraManager chuyển sang ảnh giả 'Chair Simulation' (frame dummy đầu tiên ở giây 3.79) và pipeline tiếp tục chạy trên ảnh giả; không có thông báo. Với cấu hình app (2 s × 5 lần) khoảng im lặng là ~12 s."
+ }
+]

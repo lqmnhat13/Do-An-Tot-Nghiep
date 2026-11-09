@@ -38,6 +38,27 @@ class SystemCoordinator:
     """
 
     MAX_ON_DEMAND_FRAME_AGE_MS = 1000.0
+    # Giới hạn thời gian một tác vụ on-demand: Apple Vision từng treo > 40 s trong app
+    # (1/5 lần chạy), khoá luôn VQA. Hết hạn thì báo người dùng và giải phóng worker;
+    # luồng suy luận bị treo (daemon) không thể bị dừng cưỡng bức.
+    OCR_TIMEOUT_SEC = 30.0
+    VQA_TIMEOUT_SEC = 60.0  # gồm cả lần nạp model MLX đầu tiên (~11 s)
+
+    # Giám sát sức khỏe: người khiếm thị không thấy HUD, nên mất camera/depth phải được nói ra.
+    HEALTH_CHECK_INTERVAL_SEC = 0.5
+    CAMERA_TIMEOUT_SEC = 2.0
+    STATUS_REPEAT_SEC = 10.0
+    STARTUP_GRACE_SEC = 5.0
+    STATUS_MESSAGES = {
+        "camera": "Mất tín hiệu camera. Cảnh báo vật cản đang tạm ngừng, "
+                  "hãy dừng lại và dùng gậy dò đường.",
+        "depth": "Dữ liệu độ sâu bị gián đoạn. Cảnh báo vật cản đang tạm ngừng, "
+                 "hãy dừng lại và dùng gậy dò đường.",
+        "detection": "Bộ nhận diện vật cản bị gián đoạn. Cảnh báo vật cản đang tạm ngừng, "
+                     "hãy dừng lại và dùng gậy dò đường.",
+    }
+    RECOVERED_WARNING = "Cảnh báo vật cản đã hoạt động trở lại."
+    RECOVERED_OTHER = "Hệ thống đã hoạt động trở lại."
 
     def __init__(
         self,
@@ -50,7 +71,8 @@ class SystemCoordinator:
         alert_aggregator: AlertAggregator,
         audio_coordinator: AudioCoordinator,
         ocr_service: Optional[OCRService] = None,
-        vqa_service: Optional[VQAService] = None
+        vqa_service: Optional[VQAService] = None,
+        watchdog_timeout_sec: float = 3.0
     ):
         self.camera_manager = camera_manager
         self.detector = detector
@@ -64,7 +86,7 @@ class SystemCoordinator:
         self.vqa_service = vqa_service or VQAService()
 
         self.metrics = PerformanceMetrics()
-        self.watchdog = Watchdog(timeout_sec=3.0)
+        self.watchdog = Watchdog(timeout_sec=watchdog_timeout_sec)
 
         # Bộ đệm riêng cho detection và depth
         self.buf_detection: BoundedBuffer[FramePacket] = BoundedBuffer(maxsize=2)
@@ -92,6 +114,14 @@ class SystemCoordinator:
         self._on_demand_generation = 0
         self._active_on_demand_token: Optional[int] = None
         self._state_lock = threading.Lock()
+
+        # Giám sát sức khỏe (đọc/ghi dưới _state_lock)
+        self._health_thread: Optional[threading.Thread] = None
+        self._started_at: Optional[float] = None
+        self._last_valid_pair_time: Optional[float] = None
+        self._health_problem: Optional[str] = None
+        self._announced_problem: Optional[str] = None
+        self._last_status_time = float("-inf")
 
     def is_on_demand_active(self) -> bool:
         """Kiểm tra xem hệ thống có đang trong tác vụ On-Demand (VQA/OCR) hay không."""
@@ -258,6 +288,11 @@ class SystemCoordinator:
         self._det_thread.start()
         self._depth_thread.start()
 
+        with self._state_lock:
+            self._started_at = time.monotonic()
+        self._health_thread = threading.Thread(target=self._health_worker, name="HealthMonitor", daemon=True)
+        self._health_thread.start()
+
         # Phát âm thanh chào mừng hệ thống khởi động
         self.audio_coordinator.post_task(AudioTask(
             priority=AudioPriority.INFO,
@@ -277,6 +312,8 @@ class SystemCoordinator:
             self._det_thread.join(timeout=1.5)
         if self._depth_thread and self._depth_thread.is_alive():
             self._depth_thread.join(timeout=1.5)
+        if self._health_thread and self._health_thread.is_alive():
+            self._health_thread.join(timeout=1.5)
         if (
             self._on_demand_thread
             and self._on_demand_thread.is_alive()
@@ -284,6 +321,93 @@ class SystemCoordinator:
         ):
             self._on_demand_thread.join(timeout=1.5)
         self.audio_coordinator.stop()
+
+    # ================= Giám sát sức khỏe =================
+
+    def _health_worker(self) -> None:
+        while self._running:
+            time.sleep(self.HEALTH_CHECK_INTERVAL_SEC)
+            if not self._running:
+                break
+            try:
+                self._check_health(time.monotonic())
+            except Exception as e:
+                print(f"[SystemCoordinator] Lỗi giám sát sức khỏe: {e}")
+
+    def _diagnose(self, now: float) -> Optional[str]:
+        """Trả về 'camera' | 'detection' | 'depth' khi cảnh báo vật cản không còn tin cậy."""
+        with self._state_lock:
+            started_at = self._started_at
+            last_valid = self._last_valid_pair_time
+        if started_at is None or now - started_at < self.STARTUP_GRACE_SEC:
+            return None
+        packet = self.camera_manager.get_latest_frame()
+        if (not self.camera_manager.is_alive() or packet is None
+                or now - packet.timestamp_mono > self.CAMERA_TIMEOUT_SEC):
+            return "camera"
+        load_error = getattr(self.depth_estimator, "load_error", None)
+        if isinstance(load_error, str) and load_error:
+            return "depth"
+        health = self.watchdog.check_health()
+        if not health.get("detection_worker", False):
+            return "detection"
+        if not health.get("depth_worker", False):
+            return "depth"
+        # Depth còn chạy nhưng cặp detection–depth không còn VALID (stale/degraded).
+        if now - (last_valid if last_valid is not None else started_at) > self.watchdog.timeout_sec:
+            return "depth"
+        return None
+
+    def _check_health(self, now: float) -> Optional[str]:
+        """Nói ra khi hỏng (nhắc lại mỗi STATUS_REPEAT_SEC) và khi phục hồi.
+
+        Mất camera được báo ở mọi chế độ; lỗi depth/detection chỉ báo ở chế độ Cảnh báo,
+        vì ở OCR/VQA cảnh báo vật cản vốn đã tắt.
+        """
+        problem = self._diagnose(now)
+        with self._state_lock:
+            if self._shutting_down:
+                return problem
+            warning = self._selected_mode == "WARNING"
+            self._health_problem = problem
+            if problem is not None and warning:
+                self._current_mode = "DEGRADED"
+            audible = problem if (problem == "camera" or warning) else None
+            text = None
+            if audible is not None:
+                if (audible != self._announced_problem
+                        or now - self._last_status_time >= self.STATUS_REPEAT_SEC):
+                    text = self.STATUS_MESSAGES[audible]
+                    self._announced_problem = audible
+                    self._last_status_time = now
+            elif self._announced_problem is not None:
+                if problem is None:
+                    text = self.RECOVERED_WARNING if warning else self.RECOVERED_OTHER
+                self._announced_problem = None
+            if text is not None:
+                self.audio_coordinator.post_task(AudioTask(
+                    priority=AudioPriority.SYSTEM_STATUS, text=text,
+                    expires_at=time.monotonic() + 5.0, interruptible=True))
+        return problem
+
+    def _call_with_deadline(self, fn, timeout_sec: float):
+        """Chạy fn ở luồng daemon riêng; TimeoutError nếu quá hạn (luồng treo bị bỏ lại)."""
+        box: Dict[str, Any] = {}
+
+        def run():
+            try:
+                box["result"] = fn()
+            except BaseException as exc:  # chuyển lỗi về worker on-demand
+                box["error"] = exc
+
+        worker = threading.Thread(target=run, name="OnDemandInference", daemon=True)
+        worker.start()
+        worker.join(timeout_sec)
+        if worker.is_alive():
+            raise TimeoutError(f"quá {timeout_sec:.0f} s")
+        if "error" in box:
+            raise box["error"]
+        return box["result"]
 
     def _depth_worker(self) -> None:
         """Luồng chuyên chạy ước lượng độ sâu (6 - 8 Hz), nhường GPU cho luồng detection."""
@@ -347,6 +471,8 @@ class SystemCoordinator:
                     self._latest_packet = packet
                     self._latest_detection = tracked_det
                     self._latest_assessments = assessments
+                    if sync_pair.data_quality == DataQuality.VALID:
+                        self._last_valid_pair_time = time.monotonic()
                     if self._selected_mode == "WARNING":
                         if sync_pair.data_quality in (DataQuality.STALE, DataQuality.DEGRADED):
                             self._current_mode = "DEGRADED"
@@ -406,7 +532,16 @@ class SystemCoordinator:
                 return
 
             req = OCRRequest(request_id=f"ocr_{token}_{packet.frame_id}", image=packet.image)
-            res = self.ocr_service.process(req)
+            try:
+                res = self._call_with_deadline(lambda: self.ocr_service.process(req),
+                                               self.OCR_TIMEOUT_SEC)
+            except TimeoutError:
+                print(f"[SystemCoordinator] OCR quá {self.OCR_TIMEOUT_SEC:.0f} s, hủy tác vụ.")
+                self._post_on_demand_audio(token, AudioTask(
+                    priority=AudioPriority.ON_DEMAND,
+                    text="Đọc chữ quá thời gian. Vui lòng thử lại.",
+                    interruptible=True))
+                return
 
             if not self._publish_on_demand_result(
                 token,
@@ -490,10 +625,18 @@ class SystemCoordinator:
                 return
 
             req = VQARequest(request_id=f"vqa_{token}_{packet.frame_id}", image=packet.image, question=question)
-            res = self.vqa_service.answer(req, visual_context={
-                "detected_classes": detected_names,
-                "spatial_objects": spatial_objects
-            })
+            context = {"detected_classes": detected_names, "spatial_objects": spatial_objects}
+            try:
+                res = self._call_with_deadline(
+                    lambda: self.vqa_service.answer(req, visual_context=context),
+                    self.VQA_TIMEOUT_SEC)
+            except TimeoutError:
+                print(f"[SystemCoordinator] VQA quá {self.VQA_TIMEOUT_SEC:.0f} s, hủy tác vụ.")
+                self._post_on_demand_audio(token, AudioTask(
+                    priority=AudioPriority.ON_DEMAND,
+                    text="Trả lời quá thời gian. Vui lòng thử lại.",
+                    interruptible=True))
+                return
 
             if not self._publish_on_demand_result(
                 token,
@@ -544,6 +687,7 @@ class SystemCoordinator:
                 "selected_mode": self._selected_mode,
                 "on_demand_active": self._on_demand_active,
                 "safety_alerts_enabled": self._selected_mode == "WARNING" and not self._shutting_down,
+                "health_problem": self._health_problem,
                 "metrics": self.metrics.get_summary(),
                 "is_speaking": self.audio_coordinator.is_speaking
             }

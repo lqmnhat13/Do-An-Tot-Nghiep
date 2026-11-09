@@ -1,0 +1,729 @@
+{
+ "spoken": [
+  {
+   "t": 3.0,
+   "text": "Hệ thống đã sẵn sàng hỗ trợ bạn."
+  },
+  {
+   "t": 8.5,
+   "text": "Chú ý, có ghế phía trước, ở rất gần"
+  },
+  {
+   "t": 12.1,
+   "text": "Chú ý, có tủ lạnh phía trước, ở rất gần"
+  },
+  {
+   "t": 15.9,
+   "text": "Chú ý, có vật cản phía trước, ở rất gần"
+  },
+  {
+   "t": 21.1,
+   "text": "Chú ý, có tủ lạnh phía trước, ở rất gần"
+  },
+  {
+   "t": 23.2,
+   "text": "<<OCR: True>>"
+  },
+  {
+   "t": 23.2,
+   "text": "Đã chuyển sang OCR. Cảnh báo vật cản đã tắt."
+  },
+  {
+   "t": 25.9,
+   "text": "Đang xử lý đọc chữ..."
+  },
+  {
+   "t": 27.2,
+   "text": "-leam A."
+  },
+  {
+   "t": 38.3,
+   "text": "Đã chuyển sang VQA. Cảnh báo vật cản đã tắt."
+  },
+  {
+   "t": 38.3,
+   "text": "<<VQA: True>>"
+  },
+  {
+   "t": 41.0,
+   "text": "Đang quan sát để trả lời..."
+  },
+  {
+   "t": 45.4,
+   "text": "Khung cảnh: Đối tượng nổi bật phía trước là một bàn làm việc với hai bàn phím, một chuột, một máy tính, một cuốn sách và một con bò nhựa. Cụ thể có: chuột máy tính ở giữa (ở rất gần), bàn phím bên trái (chưa rõ), ti vi bên trái (chưa rõ)."
+  },
+  {
+   "t": 63.6,
+   "text": "<<WARN: None>>"
+  },
+  {
+   "t": 63.6,
+   "text": "Đã chuyển sang chế độ cảnh báo."
+  },
+  {
+   "t": 72.2,
+   "text": "Chú ý, có ghế bên trái, ở rất gần"
+  },
+  {
+   "t": 77.4,
+   "text": "Chú ý, có ghế bên trái, ở rất gần"
+  },
+  {
+   "t": 81.4,
+   "text": "Chú ý, có vật cản phía trước, ở rất gần"
+  },
+  {
+   "t": 85.0,
+   "text": "Chú ý, có điện thoại phía trước, ở rất gần"
+  },
+  {
+   "t": 88.6,
+   "text": "Chú ý, có tủ lạnh phía trước, ở rất gần"
+  },
+  {
+   "t": 92.2,
+   "text": "Chú ý, có điện thoại bên phải, ở rất gần"
+  }
+ ],
+ "samples": [
+  {
+   "t": 0,
+   "mode": "OBSERVATION",
+   "fps": 0.0,
+   "det_p95": null,
+   "rss_gb": 0.479952896
+  },
+  {
+   "t": 1,
+   "mode": "OBSERVATION",
+   "fps": 4.7,
+   "det_p95": null,
+   "rss_gb": 0.620658688
+  },
+  {
+   "t": 2,
+   "mode": "OBSERVATION",
+   "fps": 11.2,
+   "det_p95": null,
+   "rss_gb": 0.67403776
+  },
+  {
+   "t": 3,
+   "mode": "OBSERVATION",
+   "fps": 14.1,
+   "det_p95": null,
+   "rss_gb": 0.706330624
+  },
+  {
+   "t": 4,
+   "mode": "OBSERVATION",
+   "fps": 15.6,
+   "det_p95": null,
+   "rss_gb": 0.738377728
+  },
+  {
+   "t": 5,
+   "mode": "OBSERVATION",
+   "fps": 16.0,
+   "det_p95": null,
+   "rss_gb": 0.775176192
+  },
+  {
+   "t": 6,
+   "mode": "OBSERVATION",
+   "fps": 19.5,
+   "det_p95": null,
+   "rss_gb": 0.792838144
+  },
+  {
+   "t": 7,
+   "mode": "OBSERVATION",
+   "fps": 20.4,
+   "det_p95": null,
+   "rss_gb": 0.813039616
+  },
+  {
+   "t": 8,
+   "mode": "OBSERVATION",
+   "fps": 20.6,
+   "det_p95": null,
+   "rss_gb": 0.827244544
+  },
+  {
+   "t": 9,
+   "mode": "OBSERVATION",
+   "fps": 21.1,
+   "det_p95": null,
+   "rss_gb": 0.84353024
+  },
+  {
+   "t": 10,
+   "mode": "OBSERVATION",
+   "fps": 21.7,
+   "det_p95": null,
+   "rss_gb": 0.862470144
+  },
+  {
+   "t": 11,
+   "mode": "OBSERVATION",
+   "fps": 22.1,
+   "det_p95": null,
+   "rss_gb": 0.867336192
+  },
+  {
+   "t": 12,
+   "mode": "OBSERVATION",
+   "fps": 21.6,
+   "det_p95": null,
+   "rss_gb": 0.891568128
+  },
+  {
+   "t": 13,
+   "mode": "OBSERVATION",
+   "fps": 20.5,
+   "det_p95": null,
+   "rss_gb": 0.926777344
+  },
+  {
+   "t": 14,
+   "mode": "OBSERVATION",
+   "fps": 20.6,
+   "det_p95": null,
+   "rss_gb": 0.945700864
+  },
+  {
+   "t": 15,
+   "mode": "OBSERVATION",
+   "fps": 20.9,
+   "det_p95": null,
+   "rss_gb": 0.952434688
+  },
+  {
+   "t": 16,
+   "mode": "OBSERVATION",
+   "fps": 21.6,
+   "det_p95": null,
+   "rss_gb": 0.95289344
+  },
+  {
+   "t": 17,
+   "mode": "OBSERVATION",
+   "fps": 23.4,
+   "det_p95": null,
+   "rss_gb": 0.953352192
+  },
+  {
+   "t": 18,
+   "mode": "OBSERVATION",
+   "fps": 24.5,
+   "det_p95": null,
+   "rss_gb": 0.953499648
+  },
+  {
+   "t": 19,
+   "mode": "OBSERVATION",
+   "fps": 24.4,
+   "det_p95": null,
+   "rss_gb": 0.955072512
+  },
+  {
+   "t": 20,
+   "mode": "OCR",
+   "fps": 23.8,
+   "det_p95": null,
+   "rss_gb": 0.955613184
+  },
+  {
+   "t": 21,
+   "mode": "OCR",
+   "fps": 22.1,
+   "det_p95": null,
+   "rss_gb": 1.014480896
+  },
+  {
+   "t": 22,
+   "mode": "OCR",
+   "fps": 22.2,
+   "det_p95": null,
+   "rss_gb": 1.014480896
+  },
+  {
+   "t": 23,
+   "mode": "OCR",
+   "fps": 22.1,
+   "det_p95": null,
+   "rss_gb": 1.016889344
+  },
+  {
+   "t": 24,
+   "mode": "OCR",
+   "fps": 22.2,
+   "det_p95": null,
+   "rss_gb": 1.017593856
+  },
+  {
+   "t": 25,
+   "mode": "OCR",
+   "fps": 23.5,
+   "det_p95": null,
+   "rss_gb": 1.019871232
+  },
+  {
+   "t": 26,
+   "mode": "OCR",
+   "fps": 23.2,
+   "det_p95": null,
+   "rss_gb": 1.019887616
+  },
+  {
+   "t": 27,
+   "mode": "OCR",
+   "fps": 23.5,
+   "det_p95": null,
+   "rss_gb": 1.02080512
+  },
+  {
+   "t": 28,
+   "mode": "OCR",
+   "fps": 23.4,
+   "det_p95": null,
+   "rss_gb": 1.022869504
+  },
+  {
+   "t": 29,
+   "mode": "OCR",
+   "fps": 23.1,
+   "det_p95": null,
+   "rss_gb": 1.023901696
+  },
+  {
+   "t": 30,
+   "mode": "OCR",
+   "fps": 23.3,
+   "det_p95": null,
+   "rss_gb": 1.024049152
+  },
+  {
+   "t": 31,
+   "mode": "OCR",
+   "fps": 23.0,
+   "det_p95": null,
+   "rss_gb": 1.03047168
+  },
+  {
+   "t": 32,
+   "mode": "OCR",
+   "fps": 23.2,
+   "det_p95": null,
+   "rss_gb": 1.03333888
+  },
+  {
+   "t": 33,
+   "mode": "OCR",
+   "fps": 23.6,
+   "det_p95": null,
+   "rss_gb": 1.033469952
+  },
+  {
+   "t": 34,
+   "mode": "OCR",
+   "fps": 23.9,
+   "det_p95": null,
+   "rss_gb": 1.033633792
+  },
+  {
+   "t": 35,
+   "mode": "VQA",
+   "fps": 24.3,
+   "det_p95": null,
+   "rss_gb": 1.033945088
+  },
+  {
+   "t": 36,
+   "mode": "VQA",
+   "fps": 23.1,
+   "det_p95": null,
+   "rss_gb": 2.972860416
+  },
+  {
+   "t": 37,
+   "mode": "VQA",
+   "fps": 23.3,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 38,
+   "mode": "VQA",
+   "fps": 17.5,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 39,
+   "mode": "VQA",
+   "fps": 15.5,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 40,
+   "mode": "VQA",
+   "fps": 13.9,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 41,
+   "mode": "VQA",
+   "fps": 12.9,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 42,
+   "mode": "VQA",
+   "fps": 11.9,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 43,
+   "mode": "VQA",
+   "fps": 11.8,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 44,
+   "mode": "VQA",
+   "fps": 12.2,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 45,
+   "mode": "VQA",
+   "fps": 16.8,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 46,
+   "mode": "VQA",
+   "fps": 23.6,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 47,
+   "mode": "VQA",
+   "fps": 24.8,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 48,
+   "mode": "VQA",
+   "fps": 24.8,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 49,
+   "mode": "VQA",
+   "fps": 24.8,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 50,
+   "mode": "VQA",
+   "fps": 24.7,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 51,
+   "mode": "VQA",
+   "fps": 24.7,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 52,
+   "mode": "VQA",
+   "fps": 24.4,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 53,
+   "mode": "VQA",
+   "fps": 24.0,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 54,
+   "mode": "VQA",
+   "fps": 23.5,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 55,
+   "mode": "VQA",
+   "fps": 23.0,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 56,
+   "mode": "VQA",
+   "fps": 22.8,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 57,
+   "mode": "VQA",
+   "fps": 22.7,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 58,
+   "mode": "VQA",
+   "fps": 23.3,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 59,
+   "mode": "VQA",
+   "fps": 24.2,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 60,
+   "mode": "OBSERVATION",
+   "fps": 24.5,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 61,
+   "mode": "OBSERVATION",
+   "fps": 24.2,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 62,
+   "mode": "OBSERVATION",
+   "fps": 24.0,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 63,
+   "mode": "OBSERVATION",
+   "fps": 24.0,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 64,
+   "mode": "OBSERVATION",
+   "fps": 23.7,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 65,
+   "mode": "OBSERVATION",
+   "fps": 24.4,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 66,
+   "mode": "OBSERVATION",
+   "fps": 24.4,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 67,
+   "mode": "OBSERVATION",
+   "fps": 24.0,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 68,
+   "mode": "OBSERVATION",
+   "fps": 24.6,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 69,
+   "mode": "OBSERVATION",
+   "fps": 23.8,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 70,
+   "mode": "OBSERVATION",
+   "fps": 23.8,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 71,
+   "mode": "OBSERVATION",
+   "fps": 24.1,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 72,
+   "mode": "OBSERVATION",
+   "fps": 23.8,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 73,
+   "mode": "OBSERVATION",
+   "fps": 24.2,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 74,
+   "mode": "OBSERVATION",
+   "fps": 24.3,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 75,
+   "mode": "OBSERVATION",
+   "fps": 24.5,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 76,
+   "mode": "OBSERVATION",
+   "fps": 24.2,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 77,
+   "mode": "OBSERVATION",
+   "fps": 24.0,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 78,
+   "mode": "OBSERVATION",
+   "fps": 23.9,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 79,
+   "mode": "OBSERVATION",
+   "fps": 23.0,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 80,
+   "mode": "OBSERVATION",
+   "fps": 23.1,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 81,
+   "mode": "OBSERVATION",
+   "fps": 22.8,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 82,
+   "mode": "OBSERVATION",
+   "fps": 22.8,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 83,
+   "mode": "OBSERVATION",
+   "fps": 23.4,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 84,
+   "mode": "OBSERVATION",
+   "fps": 23.6,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 85,
+   "mode": "OBSERVATION",
+   "fps": 24.0,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 86,
+   "mode": "OBSERVATION",
+   "fps": 24.1,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  },
+  {
+   "t": 87,
+   "mode": "OBSERVATION",
+   "fps": 24.2,
+   "det_p95": null,
+   "rss_gb": 4.132864
+  }
+ ],
+ "final_metrics": {
+  "fps": 23.8,
+  "detection": {
+   "p50": 36.10987449064851,
+   "p95": 68.76096102350857,
+   "mean": 40.57141288765706
+  },
+  "depth": {
+   "p50": 85.11629200074822,
+   "p95": 96.29679131030571,
+   "mean": 85.6460217613494
+  },
+  "end_to_end": {
+   "p50": 37.293145462172106,
+   "p95": 69.49951252026949,
+   "mean": 41.698914997978136
+  }
+ },
+ "threads_alive_after_stop": [
+  "tqdm_monitor",
+  "tqdm_monitor"
+ ],
+ "stopped_at_sec": 93.43136283301283
+}

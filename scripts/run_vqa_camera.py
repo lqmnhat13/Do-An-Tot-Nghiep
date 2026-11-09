@@ -40,7 +40,7 @@ def build_parser() -> argparse.ArgumentParser:
                         help="VQA backend: mlx_vlm | legacy_caption | disabled")
     parser.add_argument(
         "--question",
-        default="Mô tả khung cảnh phía trước.",
+        default="Phía trước có gì?",
         help="Câu hỏi được gửi khi bấm Q",
     )
     parser.add_argument("--no-speech", action="store_true", help="Chỉ in kết quả, không đọc TTS")

@@ -72,6 +72,7 @@ ocr:
   blur_laplacian_threshold: 60.0 # dưới ngưỡng này cảnh báo ảnh mờ
   min_brightness: 40.0 # dưới ngưỡng này cảnh báo ảnh quá tối
   max_brightness: 240.0 # trên ngưỡng này cảnh báo lóa sáng
+  read_timeout_sec: 10.0 # Vision không trả về trong thời gian này -> chuyển sang EasyOCR
 
 vqa:
   backend: "mlx_vlm" # legacy_caption | disabled | mlx_vlm

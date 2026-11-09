@@ -12,6 +12,7 @@ class TestAppOCRConfig(unittest.TestCase):
             "blur_laplacian_threshold": 75,
             "min_brightness": 45,
             "max_brightness": 225,
+            "read_timeout_sec": 4,
         }}, "cpu")
         self.assertEqual(service.languages, ["vi", "en"])
         self.assertEqual(service.engine, "vision")
@@ -20,6 +21,7 @@ class TestAppOCRConfig(unittest.TestCase):
         self.assertEqual(service.quality_checker.blur_threshold, 75)
         self.assertEqual(service.quality_checker.min_brightness, 45)
         self.assertEqual(service.quality_checker.max_brightness, 225)
+        self.assertEqual(service.read_timeout_sec, 4)
 
 
 if __name__ == "__main__":

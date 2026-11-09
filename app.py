@@ -43,6 +43,7 @@ def build_ocr_service(model_cfg: dict, device: str) -> OCRService:
         engine=ocr_cfg.get("engine", "easyocr"),
         use_gpu=(device == "mps"),
         min_confidence=float(ocr_cfg.get("min_confidence", 0.35)),
+        read_timeout_sec=float(ocr_cfg.get("read_timeout_sec", 10.0)),
         quality_checker=ImageQualityChecker(
             blur_threshold=float(ocr_cfg.get("blur_laplacian_threshold", 50.0)),
             min_brightness=float(ocr_cfg.get("min_brightness", 40.0)),
@@ -81,7 +82,9 @@ def main():
         source=cam_source,
         width=app_cfg.get("camera", {}).get("width", 640),
         height=app_cfg.get("camera", {}).get("height", 480),
-        target_fps=app_cfg.get("camera", {}).get("fps", 30.0)
+        target_fps=app_cfg.get("camera", {}).get("fps", 30.0),
+        reconnect_delay_sec=float(app_cfg.get("camera", {}).get("reconnect_delay_sec", 2.0)),
+        max_reconnect_attempts=int(app_cfg.get("camera", {}).get("max_reconnect_attempts", 5))
     )
 
     # 2. Detection & Tracking
@@ -180,7 +183,8 @@ def main():
         alert_aggregator=alert_aggregator,
         audio_coordinator=audio_coordinator,
         ocr_service=ocr_service,
-        vqa_service=vqa_service
+        vqa_service=vqa_service,
+        watchdog_timeout_sec=float(app_cfg.get("runtime", {}).get("watchdog_timeout_sec", 3.0))
     )
 
     # 8. App Runner

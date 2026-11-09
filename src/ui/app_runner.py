@@ -5,6 +5,8 @@ from typing import Optional
 from src.runtime.system_coordinator import SystemCoordinator
 from src.ui.hud_renderer import HUDRenderer
 
+DEFAULT_VQA_QUESTION = "Phía trước có gì?"
+
 class AppRunner:
     """
     Vòng lặp tương tác giao diện và bắt sự kiện phím bấm của ứng dụng.
@@ -53,7 +55,10 @@ class AppRunner:
                         self.coordinator.trigger_ocr()
                     elif key in (ord('q'), ord('Q')):
                         print("[AppRunner] Phím Q: Kích hoạt mô tả toàn cảnh VQA.")
-                        self.coordinator.trigger_vqa("Mô tả khung cảnh phía trước")
+                        # "Mô tả khung cảnh phía trước" khiến Qwen2.5-VL-3B-4bit sinh câu ảo giác
+                        # cố định trên ảnh phòng khách (NYU) và chạm giới hạn token 33% số lần;
+                        # câu dưới đây là câu đã được đánh giá trên OpenViVQA/KTVIC/NYU.
+                        self.coordinator.trigger_vqa(DEFAULT_VQA_QUESTION)
                     elif key in (ord('c'), ord('C')):
                         print("[AppRunner] Phím C: Chuyển sang chế độ Cảnh báo.")
                         self.coordinator.enter_warning_mode()

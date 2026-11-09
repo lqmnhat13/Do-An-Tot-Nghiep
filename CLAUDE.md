@@ -16,8 +16,9 @@ HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 PYTHONPATH=. \
   /opt/anaconda3/envs/ai-macbook/bin/python -m unittest discover -s tests -p "test_*.py" -v
 
 # Single file / single test (unittest, run from repo root with PYTHONPATH=.)
-PYTHONPATH=. python -m unittest tests.test_fusion -v
-PYTHONPATH=. python -m unittest tests.test_fusion.TestFusion.test_synchronizer_stale_depth -v
+# (tests/ is not a package: run from inside tests/ with PYTHONPATH=..)
+cd tests && PYTHONPATH=.. python -m unittest test_fusion -v
+cd tests && PYTHONPATH=.. python -m unittest test_fusion.TestFusion.test_synchronizer_stale_depth -v
 
 # Lint as CI does (only E9,F63,F7,F82 fail the build)
 flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
@@ -53,7 +54,8 @@ CI (`.github/workflows/cicd.yml`) runs on Ubuntu with CPU torch, so tests must n
 - `DetectionWorker`: YOLOv8n → ByteTrack → `Synchronizer.synchronize` (pairs detection with depth, checks skew/age limits from `fusion_rules.yaml → synchronizer`, sets `DataQuality`) → `RiskFSM.update` → `_post_safety_alert` → `AlertAggregator` → `AudioCoordinator`.
 - On-demand thread (one at a time, guarded by a token so cancelled/superseded tasks can't publish results): OCR (`src/ocr/`, Apple Vision with EasyOCR fallback on load *or* read failure; the quality gate only hard-rejects too-small images, flagged blurry/dark/glare images are still read with a stricter confidence and the guidance message is returned only if nothing is read) or VQA (`src/vqa/`, backend chosen by `create_vqa_backend`: `mlx_vlm` default, `legacy_caption` BLIP+MarianMT, `disabled`). VQA is lazy-loaded and falls back to detection context; `src/vqa/safety.py` refuses movement/hazard questions by intent (regex) before the model and rejects answers claiming the path is safe.
 - `AudioCoordinator` thread: priority queue (`HIGH_RISK` < `SYSTEM_STATUS` < `ON_DEMAND` < `INFO`), dedup window, expiry, interruption; speaks via macOS `say` (voice `Linh`) and WAVs in `assets/audio/`.
-- `Watchdog`/`Metrics` in `src/runtime/` record heartbeats and latencies.
+- `HealthMonitor` thread (`SystemCoordinator._check_health`, every 0.5 s after a 5 s startup grace): speaks a `SYSTEM_STATUS` message when the camera is lost (any mode) or depth/detection stop producing VALID data for `runtime.watchdog_timeout_sec` (WARNING mode only), repeats every 10 s, and announces recovery. A real camera never falls back to synthetic `dummy` frames. `Watchdog`/`Metrics` in `src/runtime/` record heartbeats and latencies.
+- On-demand OCR/VQA run under a deadline (`OCR_TIMEOUT_SEC` 30 s, `VQA_TIMEOUT_SEC` 60 s); Apple Vision reads have `ocr.read_timeout_sec` and fall back to EasyOCR on timeout. Key Q asks `DEFAULT_VQA_QUESTION` ("Phía trước có gì?") from `src/ui/app_runner.py`.
 
 **Modes**: `_selected_mode` is `WARNING` | `OCR` | `VQA`; `_current_mode` (shown on HUD) adds `OBSERVATION`/`DEGRADED`. Detection, depth and risk assessment keep running in every mode, but obstacle audio is emitted only in `WARNING`. Choosing OCR/VQA mutes all obstacle alerts, including HIGH (`audio_coordinator.set_safety_alerts_enabled(False)`), until the user presses C; finishing an OCR/VQA task does not switch back. Alerts are gated *before* aggregation so muted modes don't consume cooldowns, and only assessments newer than `_warning_since` are alerted after re-entering WARNING.
 

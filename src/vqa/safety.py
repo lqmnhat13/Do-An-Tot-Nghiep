@@ -68,7 +68,13 @@ class SafetyGuardrail:
                 sentence
             ) or re.search(
                 r"\b(?:safe to (?:walk|cross|proceed)|you can (?:walk|cross|proceed)|"
-                r"no obstacles? ahead)\b", sentence
+                r"no obstacles? ahead|(?:path|way|road) (?:is|looks) clear)\b", sentence
+            ) or re.search(
+                # Khẳng định lối đi trống: chỉ khi chủ ngữ là lối đi/đường/phía trước,
+                # để "ghế trống", "chai nước trống" vẫn được phép.
+                r"\b(?:lối đi|đường đi|con đường|hành lang|phía trước|trước mặt)\b"
+                r"(?:\s+[^\s,.!?]+){0,2}\s*,?\s*"
+                r"(?:trống|thông thoáng|thoáng|không có gì|không có vật)", sentence
             ):
                 return self.REFUSAL
             if "an toàn" in sentence and not re.search(

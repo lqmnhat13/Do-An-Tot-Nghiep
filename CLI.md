@@ -61,7 +61,7 @@ Tùy chọn: `--camera N`, `--image PATH`, `--width PIXEL`, `--height PIXEL`, `-
 ### Kiểm tra VQA
 
 ```bash
-python scripts/run_vqa_camera.py --camera 0 --question "Mô tả khung cảnh phía trước."
+python scripts/run_vqa_camera.py --camera 0 --question "Phía trước có gì?"
 python scripts/run_vqa_camera.py --camera 0 --backend mlx_vlm --no-speech
 ```
 

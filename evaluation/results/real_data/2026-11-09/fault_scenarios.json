@@ -1,0 +1,278 @@
+[
+ {
+  "scenario": "depth_hang (người đứng 0.9 m, depth treo từ giây 8)",
+  "spoken": [
+   {
+    "t": 0.0,
+    "text": "Hệ thống đã sẵn sàng hỗ trợ bạn."
+   },
+   {
+    "t": 0.0,
+    "text": "Chú ý, có người phía trước, ở rất gần"
+   },
+   {
+    "t": 4.1,
+    "text": "Chú ý, có người phía trước, ở rất gần"
+   },
+   {
+    "t": 8.1,
+    "text": "Chú ý, có người phía trước, ở rất gần"
+   },
+   {
+    "t": 11.2,
+    "text": "Dữ liệu độ sâu bị gián đoạn. Cảnh báo vật cản đang tạm ngừng, hãy dừng lại và dùng gậy dò đường."
+   }
+  ],
+  "timeline": [
+   {
+    "t": 0.0,
+    "mode": "OBSERVATION",
+    "health": null
+   },
+   {
+    "t": 1.0,
+    "mode": "OBSERVATION",
+    "health": null
+   },
+   {
+    "t": 2.0,
+    "mode": "OBSERVATION",
+    "health": null
+   },
+   {
+    "t": 3.1,
+    "mode": "OBSERVATION",
+    "health": null
+   },
+   {
+    "t": 4.1,
+    "mode": "OBSERVATION",
+    "health": null
+   },
+   {
+    "t": 5.1,
+    "mode": "OBSERVATION",
+    "health": null
+   },
+   {
+    "t": 6.1,
+    "mode": "OBSERVATION",
+    "health": null
+   },
+   {
+    "t": 7.1,
+    "mode": "OBSERVATION",
+    "health": null
+   },
+   {
+    "t": 8.1,
+    "mode": "OBSERVATION",
+    "health": null
+   },
+   {
+    "t": 9.2,
+    "mode": "DEGRADED",
+    "health": null
+   },
+   {
+    "t": 10.2,
+    "mode": "DEGRADED",
+    "health": null
+   },
+   {
+    "t": 11.2,
+    "mode": "DEGRADED",
+    "health": "depth"
+   },
+   {
+    "t": 12.2,
+    "mode": "DEGRADED",
+    "health": "depth"
+   },
+   {
+    "t": 13.2,
+    "mode": "DEGRADED",
+    "health": "depth"
+   },
+   {
+    "t": 14.2,
+    "mode": "DEGRADED",
+    "health": "depth"
+   },
+   {
+    "t": 15.3,
+    "mode": "DEGRADED",
+    "health": "depth"
+   },
+   {
+    "t": 16.3,
+    "mode": "DEGRADED",
+    "health": "depth"
+   },
+   {
+    "t": 17.3,
+    "mode": "DEGRADED",
+    "health": "depth"
+   },
+   {
+    "t": 18.3,
+    "mode": "DEGRADED",
+    "health": "depth"
+   },
+   {
+    "t": 19.3,
+    "mode": "DEGRADED",
+    "health": "depth"
+   }
+  ]
+ },
+ {
+  "scenario": "camera_unplug (rút webcam giây 8, cắm lại giây 16)",
+  "spoken": [
+   {
+    "t": 0.0,
+    "text": "Hệ thống đã sẵn sàng hỗ trợ bạn."
+   },
+   {
+    "t": 0.0,
+    "text": "Chú ý, có người phía trước, ở rất gần"
+   },
+   {
+    "t": 4.1,
+    "text": "Chú ý, có người phía trước, ở rất gần"
+   },
+   {
+    "t": 8.1,
+    "text": "Chú ý, có người phía trước, ở rất gần"
+   },
+   {
+    "t": 8.6,
+    "text": "Mất tín hiệu camera. Cảnh báo vật cản đang tạm ngừng, hãy dừng lại và dùng gậy dò đường."
+   },
+   {
+    "t": 16.8,
+    "text": "Chú ý, có người phía trước, ở rất gần"
+   },
+   {
+    "t": 17.3,
+    "text": "Cảnh báo vật cản đã hoạt động trở lại."
+   },
+   {
+    "t": 20.8,
+    "text": "Chú ý, có người phía trước, ở rất gần"
+   }
+  ],
+  "timeline": [
+   {
+    "t": 0.0,
+    "mode": "OBSERVATION",
+    "health": null
+   },
+   {
+    "t": 1.0,
+    "mode": "OBSERVATION",
+    "health": null
+   },
+   {
+    "t": 2.0,
+    "mode": "OBSERVATION",
+    "health": null
+   },
+   {
+    "t": 3.1,
+    "mode": "OBSERVATION",
+    "health": null
+   },
+   {
+    "t": 4.1,
+    "mode": "OBSERVATION",
+    "health": null
+   },
+   {
+    "t": 5.1,
+    "mode": "OBSERVATION",
+    "health": null
+   },
+   {
+    "t": 6.1,
+    "mode": "OBSERVATION",
+    "health": null
+   },
+   {
+    "t": 7.1,
+    "mode": "OBSERVATION",
+    "health": null
+   },
+   {
+    "t": 8.1,
+    "mode": "OBSERVATION",
+    "health": null
+   },
+   {
+    "t": 9.2,
+    "mode": "DEGRADED",
+    "health": "camera"
+   },
+   {
+    "t": 10.2,
+    "mode": "DEGRADED",
+    "health": "camera"
+   },
+   {
+    "t": 11.2,
+    "mode": "DEGRADED",
+    "health": "camera"
+   },
+   {
+    "t": 12.2,
+    "mode": "DEGRADED",
+    "health": "camera"
+   },
+   {
+    "t": 13.3,
+    "mode": "DEGRADED",
+    "health": "camera"
+   },
+   {
+    "t": 14.3,
+    "mode": "DEGRADED",
+    "health": "camera"
+   },
+   {
+    "t": 15.3,
+    "mode": "DEGRADED",
+    "health": "camera"
+   },
+   {
+    "t": 16.3,
+    "mode": "DEGRADED",
+    "health": "camera"
+   },
+   {
+    "t": 17.3,
+    "mode": "OBSERVATION",
+    "health": null
+   },
+   {
+    "t": 18.4,
+    "mode": "OBSERVATION",
+    "health": null
+   },
+   {
+    "t": 19.4,
+    "mode": "OBSERVATION",
+    "health": null
+   },
+   {
+    "t": 20.4,
+    "mode": "OBSERVATION",
+    "health": null
+   },
+   {
+    "t": 21.4,
+    "mode": "OBSERVATION",
+    "health": null
+   }
+  ]
+ }
+]

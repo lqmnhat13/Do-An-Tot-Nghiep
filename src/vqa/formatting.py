@@ -35,4 +35,10 @@ def format_vqa_answer(
         return final_text
     if details:
         return f"Trước mặt bạn phát hiện có: {', '.join(details)}."
-    return "Chưa phát hiện được khung cảnh hoặc vật thể rõ ràng phía trước."
+    # Không dùng câu kiểu "chưa phát hiện vật thể": người khiếm thị dễ hiểu là phía trước trống.
+    return VQA_UNAVAILABLE_ANSWER
+
+
+VQA_UNAVAILABLE_ANSWER = (
+    "Chưa mô tả được khung cảnh lúc này. Vui lòng thử lại và tiếp tục dùng gậy dò đường."
+)

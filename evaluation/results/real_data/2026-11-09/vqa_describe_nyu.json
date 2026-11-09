@@ -1,0 +1,677 @@
+{
+  "dataset": "NYU Depth V2 test, 40 ảnh (mỗi 16 ảnh lấy 1)",
+  "model": "models/weights/qwen2_5_vl_3b_4bit",
+  "results": {
+    "Mô tả khung cảnh phía trước": {
+      "question": "Mô tả khung cảnh phía trước",
+      "n": 40,
+      "backend_rejected": 15,
+      "rejection_reasons": {
+        "MLX-VLM chạm giới hạn token; bỏ câu trả lời có thể bị cắt": 9,
+        "MLX-VLM trả lời không đúng một đến ba câu": 4,
+        "MLX-VLM trả lời không phải tiếng Việt": 2
+      },
+      "duplicate_answers_across_images": {
+        "Cô gái mặc áo dài đứng trên cầu thang.": 3
+      },
+      "raw_claims_clear": 0,
+      "final_claims_clear": 0,
+      "rows": [
+        {
+          "image": "val/official/00001.h5",
+          "backend_raw": "Không xác định rõ từ ảnh.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Không xác định rõ từ ảnh.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00035.h5",
+          "backend_raw": "Phía trước có một sofa màu đỏ, một bàn tròn màu trắng, và một cửa kính lớn.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Phía trước có một sofa màu đỏ, một bàn tròn màu trắng, và một cửa kính lớn.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00062.h5",
+          "backend_raw": "Trên kệ có một television, một chai kem và một số vật dụng khác.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Trên kệ có một television, một chai kem và một số vật dụng khác.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00119.h5",
+          "backend_raw": "Trong khung cảnh phía trước, có hai ghế màu nâu và một bàn nhỏ. Trên bàn có một số đồ uống. Ngoài ra, còn có một số kệ sách và một số đồ chơi.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Trong khung cảnh phía trước, có hai ghế màu nâu và một bàn nhỏ. Trên bàn có một số đồ uống. Ngoài ra, còn có một số kệ sách và một số đồ chơi.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00169.h5",
+          "backend_raw": null,
+          "backend_error": "MLX-VLM chạm giới hạn token; bỏ câu trả lời có thể bị cắt",
+          "final_answer": "Chưa mô tả được khung cảnh lúc này. Vui lòng thử lại và tiếp tục dùng gậy dò đường.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00189.h5",
+          "backend_raw": "Trên bàn có một đèn đọc sách, một máy tính và một số đồ dùng học tập.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Trên bàn có một đèn đọc sách, một máy tính và một số đồ dùng học tập.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00209.h5",
+          "backend_raw": null,
+          "backend_error": "MLX-VLM trả lời không đúng một đến ba câu",
+          "final_answer": "Chưa mô tả được khung cảnh lúc này. Vui lòng thử lại và tiếp tục dùng gậy dò đường.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00283.h5",
+          "backend_raw": "Cô gái Mickey và hai búp bê khác nhau nằm trên một chiếc sofa đen. Có một chiếc đèn đứng cạnh sofa.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Cô gái Mickey và hai búp bê khác nhau nằm trên một chiếc sofa đen. Có một chiếc đèn đứng cạnh sofa.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00325.h5",
+          "backend_raw": "Trong khung cảnh phía trước, có một sofa màu xanh dương và một ghế màu đỏ. Trên sofa và ghế có nhiều đồ chơi và sách. Trên nền thảm có các chữ màu sắc.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Trong khung cảnh phía trước, có một sofa màu xanh dương và một ghế màu đỏ. Trên sofa và ghế có nhiều đồ chơi và sách. Trên nền thảm có các chữ màu sắc.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00358.h5",
+          "backend_raw": null,
+          "backend_error": "MLX-VLM trả lời không đúng một đến ba câu",
+          "final_answer": "Chưa mô tả được khung cảnh lúc này. Vui lòng thử lại và tiếp tục dùng gậy dò đường.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00397.h5",
+          "backend_raw": "Trước cửa có một ghế màu tím, trên kệ có nhiều sách và một máy in.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Trước cửa có một ghế màu tím, trên kệ có nhiều sách và một máy in.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00446.h5",
+          "backend_raw": null,
+          "backend_error": "MLX-VLM chạm giới hạn token; bỏ câu trả lời có thể bị cắt",
+          "final_answer": "Chưa mô tả được khung cảnh lúc này. Vui lòng thử lại và tiếp tục dùng gậy dò đường.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00477.h5",
+          "backend_raw": "Trước đó có một chiếc sofa màu nâu, một chiếc đài phát thanh, một chiếc tivi, một chiếc ghế da và một chiếc bàn.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Trước đó có một chiếc sofa màu nâu, một chiếc đài phát thanh, một chiếc tivi, một chiếc ghế da và một chiếc bàn.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00524.h5",
+          "backend_raw": "Trên bàn có một laptop, một máy in và một hộp giấy. Trên kệ có một hộp khăn giấy và một bản đồ Mỹ treo trên bức tường. Có một chiếc ghế đen bên cạnh bàn.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Trên bàn có một laptop, một máy in và một hộp giấy. Trên kệ có một hộp khăn giấy và một bản đồ Mỹ treo trên bức tường. Có một chiếc ghế đen bên cạnh bàn.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00559.h5",
+          "backend_raw": null,
+          "backend_error": "MLX-VLM chạm giới hạn token; bỏ câu trả lời có thể bị cắt",
+          "final_answer": "Chưa mô tả được khung cảnh lúc này. Vui lòng thử lại và tiếp tục dùng gậy dò đường.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00582.h5",
+          "backend_raw": "Trên sofa có một chiếc đệm màu đỏ và một chiếc đệm màu nâu. Trên bàn có một tai nghe và một chiếc đĩa. Có một chiếc đệm màu nâu nằm trên sofa.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Trên sofa có một chiếc đệm màu đỏ và một chiếc đệm màu nâu. Trên bàn có một tai nghe và một chiếc đĩa. Có một chiếc đệm màu nâu nằm trên sofa.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00620.h5",
+          "backend_raw": "Trước cửa sổ, có một bàn làm việc với nhiều vật dụng như máy in, đĩa CD, và một số tài liệu. Trên bàn, có một chiếc ghế đen và một số tài liệu. Ngoài ra, còn có một tủ đựng nhiều ngăn kéo.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Trước cửa sổ, có một bàn làm việc với nhiều vật dụng như máy in, đĩa CD, và một số tài liệu. Trên bàn, có một chiếc ghế đen và một số tài liệu. Ngoài ra, còn có một tủ đựng nhiều ngăn kéo.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00664.h5",
+          "backend_raw": null,
+          "backend_error": "MLX-VLM trả lời không phải tiếng Việt",
+          "final_answer": "Chưa mô tả được khung cảnh lúc này. Vui lòng thử lại và tiếp tục dùng gậy dò đường.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00689.h5",
+          "backend_raw": "Bồn cầu trắng có bao bì giấy vệ sinh bên cạnh.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Bồn cầu trắng có bao bì giấy vệ sinh bên cạnh.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00718.h5",
+          "backend_raw": "Bathroom với bồn cầu, cửa sổ kính, và khăn tắm màu vàng.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Bathroom với bồn cầu, cửa sổ kính, và khăn tắm màu vàng.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00763.h5",
+          "backend_raw": "Khu vực trước có tủ lạnh lớn, tủ bếp và một số đồ dùng như máy pha cà phê và các vật dụng khác.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Khu vực trước có tủ lạnh lớn, tủ bếp và một số đồ dùng như máy pha cà phê và các vật dụng khác.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00779.h5",
+          "backend_raw": "Khu vực trước có một tủ lạnh màu đen, hai tủ bếp màu trắng và một bếp ga.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Khu vực trước có một tủ lạnh màu đen, hai tủ bếp màu trắng và một bếp ga.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00812.h5",
+          "backend_raw": null,
+          "backend_error": "MLX-VLM chạm giới hạn token; bỏ câu trả lời có thể bị cắt",
+          "final_answer": "Chưa mô tả được khung cảnh lúc này. Vui lòng thử lại và tiếp tục dùng gậy dò đường.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00843.h5",
+          "backend_raw": null,
+          "backend_error": "MLX-VLM chạm giới hạn token; bỏ câu trả lời có thể bị cắt",
+          "final_answer": "Chưa mô tả được khung cảnh lúc này. Vui lòng thử lại và tiếp tục dùng gậy dò đường.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00906.h5",
+          "backend_raw": null,
+          "backend_error": "MLX-VLM chạm giới hạn token; bỏ câu trả lời có thể bị cắt",
+          "final_answer": "Chưa mô tả được khung cảnh lúc này. Vui lòng thử lại và tiếp tục dùng gậy dò đường.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00959.h5",
+          "backend_raw": null,
+          "backend_error": "MLX-VLM chạm giới hạn token; bỏ câu trả lời có thể bị cắt",
+          "final_answer": "Chưa mô tả được khung cảnh lúc này. Vui lòng thử lại và tiếp tục dùng gậy dò đường.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00992.h5",
+          "backend_raw": null,
+          "backend_error": "MLX-VLM chạm giới hạn token; bỏ câu trả lời có thể bị cắt",
+          "final_answer": "Chưa mô tả được khung cảnh lúc này. Vui lòng thử lại và tiếp tục dùng gậy dò đường.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/01034.h5",
+          "backend_raw": "Trước đó có một bàn làm việc với hai ngăn kéo và một ghế gỗ. Trên bàn có một số vật dụng nhỏ và một bảng viết.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Trước đó có một bàn làm việc với hai ngăn kéo và một ghế gỗ. Trên bàn có một số vật dụng nhỏ và một bảng viết.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/01082.h5",
+          "backend_raw": "Trước đó có một bé ghế màu xanh lam và một chiếc giường có đệm màu nâu.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Trước đó có một bé ghế màu xanh lam và một chiếc giường có đệm màu nâu.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/01102.h5",
+          "backend_raw": "Trong khung cảnh phía trước, có một chiếc ghế màu trắng, một chiếc áo sơ mi màu xám và một chiếc khăn trải trên một bề mặt.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Trong khung cảnh phía trước, có một chiếc ghế màu trắng, một chiếc áo sơ mi màu xám và một chiếc khăn trải trên một bề mặt.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/01129.h5",
+          "backend_raw": null,
+          "backend_error": "MLX-VLM trả lời không phải tiếng Việt",
+          "final_answer": "Chưa mô tả được khung cảnh lúc này. Vui lòng thử lại và tiếp tục dùng gậy dò đường.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/01155.h5",
+          "backend_raw": null,
+          "backend_error": "MLX-VLM trả lời không đúng một đến ba câu",
+          "final_answer": "Chưa mô tả được khung cảnh lúc này. Vui lòng thử lại và tiếp tục dùng gậy dò đường.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/01180.h5",
+          "backend_raw": "Bàn học với một số đồ trang trí, đèn ngủ, và một chiếc ghế.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Bàn học với một số đồ trang trí, đèn ngủ, và một chiếc ghế.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/01207.h5",
+          "backend_raw": "Cô gái mặc áo dài đứng trên cầu thang.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Cô gái mặc áo dài đứng trên cầu thang.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/01233.h5",
+          "backend_raw": "Cô gái mặc áo dài đứng trên cầu thang.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Cô gái mặc áo dài đứng trên cầu thang.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/01263.h5",
+          "backend_raw": null,
+          "backend_error": "MLX-VLM chạm giới hạn token; bỏ câu trả lời có thể bị cắt",
+          "final_answer": "Chưa mô tả được khung cảnh lúc này. Vui lòng thử lại và tiếp tục dùng gậy dò đường.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/01292.h5",
+          "backend_raw": null,
+          "backend_error": "MLX-VLM trả lời không đúng một đến ba câu",
+          "final_answer": "Chưa mô tả được khung cảnh lúc này. Vui lòng thử lại và tiếp tục dùng gậy dò đường.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/01329.h5",
+          "backend_raw": "Cô gái mặc áo dài đứng trên cầu thang.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Cô gái mặc áo dài đứng trên cầu thang.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/01356.h5",
+          "backend_raw": "Bàn ăn có 4 ghế, trên bàn có một cuốn sách. Bàn đặt trên thảm trải. Trên kệ bếp có một số đồ dùng.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Bàn ăn có 4 ghế, trên bàn có một cuốn sách. Bàn đặt trên thảm trải. Trên kệ bếp có một số đồ dùng.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/01397.h5",
+          "backend_raw": "Bàn ăn với ghế và đèn treo.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Bàn ăn với ghế và đèn treo.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        }
+      ]
+    },
+    "Phía trước có gì?": {
+      "question": "Phía trước có gì?",
+      "n": 40,
+      "backend_rejected": 8,
+      "rejection_reasons": {
+        "MLX-VLM trả lời không đúng một đến ba câu": 2,
+        "MLX-VLM chạm giới hạn token; bỏ câu trả lời có thể bị cắt": 6
+      },
+      "duplicate_answers_across_images": {},
+      "raw_claims_clear": 0,
+      "final_claims_clear": 0,
+      "rows": [
+        {
+          "image": "val/official/00001.h5",
+          "backend_raw": "Có một ghế màu xanh và một tủ bếp.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Có một ghế màu xanh và một tủ bếp.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00035.h5",
+          "backend_raw": "Có một sofa đỏ và một bàn tròn.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Có một sofa đỏ và một bàn tròn.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00062.h5",
+          "backend_raw": "Đối tượng nổi bật phía trước là một tivi và một chiếc tủ.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Đối tượng nổi bật phía trước là một tivi và một chiếc tủ.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00119.h5",
+          "backend_raw": "Có hai ghế màu nâu và một bàn nhỏ.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Có hai ghế màu nâu và một bàn nhỏ.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00169.h5",
+          "backend_raw": "Đối tượng nổi bật nhất là một tivi màu đen nằm trên một kệ màu xanh lá cây.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Đối tượng nổi bật nhất là một tivi màu đen nằm trên một kệ màu xanh lá cây.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00189.h5",
+          "backend_raw": "Có một chiếc ghế đen, một đèn đọc sách, và một khung ảnh trên kệ.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Có một chiếc ghế đen, một đèn đọc sách, và một khung ảnh trên kệ.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00209.h5",
+          "backend_raw": null,
+          "backend_error": "MLX-VLM trả lời không đúng một đến ba câu",
+          "final_answer": "Chưa mô tả được khung cảnh lúc này. Vui lòng thử lại và tiếp tục dùng gậy dò đường.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00283.h5",
+          "backend_raw": null,
+          "backend_error": "MLX-VLM trả lời không đúng một đến ba câu",
+          "final_answer": "Chưa mô tả được khung cảnh lúc này. Vui lòng thử lại và tiếp tục dùng gậy dò đường.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00325.h5",
+          "backend_raw": "Phía trước có một ghế màu đỏ và một ghế màu xanh.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Phía trước có một ghế màu đỏ và một ghế màu xanh.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00358.h5",
+          "backend_raw": "Đối tượng nổi bật phía trước là một chiếc bàn làm việc với một chiếc TV gắn trên kệ sách.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Đối tượng nổi bật phía trước là một chiếc bàn làm việc với một chiếc TV gắn trên kệ sách.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00397.h5",
+          "backend_raw": "Có một bàn làm việc với nhiều văn phòng phẩm và một chiếc ghế.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Có một bàn làm việc với nhiều văn phòng phẩm và một chiếc ghế.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00446.h5",
+          "backend_raw": "Có một chiếc ghế sofa màu be và nhiều đồ chơi trên sàn.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Có một chiếc ghế sofa màu be và nhiều đồ chơi trên sàn.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00477.h5",
+          "backend_raw": "Có một chiếc ghế da và một chiếc sofa.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Có một chiếc ghế da và một chiếc sofa.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00524.h5",
+          "backend_raw": "Đối tượng nổi bật phía trước là một bàn làm việc với một laptop, một máy in và một hộp giấy.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Đối tượng nổi bật phía trước là một bàn làm việc với một laptop, một máy in và một hộp giấy.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00559.h5",
+          "backend_raw": "Có một tủ lạnh và một số đồ dùng trong nhà bếp.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Có một tủ lạnh và một số đồ dùng trong nhà bếp.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00582.h5",
+          "backend_raw": null,
+          "backend_error": "MLX-VLM chạm giới hạn token; bỏ câu trả lời có thể bị cắt",
+          "final_answer": "Chưa mô tả được khung cảnh lúc này. Vui lòng thử lại và tiếp tục dùng gậy dò đường.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00620.h5",
+          "backend_raw": "Có một bàn làm việc với nhiều tài liệu và một chiếc ghế.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Có một bàn làm việc với nhiều tài liệu và một chiếc ghế.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00664.h5",
+          "backend_raw": "Bồn rửa tay và khăn giấy.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Bồn rửa tay và khăn giấy.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00689.h5",
+          "backend_raw": "Có một toilet và một cuốn giấy vệ sinh.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Có một toilet và một cuốn giấy vệ sinh.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00718.h5",
+          "backend_raw": "Có một bồn cầu và một bồn tắm.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Có một bồn cầu và một bồn tắm.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00763.h5",
+          "backend_raw": "Đối tượng nổi bật phía trước là một tủ lạnh lớn màu bạc.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Đối tượng nổi bật phía trước là một tủ lạnh lớn màu bạc.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00779.h5",
+          "backend_raw": "Có một bếp ga và một tủ lạnh.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Có một bếp ga và một tủ lạnh.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00812.h5",
+          "backend_raw": "Có hai chai nước trên kệ.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Có hai chai nước trên kệ.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00843.h5",
+          "backend_raw": "Đối tượng nổi bật phía trước là một tủ lạnh màu đen.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Đối tượng nổi bật phía trước là một tủ lạnh màu đen.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00906.h5",
+          "backend_raw": "Đối tượng nổi bật phía trước là một chiếc tủ bếp và một chiếc tivi.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Đối tượng nổi bật phía trước là một chiếc tủ bếp và một chiếc tivi.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00959.h5",
+          "backend_raw": "Đèn ngủ và một chiếc đệm.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Đèn ngủ và một chiếc đệm.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/00992.h5",
+          "backend_raw": null,
+          "backend_error": "MLX-VLM chạm giới hạn token; bỏ câu trả lời có thể bị cắt",
+          "final_answer": "Chưa mô tả được khung cảnh lúc này. Vui lòng thử lại và tiếp tục dùng gậy dò đường.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/01034.h5",
+          "backend_raw": "Có một bàn làm việc với hai ngăn kéo và một ghế gỗ.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Có một bàn làm việc với hai ngăn kéo và một ghế gỗ.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/01082.h5",
+          "backend_raw": null,
+          "backend_error": "MLX-VLM chạm giới hạn token; bỏ câu trả lời có thể bị cắt",
+          "final_answer": "Chưa mô tả được khung cảnh lúc này. Vui lòng thử lại và tiếp tục dùng gậy dò đường.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/01102.h5",
+          "backend_raw": "Có một chiếc ghế màu trắng và một chiếc áo khoác nằm trên một cái giường.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Có một chiếc ghế màu trắng và một chiếc áo khoác nằm trên một cái giường.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/01129.h5",
+          "backend_raw": "Trước có một chiếc giường với ga trải và một số đồ vật trên đầu giường.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Trước có một chiếc giường với ga trải và một số đồ vật trên đầu giường.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/01155.h5",
+          "backend_raw": "Có một số đồ chơi và sách trên kệ sách.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Có một số đồ chơi và sách trên kệ sách.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/01180.h5",
+          "backend_raw": "Đối tượng nổi bật nhất là một chiếc bàn làm việc với một số vật phẩm trên đó, bao gồm một đèn, một số đồ trang trí và một số sách.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Đối tượng nổi bật nhất là một chiếc bàn làm việc với một số vật phẩm trên đó, bao gồm một đèn, một số đồ trang trí và một số sách.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/01207.h5",
+          "backend_raw": "Có một bàn trang trí kính với một chậu hoa trên.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Có một bàn trang trí kính với một chậu hoa trên.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/01233.h5",
+          "backend_raw": null,
+          "backend_error": "MLX-VLM chạm giới hạn token; bỏ câu trả lời có thể bị cắt",
+          "final_answer": "Chưa mô tả được khung cảnh lúc này. Vui lòng thử lại và tiếp tục dùng gậy dò đường.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/01263.h5",
+          "backend_raw": null,
+          "backend_error": "MLX-VLM chạm giới hạn token; bỏ câu trả lời có thể bị cắt",
+          "final_answer": "Chưa mô tả được khung cảnh lúc này. Vui lòng thử lại và tiếp tục dùng gậy dò đường.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/01292.h5",
+          "backend_raw": "Đối tượng nổi bật: Bàn ăn, ghế, tivi, kệ tivi.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Đối tượng nổi bật: Bàn ăn, ghế, tivi, kệ tivi.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/01329.h5",
+          "backend_raw": null,
+          "backend_error": "MLX-VLM chạm giới hạn token; bỏ câu trả lời có thể bị cắt",
+          "final_answer": "Chưa mô tả được khung cảnh lúc này. Vui lòng thử lại và tiếp tục dùng gậy dò đường.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/01356.h5",
+          "backend_raw": "Có một bàn ăn với ghế gỗ và một thảm trải trên nền.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Có một bàn ăn với ghế gỗ và một thảm trải trên nền.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        },
+        {
+          "image": "val/official/01397.h5",
+          "backend_raw": "Phía trước có một bàn ăn với ghế và một chiếc đèn treo trên.",
+          "backend_error": null,
+          "final_answer": "Khung cảnh: Phía trước có một bàn ăn với ghế và một chiếc đèn treo trên.",
+          "raw_claims_clear": false,
+          "final_claims_clear": false
+        }
+      ]
+    }
+  }
+}

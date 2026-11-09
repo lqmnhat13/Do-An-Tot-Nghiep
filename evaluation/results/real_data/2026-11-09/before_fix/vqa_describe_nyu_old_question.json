@@ -1,0 +1,330 @@
+{
+ "summary": {
+  "n": 40,
+  "backend_rejected": 13,
+  "raw_claims_clear": 0,
+  "final_claims_clear": 0
+ },
+ "rows": [
+  {
+   "img": "0000.jpg",
+   "raw": "Không xác định rõ từ ảnh.",
+   "err": null,
+   "final": "Khung cảnh: Không xác định rõ từ ảnh.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0016.jpg",
+   "raw": "Phía trước có một sofa màu đỏ, một bàn tròn màu trắng, và một cửa kính lớn.",
+   "err": null,
+   "final": "Khung cảnh: Phía trước có một sofa màu đỏ, một bàn tròn màu trắng, và một cửa kính lớn.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0032.jpg",
+   "raw": "Trên kệ có một television, một chai kem và một số vật dụng khác.",
+   "err": null,
+   "final": "Khung cảnh: Trên kệ có một television, một chai kem và một số vật dụng khác.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0048.jpg",
+   "raw": "Trong khung cảnh phía trước, có hai ghế màu nâu và một bàn nhỏ. Trên bàn có một số đồ uống. Ngoài ra, còn có một số kệ sách và một số đồ chơi.",
+   "err": null,
+   "final": "Khung cảnh: Trong khung cảnh phía trước, có hai ghế màu nâu và một bàn nhỏ. Trên bàn có một số đồ uống. Ngoài ra, còn có một số kệ sách và một số đồ chơi.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0064.jpg",
+   "raw": null,
+   "err": "MLX-VLM chạm giới hạn token; bỏ câu trả lời có thể bị cắt",
+   "final": "Chưa phát hiện được khung cảnh hoặc vật thể rõ ràng phía trước.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0080.jpg",
+   "raw": "Trên bàn có một đèn đọc sách, một máy tính và một số đồ dùng học tập.",
+   "err": null,
+   "final": "Khung cảnh: Trên bàn có một đèn đọc sách, một máy tính và một số đồ dùng học tập.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0096.jpg",
+   "raw": null,
+   "err": "MLX-VLM trả lời không đúng một đến ba câu",
+   "final": "Chưa phát hiện được khung cảnh hoặc vật thể rõ ràng phía trước.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0112.jpg",
+   "raw": "Cô gái Mickey và hai búp bê khác nhau nằm trên một chiếc sofa đen. Có một chiếc đèn đứng cạnh sofa.",
+   "err": null,
+   "final": "Khung cảnh: Cô gái Mickey và hai búp bê khác nhau nằm trên một chiếc sofa đen. Có một chiếc đèn đứng cạnh sofa.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0128.jpg",
+   "raw": "Trong khung cảnh phía trước, có một sofa màu xanh dương và một ghế màu đỏ. Trên sofa và ghế có nhiều đồ chơi và sách. Trên nền thảm có các chữ màu sắc.",
+   "err": null,
+   "final": "Khung cảnh: Trong khung cảnh phía trước, có một sofa màu xanh dương và một ghế màu đỏ. Trên sofa và ghế có nhiều đồ chơi và sách. Trên nền thảm có các chữ màu sắc.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0144.jpg",
+   "raw": null,
+   "err": "MLX-VLM trả lời không đúng một đến ba câu",
+   "final": "Chưa phát hiện được khung cảnh hoặc vật thể rõ ràng phía trước.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0160.jpg",
+   "raw": "Trước cửa có một ghế màu tím, trên kệ có nhiều sách và một máy in.",
+   "err": null,
+   "final": "Khung cảnh: Trước cửa có một ghế màu tím, trên kệ có nhiều sách và một máy in.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0176.jpg",
+   "raw": null,
+   "err": "MLX-VLM chạm giới hạn token; bỏ câu trả lời có thể bị cắt",
+   "final": "Chưa phát hiện được khung cảnh hoặc vật thể rõ ràng phía trước.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0192.jpg",
+   "raw": "Trước đó có một chiếc sofa màu nâu, một chiếc đài phát thanh, một chiếc tivi, một chiếc ghế da và một chiếc bàn.",
+   "err": null,
+   "final": "Khung cảnh: Trước đó có một chiếc sofa màu nâu, một chiếc đài phát thanh, một chiếc tivi, một chiếc ghế da và một chiếc bàn.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0208.jpg",
+   "raw": "Trên bàn có một laptop, một máy in và một hộp giấy. Trên kệ có một hộp khăn giấy và một bản đồ Mỹ treo trên bức tường. Có một chiếc ghế đen bên cạnh bàn.",
+   "err": null,
+   "final": "Khung cảnh: Trên bàn có một laptop, một máy in và một hộp giấy. Trên kệ có một hộp khăn giấy và một bản đồ Mỹ treo trên bức tường. Có một chiếc ghế đen bên cạnh bàn.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0224.jpg",
+   "raw": null,
+   "err": "MLX-VLM chạm giới hạn token; bỏ câu trả lời có thể bị cắt",
+   "final": "Chưa phát hiện được khung cảnh hoặc vật thể rõ ràng phía trước.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0240.jpg",
+   "raw": "Trên sofa có một chiếc đệm màu đỏ và một chiếc đệm màu nâu. Trên bàn có một tai nghe và một chiếc đĩa. Có một chiếc đệm màu nâu nằm trên sofa.",
+   "err": null,
+   "final": "Khung cảnh: Trên sofa có một chiếc đệm màu đỏ và một chiếc đệm màu nâu. Trên bàn có một tai nghe và một chiếc đĩa. Có một chiếc đệm màu nâu nằm trên sofa.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0256.jpg",
+   "raw": "Trước cửa sổ, có một bàn làm việc với nhiều vật dụng như máy in, đĩa CD, và một số tài liệu. Trên bàn, có một chiếc ghế đen và một số tài liệu. Ngoài ra, còn có một tủ đựng nhiều ngăn kéo.",
+   "err": null,
+   "final": "Khung cảnh: Trước cửa sổ, có một bàn làm việc với nhiều vật dụng như máy in, đĩa CD, và một số tài liệu. Trên bàn, có một chiếc ghế đen và một số tài liệu. Ngoài ra, còn có một tủ đựng nhiều ngăn kéo.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0272.jpg",
+   "raw": "Bathroom with a sink, a towel hanging on a rack, and a mirror on the wall.",
+   "err": null,
+   "final": "Khung cảnh: Bathroom with a sink, a towel hanging on a rack, and a mirror on the wall.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0288.jpg",
+   "raw": "Bồn cầu trắng có bao bì giấy vệ sinh bên cạnh.",
+   "err": null,
+   "final": "Khung cảnh: Bồn cầu trắng có bao bì giấy vệ sinh bên cạnh.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0304.jpg",
+   "raw": "Bathroom với bồn cầu, cửa sổ kính, và khăn tắm màu vàng.",
+   "err": null,
+   "final": "Khung cảnh: Bathroom với bồn cầu, cửa sổ kính, và khăn tắm màu vàng.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0320.jpg",
+   "raw": "Khu vực trước có tủ lạnh lớn, tủ bếp và một số đồ dùng như máy pha cà phê và các vật dụng khác.",
+   "err": null,
+   "final": "Khung cảnh: Khu vực trước có tủ lạnh lớn, tủ bếp và một số đồ dùng như máy pha cà phê và các vật dụng khác.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0336.jpg",
+   "raw": "Khu vực trước có một tủ lạnh màu đen, hai tủ bếp màu trắng và một bếp ga.",
+   "err": null,
+   "final": "Khung cảnh: Khu vực trước có một tủ lạnh màu đen, hai tủ bếp màu trắng và một bếp ga.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0352.jpg",
+   "raw": null,
+   "err": "MLX-VLM chạm giới hạn token; bỏ câu trả lời có thể bị cắt",
+   "final": "Chưa phát hiện được khung cảnh hoặc vật thể rõ ràng phía trước.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0368.jpg",
+   "raw": null,
+   "err": "MLX-VLM chạm giới hạn token; bỏ câu trả lời có thể bị cắt",
+   "final": "Chưa phát hiện được khung cảnh hoặc vật thể rõ ràng phía trước.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0384.jpg",
+   "raw": null,
+   "err": "MLX-VLM chạm giới hạn token; bỏ câu trả lời có thể bị cắt",
+   "final": "Chưa phát hiện được khung cảnh hoặc vật thể rõ ràng phía trước.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0400.jpg",
+   "raw": null,
+   "err": "MLX-VLM chạm giới hạn token; bỏ câu trả lời có thể bị cắt",
+   "final": "Chưa phát hiện được khung cảnh hoặc vật thể rõ ràng phía trước.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0416.jpg",
+   "raw": null,
+   "err": "MLX-VLM chạm giới hạn token; bỏ câu trả lời có thể bị cắt",
+   "final": "Chưa phát hiện được khung cảnh hoặc vật thể rõ ràng phía trước.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0432.jpg",
+   "raw": "Trước đó có một bàn làm việc với hai ngăn kéo và một ghế gỗ. Trên bàn có một số vật dụng nhỏ và một bảng viết.",
+   "err": null,
+   "final": "Khung cảnh: Trước đó có một bàn làm việc với hai ngăn kéo và một ghế gỗ. Trên bàn có một số vật dụng nhỏ và một bảng viết.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0448.jpg",
+   "raw": "Trước đó có một bé ghế màu xanh lam và một chiếc giường có đệm màu nâu.",
+   "err": null,
+   "final": "Khung cảnh: Trước đó có một bé ghế màu xanh lam và một chiếc giường có đệm màu nâu.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0464.jpg",
+   "raw": "Trong khung cảnh phía trước, có một chiếc ghế màu trắng, một chiếc áo sơ mi màu xám và một chiếc khăn trải trên một bề mặt.",
+   "err": null,
+   "final": "Khung cảnh: Trong khung cảnh phía trước, có một chiếc ghế màu trắng, một chiếc áo sơ mi màu xám và một chiếc khăn trải trên một bề mặt.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0480.jpg",
+   "raw": "Bedsheets are crumpled and messy on the bed. There is a nightstand with a phone and a lamp on it. A picture frame is on the wall above the bed.",
+   "err": null,
+   "final": "Khung cảnh: Bedsheets are crumpled and messy on the bed. There is a nightstand with a phone and a lamp on it. A picture frame is on the wall above the bed.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0496.jpg",
+   "raw": null,
+   "err": "MLX-VLM trả lời không đúng một đến ba câu",
+   "final": "Chưa phát hiện được khung cảnh hoặc vật thể rõ ràng phía trước.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0512.jpg",
+   "raw": "Bàn học với một số đồ trang trí, đèn ngủ, và một chiếc ghế.",
+   "err": null,
+   "final": "Khung cảnh: Bàn học với một số đồ trang trí, đèn ngủ, và một chiếc ghế.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0528.jpg",
+   "raw": "Cô gái mặc áo dài đứng trên cầu thang.",
+   "err": null,
+   "final": "Khung cảnh: Cô gái mặc áo dài đứng trên cầu thang.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0544.jpg",
+   "raw": "Cô gái mặc áo dài đứng trên cầu thang.",
+   "err": null,
+   "final": "Khung cảnh: Cô gái mặc áo dài đứng trên cầu thang.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0560.jpg",
+   "raw": null,
+   "err": "MLX-VLM chạm giới hạn token; bỏ câu trả lời có thể bị cắt",
+   "final": "Chưa phát hiện được khung cảnh hoặc vật thể rõ ràng phía trước.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0576.jpg",
+   "raw": null,
+   "err": "MLX-VLM trả lời không đúng một đến ba câu",
+   "final": "Chưa phát hiện được khung cảnh hoặc vật thể rõ ràng phía trước.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0592.jpg",
+   "raw": "Cô gái mặc áo dài đứng trên cầu thang.",
+   "err": null,
+   "final": "Khung cảnh: Cô gái mặc áo dài đứng trên cầu thang.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0608.jpg",
+   "raw": "Bàn ăn có 4 ghế, trên bàn có một cuốn sách. Bàn đặt trên thảm trải. Trên kệ bếp có một số đồ dùng.",
+   "err": null,
+   "final": "Khung cảnh: Bàn ăn có 4 ghế, trên bàn có một cuốn sách. Bàn đặt trên thảm trải. Trên kệ bếp có một số đồ dùng.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  },
+  {
+   "img": "0624.jpg",
+   "raw": "Bàn ăn với ghế và đèn treo.",
+   "err": null,
+   "final": "Khung cảnh: Bàn ăn với ghế và đèn treo.",
+   "raw_claims_clear": false,
+   "final_claims_clear": false
+  }
+ ]
+}
