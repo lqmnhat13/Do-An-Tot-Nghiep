@@ -155,9 +155,9 @@ Lệnh thực hiện các công việc sau:
 | Thành phần | Việc script thực hiện |
 |---|---|
 | YOLOv8n | Giữ file đã có, tìm bản sao tại một số thư mục backup, hoặc tải rồi đặt vào `models/weights/yolov8n.pt` |
-| Depth Anything V2 Small | Chuẩn bị processor và model trong cache Hugging Face |
+| Depth Anything V2 Small | Chuẩn bị processor và model trong `models/weights/huggingface/` |
 | BLIP và MarianMT | Chuẩn bị model cho backend mô tả ảnh cũ, kể cả khi YAML đang chọn MLX |
-| PhoWhisper-small | Chuẩn bị `vinai/PhoWhisper-small` (~1 GB, BSD-3-Clause, theo `speech.model_name`) trong cache Hugging Face để nhận dạng câu hỏi VQA bằng giọng nói; ứng dụng chạy offline sau đó |
+| PhoWhisper-small | Chuẩn bị `vinai/PhoWhisper-small` (~1 GB, BSD-3-Clause, theo `speech.model_name`) trong `models/weights/huggingface/` để nhận dạng câu hỏi VQA bằng giọng nói; ứng dụng chạy offline sau đó |
 | EasyOCR vi/en | Chuẩn bị model OCR dự phòng bằng Reader chạy CPU; Apple Vision không cần tải model riêng |
 | Âm thanh | Tạo lại `alert_high.wav`, `chime.wav`, `ready.wav` trong `assets/audio/` |
 
@@ -194,14 +194,14 @@ ls models/weights/qwen2_5_vl_3b_4bit
 
 Với snapshot MLX, cần có `config.json`, trọng số `.safetensors` và các tệp processor/tokenizer được tải cùng snapshot. Không chỉ sao chép một tệp weights rời. Kiểm tra thư mục tồn tại mới là bước đầu; kiểm chứng đầy đủ cần gọi VQA thực tế khi offline.
 
-Các model không cùng nằm trong một thư mục:
+Mọi model nằm trong `models/weights/` của dự án:
 
-- YOLO: đường dẫn trong dự án.
-- MLX-VLM: thư mục snapshot trong dự án hoặc đường dẫn local đã cấu hình.
-- Depth, BLIP, MarianMT: cache Hugging Face của tài khoản chạy chương trình.
-- OCR: cache do EasyOCR quản lý.
+- YOLO: `models/weights/yolov8s.pt` (dự phòng `yolov8n.pt`).
+- MLX-VLM: `models/weights/qwen2_5_vl_3b_4bit/` (hoặc đường dẫn local đã cấu hình).
+- Depth, BLIP, MarianMT, PhoWhisper: `models/weights/huggingface/` (định dạng cache Hugging Face).
+- EasyOCR: `models/weights/easyocr/`.
 
-Nếu tải bằng một tài khoản nhưng chạy bằng tài khoản khác, hoặc sao chép dự án sang máy mới mà không mang theo cache, ứng dụng có thể vẫn báo thiếu model. Khi bàn giao máy, nên chuẩn bị model bằng chính tài khoản và môi trường sẽ vận hành, rồi kiểm tra lại không có mạng.
+Sao chép dự án sang máy mới thì mang theo cả `models/weights/` (Git không theo dõi thư mục này, trừ `yolov8n.pt`); thiếu thư mục này ứng dụng sẽ báo thiếu model. Khi bàn giao máy, nên chuẩn bị model bằng chính tài khoản và môi trường sẽ vận hành, rồi kiểm tra lại không có mạng.
 
 ### 4.4. Xác nhận khả năng chạy offline
 

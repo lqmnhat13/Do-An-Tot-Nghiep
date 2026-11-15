@@ -4,6 +4,8 @@ import tempfile
 import threading
 import types
 import unittest
+
+from src.runtime.model_loading import HF_CACHE_DIR
 from pathlib import Path
 from unittest.mock import Mock, patch
 
@@ -301,7 +303,7 @@ class TestMLXVLM(unittest.TestCase):
             download_models.setup_mlx_vlm_weights()
         snapshot.assert_called_once_with(repo_id=config["hf_repo_id"],
                                          local_dir=str(root / config["model_path"]),
-                                         local_files_only=False)
+                                         cache_dir=HF_CACHE_DIR, local_files_only=False)
 
 
 if __name__ == "__main__":

@@ -11,6 +11,8 @@ from src.contracts.request import VQARequest
 from src.depth.depth_estimator import DepthEstimator
 from src.ocr.ocr_service import OCRService
 from src.runtime.model_loading import (
+    EASYOCR_DIR,
+    HF_CACHE_DIR,
     enable_model_downloads,
     is_offline_mode,
     pretrained_kwargs,
@@ -22,10 +24,10 @@ class TestOfflineModelLoading(unittest.TestCase):
     def test_offline_is_default_and_download_script_can_opt_in(self):
         with patch.dict(os.environ, {}, clear=True):
             self.assertTrue(is_offline_mode())
-            self.assertEqual(pretrained_kwargs(), {"local_files_only": True})
+            self.assertEqual(pretrained_kwargs(), {"local_files_only": True, "cache_dir": HF_CACHE_DIR})
             self.assertEqual(
                 pretrained_kwargs(allow_download=True),
-                {"local_files_only": False}
+                {"local_files_only": False, "cache_dir": HF_CACHE_DIR}
             )
 
     def test_download_preparation_explicitly_disables_offline_flags(self):
@@ -49,7 +51,9 @@ class TestOfflineModelLoading(unittest.TestCase):
             service._ensure_reader()
 
         easyocr.Reader.assert_called_once_with(
-            ["vi", "en"], gpu=False, download_enabled=False
+            ["vi", "en"], gpu=False, download_enabled=False,
+            model_storage_directory=EASYOCR_DIR,
+            user_network_directory=os.path.join(EASYOCR_DIR, "user_network")
         )
         self.assertIsNone(service.load_error)
 
@@ -63,10 +67,10 @@ class TestOfflineModelLoading(unittest.TestCase):
             estimator = DepthEstimator(device="cpu")
 
         load_processor.assert_called_once_with(
-            estimator.model_name, local_files_only=True
+            estimator.model_name, local_files_only=True, cache_dir=HF_CACHE_DIR
         )
         load_model.assert_called_once_with(
-            estimator.model_name, local_files_only=True
+            estimator.model_name, local_files_only=True, cache_dir=HF_CACHE_DIR
         )
         self.assertIsNone(estimator.load_error)
 
@@ -85,16 +89,16 @@ class TestOfflineModelLoading(unittest.TestCase):
             service = VQAService(device="cpu", lazy_load=False)
 
         load_caption_processor.assert_called_once_with(
-            service.caption_model_name, local_files_only=True
+            service.caption_model_name, local_files_only=True, cache_dir=HF_CACHE_DIR
         )
         load_caption_model.assert_called_once_with(
-            service.caption_model_name, local_files_only=True
+            service.caption_model_name, local_files_only=True, cache_dir=HF_CACHE_DIR
         )
         load_translation_tokenizer.assert_called_once_with(
-            service.translation_model_name, local_files_only=True
+            service.translation_model_name, local_files_only=True, cache_dir=HF_CACHE_DIR
         )
         load_translation_model.assert_called_once_with(
-            service.translation_model_name, local_files_only=True
+            service.translation_model_name, local_files_only=True, cache_dir=HF_CACHE_DIR
         )
         self.assertIsNone(service.load_error)
 

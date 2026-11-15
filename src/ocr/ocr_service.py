@@ -1,3 +1,4 @@
+import os
 import threading
 import time
 import cv2
@@ -6,7 +7,7 @@ import numpy as np
 
 from src.contracts.request import OCRRequest, OCRResult
 from src.ocr.image_quality import ImageQualityChecker
-from src.runtime.model_loading import is_offline_mode, offline_load_error
+from src.runtime.model_loading import EASYOCR_DIR, is_offline_mode, offline_load_error
 
 class OCRService:
     """
@@ -63,7 +64,9 @@ class OCRService:
             self._reader = easyocr.Reader(
                 self.languages,
                 gpu=self.use_gpu,
-                download_enabled=not is_offline_mode()
+                download_enabled=not is_offline_mode(),
+                model_storage_directory=EASYOCR_DIR,
+                user_network_directory=os.path.join(EASYOCR_DIR, "user_network")
             )
             self._load_error = None
             print("[OCRService] EasyOCR khởi tạo thành công.")

@@ -17,7 +17,7 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 WEIGHTS_DIR = os.path.join(PROJECT_ROOT, "models", "weights")
 sys.path.insert(0, PROJECT_ROOT)
 
-from src.runtime.model_loading import enable_model_downloads, pretrained_kwargs
+from src.runtime.model_loading import EASYOCR_DIR, HF_CACHE_DIR, enable_model_downloads, pretrained_kwargs
 
 def setup_yolo_weights(name="yolov8n.pt"):
     os.makedirs(WEIGHTS_DIR, exist_ok=True)
@@ -112,8 +112,10 @@ def setup_ocr_weights():
     print("[CHECK] Kiểm tra EasyOCR tiếng Việt và tiếng Anh...")
     try:
         import easyocr
-        easyocr.Reader(["vi", "en"], gpu=False, download_enabled=True)
-        print("[OK] EasyOCR đã sẵn sàng trong cache local.")
+        easyocr.Reader(["vi", "en"], gpu=False, download_enabled=True,
+                       model_storage_directory=EASYOCR_DIR,
+                       user_network_directory=os.path.join(EASYOCR_DIR, "user_network"))
+        print(f"[OK] EasyOCR đã sẵn sàng tại: {EASYOCR_DIR}")
     except Exception as e:
         print(f"[FAIL] Không thể chuẩn bị EasyOCR: {e}")
 
@@ -157,7 +159,7 @@ def setup_mlx_vlm_weights():
     if not target.is_absolute():
         target = Path(PROJECT_ROOT) / target
     snapshot_download(repo_id=config["hf_repo_id"], local_dir=str(target),
-                      local_files_only=False)
+                      cache_dir=HF_CACHE_DIR, local_files_only=False)
     print(f"[OK] MLX-VLM đã lưu tại: {target}")
 
 

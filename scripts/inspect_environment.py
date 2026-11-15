@@ -121,7 +121,9 @@ def check_models():
         print("[WARNING] Chưa có file yolov8n.pt tại local.")
 
     # Depth Anything V2 cache
-    hf_cache = os.path.expanduser("~/.cache/huggingface/hub")
+    # Cùng thư mục với src/runtime/model_loading.py HF_CACHE_DIR (script này không import src).
+    hf_cache = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                            "models", "weights", "huggingface")
     da_v2_small = os.path.join(hf_cache, "models--depth-anything--Depth-Anything-V2-Small-hf")
     if os.path.exists(da_v2_small):
         print(f"[OK] Đã cache Depth-Anything-V2-Small-hf tại: {da_v2_small}")

@@ -91,7 +91,7 @@ python scripts/download_models.py --mlx-vlm
 
 Lệnh đầu chuẩn bị YOLO, Depth Anything, EasyOCR, PhoWhisper (nhận dạng câu hỏi bằng giọng nói), backend VQA legacy và các WAV mẫu; lệnh thứ hai tải riêng snapshot MLX-VLM mặc định. Lệnh đầu có thể tạo lại WAV và một số lỗi tải được in ra nhưng không nhất thiết làm tiến trình trả mã lỗi khác `0`: hãy đọc từng dòng `[OK]`/`[FAIL]`, rồi kiểm tra môi trường bằng `python scripts/inspect_environment.py`. Không cần tải lại nếu tài nguyên đã có.
 
-Depth (bản Metric-Indoor trong cấu hình và bản relative Small), PhoWhisper và BLIP/MarianMT được lưu trong **cache Hugging Face của tài khoản chạy script**, EasyOCR dùng cache riêng. Apple Vision dùng framework hệ thống, không cần tải trọng số EasyOCR để chạy nhánh Vision, nhưng cần cache EasyOCR nếu muốn dùng dự phòng.
+Mọi model đều nằm trong `models/weights/` của dự án (Git bỏ qua thư mục này, trừ `yolov8n.pt`): YOLO và snapshot MLX-VLM ở ngay `models/weights/`; Depth (bản Metric-Indoor trong cấu hình và bản relative Small), PhoWhisper và BLIP/MarianMT ở `models/weights/huggingface/` (định dạng cache Hugging Face, đặt bằng `cache_dir` trong `src/runtime/model_loading.py`); EasyOCR ở `models/weights/easyocr/`. Không dùng `~/.cache/huggingface` hay `~/.EasyOCR`. Apple Vision dùng framework hệ thống, không cần tải trọng số EasyOCR để chạy nhánh Vision, nhưng cần cache EasyOCR nếu muốn dùng dự phòng.
 
 Sau khi chuẩn bị, chạy **offline nghiêm ngặt**:
 

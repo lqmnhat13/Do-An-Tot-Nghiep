@@ -74,7 +74,7 @@ python scripts/download_models.py
 python scripts/download_models.py --mlx-vlm
 ```
 
-Lệnh đầu kiểm tra/tải YOLO, Depth Anything, BLIP/MarianMT, EasyOCR, PhoWhisper (`speech.model_name`, mặc định `vinai/PhoWhisper-small`, ~1 GB, vào cache Hugging Face) và tạo các WAV cảnh báo trong `assets/audio/`. Lệnh `--mlx-vlm` **chỉ** tải snapshot MLX-VLM được khai báo trong `configs/model_config.yaml`. Hai lệnh cần mạng khi model chưa có; lệnh đầu có thể ghi lại các WAV mẫu. Chỉ chạy khi cần chuẩn bị tài nguyên.
+Lệnh đầu kiểm tra/tải YOLO, Depth Anything, BLIP/MarianMT, EasyOCR, PhoWhisper (`speech.model_name`, mặc định `vinai/PhoWhisper-small`, ~1 GB, vào `models/weights/huggingface/`) và tạo các WAV cảnh báo trong `assets/audio/`. Lệnh `--mlx-vlm` **chỉ** tải snapshot MLX-VLM được khai báo trong `configs/model_config.yaml`. Hai lệnh cần mạng khi model chưa có; lệnh đầu có thể ghi lại các WAV mẫu. Chỉ chạy khi cần chuẩn bị tài nguyên.
 
 ### Hiệu chỉnh khoảng cách (depth.metric_scale)
 

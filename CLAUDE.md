@@ -40,7 +40,7 @@ python scripts/calibrate_depth.py --distance 1.0      # fit depth.metric_scale f
 bash evaluation/benchmarks/setup_data.sh /path/to/workdir
 ```
 
-Runtime is offline by default: `src/runtime/model_loading.py` treats `SECOND_EYE_OFFLINE` as `1` unless set otherwise, so every Hugging Face `from_pretrained` call must go through `pretrained_kwargs()` (→ `local_files_only`). Only download scripts call `enable_model_downloads()`.
+Runtime is offline by default: `src/runtime/model_loading.py` treats `SECOND_EYE_OFFLINE` as `1` unless set otherwise, so every Hugging Face `from_pretrained` call must go through `pretrained_kwargs()` (→ `local_files_only` and `cache_dir=models/weights/huggingface`; EasyOCR uses `models/weights/easyocr`, so every model lives under `models/weights/`). Only download scripts call `enable_model_downloads()`.
 
 CI (`.github/workflows/cicd.yml`) runs on Ubuntu with CPU torch, so tests must not require MPS, MLX, Apple Vision, a camera, or the `say` command — those are mocked/skipped in tests.
 

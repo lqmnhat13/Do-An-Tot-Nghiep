@@ -1,7 +1,14 @@
 """Chính sách tải model dùng chung cho runtime offline."""
 
 import os
-from typing import Dict
+from pathlib import Path
+from typing import Dict, Union
+
+# Mọi model của dự án nằm dưới models/weights/ (đã được .gitignore bỏ qua) thay vì cache chung
+# của máy (~/.cache/huggingface, ~/.EasyOCR), để dễ kiểm soát và mang sang máy khác.
+MODEL_DIR = Path(__file__).resolve().parents[2] / "models" / "weights"
+HF_CACHE_DIR = str(MODEL_DIR / "huggingface")
+EASYOCR_DIR = str(MODEL_DIR / "easyocr")
 
 
 OFFLINE_ENV_VAR = "SECOND_EYE_OFFLINE"
@@ -16,9 +23,10 @@ def is_offline_mode() -> bool:
     return value.strip().lower() not in _FALSE_VALUES
 
 
-def pretrained_kwargs(*, allow_download: bool = False) -> Dict[str, bool]:
+def pretrained_kwargs(*, allow_download: bool = False) -> Dict[str, Union[bool, str]]:
     """Các tham số thống nhất cho mọi lời gọi Hugging Face from_pretrained."""
-    return {"local_files_only": is_offline_mode() and not allow_download}
+    return {"local_files_only": is_offline_mode() and not allow_download,
+            "cache_dir": HF_CACHE_DIR}
 
 
 def enable_model_downloads() -> None:
