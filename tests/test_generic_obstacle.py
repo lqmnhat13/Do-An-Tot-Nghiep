@@ -102,6 +102,15 @@ class TestGenericObstacleInRiskFSM(unittest.TestCase):
         self.assertEqual([a.track_id for a in assessments], [1])
         self.assertEqual(assessments[0].risk_level, RiskLevel.HIGH)
 
+    def test_non_alert_class_does_not_hide_near_obstacle(self):
+        # "oven" không thuộc alert_classes: nhận diện được không được làm mất cảnh báo vật cản chung.
+        fsm = self.make_fsm()
+        oven = Detection(class_name="oven", confidence=0.9, bbox=BoundingBox(0, 30, W, 90), track_id=1)
+        assessments = fsm.update(self.pair(wall_at(0.7), detections=[oven]))
+        generic = [a for a in assessments if a.track_id == GENERIC_OBSTACLE_TRACK_ID]
+        self.assertEqual(len(generic), 1)
+        self.assertEqual(generic[0].risk_level, RiskLevel.HIGH)
+
 
 if __name__ == "__main__":
     unittest.main()

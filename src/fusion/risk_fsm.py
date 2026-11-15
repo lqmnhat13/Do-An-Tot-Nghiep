@@ -230,8 +230,11 @@ class RiskFSM:
                 or sync_pair.data_quality != DataQuality.VALID
                 or depth_map.shape != (int(orig_h), int(orig_w))):
             return None
+        # Chỉ bỏ vùng của vật thuộc alert_classes (đã được đánh giá theo lớp); lớp không cảnh báo
+        # như "oven", "book" mà vẫn bị loại thì vật gần được nhận diện lại thành im lặng.
         found = self.generic_obstacle_detector.find(
-            depth_map, [d.bbox for d in sync_pair.detection_result.detections])
+            depth_map, [d.bbox for d in sync_pair.detection_result.detections
+                        if self.class_filter.is_alert_candidate(d.class_name)])
         if found is None:
             return None
         state = self._tracks.setdefault(GENERIC_OBSTACLE_TRACK_ID,
