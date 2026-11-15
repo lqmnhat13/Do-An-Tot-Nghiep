@@ -257,8 +257,17 @@ class HUDRenderer:
             pill_color = COLOR_CYAN if mode_str != "DEGRADED" else COLOR_HIGH_RISK
         next_x = self._draw_status_pill(canvas, 140, 8, pill_text, color=pill_color, font_scale=0.36)
 
-        if snapshot.get("is_speaking", False) and width >= 600:
+        if snapshot.get("listening", False):
+            next_x = self._draw_status_pill(canvas, next_x + 10, 8, "DANG NGHE...", color=COLOR_HIGH_RISK, font_scale=0.36)
+        elif snapshot.get("is_speaking", False) and width >= 600:
             next_x = self._draw_status_pill(canvas, next_x + 10, 8, "DANG NOI", color=(100, 235, 255), font_scale=0.36)
+
+        # Câu hỏi VQA đang trả lời (đã bỏ dấu), ngay dưới thanh trạng thái
+        question = snapshot.get("vqa_question")
+        if question and selected == "VQA":
+            q_text = self._fit_text("HOI: " + self._clean_ascii(question), width - 40, font_scale=0.36)
+            if q_text:
+                self._draw_status_pill(canvas, 12, header_h + 6, q_text, color=COLOR_TEXT_MAIN, font_scale=0.36)
 
         # FPS hiển thị góc phải
         metrics = snapshot.get("metrics") or {}

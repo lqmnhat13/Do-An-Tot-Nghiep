@@ -1,6 +1,6 @@
 import threading
 import time
-from typing import Optional, Dict, Any, List
+from typing import TYPE_CHECKING, Optional, Dict, Any, List, Tuple
 import numpy as np
 
 from src.contracts.frame_packet import FramePacket
@@ -27,6 +27,24 @@ from src.audio.audio_coordinator import AudioCoordinator
 from src.runtime.metrics import PerformanceMetrics
 from src.runtime.watchdog import Watchdog
 
+if TYPE_CHECKING:  # chỉ cho type hint: transcriber import torch, không nạp khi không cần
+    from src.speech.recorder import MicRecorder
+    from src.speech.transcriber import PhoWhisperTranscriber
+
+# Câu hỏi phím Q khi không có/không dùng được giọng nói. "Mô tả khung cảnh phía trước"
+# khiến Qwen2.5-VL-3B-4bit sinh câu ảo giác cố định trên ảnh phòng khách (NYU) và chạm
+# giới hạn token 33% số lần; câu dưới đây là câu đã được đánh giá trên OpenViVQA/KTVIC/NYU.
+DEFAULT_VQA_QUESTION = "Phía trước có gì?"
+NO_SPEECH_TEXT = "Không nghe rõ câu hỏi. Bấm Q và hỏi lại."
+VOICE_UNAVAILABLE_TEXT = ("Không dùng được micro hoặc nhận dạng giọng nói. "
+                          "Hệ thống sẽ mô tả phía trước.")
+LISTEN_CHIME_FILE = "assets/audio/chime.wav"
+
+
+class _OnDemandCancelled(Exception):
+    """Token on-demand không còn hiện hành (C/S/Esc) trong lúc chờ một bước chạy lâu."""
+
+
 class SystemCoordinator:
     """
     Điều phối viên tối cao của toàn bộ hệ thống (Runtime Coordinator).
@@ -43,6 +61,13 @@ class SystemCoordinator:
     # luồng suy luận bị treo (daemon) không thể bị dừng cưỡng bức.
     OCR_TIMEOUT_SEC = 30.0
     VQA_TIMEOUT_SEC = 60.0  # gồm cả lần nạp model MLX đầu tiên (~11 s)
+    # Nhận dạng giọng nói quá hạn này thì coi như model lỗi (đo thật: ~0,7 s nóng, ~4,5 s lần đầu).
+    STT_TIMEOUT_SEC = 15.0
+    DEFAULT_RECORD_MAX_SEC = 8.0
+    VOICE_AUDIO_IDLE_TIMEOUT_SEC = 4.0
+    DEFAULT_VQA_QUESTION = DEFAULT_VQA_QUESTION
+    NO_SPEECH_TEXT = NO_SPEECH_TEXT
+    VOICE_UNAVAILABLE_TEXT = VOICE_UNAVAILABLE_TEXT
 
     # Giám sát sức khỏe: người khiếm thị không thấy HUD, nên mất camera/depth phải được nói ra.
     HEALTH_CHECK_INTERVAL_SEC = 0.5
@@ -72,7 +97,9 @@ class SystemCoordinator:
         audio_coordinator: AudioCoordinator,
         ocr_service: Optional[OCRService] = None,
         vqa_service: Optional[VQAService] = None,
-        watchdog_timeout_sec: float = 3.0
+        watchdog_timeout_sec: float = 3.0,
+        voice_recorder: Optional["MicRecorder"] = None,
+        transcriber: Optional["PhoWhisperTranscriber"] = None
     ):
         self.camera_manager = camera_manager
         self.detector = detector
@@ -84,6 +111,9 @@ class SystemCoordinator:
         self.audio_coordinator = audio_coordinator
         self.ocr_service = ocr_service or OCRService()
         self.vqa_service = vqa_service or VQAService()
+        # Hỏi bằng giọng nói chỉ bật khi có đủ cả micro lẫn bộ nhận dạng.
+        self.voice_recorder = voice_recorder
+        self.transcriber = transcriber
 
         self.metrics = PerformanceMetrics()
         self.watchdog = Watchdog(timeout_sec=watchdog_timeout_sec)
@@ -114,6 +144,10 @@ class SystemCoordinator:
         self._on_demand_generation = 0
         self._active_on_demand_token: Optional[int] = None
         self._state_lock = threading.Lock()
+        # Thu âm câu hỏi VQA (đọc/ghi dưới _state_lock)
+        self._listening = False
+        self._listen_stop_event: Optional[threading.Event] = None
+        self._vqa_question: Optional[str] = None
 
         # Giám sát sức khỏe (đọc/ghi dưới _state_lock)
         self._health_thread: Optional[threading.Thread] = None
@@ -147,6 +181,9 @@ class SystemCoordinator:
         self._on_demand_generation += 1
         self._on_demand_active = False
         self._active_on_demand_token = None
+        # Đang thu micro thì dừng ngay (recorder kiểm tra sự kiện giữa mỗi block ~30 ms).
+        if self._listen_stop_event is not None:
+            self._listen_stop_event.set()
 
     def enter_warning_mode(self) -> None:
         """C: cancel on-demand output and explicitly restore fresh safety alerts."""
@@ -154,6 +191,7 @@ class SystemCoordinator:
             if self._shutting_down:
                 return
             self._cancel_on_demand_locked()
+            self._vqa_question = None
             self._select_mode_locked("WARNING")
 
     def set_on_demand_active(self, active: bool, mode: str = "OBSERVATION") -> None:
@@ -239,6 +277,7 @@ class SystemCoordinator:
                 token = self._on_demand_generation
                 self._on_demand_active = True
                 self._active_on_demand_token = token
+                self._vqa_question = None
                 self._select_mode_locked(mode)
                 self._on_demand_starting = True
                 thread = threading.Thread(
@@ -390,8 +429,12 @@ class SystemCoordinator:
                     expires_at=time.monotonic() + 5.0, interruptible=True))
         return problem
 
-    def _call_with_deadline(self, fn, timeout_sec: float):
-        """Chạy fn ở luồng daemon riêng; TimeoutError nếu quá hạn (luồng treo bị bỏ lại)."""
+    def _call_with_deadline(self, fn, timeout_sec: float, token: Optional[int] = None):
+        """Chạy fn ở luồng daemon riêng; TimeoutError nếu quá hạn (luồng treo bị bỏ lại).
+
+        Có ``token``: kiểm tra mỗi 50 ms và ném ``_OnDemandCancelled`` ngay khi tác vụ bị hủy,
+        để C/S/Esc giải phóng worker on-demand mà không chờ hết hạn.
+        """
         box: Dict[str, Any] = {}
 
         def run():
@@ -402,7 +445,17 @@ class SystemCoordinator:
 
         worker = threading.Thread(target=run, name="OnDemandInference", daemon=True)
         worker.start()
-        worker.join(timeout_sec)
+        if token is None:
+            worker.join(timeout_sec)
+        else:
+            deadline = time.monotonic() + timeout_sec
+            while worker.is_alive():
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    break
+                worker.join(min(0.05, remaining))
+                if worker.is_alive() and not self._is_current_on_demand(token):
+                    raise _OnDemandCancelled()
         if worker.is_alive():
             raise TimeoutError(f"quá {timeout_sec:.0f} s")
         if "error" in box:
@@ -562,9 +615,116 @@ class SystemCoordinator:
         finally:
             self._finish_on_demand(token)
 
-    def trigger_vqa(self, question: str = "Phía trước có gì?") -> bool:
-        """Kích hoạt tác vụ hỏi đáp thị giác (VQA)."""
+    def trigger_vqa(self, question: Optional[str] = DEFAULT_VQA_QUESTION) -> bool:
+        """Kích hoạt tác vụ hỏi đáp thị giác (VQA).
+
+        ``question=None``: hỏi bằng giọng nói nếu có đủ micro và bộ nhận dạng; không có thì
+        dùng ``DEFAULT_VQA_QUESTION`` như trước, không báo gì thêm.
+        """
         return self._start_on_demand("VQA", self._run_vqa_task, (question,))
+
+    def is_listening(self) -> bool:
+        with self._state_lock:
+            return self._listening
+
+    def stop_listening(self) -> bool:
+        """Q lần nữa: dừng thu và nhận dạng phần đã nói. False nếu không đang thu."""
+        with self._state_lock:
+            if not self._listening or self._listen_stop_event is None:
+                return False
+            self._listen_stop_event.set()
+            return True
+
+    def _voice_enabled(self) -> bool:
+        return self.voice_recorder is not None and self.transcriber is not None
+
+    def _say_on_demand(self, token: int, text: str, wait_sec: float = 10.0) -> None:
+        if self._post_on_demand_audio(token, AudioTask(
+                priority=AudioPriority.ON_DEMAND, text=text, interruptible=True)):
+            self._wait_on_demand_audio(token, timeout=wait_sec)
+
+    def _capture_fresh_frame(self) -> Optional[FramePacket]:
+        packet = self.get_latest_frame()
+        if packet is None or not self._is_fresh_on_demand_frame(packet, time.monotonic()):
+            return None
+        return packet
+
+    def _record_question(self, token: int):
+        """Thu micro dưới hạn ``max_sec + 2``; hủy/quá hạn đều set stop_event để đóng stream."""
+        stop_event = threading.Event()
+        with self._state_lock:
+            if not self._on_demand_active or self._active_on_demand_token != token:
+                raise _OnDemandCancelled()
+            self._listening = True
+            self._listen_stop_event = stop_event
+        kwargs = getattr(self.voice_recorder, "endpointer_kwargs", None) or {}
+        max_sec = float(kwargs.get("max_sec", self.DEFAULT_RECORD_MAX_SEC))
+        try:
+            return self._call_with_deadline(
+                lambda: self.voice_recorder.record(stop_event), max_sec + 2.0, token)
+        finally:
+            stop_event.set()
+            with self._state_lock:
+                if self._listen_stop_event is stop_event:
+                    self._listening = False
+                    self._listen_stop_event = None
+
+    def _ask_by_voice(self, token: int) -> Optional[Tuple[Optional[str], Optional[FramePacket], bool]]:
+        """Bíp -> thu -> nhận dạng. Trả ``(câu hỏi, ảnh lúc dừng thu, là_giọng_nói)``;
+        ảnh ``None`` nghĩa là không có ảnh mới. ``None`` nếu tác vụ đã kết thúc/bị hủy."""
+        # Chờ câu "Đã chuyển sang VQA..." phát xong rồi mới bíp, và chờ bíp xong mới mở micro,
+        # để micro không thu lẫn tiếng máy.
+        self._wait_on_demand_audio(token, self.VOICE_AUDIO_IDLE_TIMEOUT_SEC)
+        if not self._is_current_on_demand(token):
+            return None
+        self._post_on_demand_audio(token, AudioTask(
+            priority=AudioPriority.ON_DEMAND, text="", sound_file=LISTEN_CHIME_FILE,
+            interruptible=True))
+        self._wait_on_demand_audio(token, self.VOICE_AUDIO_IDLE_TIMEOUT_SEC)
+        if not self._is_current_on_demand(token):
+            return None
+
+        try:
+            recording = self._record_question(token)
+            if not self._is_current_on_demand(token):
+                return None
+            audio = np.asarray(recording.audio, dtype=np.float32).reshape(-1)
+            if audio.size > 0 and not np.any(audio):
+                # macOS trả im lặng tuyệt đối khi app chưa được cấp quyền micro.
+                raise RuntimeError("micro chỉ trả về im lặng tuyệt đối (chưa cấp quyền micro?)")
+            if not recording.heard_speech:
+                # Không gọi PhoWhisper: trên im lặng/tiếng ồn nó "ảo giác" ra cả câu.
+                self._say_on_demand(token, NO_SPEECH_TEXT)
+                return None
+            # Ảnh cho VQA là ảnh lúc dừng thu (trước khi nhận dạng).
+            packet = self._capture_fresh_frame()
+            if packet is None:
+                return None, None, True
+            sample_rate = int(getattr(self.voice_recorder, "sample_rate", 16000))
+            text = self._call_with_deadline(
+                lambda: self.transcriber.transcribe(audio, sample_rate=sample_rate),
+                self.STT_TIMEOUT_SEC, token)
+        except _OnDemandCancelled:
+            return None
+        except Exception as exc:  # MicrophoneError, lỗi nạp model, TimeoutError...
+            print(f"[SystemCoordinator] Không hỏi được bằng giọng nói: {exc}")
+            if not self._post_on_demand_audio(token, AudioTask(
+                    priority=AudioPriority.ON_DEMAND, text=VOICE_UNAVAILABLE_TEXT,
+                    interruptible=True)):
+                return None
+            return DEFAULT_VQA_QUESTION, self._capture_fresh_frame(), False
+
+        question = (text or "").strip()
+        if not question:
+            self._say_on_demand(token, NO_SPEECH_TEXT)
+            return None
+        return question, packet, True
+
+    @staticmethod
+    def _echo_question_text(question: str) -> str:
+        if question[-1] not in ".?!…":
+            question += "."
+        return f"Bạn hỏi: {question}"
 
     @staticmethod
     def _fresh_vqa_assessments(packet: FramePacket, assessments: List[RiskAssessment],
@@ -576,16 +736,28 @@ class SystemCoordinator:
             and abs(packet.timestamp_mono - assessment.source_timestamp) <= 0.75
         ]
 
-    def _run_vqa_task(self, token: int, question: str) -> None:
+    def _run_vqa_task(self, token: int, question: Optional[str]) -> None:
         # Detection/depth và đánh giá nguy cơ vẫn chạy; âm thanh cảnh báo đã tắt.
         try:
-            # 2. Ngắt cảnh báo cũ và làm sạch hàng đợi âm thanh
             if not self._is_current_on_demand(token):
                 return
-            packet = self.get_latest_frame()
-            if packet is None or not self._is_fresh_on_demand_frame(
-                packet, time.monotonic()
-            ):
+            if question is None and self._voice_enabled():
+                # 1. Hỏi bằng giọng nói; ảnh chụp lúc dừng thu.
+                outcome = self._ask_by_voice(token)
+                if outcome is None:
+                    return
+                question, packet, from_voice = outcome
+                announce_observing = False
+            else:
+                # 1. Câu hỏi có sẵn (hoặc mặc định khi không có micro/nhận dạng).
+                if question is None:
+                    question = DEFAULT_VQA_QUESTION
+                packet = self._capture_fresh_frame()
+                from_voice = False
+                announce_observing = True
+
+            # 2. Không có ảnh camera mới thì không trả lời.
+            if packet is None:
                 if not self._post_on_demand_audio(token, AudioTask(
                     priority=AudioPriority.ON_DEMAND,
                     text="Chưa có ảnh camera mới để trả lời. Vui lòng thử lại.",
@@ -596,8 +768,19 @@ class SystemCoordinator:
                     self._wait_on_demand_audio(token, timeout=4.0)
                 return
 
-            # 3. Thông báo đang quan sát
-            if not self._post_on_demand_audio(token, AudioTask(
+            with self._state_lock:
+                if self._active_on_demand_token == token:
+                    self._vqa_question = question
+
+            # 3. Nhắc lại câu hỏi đã nghe, hoặc thông báo đang quan sát
+            if from_voice:
+                if not self._post_on_demand_audio(token, AudioTask(
+                    priority=AudioPriority.ON_DEMAND,
+                    text=self._echo_question_text(question),
+                    interruptible=True
+                )):
+                    return
+            elif announce_observing and not self._post_on_demand_audio(token, AudioTask(
                 priority=AudioPriority.ON_DEMAND,
                 text="Đang quan sát để trả lời...",
                 sound_file="assets/audio/chime.wav",
@@ -689,5 +872,7 @@ class SystemCoordinator:
                 "safety_alerts_enabled": self._selected_mode == "WARNING" and not self._shutting_down,
                 "health_problem": self._health_problem,
                 "metrics": self.metrics.get_summary(),
-                "is_speaking": self.audio_coordinator.is_speaking
+                "is_speaking": self.audio_coordinator.is_speaking,
+                "listening": self._listening,
+                "vqa_question": self._vqa_question
             }

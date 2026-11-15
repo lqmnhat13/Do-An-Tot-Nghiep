@@ -2,10 +2,9 @@ import cv2
 import time
 from typing import Optional
 
-from src.runtime.system_coordinator import SystemCoordinator
+# DEFAULT_VQA_QUESTION được re-export cho các script evaluation/benchmarks.
+from src.runtime.system_coordinator import DEFAULT_VQA_QUESTION, SystemCoordinator  # noqa: F401
 from src.ui.hud_renderer import HUDRenderer
-
-DEFAULT_VQA_QUESTION = "Phía trước có gì?"
 
 class AppRunner:
     """
@@ -54,11 +53,16 @@ class AppRunner:
                         print("[AppRunner] Phím SPACE: Kích hoạt đọc chữ OCR.")
                         self.coordinator.trigger_ocr()
                     elif key in (ord('q'), ord('Q')):
-                        print("[AppRunner] Phím Q: Kích hoạt mô tả toàn cảnh VQA.")
-                        # "Mô tả khung cảnh phía trước" khiến Qwen2.5-VL-3B-4bit sinh câu ảo giác
-                        # cố định trên ảnh phòng khách (NYU) và chạm giới hạn token 33% số lần;
-                        # câu dưới đây là câu đã được đánh giá trên OpenViVQA/KTVIC/NYU.
-                        self.coordinator.trigger_vqa(DEFAULT_VQA_QUESTION)
+                        # Q: hỏi VQA bằng giọng nói (bíp rồi nói câu hỏi); Q lần nữa khi đang
+                        # nghe thì dừng thu. Không có micro/nhận dạng thì coordinator dùng câu
+                        # DEFAULT_VQA_QUESTION ("Phía trước có gì?") đã được đánh giá trên
+                        # OpenViVQA/KTVIC/NYU ("Mô tả khung cảnh phía trước" gây ảo giác).
+                        if self.coordinator.is_listening():
+                            print("[AppRunner] Phím Q: Dừng thu câu hỏi.")
+                            self.coordinator.stop_listening()
+                        else:
+                            print("[AppRunner] Phím Q: Hỏi VQA bằng giọng nói.")
+                            self.coordinator.trigger_vqa(None)
                     elif key in (ord('c'), ord('C')):
                         print("[AppRunner] Phím C: Chuyển sang chế độ Cảnh báo.")
                         self.coordinator.enter_warning_mode()

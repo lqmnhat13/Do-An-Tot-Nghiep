@@ -32,13 +32,17 @@ from src.vqa.safety import SafetyGuardrail
 # ---------------------------------------------------------------- 1. Câu hỏi phím Q
 class TestVQAKeyQuestion(unittest.TestCase):
     def test_q_key_asks_the_evaluated_question(self):
+        # Q giờ hỏi bằng giọng nói (None); câu đã đánh giá là câu mặc định của coordinator.
+        from src.runtime.system_coordinator import DEFAULT_VQA_QUESTION
+        self.assertEqual(DEFAULT_VQA_QUESTION, "Phía trước có gì?")
         coordinator = MagicMock()
+        coordinator.is_listening.return_value = False
         runner = AppRunner(coordinator, hud_renderer=MagicMock(), enable_gui=True)
         keys = iter([ord('q'), 27])
         with patch("src.ui.app_runner.cv2") as cv2:
             cv2.waitKey.side_effect = lambda _: next(keys)
             runner.run()
-        coordinator.trigger_vqa.assert_called_once_with("Phía trước có gì?")
+        coordinator.trigger_vqa.assert_called_once_with(None)
 
 
 # ---------------------------------------------------------------- 2. VQA an toàn và tiếng Việt

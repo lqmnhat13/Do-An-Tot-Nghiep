@@ -26,6 +26,7 @@ from src.ocr.ocr_service import OCRService
 from src.ocr.image_quality import ImageQualityChecker
 from src.vqa.vqa_service import VQAService
 from src.runtime.system_coordinator import SystemCoordinator
+from src.speech.factory import build_speech_components
 from src.ui.hud_renderer import HUDRenderer
 from src.ui.app_runner import AppRunner
 
@@ -174,6 +175,9 @@ def main():
         mlx_vlm_config=vqa_cfg.get("mlx_vlm", {})
     )
 
+    # Hỏi VQA bằng giọng nói: PhoWhisper chỉ nạp ở lần bấm Q đầu tiên (lazy).
+    voice_recorder, transcriber = build_speech_components(model_cfg, device)
+
     # 7. System Coordinator
     coordinator = SystemCoordinator(
         camera_manager=camera,
@@ -186,7 +190,9 @@ def main():
         audio_coordinator=audio_coordinator,
         ocr_service=ocr_service,
         vqa_service=vqa_service,
-        watchdog_timeout_sec=float(app_cfg.get("runtime", {}).get("watchdog_timeout_sec", 3.0))
+        watchdog_timeout_sec=float(app_cfg.get("runtime", {}).get("watchdog_timeout_sec", 3.0)),
+        voice_recorder=voice_recorder,
+        transcriber=transcriber
     )
 
     # 8. App Runner
