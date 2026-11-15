@@ -374,7 +374,7 @@ Nếu hệ thống báo không phát hiện chữ, điều đó có nghĩa khôn
 
 1. Hướng camera về cảnh cần mô tả.
 2. Nhấn `Q` trong cửa sổ ứng dụng. Ứng dụng chọn chế độ VQA, đọc câu chuyển chế độ rồi phát tiếng bíp; HUD hiện `DANG NGHE...`.
-3. Sau tiếng bíp, nói câu hỏi, ví dụ “Phía trước có gì?” hoặc “Cái áo này màu gì?”. Ứng dụng tự ngừng nghe khi im lặng 1,2 giây sau khi đã nói, khi đủ 8 giây, hoặc khi không có tiếng nói trong 5 giây đầu. Muốn dừng sớm, nhấn `Q` lần nữa.
+3. Sau khi tiếng bíp kết thúc (đừng nói đè lên bíp: 0,3 giây đầu dùng để đo tiếng ồn nền), nói câu hỏi, ví dụ “Phía trước có gì?” hoặc “Cái áo này màu gì?”. Ứng dụng tự ngừng nghe khi im lặng 1,2 giây sau khi đã nói, khi đủ 8 giây, hoặc khi không có tiếng nói trong 5 giây đầu. Muốn dừng sớm, nhấn `Q` lần nữa.
 4. Ảnh được chụp lúc ngừng nghe. Ứng dụng đọc lại “Bạn hỏi: …” để kiểm tra đã nghe đúng chưa, rồi đọc câu trả lời dựa trên ảnh đó. Nghe sai thì nhấn `Q` và hỏi lại.
 5. Đối chiếu kết quả với cảnh thật khi thử nghiệm; ghi nhận trường hợp mô tả sai hoặc chỉ trả câu dự phòng.
 
@@ -504,13 +504,15 @@ speech:
   enabled: true
   model_name: "vinai/PhoWhisper-small"
   sample_rate: 16000
-  rms_threshold: 0.01   # chỉnh nếu micro nhỏ/ồn
+  # Ngưỡng RMS TỐI THIỂU: nền ồn được đo tự động trong 0,3 s đầu sau tiếng bíp
+  # (ngưỡng = min(max(rms_threshold, 3 x nền), 0,06)), nên đừng nói đè lên tiếng bíp.
+  rms_threshold: 0.01
   silence_sec: 1.2
   max_sec: 8.0
   no_speech_sec: 5.0
 ```
 
-`rms_threshold` là mức năng lượng âm thanh được coi là có tiếng nói. Micro nhỏ hoặc nói nhỏ mà ứng dụng hay báo “Không nghe rõ câu hỏi” thì **giảm** giá trị (ví dụ `0.005`); phòng ồn hoặc có quạt khiến ứng dụng không tự ngừng nghe sau khi nói xong thì **tăng** (ví dụ `0.02`). `silence_sec`, `max_sec`, `no_speech_sec` là ba điều kiện ngừng nghe ở mục 7.3. Đặt `enabled: false` để `Q` quay lại hỏi câu cố định “Phía trước có gì?” mà không dùng microphone.
+`rms_threshold` là ngưỡng năng lượng **tối thiểu** để coi là có tiếng nói. Trong 0,3 giây đầu sau tiếng bíp, ứng dụng tự đo tiếng ồn nền của phòng rồi đặt ngưỡng bằng 3 lần mức nền (không thấp hơn `rms_threshold`, không cao hơn 0,06), nên **đừng nói đè lên tiếng bíp**. Phải có khoảng 0,1 giây âm thanh to liên tục mới tính là tiếng nói (tiếng click đơn lẻ bị bỏ qua), và phần im lặng sau câu nói được cắt bớt trước khi nhận dạng. Thường không cần chỉnh; chỉ khi micro rất nhỏ mà ứng dụng hay báo “Không nghe rõ câu hỏi” trong phòng thật yên tĩnh thì mới **giảm** (ví dụ `0.005`). `silence_sec`, `max_sec`, `no_speech_sec` là ba điều kiện ngừng nghe ở mục 7.3. Đặt `enabled: false` để `Q` quay lại hỏi câu cố định “Phía trước có gì?” mà không dùng microphone.
 
 ### 9.4. Những cấu hình dễ gây hiểu nhầm
 

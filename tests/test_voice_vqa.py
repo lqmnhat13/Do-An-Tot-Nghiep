@@ -13,9 +13,10 @@ from src.audio.audio_coordinator import AudioCoordinator
 from src.audio.tts_engine import TTSEngine
 from src.contracts.audio import AudioPriority, AudioTask
 from src.contracts.frame_packet import FramePacket
+from src.contracts.risk import DataQuality, Direction, RiskAssessment, RiskLevel
 from src.fusion.alert_aggregator import AlertAggregator
 from src.runtime.system_coordinator import (
-    DEFAULT_VQA_QUESTION, NO_SPEECH_TEXT, VOICE_UNAVAILABLE_TEXT, SystemCoordinator)
+    BUSY_TEXT, DEFAULT_VQA_QUESTION, NO_SPEECH_TEXT, VOICE_UNAVAILABLE_TEXT, SystemCoordinator)
 from src.speech.recorder import MicrophoneError, RecordingResult
 from src.ui.app_runner import AppRunner
 from src.ui.hud_renderer import HUDRenderer
@@ -276,6 +277,95 @@ class TestVoiceVQA(unittest.TestCase):
         backend.answer.assert_not_called()
         self.assertEqual(self.texts_after_chime(),
                          ["Bạn hỏi: Đường trống không?", SafetyGuardrail.REFUSAL])
+
+    def test_quiet_trimmed_audio_skips_transcriber(self):
+        # Endpointer báo có tiếng nói nhưng cả đoạn đã cắt vẫn nhỏ hơn rms_threshold.
+        self.recorder.endpointer_kwargs["rms_threshold"] = 0.01
+        quiet = np.full(1600, 0.005, dtype=np.float32)
+        self.recorder.result = RecordingResult(quiet, "end_of_speech", True)
+        self.build()
+        self.run_voice_task()
+        self.transcriber.transcribe.assert_not_called()
+        self.vqa.answer.assert_not_called()
+        self.assertEqual(self.texts_after_chime(), [NO_SPEECH_TEXT])
+
+    def test_overlong_transcript_is_treated_as_no_speech(self):
+        # PhoWhisper "ảo giác" trên tiếng ồn ra cả đoạn văn dài: không gửi cho VQA.
+        self.transcriber.transcribe.return_value = "Cảm ơn các bạn đã theo dõi. " * 6
+        self.assertGreater(len(self.transcriber.transcribe.return_value.strip()), 150)
+        self.build()
+        self.run_voice_task()
+        self.vqa.answer.assert_not_called()
+        self.assertEqual(self.texts_after_chime(), [NO_SPEECH_TEXT])
+
+    def test_transcript_of_150_chars_is_kept(self):
+        question = "a" * 149 + "?"
+        self.transcriber.transcribe.return_value = question
+        self.build()
+        self.run_voice_task()
+        self.assertEqual(self.vqa.answer.call_args.args[0].question, question)
+
+    def test_detection_context_is_captured_when_recording_stops(self):
+        def detect_chair():
+            now = time.monotonic()
+            self.system._latest_assessments = [RiskAssessment(
+                1, "chair", Direction.LEFT, RiskLevel.LOW, DataQuality.VALID, 0.3, "xa", "",
+                self.packet.timestamp_mono, now + 0.3)]
+
+        def slow_transcribe(*args, **kwargs):
+            # Trong lúc nhận dạng, detection chạy tiếp và kết quả cũ hết hạn.
+            self.system._latest_assessments = []
+            time.sleep(0.4)
+            return "Cái áo này màu gì?"
+
+        self.recorder.on_record = detect_chair
+        self.transcriber.transcribe.side_effect = slow_transcribe
+        self.build()
+        self.run_voice_task()
+        context = self.vqa.answer.call_args.kwargs["visual_context"]
+        self.assertEqual(context["detected_classes"], ["chair"])
+        self.assertEqual(context["spatial_objects"][0]["direction"], "LEFT")
+
+    def test_audio_never_idle_does_not_open_microphone(self):
+        speaking_until = time.monotonic() + 0.8
+        self.engine.is_speaking.side_effect = lambda: time.monotonic() < speaking_until
+        self.build()
+        self.system.VOICE_AUDIO_IDLE_TIMEOUT_SEC = 0.2
+        self.run_voice_task()
+        self.assertFalse(self.recorder.started.is_set())
+        self.transcriber.transcribe.assert_not_called()
+        self.assertNotIn(("", CHIME), self.posted)
+        self.assertIn(VOICE_UNAVAILABLE_TEXT, self.all_texts())
+        request = self.vqa.answer.call_args.args[0]
+        self.assertEqual(request.question, DEFAULT_VQA_QUESTION)
+        self.assertIs(request.image, self.packet.image)
+
+    def test_q_while_busy_says_please_wait(self):
+        entered = threading.Event()
+
+        def slow_transcribe(*args, **kwargs):
+            entered.set()
+            self.release.wait(timeout=5)
+            return "Cái áo này màu gì?"
+
+        self.transcriber.transcribe.side_effect = slow_transcribe
+        self.build()
+        self.assertTrue(self.system.trigger_vqa(None))
+        self.assertTrue(entered.wait(timeout=2))
+        self.assertFalse(self.system.trigger_vqa(None))
+        self.assertIn(BUSY_TEXT, self.all_texts())
+        self.release.set()
+        self.finish()
+
+    def test_rejected_q_while_listening_or_shutting_down_is_silent(self):
+        self.recorder.block = True
+        self.build()
+        self.assertTrue(self.system.trigger_vqa(None))
+        self.assertTrue(self.recorder.started.wait(timeout=2))
+        self.assertFalse(self.system.trigger_vqa(None))
+        self.system.stop()
+        self.assertFalse(self.system.trigger_vqa(None))
+        self.assertNotIn(BUSY_TEXT, self.all_texts())
 
     def test_without_speech_components_uses_default_question(self):
         self.build(recorder=None, transcriber=None)

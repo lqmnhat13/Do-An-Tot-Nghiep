@@ -132,7 +132,7 @@ Các phím trên chỉ hoạt động khi cửa sổ GUI có focus. Ở chế đ
 ### Hỏi VQA bằng giọng nói
 
 1. Bấm `Q`: app chọn chế độ VQA (tắt cảnh báo vật cản như trước), đọc xong câu chuyển chế độ thì phát tiếng bíp; HUD hiện `DANG NGHE...`.
-2. Nói câu hỏi sau tiếng bíp. App tự dừng thu khi im lặng **1,2 giây** sau khi đã nói, khi thu đủ tối đa **8 giây**, hoặc khi không có tiếng nói trong **5 giây** đầu. Bấm `Q` lần nữa để dừng sớm và nhận dạng phần đã nói.
+2. Nói câu hỏi sau khi tiếng bíp kết thúc (0,3 giây đầu dùng để đo tiếng ồn nền, đừng nói đè lên bíp). App tự dừng thu khi im lặng **1,2 giây** sau khi đã nói, khi thu đủ tối đa **8 giây**, hoặc khi không có tiếng nói trong **5 giây** đầu. Bấm `Q` lần nữa để dừng sớm và nhận dạng phần đã nói.
 3. Ảnh camera được chụp lúc ngừng thu. PhoWhisper chuyển câu nói thành chữ, app đọc lại "Bạn hỏi: …" rồi trả lời dựa trên ảnh đó (luồng VQA như trên).
 4. `S`/`C` trong lúc thu hoặc nhận dạng sẽ hủy, không đọc kết quả muộn.
 
@@ -140,12 +140,14 @@ Các phím trên chỉ hoạt động khi cửa sổ GUI có focus. Ở chế đ
 | --- | --- |
 | Không nghe thấy tiếng nói, hoặc nhận dạng ra chữ rỗng | "Không nghe rõ câu hỏi. Bấm Q và hỏi lại." — không chạy VQA. Khi không nghe thấy tiếng nói, app **không** gọi PhoWhisper vì trên im lặng model tự bịa ra cả câu. |
 | Micro lỗi hoặc bị từ chối quyền (bản ghi toàn số 0 do macOS chặn quyền Micro cũng tính là lỗi), thiếu model PhoWhisper, nhận dạng quá 15 giây | "Không dùng được micro hoặc nhận dạng giọng nói. Hệ thống sẽ mô tả phía trước." rồi hỏi câu mặc định “Phía trước có gì?”; nhánh này không đọc lại "Bạn hỏi". |
+| Loa vẫn đang đọc sau 4 giây chờ (chưa thể bíp/mở micro) | Không mở micro đè lên tiếng máy: báo như dòng trên rồi hỏi câu mặc định. |
+| Bấm `Q` khi tác vụ OCR/VQA khác đang xử lý | "Đang xử lý, vui lòng chờ hoặc bấm C." |
 
 Câu hỏi giờ là tự do nên guardrail câu hỏi là lớp chặn đầu tiên: câu hỏi về việc có đi được không hoặc lối đi có trống/thông thoáng/an toàn không (ví dụ "Đường trống không?") bị từ chối trước khi gọi model. "Phía trước có gì?" vẫn được trả lời. Câu cũ “Mô tả khung cảnh phía trước” không còn được dùng làm câu mặc định vì khiến Qwen2.5-VL-3B-4bit sinh câu ảo giác cố định và chạm giới hạn token (xem đánh giá).
 
 **Quyền Micro:** macOS cần cấp quyền Micro cho ứng dụng chạy lệnh (Terminal, iTerm hoặc VS Code) tại System Settings → Privacy & Security → Microphone, rồi **khởi động lại** ứng dụng đó. Chưa cấp quyền thì macOS trả về im lặng tuyệt đối và app báo lỗi micro như bảng trên.
 
-**Cấu hình** trong `configs/model_config.yaml` → `speech`: `enabled`, `model_name` (`vinai/PhoWhisper-small`), `sample_rate` (16000), `rms_threshold` (0,01 — ngưỡng năng lượng coi là có tiếng nói), `silence_sec` (1,2), `max_sec` (8), `no_speech_sec` (5). Micro nhỏ, nói mà app báo không nghe rõ → **giảm** `rms_threshold`; phòng ồn/có quạt khiến app không tự dừng thu → **tăng**. Đặt `speech.enabled: false` để `Q` quay lại hỏi câu cố định “Phía trước có gì?” không cần micro.
+**Cấu hình** trong `configs/model_config.yaml` → `speech`: `enabled`, `model_name` (`vinai/PhoWhisper-small`), `sample_rate` (16000), `rms_threshold` (0,01 — ngưỡng năng lượng **tối thiểu** coi là có tiếng nói), `silence_sec` (1,2), `max_sec` (8), `no_speech_sec` (5). Tiếng ồn nền được đo tự động trong **0,3 giây đầu sau tiếng bíp** (median RMS), ngưỡng thực = `min(max(rms_threshold, 3 × nền), 0,06)`, nên **đừng nói đè lên tiếng bíp**; trên micro MacBook trong phòng yên tĩnh nền khoảng 0,014, ngưỡng cố định 0,01 cũ khiến mọi lần thu đều kéo đủ 8 giây và PhoWhisper bịa thêm câu. Cần 3 block 30 ms to liên tiếp mới tính là tiếng nói (bỏ qua tiếng click); âm thanh gửi cho PhoWhisper được cắt tới hết tiếng nói + 0,3 giây. Bản ghi đã cắt vẫn nhỏ hơn `rms_threshold`, hoặc câu nhận dạng dài quá 150 ký tự (gần như chắc là ảo giác), được xử lý như không nghe rõ. Chỉ cần **giảm** `rms_threshold` khi micro rất nhỏ trong phòng rất yên tĩnh. Đặt `speech.enabled: false` để `Q` quay lại hỏi câu cố định “Phía trước có gì?” không cần micro.
 
 **Đo trên M1 (MPS, offline):** PhoWhisper-small nhận dạng khoảng **0,7 giây/câu** khi đã nạp; lần bấm `Q` đầu tiên khoảng **4,5 giây** vì gồm cả nạp model (lazy-load, không nạp lúc khởi động).
 
