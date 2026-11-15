@@ -155,7 +155,7 @@ class MLXVLMBackend(VQABackend):
         "Nếu câu hỏi là ‘có gì’, ưu tiên tối đa ba đối tượng nổi bật.\n"
         "Khi mô tả khung cảnh, nếu trong ảnh có người hoặc con vật thì luôn nhắc đến.\n"
         "Nếu không chắc chắn, trả lời ‘Không xác định rõ từ ảnh.’\n"
-        "Trả lời bằng tiếng Việt, một hoặc hai câu, tối đa 40 từ; "
+        "Trả lời bằng tiếng Việt, một hoặc hai câu, tối đa 25 từ; "
         "chỉ dùng câu thứ hai khi có thêm thông tin hữu ích và chắc chắn.\n"
         "Kết thúc bằng dấu câu. Không mở đầu dài dòng và không lặp lại câu hỏi."
     )

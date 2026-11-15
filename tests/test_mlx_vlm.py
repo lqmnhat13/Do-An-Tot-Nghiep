@@ -61,7 +61,7 @@ class TestMLXVLM(unittest.TestCase):
         result = service.answer(self.request(), self.context)
         self.assertTrue(result.success)
         self.assertIn("ghế bên trái", result.answer)
-        self.assertNotIn("Khung cảnh:", result.answer)
+        self.assertTrue(result.answer.startswith("Trước mặt bạn phát hiện có:"), result.answer)
 
     def test_lazy_question_aware_bgr_conversion_and_hard_limits(self):
         service = self.service(max_image_size=9999, max_tokens=9999)
@@ -106,7 +106,7 @@ class TestMLXVLM(unittest.TestCase):
         self.assertEqual([m["role"] for m in messages], ["system", "user"])
         self.assertEqual(messages[1]["content"], question)
         instructions = messages[0]["content"]
-        for requirement in ("tiếng Việt", "một hoặc hai câu", "tối đa 40 từ", "nhìn thấy trực tiếp",
+        for requirement in ("tiếng Việt", "một hoặc hai câu", "tối đa 25 từ", "nhìn thấy trực tiếp",
                             "cảm xúc", "ý định", "nghề nghiệp", "danh tính",
                             "tối đa ba đối tượng", "không bịa thêm",
                             "Không xác định rõ từ ảnh."):
@@ -129,17 +129,17 @@ class TestMLXVLM(unittest.TestCase):
     def test_two_sentences_at_word_limit_are_accepted_unchanged(self):
         text = " ".join(["vật"] * 20) + ". " + " ".join(["đồ"] * 25) + "."
         self.generate.return_value = types.SimpleNamespace(text=text, finish_reason="stop")
-        self.assertEqual(self.service().answer(self.request()).answer, "Khung cảnh: " + text)
+        self.assertEqual(self.service().answer(self.request()).answer, text)
 
     def test_three_complete_sentences_are_accepted_unchanged(self):
         text = "Có một chiếc xe đạp. Bên cạnh là bãi cỏ. Một người đang đứng gần xe."
         self.generate.return_value = types.SimpleNamespace(text=text, finish_reason="stop")
-        self.assertEqual(self.service().answer(self.request()).answer, "Khung cảnh: " + text)
+        self.assertEqual(self.service().answer(self.request()).answer, text)
 
     def test_second_grounded_sentence_is_preserved(self):
         text = "Có một người ngồi trên ghế. Người đó đang cầm một cuốn sách."
         self.generate.return_value = types.SimpleNamespace(text=text, finish_reason="stop")
-        self.assertEqual(self.service().answer(self.request()).answer, "Khung cảnh: " + text)
+        self.assertEqual(self.service().answer(self.request()).answer, text)
 
     def test_truncation_discards_entire_answer_without_retry_or_punctuation_repair(self):
         service = self.service()
@@ -167,7 +167,7 @@ class TestMLXVLM(unittest.TestCase):
 
     def test_explicit_stop_and_older_complete_outputs_are_preserved(self):
         service = self.service()
-        text = "Không xác định rõ từ ảnh."
+        text = "Có một chiếc ghế màu đỏ."
         for output in (text, types.SimpleNamespace(text=text),
                        types.SimpleNamespace(text=text, generation_tokens=12),
                        types.SimpleNamespace(text=text, finish_reason="stop",
@@ -175,7 +175,7 @@ class TestMLXVLM(unittest.TestCase):
             with self.subTest(output=output):
                 self.generate.return_value = output
                 self.assertEqual(service.answer(self.request()).answer,
-                                 "Khung cảnh: " + text)
+                                 text)
 
     def test_smaller_budget_is_used_to_detect_truncation(self):
         self.generate.return_value = types.SimpleNamespace(

@@ -1,4 +1,5 @@
 import re
+import unicodedata
 from typing import Optional
 
 
@@ -39,7 +40,8 @@ class SafetyGuardrail:
         r"(?:any|is there an?) (?:obstacle|hazard|danger))")
 
     def check(self, question: str) -> Optional[str]:
-        normalized = " ".join(question.strip().lower().split())
+        # NFC trước: chữ Việt dạng tổ hợp (NFD) làm mọi regex có dấu không khớp.
+        normalized = " ".join(unicodedata.normalize("NFC", question).strip().lower().split())
         if self.ENGLISH.search(normalized):
             return self.REFUSAL
         reading = bool(self.READING.search(normalized))
@@ -57,30 +59,87 @@ class SafetyGuardrail:
             return self.REFUSAL
         return None
 
+    # --- Kiểm tra câu trả lời của VLM: câu hỏi mặc định là "Phía trước có gì?", nên mọi câu
+    # nói phía trước trống/ổn/không có gì đều bị coi là khẳng định lối đi an toàn.
+    # Vế từ chối "không thể xác nhận ..." (chính là REFUSAL) được bỏ trước khi kiểm tra.
+    ANSWER_UNCERTAIN = re.compile(r"\bkhông thể xác nhận[^,]{0,40}")
+    # Câu đọc chữ trên biển/nhãn: "Biển ghi: ..." — chỉ khi trước động từ đọc có danh từ vật mang chữ;
+    # phần trích dẫn (tới dấu phẩy đầu tiên) được kiểm tra riêng, lỏng hơn.
+    ANSWER_QUOTED_TEXT = re.compile(
+        r"^[^:“\"]*\b(?:biển|bảng|tờ|nhãn|áp phích|tấm|giấy|màn hình|bìa|poster|hộp|chai)\b"
+        r"[^:“\"]*\b(?:ghi|viết|có chữ|nội dung)\b\s*(?:là\s*)?[:“\"]([^,]*),?")
+    # Xin phép/khuyên di chuyển.
+    ANSWER_MOVE = re.compile(
+        r"\b(?:có thể|nên|hãy|cứ|được|yên tâm)\s+(?:đi|bước|qua đường|sang đường|băng qua|"
+        r"di chuyển|tiếp tục|tiến)\b"
+        r"|\b(?:đi|bước|đi tiếp|đi thẳng|đi qua) được\b"
+        r"|^(?:bạn\s+)?(?:đi thẳng|đi tiếp|tiến lên|tiến tới|tiếp tục đi)\b")
+    # Dấu hiệu vắng mặt/phủ định sự tồn tại ("không có gì", "không phát hiện vật cản"...).
+    ANSWER_ABSENCE = re.compile(
+        r"\b(?:không|chẳng|chả|không hề) có\b|\bkhông (?:còn|thấy|nhìn thấy|phát hiện|gặp)\b"
+        r"|\bkhông bị (?:cản|chặn|chắn|vướng)|\bkhông nguy hiểm\b")
+    # Ngoại lệ: phủ định thuộc tính của một đồ vật cụ thể ("Trên bàn không có gì",
+    # "Có một chai nước, không có nắp"); chỉ áp dụng khi câu không nhắc nơi chốn/lối đi.
+    ANSWER_OBJECT_PREFIX = re.compile(
+        r"^(?:có\s+)?(?:một|hai|ba|vài|cái|chiếc|con|tấm|chai|cốc|ly|hộp|quyển|cuốn|trên|dưới|cạnh)\b")
+    ANSWER_PLACE = re.compile(
+        r"\b(?:phía|trước mặt|lối|đường|hành lang|phòng|sân|sàn|ngõ|vỉa hè|cầu thang|khu vực|"
+        r"không gian|xung quanh|"
+        r"ảnh|khung cảnh|mọi thứ|tất cả|bạn)\b")
+    # Từ chỉ khung cảnh trống/ổn, chặn ở mọi vị trí trừ khi bị phủ định ("không an toàn").
+    ANSWER_SCENE_OK = re.compile(
+        r"(?<!không )(?<!chưa )(?<!chẳng )"
+        r"\b(?:thông thoáng|thoáng|quang đãng|quang\b(?! cảnh)|vắng|rộng rãi|khoảng không|"
+        r"không gian (?:rộng|mở|trống|lớn)|tự do|ổn|bình thường|an toàn|yên tâm|thoải mái)\b")
+    # "sạch" chỉ tính khi nói về nơi chốn ("Phía trước sạch", "Đường đi sạch").
+    ANSWER_CLEAN = re.compile(r"\bsạch\b")
+    # "trống" là khẳng định lối đi trống, trừ khi đứng sau danh từ đồ vật ("ghế trống",
+    # "chai nước trống") hoặc nơi chốn trống nhưng có đồ ("phòng trống có một cái bàn").
+    ANSWER_EMPTY = re.compile(r"(?:^|(\S+)\s+)(?<!không )trống\b(?!\s+có\b)")
+    _EMPTY_SCENE_PREV = frozenset(
+        "trước mặt sân phòng khoảng gian lang đi đường bãi sàn nhà nền lối vực rất khá toàn "
+        "là đều thì hơi vẫn đang cũng quá".split())
+    # "chỉ có" + toàn sàn/tường/trần/trời (không có đồ vật nào khác).
+    ANSWER_ONLY = re.compile(r"\bchỉ (?:có|là|thấy)\s+(.*)$")
+    _ONLY_SURFACE = re.compile(
+        r"\b(?:sàn nhà|sàn|tường|trần nhà|trần|mặt đất|nền nhà|nền|bầu trời|trời|một|bức|cái|"
+        r"mặt|những|các|và|màu|trắng|xám|gạch|gỗ|phẳng)\b|[,\s]")
+    ANSWER_ENGLISH = re.compile(
+        r"\b(?:safe to (?:walk|cross|proceed)|you can (?:walk|cross|proceed|go)|it(?: is|'s) safe|"
+        r"no obstacles?|nothing (?:ahead|in front)|(?:all )?clear)\b")
+
     def check_answer(self, answer: str) -> Optional[str]:
-        normalized = answer.strip().lower()
-        for sentence in re.split(r"[.!?]", normalized):
-            if re.search(
-                r"\b(?:có thể|nên|hãy|cứ|được)\s+"
-                r"(?:đi|bước|qua đường|di chuyển|tiếp tục)\b", sentence
-            ) or re.search(
-                r"\bkhông (?:có|thấy) (?:vật cản|chướng ngại|nguy hiểm)\b",
-                sentence
-            ) or re.search(
-                r"\b(?:safe to (?:walk|cross|proceed)|you can (?:walk|cross|proceed)|"
-                r"no obstacles? ahead|(?:path|way|road) (?:is|looks) clear)\b", sentence
-            ) or re.search(
-                # Khẳng định lối đi trống: chỉ khi chủ ngữ là lối đi/đường/phía trước,
-                # để "ghế trống", "chai nước trống" vẫn được phép.
-                r"\b(?:lối đi|đường đi|con đường|hành lang|phía trước|trước mặt)\b"
-                r"(?:\s+[^\s,.!?]+){0,2}\s*,?\s*"
-                r"(?:trống|thông thoáng|thoáng|không có gì|không có vật)", sentence
-            ):
-                return self.REFUSAL
-            if "an toàn" in sentence and not re.search(
-                r"\b(?:không|chưa|chẳng)\s+an toàn\b|"
-                r"\bkhông thể xác nhận[^.!?]{0,30}\ban toàn\b",
-                sentence
-            ):
+        normalized = " ".join(unicodedata.normalize("NFC", answer).strip().lower().split())
+        for sentence in re.split(r"[.!?;\n]", normalized):
+            sentence = self.ANSWER_UNCERTAIN.sub("", sentence)
+            quoted = self.ANSWER_QUOTED_TEXT.match(sentence)
+            if quoted:
+                # Chữ trên biển vẫn bị chặn nếu là lời khuyên di chuyển ("đi thẳng được") hoặc
+                # nhắc lối đi kèm khẳng định trống/an toàn ("Phía trước an toàn"); "Chú ý an toàn" vẫn đọc.
+                text = quoted.group(1).strip(" “”\"")
+                if self.ANSWER_MOVE.search(text) or (
+                        self.ANSWER_PLACE.search(text) and self._claims_clear_path(text)):
+                    return self.REFUSAL
+                sentence = sentence[quoted.end():]
+            sentence = self.SAFETY_TOPIC.sub("", sentence).strip(" ,")
+            if sentence and self._claims_clear_path(sentence):
                 return self.REFUSAL
         return None
+
+    def _claims_clear_path(self, sentence: str) -> bool:
+        if self.ANSWER_MOVE.search(sentence) or self.ANSWER_ENGLISH.search(sentence):
+            return True
+        place = bool(self.ANSWER_PLACE.search(sentence))
+        absence = self.ANSWER_ABSENCE.search(sentence)
+        if absence and not (absence.start() > 0 and not place
+                            and self.ANSWER_OBJECT_PREFIX.search(sentence)):
+            return True
+        if self.ANSWER_SCENE_OK.search(sentence) or (place and self.ANSWER_CLEAN.search(sentence)):
+            return True
+        for match in self.ANSWER_EMPTY.finditer(sentence):
+            # "trống" đứng đầu câu, ngay sau dấu phẩy ("hành lang dài, trống") hoặc sau nơi chốn/trạng từ.
+            prev = match.group(1)
+            if prev is None or prev.endswith(",") or prev in self._EMPTY_SCENE_PREV:
+                return True
+        only = self.ANSWER_ONLY.search(sentence)
+        return bool(only and not self._ONLY_SURFACE.sub("", only.group(1)))

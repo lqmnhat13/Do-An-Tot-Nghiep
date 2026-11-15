@@ -34,15 +34,14 @@ class FixedVQABackend(VQABackend):
 
 class TestOCRVQA(unittest.TestCase):
     def test_formatting_preserves_terminal_punctuation_and_legacy_caption(self):
-        for text in ("Ghế màu đỏ.", "Không xác định rõ!", "Đây là ghế?",
-                     '“Không xác định rõ.”'):
+        for text in ("Ghế màu đỏ.", "Có một chiếc ghế!", "Đây là ghế?",
+                     '“Biển ghi lối ra.”'):
             with self.subTest(text=text):
-                self.assertEqual(format_vqa_answer(text), "Khung cảnh: " + text)
-        self.assertEqual(format_vqa_answer("Một chiếc ghế"),
-                         "Khung cảnh: Một chiếc ghế.")
+                self.assertEqual(format_vqa_answer(text), text)
+        self.assertEqual(format_vqa_answer("Một chiếc ghế"), "Một chiếc ghế.")
         self.assertEqual(format_vqa_answer("Ghế màu đỏ.", {"spatial_objects": [
             {"name": "ghế", "direction": "LEFT", "proximity": "gần"}
-        ]}), "Khung cảnh: Ghế màu đỏ. Cụ thể có: ghế bên trái (gần).")
+        ]}), "Ghế màu đỏ. Cụ thể có: ghế bên trái (gần).")
 
     def test_image_quality_checker_dark(self):
         checker = ImageQualityChecker(min_brightness=40.0)
