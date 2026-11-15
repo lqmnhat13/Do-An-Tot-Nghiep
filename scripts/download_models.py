@@ -69,6 +69,23 @@ def setup_depth_weights():
         except Exception as e:
             print(f"[FAIL] Không thể kiểm tra {repo_id}: {e}")
 
+def setup_speech_weights():
+    # PhoWhisper cho câu hỏi VQA bằng giọng nói (model trong model_config.yaml -> speech).
+    import yaml
+    with open(os.path.join(PROJECT_ROOT, "configs", "model_config.yaml"),
+              encoding="utf-8") as handle:
+        speech_cfg = (yaml.safe_load(handle) or {}).get("speech", {}) or {}
+    repo_id = speech_cfg.get("model_name", "vinai/PhoWhisper-small")
+    print(f"[CHECK] Kiểm tra speech model {repo_id}...")
+    try:
+        from transformers import WhisperForConditionalGeneration, WhisperProcessor
+        load_kwargs = pretrained_kwargs(allow_download=True)
+        WhisperProcessor.from_pretrained(repo_id, **load_kwargs)
+        WhisperForConditionalGeneration.from_pretrained(repo_id, **load_kwargs)
+        print(f"[OK] {repo_id} đã sẵn sàng (đã lưu cache local).")
+    except Exception as e:
+        print(f"[FAIL] Không thể kiểm tra {repo_id}: {e}")
+
 def setup_vqa_weights():
     print("[CHECK] Kiểm tra BLIP và MarianMT...")
     try:
@@ -160,6 +177,7 @@ def main(argv=None):
     setup_yolo_weights()
     setup_yolo_weights("yolov8s.pt")  # mặc định trong model_config.yaml
     setup_depth_weights()
+    setup_speech_weights()
     setup_vqa_weights()
     setup_ocr_weights()
     setup_audio_assets()

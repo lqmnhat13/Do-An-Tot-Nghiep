@@ -81,6 +81,17 @@
       "device": "mps",
       "status": "legacy (VQA backend legacy_caption, not used by default config)"
     },
+    "phowhisper_small": {
+      "task": "speech_recognition",
+      "framework": "transformers",
+      "hf_repo": "vinai/PhoWhisper-small",
+      "location": "Hugging Face cache",
+      "languages": ["vi"],
+      "license": "BSD-3-Clause",
+      "device": "mps",
+      "loading": "lazy, on demand (first voice question, key Q)",
+      "status": "active (VQA voice questions, configs/model_config.yaml speech)"
+    },
     "macos_say_tts": {
       "task": "vietnamese_tts",
       "framework": "system_native",

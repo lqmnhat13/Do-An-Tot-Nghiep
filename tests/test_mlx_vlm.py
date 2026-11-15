@@ -283,6 +283,7 @@ class TestMLXVLM(unittest.TestCase):
              patch.object(download_models, "setup_mlx_vlm_weights") as mlx, \
              patch.object(download_models, "setup_yolo_weights"), \
              patch.object(download_models, "setup_depth_weights"), \
+             patch.object(download_models, "setup_speech_weights"), \
              patch.object(download_models, "setup_vqa_weights"), \
              patch.object(download_models, "setup_ocr_weights"), \
              patch.object(download_models, "setup_audio_assets"):

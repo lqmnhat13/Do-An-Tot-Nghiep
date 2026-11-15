@@ -90,3 +90,12 @@ vqa:
     model_path: "models/weights/qwen2_5_vl_3b_4bit" # tương đối từ project root
     max_image_size: 512 # cạnh dài nhất, giữ tỉ lệ và toàn bộ khung hình; cap 512
     max_tokens: 128 # cap 128; cho phép 1-2 câu nhưng vẫn giới hạn độ trễ trên M1 16GB
+
+speech:
+  enabled: true
+  model_name: "vinai/PhoWhisper-small"
+  sample_rate: 16000
+  rms_threshold: 0.01   # chỉnh nếu micro nhỏ/ồn
+  silence_sec: 1.2
+  max_sec: 8.0
+  no_speech_sec: 5.0
