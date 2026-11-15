@@ -27,7 +27,12 @@ class MicrophoneError(RuntimeError):
 
 class MicRecorder:
     """Đọc ``sounddevice.InputStream`` theo block cho tới khi endpointer báo dừng
-    hoặc ``stop_event`` được set (kiểm tra giữa mỗi block ``block_sec``)."""
+    hoặc ``stop_event`` được set (kiểm tra giữa mỗi block ``block_sec``).
+
+    Khi đã nghe thấy tiếng nói, âm thanh trả về được cắt tới cuối block to cuối cùng
+    + ``TAIL_SEC``: bỏ đoạn im lặng cuối để PhoWhisper không "ảo giác" thêm câu."""
+
+    TAIL_SEC = 0.3
 
     def __init__(
         self,
@@ -48,7 +53,8 @@ class MicRecorder:
         except (ImportError, OSError) as exc:
             raise MicrophoneError(f"Không tải được sounddevice: {exc}") from exc
 
-        device_errors = (OSError, getattr(sd, "PortAudioError", OSError))
+        # ValueError: sounddevice không tìm thấy thiết bị hoặc không hỗ trợ cấu hình yêu cầu.
+        device_errors = (OSError, ValueError, getattr(sd, "PortAudioError", OSError))
         endpointer = SilenceEndpointer(sample_rate=self.sample_rate, **self.endpointer_kwargs)
         blocks = []
         reason = None
@@ -75,6 +81,9 @@ class MicRecorder:
             raise MicrophoneError(f"Lỗi micro: {exc}") from exc
 
         audio = np.concatenate(blocks) if blocks else np.zeros(0, dtype=np.float32)
+        if endpointer.heard_speech and endpointer.last_speech_end_samples is not None:
+            end = endpointer.last_speech_end_samples + int(round(self.TAIL_SEC * self.sample_rate))
+            audio = audio[:end]
         return RecordingResult(
             audio=audio.astype(np.float32, copy=False),
             reason=reason,

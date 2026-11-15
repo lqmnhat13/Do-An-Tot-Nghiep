@@ -95,7 +95,9 @@ speech:
   enabled: true
   model_name: "vinai/PhoWhisper-small"
   sample_rate: 16000
-  rms_threshold: 0.01   # chỉnh nếu micro nhỏ/ồn
+  # Ngưỡng RMS TỐI THIỂU: nền ồn được đo tự động trong 0,3 s đầu sau tiếng bíp
+  # (ngưỡng = min(max(rms_threshold, 3 x nền), 0,06)), nên đừng nói đè lên tiếng bíp.
+  rms_threshold: 0.01
   silence_sec: 1.2
   max_sec: 8.0
   no_speech_sec: 5.0
