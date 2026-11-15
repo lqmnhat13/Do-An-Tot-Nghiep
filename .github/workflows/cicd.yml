@@ -129,7 +129,8 @@ jobs:
       - name: Create Release Distribution Bundle
         run: |
           mkdir -p dist
-          tar --exclude='.git' \
+          tar --exclude='./dist' \
+              --exclude='.git' \
               --exclude='.github' \
               --exclude='tests' \
               --exclude='__pycache__' \
