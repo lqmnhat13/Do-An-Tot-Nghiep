@@ -54,7 +54,7 @@ def build_ocr_service(model_cfg: dict, device: str) -> OCRService:
 def main():
     parser = argparse.ArgumentParser(description="Hệ thống AI đa phương thức hỗ trợ người khiếm thị")
     parser.add_argument("--source", type=str, default=None, help="Nguồn camera: 0 (webcam), đường dẫn tệp video, hoặc 'dummy'")
-    parser.add_argument("--weights", type=str, default=None, help="Đường dẫn trọng số YOLO (mặc định: models/weights/yolov8n.pt)")
+    parser.add_argument("--weights", type=str, default=None, help="Đường dẫn trọng số YOLO (mặc định: detection.weights_path trong model_config.yaml)")
     parser.add_argument("--device", type=str, default=None, help="Thiết bị tính toán: 'mps' hoặc 'cpu'")
     parser.add_argument("--no-gui", action="store_true", help="Chạy ở chế độ không mở cửa sổ giao diện")
     parser.add_argument("--duration", type=float, default=None, help="Thời lượng chạy tối đa (giây)")
@@ -139,7 +139,9 @@ def main():
         instant_high_risk_in_center=bool(fsm_cfg.get("instant_high_risk_in_center", True)),
         cooldown_sec=float(fsm_cfg.get("track_alert_cooldown_sec", 4.0)),
         allow_escalation_override=bool(fsm_cfg.get("allow_escalation_override", True)),
-        generic_obstacle_detector=build_generic_obstacle_detector(fusion_cfg, walking_corridor)
+        generic_obstacle_detector=build_generic_obstacle_detector(fusion_cfg, walking_corridor),
+        approach_ttc_sec=float(fsm_cfg.get("approach_ttc_sec", 0.0)),
+        named_min_confidence=float(fsm_cfg.get("named_min_confidence", 0.0))
     )
     agg_cfg = fusion_cfg.get("alert_aggregator", {})
     alert_aggregator = AlertAggregator(

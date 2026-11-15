@@ -39,6 +39,14 @@ risk_fsm:
   # Cho phép ghi đè cooldown nếu mức rủi ro tăng cấp (ví dụ từ MEDIUM lên HIGH)
   allow_escalation_override: true
 
+  # Vật MEDIUM (<= 2.5 m) trong hành lang mà bbox lớn nhanh (thời gian đến va chạm < ngưỡng)
+  # được nâng lên HIGH. Không phụ thuộc metric_scale, bù cho cảnh ước lượng mét xa hơn thực tế.
+  # 1.5 s: đi bộ ~1.2 m/s sẽ được cảnh báo từ ~1.8 m. Đặt 0 để tắt.
+  approach_ttc_sec: 1.5
+  # Độ tin cậy YOLO dưới ngưỡng này thì đọc "vật cản" thay vì tên lớp (tránh gọi sai
+  # bàn thành "giường"). 0.45: precision COCO 0.865 so với 0.743 ở 0.25. Đặt 0 để tắt.
+  named_min_confidence: 0.45
+
 # Cảnh báo "vật cản" cho vùng gần trong hành lang mà YOLO không nhận diện (tường, mặt bàn,
 # cạnh tủ...). Chỉ hoạt động với depth.representation = metric_depth.
 generic_obstacle:

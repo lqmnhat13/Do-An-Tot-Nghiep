@@ -111,6 +111,8 @@ def build_risk_stack(cfg):
         allow_escalation_override=rc.get("allow_escalation_override", True),
         walking_corridor=corridor,
         generic_obstacle_detector=build_generic_obstacle_detector(fus, corridor),
+        approach_ttc_sec=rc.get("approach_ttc_sec", 0.0),
+        named_min_confidence=rc.get("named_min_confidence", 0.0),
     )
     return fsm, roi, corridor
 

@@ -40,6 +40,11 @@ class YoloDetector:
         self._load_model()
 
     def _load_model(self) -> None:
+        fallback = os.path.join(os.path.dirname(self.weights_path), "yolov8n.pt")
+        if not os.path.exists(self.weights_path) and os.path.exists(fallback):
+            # yolov8s.pt không nằm trong Git (chỉ yolov8n.pt), nên máy mới/CI vẫn chạy được.
+            print(f"[YoloDetector] Không có {self.weights_path}, dùng {fallback}.")
+            self.weights_path = fallback
         if not os.path.exists(self.weights_path):
             raise FileNotFoundError(f"Không tìm thấy file trọng số YOLO: {self.weights_path}")
 

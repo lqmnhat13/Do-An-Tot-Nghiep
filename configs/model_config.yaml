@@ -1,7 +1,10 @@
 # Cấu hình các mô hình AI: Detection, Depth, OCR, VQA
 detection:
-  model_name: "yolov8n"
-  weights_path: "models/weights/yolov8n.pt"
+  # v8s so với v8n trên COCO: recall 0.55 -> 0.63 (ghế 0.30 -> 0.42), nhưng chạy cùng depth
+  # trên M1: FPS 27 -> 17, detection p95 64 -> 74 ms. Muốn nhanh hơn thì đổi lại yolov8n.pt.
+  # Thiếu file thì YoloDetector tự dùng yolov8n.pt cùng thư mục.
+  model_name: "yolov8s"
+  weights_path: "models/weights/yolov8s.pt"
   confidence_threshold: 0.25
   iou_threshold: 0.45
   device: "mps" # mps | cpu

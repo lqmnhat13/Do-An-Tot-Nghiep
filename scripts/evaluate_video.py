@@ -104,7 +104,9 @@ def main():
         instant_high_risk_in_center=bool(fsm_cfg.get("instant_high_risk_in_center", True)),
         cooldown_sec=float(fsm_cfg.get("track_alert_cooldown_sec", 4.0)),
         allow_escalation_override=bool(fsm_cfg.get("allow_escalation_override", True)),
-        generic_obstacle_detector=build_generic_obstacle_detector(fusion_cfg, walking_corridor)
+        generic_obstacle_detector=build_generic_obstacle_detector(fusion_cfg, walking_corridor),
+        approach_ttc_sec=float(fsm_cfg.get("approach_ttc_sec", 0.0)),
+        named_min_confidence=float(fsm_cfg.get("named_min_confidence", 0.0))
     )
     agg_cfg = fusion_cfg.get("alert_aggregator", {})
     alert_aggregator = AlertAggregator(

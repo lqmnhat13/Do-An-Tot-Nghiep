@@ -19,37 +19,37 @@ sys.path.insert(0, PROJECT_ROOT)
 
 from src.runtime.model_loading import enable_model_downloads, pretrained_kwargs
 
-def setup_yolo_weights():
+def setup_yolo_weights(name="yolov8n.pt"):
     os.makedirs(WEIGHTS_DIR, exist_ok=True)
-    target_yolo = os.path.join(WEIGHTS_DIR, "yolov8n.pt")
+    target_yolo = os.path.join(WEIGHTS_DIR, name)
     
     if os.path.exists(target_yolo):
-        print(f"[OK] YOLOv8n đã có tại: {target_yolo}")
+        print(f"[OK] {name} đã có tại: {target_yolo}")
         return
 
     # Kiểm tra các thư mục backup
     backup_candidates = [
-        os.path.expanduser("~/Second-Eye-backup/models/yolov8n.pt"),
-        os.path.expanduser("~/Documents/SecondEye-Project/weights/yolov8n.pt")
+        os.path.expanduser(f"~/Second-Eye-backup/models/{name}"),
+        os.path.expanduser(f"~/Documents/SecondEye-Project/weights/{name}")
     ]
     for src in backup_candidates:
         if os.path.exists(src):
-            print(f"[COPY] Sao chép YOLOv8n từ {src} -> {target_yolo}...")
+            print(f"[COPY] Sao chép {name} từ {src} -> {target_yolo}...")
             shutil.copyfile(src, target_yolo)
             print(f"[OK] Đã sao chép thành công: {os.path.getsize(target_yolo)/(1024*1024):.2f} MB")
             return
 
     # Nếu không có sẵn, tải tự động bằng Ultralytics
-    print("[DOWNLOAD] Đang tải yolov8n.pt từ Ultralytics...")
+    print(f"[DOWNLOAD] Đang tải {name} từ Ultralytics...")
     try:
         from ultralytics import YOLO
-        model = YOLO("yolov8n.pt")
+        YOLO(name)
         # Di chuyển về target
-        if os.path.exists("yolov8n.pt") and not os.path.exists(target_yolo):
-            shutil.move("yolov8n.pt", target_yolo)
-        print(f"[OK] Đã tải và lưu YOLOv8n tại: {target_yolo}")
+        if os.path.exists(name) and not os.path.exists(target_yolo):
+            shutil.move(name, target_yolo)
+        print(f"[OK] Đã tải và lưu {name} tại: {target_yolo}")
     except Exception as e:
-        print(f"[FAIL] Không thể tải yolov8n.pt: {e}")
+        print(f"[FAIL] Không thể tải {name}: {e}")
 
 def setup_depth_weights():
     # Model trong model_config.yaml (mặc định Metric-Indoor) + bản relative để có thể chuyển lại.
@@ -158,6 +158,7 @@ def main(argv=None):
             return 1
         return 0
     setup_yolo_weights()
+    setup_yolo_weights("yolov8s.pt")  # mặc định trong model_config.yaml
     setup_depth_weights()
     setup_vqa_weights()
     setup_ocr_weights()

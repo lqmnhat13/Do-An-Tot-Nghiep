@@ -29,7 +29,7 @@
 | Thành phần | Vai trò | Thời điểm chạy |
 | --- | --- | --- |
 | Camera và bộ đệm | Một luồng thu ảnh, phân phối qua hai bộ đệm `drop-oldest` để bỏ frame cũ khi xử lý chậm. | Liên tục |
-| Detection + tracking | YOLOv8n lọc 24 lớp COCO theo cấu hình; `ByteTrackerAdapter` gán `track_id` bằng ghép IoU cùng lớp. Đây là tracker đơn giản, chưa phải triển khai đầy đủ thuật toán ByteTrack. | Liên tục |
+| Detection + tracking | YOLOv8s (thiếu file thì dùng `yolov8n.pt`) lọc 24 lớp COCO theo cấu hình; `ByteTrackerAdapter` gán `track_id` bằng ghép IoU cùng lớp. Đây là tracker đơn giản, chưa phải triển khai đầy đủ thuật toán ByteTrack. | Liên tục |
 | Depth + đồng bộ | Depth Anything V2 Metric-Indoor ước lượng khoảng cách (mét, nhân `metric_scale`); bộ đồng bộ kiểm tra độ mới và ghép với detection. | Liên tục |
 | Risk FSM + âm thanh | Đánh giá rủi ro từ dữ liệu hợp lệ; chỉ phát cảnh báo HIGH trong chế độ Cảnh báo. | Đánh giá liên tục; phát theo chế độ |
 | OCR | Apple Vision trên macOS; EasyOCR dự phòng nếu Vision lỗi khi khởi tạo hoặc khi đọc. Ảnh nghi mờ/tối/lóa vẫn được đọc thử, chỉ hướng dẫn chụp lại khi không đọc ra chữ; tiền xử lý và sắp thứ tự đọc bằng hình học. | Khi bấm `Space` |
@@ -38,7 +38,7 @@
 
 Khi OCR hoặc VQA đang xử lý, detection và depth vẫn tiếp tục chạy. Chọn OCR/VQA sẽ dừng và tắt toàn bộ cảnh báo vật cản, kể cả `HIGH_RISK`, cho đến khi bấm `C` chuyển về chế độ Cảnh báo; MEDIUM/LOW chỉ dùng để hiển thị thông tin và không phát âm thanh trong mọi chế độ. Khi dữ liệu detection/depth trễ hoặc không đạt chất lượng, hệ thống không tự suy ra rằng môi trường an toàn.
 
-Cảnh báo vật cản xét các lớp thuộc `alert_classes` có bounding box giao đủ với hành lang hình thang và phần gần nhất của vật trong **1,5 m** (HIGH; MEDIUM ≤ 2,5 m, LOW ≤ 3,5 m — `risk_fsm.distance_threshold_*_m`). Ngoài ra, nếu ≥ 15% vùng hành lang chưa có vật được nhận diện (bỏ dải sàn 25% đáy ảnh) gần hơn **1,0 m**, hệ thống phát cảnh báo chung "vật cản" — cho tường, mặt bàn, cạnh tủ… mà YOLO không biết (`generic_obstacle` trong `configs/fusion_rules.yaml`). Chỉ HIGH phát âm thanh và banner cảnh báo; MEDIUM/LOW vẫn được tính, nhưng không phát cảnh báo hoặc kích hoạt cooldown. Nhãn MEDIUM trên bbox là `TRUNG BINH`. HUD hiển thị hành lang bằng nhãn `VUNG XET VAT CAN`; trái/phải/giữa chỉ mô tả vị trí. Khi bbox ra ngoài hành lang hoặc độ gần giảm dưới ngưỡng, FSM hạ mức ngay; cooldown và ưu tiên tăng mức vẫn được giữ.
+Cảnh báo vật cản xét các lớp thuộc `alert_classes` có bounding box giao đủ với hành lang hình thang và phần gần nhất của vật trong **1,5 m** (HIGH; MEDIUM ≤ 2,5 m, LOW ≤ 3,5 m — `risk_fsm.distance_threshold_*_m`). Ngoài ra, nếu ≥ 15% vùng hành lang chưa có vật được nhận diện (bỏ dải sàn 25% đáy ảnh) gần hơn **1,0 m**, hệ thống phát cảnh báo chung "vật cản" — cho tường, mặt bàn, cạnh tủ… mà YOLO không biết (`generic_obstacle` trong `configs/fusion_rules.yaml`). Vật MEDIUM trong hành lang mà bbox lớn nhanh (thời gian đến va chạm ước lượng từ tốc độ bbox lớn lên < `risk_fsm.approach_ttc_sec`, mặc định 1,5 s) cũng được nâng lên HIGH; cách này không phụ thuộc `metric_scale`. Vật có độ tin cậy YOLO dưới `risk_fsm.named_min_confidence` (0,45) được đọc là "vật cản" thay vì tên lớp. Chỉ HIGH phát âm thanh và banner cảnh báo; MEDIUM/LOW vẫn được tính, nhưng không phát cảnh báo hoặc kích hoạt cooldown. Nhãn MEDIUM trên bbox là `TRUNG BINH`. HUD hiển thị hành lang bằng nhãn `VUNG XET VAT CAN`; trái/phải/giữa chỉ mô tả vị trí. Khi bbox ra ngoài hành lang hoặc độ gần giảm dưới ngưỡng, FSM hạ mức ngay; cooldown và ưu tiên tăng mức vẫn được giữ.
 
 Điều chỉnh `walking_corridor` trong `configs/fusion_rules.yaml`: `center_x=0.50`, `top_y=0.35`, `top_width=0.20`, `bottom_width=0.60` đều theo tỷ lệ ảnh; `min_overlap_ratio=0.10` là diện tích giao chia cho diện tích nhỏ hơn giữa bbox đã clamp và hành lang. Camera cần hướng theo hướng đi; tinh chỉnh bằng video từ vị trí gắn camera thực tế. Hình thang là vùng ước lượng trên ảnh, không xác nhận đường đi an toàn hoặc khoảng cách theo mét. Tùy chọn cũ `instant_high_risk_in_center` hiện áp dụng cho HIGH trong hành lang ở mọi hướng; `confirmations_to_deescalate` được giữ để tương thích nhưng không giữ mức cảnh báo cũ.
 
@@ -52,11 +52,11 @@ Bộ đồng bộ ưu tiên depth cùng `frame_id`, nếu chưa có thì dùng d
 - **Python:** lần kiểm thử ngày 11/10/2026 dùng Python **3.10.20** trong Conda `ai-macbook` trên macOS arm64.
 - **Tăng tốc:** PyTorch MPS cho detection/depth; MLX cho VQA mặc định. Một số thành phần có thể dùng CPU hoặc fallback, nhưng độ trễ sẽ khác.
 - **Âm thanh:** lệnh `say` của macOS, ưu tiên giọng tiếng Việt `Linh`; cần kiểm tra giọng này trên máy chạy.
-- **Trọng số:** YOLO ở `models/weights/yolov8n.pt`; các model Hugging Face cần có trong cache hoặc thư mục local trước khi chạy offline. Snapshot VQA MLX được lưu tại `models/weights/qwen2_5_vl_3b_4bit` theo cấu hình hiện tại.
+- **Trọng số:** YOLO ở `models/weights/yolov8s.pt` (tải bằng `scripts/download_models.py`; thiếu thì dùng `yolov8n.pt` có sẵn trong Git); các model Hugging Face cần có trong cache hoặc thư mục local trước khi chạy offline. Snapshot VQA MLX được lưu tại `models/weights/qwen2_5_vl_3b_4bit` theo cấu hình hiện tại.
 
 | Tác vụ | Model/backend mặc định | Cấu hình |
 | --- | --- | --- |
-| Phát hiện vật thể | YOLOv8n, lọc các lớp COCO liên quan | `configs/model_config.yaml` → `detection` |
+| Phát hiện vật thể | YOLOv8s (dự phòng YOLOv8n), lọc các lớp COCO liên quan | `configs/model_config.yaml` → `detection` |
 | Khoảng cách | Depth Anything V2 Metric-Indoor Small (bản relative Small vẫn chọn được) | `configs/model_config.yaml` → `depth` |
 | OCR | Apple Vision; EasyOCR tiếng Việt/Anh dự phòng | `configs/model_config.yaml` → `ocr` |
 | VQA | Qwen2.5-VL-3B-Instruct-4bit qua MLX-VLM; backend BLIP + MarianMT là lựa chọn legacy | `configs/model_config.yaml` → `vqa` |

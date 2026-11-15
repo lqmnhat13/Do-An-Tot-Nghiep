@@ -1,5 +1,6 @@
-from dataclasses import dataclass
-from typing import Dict, Optional, List
+from collections import deque
+from dataclasses import dataclass, field
+from typing import Deque, Dict, Optional, List, Tuple
 import time
 import math
 
@@ -26,6 +27,12 @@ class TrackState:
     last_alert_risk: Optional[RiskLevel] = None
     last_depth_frame_id: Optional[int] = None
     last_assessment: Optional[RiskAssessment] = None
+    # (timestamp_mono, chiều cao bbox px) trong ~1 s gần nhất, để ước lượng tốc độ tiến lại gần
+    heights: Deque[Tuple[float, float]] = field(default_factory=deque)
+
+# Cửa sổ so sánh chiều cao bbox: mẫu cũ phải từ 0.5 s đến 1.2 s trước (đủ dài để lọc rung bbox).
+APPROACH_MIN_DT_SEC = 0.5
+APPROACH_MAX_DT_SEC = 1.2
 
 class RiskFSM:
     """
@@ -52,8 +59,15 @@ class RiskFSM:
         cooldown_sec: float = 4.0,
         allow_escalation_override: bool = True,
         walking_corridor: Optional[WalkingCorridor] = None,
-        generic_obstacle_detector: Optional[GenericObstacleDetector] = None
+        generic_obstacle_detector: Optional[GenericObstacleDetector] = None,
+        approach_ttc_sec: float = 0.0,
+        named_min_confidence: float = 0.0
     ):
+        # approach_ttc_sec > 0: vật MEDIUM trong hành lang có thời gian-đến-va-chạm (từ tốc độ
+        # bbox lớn lên, không phụ thuộc hệ số mét) dưới ngưỡng này thì nâng lên HIGH.
+        self.approach_ttc_sec = approach_ttc_sec
+        # Độ tin cậy dưới ngưỡng này thì gọi là "vật cản" thay vì đọc tên lớp có thể sai.
+        self.named_min_confidence = named_min_confidence
         self.generic_obstacle_detector = generic_obstacle_detector
         self.class_filter = class_filter
         self.spatial_zones = spatial_zones
@@ -93,6 +107,8 @@ class RiskFSM:
             if t_id not in self._tracks:
                 self._tracks[t_id] = TrackState(track_id=t_id)
             state = self._tracks[t_id]
+            if t_id >= 0:
+                self._record_height(state, det_result.timestamp_mono, det.bbox)
 
             # 1. Xác định hướng không gian
             overlap = self.walking_corridor.overlap_ratio(det.bbox, orig_w, orig_h)
@@ -148,13 +164,18 @@ class RiskFSM:
                             det=det, direction=direction, proximity=proximity,
                             data_quality=data_quality)
                         reason = f"Trong hành lang (giao {overlap:.1%}); {reason}"
+                        ttc = self._approach_ttc(state) if candidate_risk == RiskLevel.MEDIUM else None
+                        if ttc is not None and ttc < self.approach_ttc_sec:
+                            candidate_risk = RiskLevel.HIGH
+                            reason += f"; đang tiến lại gần, va chạm sau ~{ttc:.1f} s"
 
                 final_risk = self._apply_hysteresis(
                     state, candidate_risk, direction, proximity, is_new_depth_sample)
                 state.current_risk = final_risk
 
             # 5. Đóng gói kết quả RiskAssessment
-            vi_name = self.class_filter.get_vietnamese_name(det.class_name)
+            vi_name = (GENERIC_OBSTACLE_NAME if det.confidence < self.named_min_confidence
+                       else self.class_filter.get_vietnamese_name(det.class_name))
             assessment = RiskAssessment(
                 track_id=det.track_id,
                 class_name=vi_name,
@@ -182,6 +203,24 @@ class RiskFSM:
                 self._tracks = {t: s for t, s in self._tracks.items() if t in current_frame_track_ids}
 
         return assessments
+
+    @staticmethod
+    def _record_height(state: TrackState, timestamp: float, bbox) -> None:
+        state.heights.append((timestamp, bbox.ymax - bbox.ymin))
+        while state.heights and timestamp - state.heights[0][0] > APPROACH_MAX_DT_SEC:
+            state.heights.popleft()
+
+    def _approach_ttc(self, state: TrackState) -> Optional[float]:
+        """Thời gian đến va chạm (s) từ tỉ lệ lớn lên của bbox: h ~ 1/Z nên TTC = dt / (h_now/h_old - 1)."""
+        # shortcut: chỉ dùng chiều cao bbox, nên bbox bị cắt ở mép ảnh hoặc camera nghiêng có thể
+        # làm sai TTC; nâng cấp bằng dữ liệu video thật (eval_warning_tum.py) nếu báo thừa nhiều.
+        if self.approach_ttc_sec <= 0 or len(state.heights) < 2:
+            return None
+        (t_old, h_old), (t_now, h_now) = state.heights[0], state.heights[-1]
+        dt = t_now - t_old
+        if dt < APPROACH_MIN_DT_SEC or h_old <= 0 or h_now <= h_old:
+            return None
+        return dt / (h_now / h_old - 1.0)
 
     def _assess_generic_obstacle(self, sync_pair: SynchronizedPair, orig_w: float, orig_h: float,
                                  now: float) -> Optional[RiskAssessment]:
