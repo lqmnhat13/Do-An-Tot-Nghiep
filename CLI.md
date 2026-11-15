@@ -27,7 +27,7 @@ Không dùng các biến offline khi **chủ động tải model**. Các đườ
 python app.py --source 0
 ```
 
-`app.py` khởi tạo camera, detection, depth và cảnh báo liên tục; OCR/VQA chỉ chạy khi yêu cầu. Trong cửa sổ GUI: `Space` để OCR, `Q` để VQA, `S` để hủy/dừng đọc, `Esc` để thoát. VQA không được dùng để xác nhận đường đi an toàn.
+`app.py` khởi tạo camera, detection, depth và cảnh báo liên tục; OCR/VQA chỉ chạy khi yêu cầu. Trong cửa sổ GUI: `Space` để OCR, `Q` để hỏi VQA bằng giọng nói (nghe tiếng bíp rồi nói; app tự dừng khi im lặng 1,2 giây, tối đa 8 giây, hoặc không nói trong 5 giây; bấm `Q` lần nữa để dừng sớm), `C` để về chế độ Cảnh báo, `S` để hủy/dừng đọc, `Esc` để thoát. Câu nghe được được đọc lại "Bạn hỏi: …" trước câu trả lời. Không dùng được micro hoặc PhoWhisper thì app báo rồi hỏi câu mặc định "Phía trước có gì?"; `speech.enabled: false` trong `configs/model_config.yaml` luôn hỏi câu này. Cần cấp quyền Micro cho Terminal/VS Code (System Settings → Privacy & Security → Microphone) rồi khởi động lại ứng dụng đó. VQA không được dùng để xác nhận đường đi an toàn; câu hỏi về việc đi lại hoặc lối đi có trống/an toàn không bị từ chối. Chi tiết: [README — Hỏi VQA bằng giọng nói](README.md#hỏi-vqa-bằng-giọng-nói).
 
 | Tùy chọn | Ý nghĩa |
 | --- | --- |
@@ -74,7 +74,7 @@ python scripts/download_models.py
 python scripts/download_models.py --mlx-vlm
 ```
 
-Lệnh đầu kiểm tra/tải YOLO, Depth Anything, BLIP/MarianMT, EasyOCR và tạo các WAV cảnh báo trong `assets/audio/`. Lệnh `--mlx-vlm` **chỉ** tải snapshot MLX-VLM được khai báo trong `configs/model_config.yaml`. Hai lệnh cần mạng khi model chưa có; lệnh đầu có thể ghi lại các WAV mẫu. Chỉ chạy khi cần chuẩn bị tài nguyên.
+Lệnh đầu kiểm tra/tải YOLO, Depth Anything, BLIP/MarianMT, EasyOCR, PhoWhisper (`speech.model_name`, mặc định `vinai/PhoWhisper-small`, ~1 GB, vào cache Hugging Face) và tạo các WAV cảnh báo trong `assets/audio/`. Lệnh `--mlx-vlm` **chỉ** tải snapshot MLX-VLM được khai báo trong `configs/model_config.yaml`. Hai lệnh cần mạng khi model chưa có; lệnh đầu có thể ghi lại các WAV mẫu. Chỉ chạy khi cần chuẩn bị tài nguyên.
 
 ### Hiệu chỉnh khoảng cách (depth.metric_scale)
 

@@ -22,13 +22,13 @@
 <a id="gioi-thieu"></a>
 ## 1. Hệ thống làm được gì?
 
-Ứng dụng dùng camera để nhận biết một số vật thể, ước lượng độ gần tương đối và đưa ra cảnh báo bằng giọng nói tiếng Việt. Người dùng còn có thể nhấn phím để đọc chữ trong ảnh hoặc yêu cầu mô tả khung cảnh.
+Ứng dụng dùng camera để nhận biết một số vật thể, ước lượng độ gần tương đối và đưa ra cảnh báo bằng giọng nói tiếng Việt. Người dùng còn có thể nhấn phím để đọc chữ trong ảnh hoặc nói một câu hỏi về khung cảnh trước camera.
 
 | Chức năng | Cách kích hoạt trong ứng dụng chính | Kết quả |
 |---|---|---|
 | Quan sát và cảnh báo | Tự chạy sau khi khởi động; nhấn `C` để quay lại | Vật thể xuất hiện trên giao diện; một số tình huống tạo âm báo/lời cảnh báo |
 | Đọc chữ — OCR | Nhấn `SPACE` | Chụp ảnh hiện tại, nhận dạng chữ và đọc kết quả |
-| Mô tả cảnh — VQA | Nhấn `Q` | Chụp ảnh hiện tại và xử lý yêu cầu “Mô tả khung cảnh phía trước” |
+| Hỏi về khung cảnh — VQA | Nhấn `Q`, nghe tiếng bíp rồi nói câu hỏi | Chụp ảnh lúc hỏi xong, đọc lại câu đã nghe và trả lời bằng giọng nói |
 | Dừng lời nói/yêu cầu hiện tại | Nhấn `S` | Ngắt âm thanh, vô hiệu kết quả on-demand đang chờ; giữ chế độ hiện tại |
 | Thoát | Nhấn `ESC` | Dừng ứng dụng và đóng cửa sổ |
 
@@ -157,6 +157,7 @@ Lệnh thực hiện các công việc sau:
 | YOLOv8n | Giữ file đã có, tìm bản sao tại một số thư mục backup, hoặc tải rồi đặt vào `models/weights/yolov8n.pt` |
 | Depth Anything V2 Small | Chuẩn bị processor và model trong cache Hugging Face |
 | BLIP và MarianMT | Chuẩn bị model cho backend mô tả ảnh cũ, kể cả khi YAML đang chọn MLX |
+| PhoWhisper-small | Chuẩn bị `vinai/PhoWhisper-small` (~1 GB, BSD-3-Clause, theo `speech.model_name`) trong cache Hugging Face để nhận dạng câu hỏi VQA bằng giọng nói; ứng dụng chạy offline sau đó |
 | EasyOCR vi/en | Chuẩn bị model OCR dự phòng bằng Reader chạy CPU; Apple Vision không cần tải model riêng |
 | Âm thanh | Tạo lại `alert_high.wav`, `chime.wav`, `ready.wav` trong `assets/audio/` |
 
@@ -228,7 +229,11 @@ Khi macOS hỏi quyền truy cập camera, cho phép ứng dụng đang chạy P
 4. Bật quyền cho ứng dụng được macOS liệt kê tương ứng với nơi chạy lệnh, chẳng hạn Terminal hoặc IDE.
 5. Đóng và mở lại ứng dụng chạy lệnh nếu được yêu cầu, rồi thử camera lần nữa.
 
-Tên mục có thể khác theo ngôn ngữ macOS. Tham khảo [hướng dẫn quyền riêng tư của Apple](https://support.apple.com/en-au/guide/mac-help/-mchl211c911f/mac). Phiên bản hiện tại điều khiển bằng bàn phím, không cần microphone để nhận lệnh giọng nói.
+Tên mục có thể khác theo ngôn ngữ macOS. Tham khảo [hướng dẫn quyền riêng tư của Apple](https://support.apple.com/en-au/guide/mac-help/-mchl211c911f/mac). Các lệnh vẫn bấm bằng bàn phím; microphone chỉ dùng để nghe câu hỏi VQA sau khi bấm `Q` (mục 5.1a).
+
+### 5.1a. Cấp quyền microphone
+
+Câu hỏi VQA được nói qua microphone. Cấp quyền tương tự mục 5.1 nhưng chọn **Microphone** trong **Privacy & Security — Quyền riêng tư & Bảo mật**, bật cho ứng dụng chạy lệnh (Terminal, iTerm hoặc VS Code), rồi **thoát hẳn và mở lại** ứng dụng đó. Khi chưa có quyền, macOS không báo lỗi mà trả về âm thanh im lặng tuyệt đối; ứng dụng nhận ra trường hợp này, đọc “Không dùng được micro hoặc nhận dạng giọng nói. Hệ thống sẽ mô tả phía trước.” và hỏi câu mặc định “Phía trước có gì?”.
 
 ### 5.2. Kiểm tra giọng tiếng Việt và âm báo
 
@@ -365,14 +370,24 @@ OCR xử lý ảnh tại thời điểm yêu cầu, không liên tục đọc th
 
 Nếu hệ thống báo không phát hiện chữ, điều đó có nghĩa không tìm thấy kết quả đạt điều kiện trong ảnh đã chụp, không chứng minh ảnh hoàn toàn không có chữ.
 
-### 7.3. Mô tả cảnh bằng VQA
+### 7.3. Hỏi về khung cảnh bằng VQA (giọng nói)
 
 1. Hướng camera về cảnh cần mô tả.
-2. Nhấn `Q` trong cửa sổ ứng dụng.
-3. Chờ hệ thống xử lý ảnh và đọc câu trả lời.
-4. Đối chiếu kết quả với cảnh thật khi thử nghiệm; ghi nhận trường hợp mô tả sai hoặc chỉ trả câu dự phòng.
+2. Nhấn `Q` trong cửa sổ ứng dụng. Ứng dụng chọn chế độ VQA, đọc câu chuyển chế độ rồi phát tiếng bíp; HUD hiện `DANG NGHE...`.
+3. Sau tiếng bíp, nói câu hỏi, ví dụ “Phía trước có gì?” hoặc “Cái áo này màu gì?”. Ứng dụng tự ngừng nghe khi im lặng 1,2 giây sau khi đã nói, khi đủ 8 giây, hoặc khi không có tiếng nói trong 5 giây đầu. Muốn dừng sớm, nhấn `Q` lần nữa.
+4. Ảnh được chụp lúc ngừng nghe. Ứng dụng đọc lại “Bạn hỏi: …” để kiểm tra đã nghe đúng chưa, rồi đọc câu trả lời dựa trên ảnh đó. Nghe sai thì nhấn `Q` và hỏi lại.
+5. Đối chiếu kết quả với cảnh thật khi thử nghiệm; ghi nhận trường hợp mô tả sai hoặc chỉ trả câu dự phòng.
 
-Phím `Q` gửi câu hỏi cố định “Mô tả khung cảnh phía trước”. Nó không bật microphone hoặc hộp nhập câu hỏi. Muốn thử câu hỏi như “Chiếc cốc có màu gì?”, dùng công cụ ở mục 10.
+Nhấn `S` hoặc `C` trong lúc nghe/nhận dạng để hủy; kết quả muộn không được đọc. Các trường hợp lỗi:
+
+| Tình huống | Ứng dụng nói |
+|---|---|
+| Không nghe thấy tiếng nói, hoặc nhận dạng ra chữ rỗng | “Không nghe rõ câu hỏi. Bấm Q và hỏi lại.” — không trả lời. Khi không nghe thấy tiếng nói, ứng dụng không gọi PhoWhisper vì trên im lặng model tự bịa ra cả câu |
+| Micro lỗi/chưa cấp quyền (bản ghi toàn số 0), thiếu model PhoWhisper, nhận dạng quá 15 giây | “Không dùng được micro hoặc nhận dạng giọng nói. Hệ thống sẽ mô tả phía trước.” rồi trả lời câu mặc định “Phía trước có gì?”; không đọc lại “Bạn hỏi” |
+
+Câu hỏi về việc có đi được không hoặc lối đi có trống/thông thoáng/an toàn không (ví dụ “Đường trống không?”) bị từ chối trước khi gọi model, vì VQA không được dùng để xác nhận đường đi an toàn.
+
+Trên M1 (MPS, offline), PhoWhisper nhận dạng khoảng 0,7 giây mỗi câu khi đã nạp; lần nhấn `Q` đầu tiên mất khoảng 4,5 giây vì gồm cả nạp model. Cấu hình micro và ngưỡng nghe nằm ở mục 9.3a.
 
 Nếu VLM thiếu model, lỗi suy luận hoặc đầu ra không đạt giới hạn định dạng, ứng dụng có thể mô tả các vật thể đã nhận diện thay vì trả lời từ VLM. Một câu nói về vật thể chưa đủ chứng minh Qwen đã chạy thành công; xem Terminal để biết có thông báo fallback hay không.
 
@@ -402,6 +417,7 @@ Khi kết thúc bình thường, Terminal in `[AppRunner] Đã dừng toàn bộ
 | `OCR XU LY / SAN SANG` | Chế độ OCR đang xử lý hoặc sẵn sàng nhận ảnh mới; `CB TAT` là cảnh báo đang tắt |
 | `VQA XU LY / SAN SANG` | Chế độ VQA đang xử lý hoặc sẵn sàng nhận ảnh mới; `CB TAT` là cảnh báo đang tắt |
 | `TIN HIEU YEU` | Dữ liệu ghép detection/depth đang bị đánh dấu suy giảm hoặc cũ |
+| `DANG NGHE...` | Đang thu câu hỏi VQA qua microphone; nhấn `Q` để dừng sớm |
 | `DANG NOI` | Bộ âm thanh đang phát |
 | `DEPTH --` | HUD chưa có bản đồ depth để hiển thị; cần xem thêm log để biết nguyên nhân |
 
@@ -478,6 +494,23 @@ vqa:
 Chỉ sửa khóa `backend` đang có, không xóa các khóa còn lại. Muốn bật lại, đổi về `mlx_vlm` rồi khởi động lại.
 
 Nhánh MLX hiện giới hạn cứng cạnh ảnh tối đa 512 pixel và tối đa 64 token. Tăng YAML vượt các giá trị này không làm backend tăng giới hạn. Model được giữ lại sau lần dùng đầu; chọn `S` không đồng nghĩa giải phóng model khỏi RAM.
+
+### 9.3a. Câu hỏi bằng giọng nói
+
+Trong mục `speech` của `configs/model_config.yaml`:
+
+```yaml
+speech:
+  enabled: true
+  model_name: "vinai/PhoWhisper-small"
+  sample_rate: 16000
+  rms_threshold: 0.01   # chỉnh nếu micro nhỏ/ồn
+  silence_sec: 1.2
+  max_sec: 8.0
+  no_speech_sec: 5.0
+```
+
+`rms_threshold` là mức năng lượng âm thanh được coi là có tiếng nói. Micro nhỏ hoặc nói nhỏ mà ứng dụng hay báo “Không nghe rõ câu hỏi” thì **giảm** giá trị (ví dụ `0.005`); phòng ồn hoặc có quạt khiến ứng dụng không tự ngừng nghe sau khi nói xong thì **tăng** (ví dụ `0.02`). `silence_sec`, `max_sec`, `no_speech_sec` là ba điều kiện ngừng nghe ở mục 7.3. Đặt `enabled: false` để `Q` quay lại hỏi câu cố định “Phía trước có gì?” mà không dùng microphone.
 
 ### 9.4. Những cấu hình dễ gây hiểu nhầm
 
@@ -671,7 +704,7 @@ Nếu log báo Vision không khả dụng, ứng dụng thử EasyOCR dự phòn
 
 Kiểm tra theo thứ tự:
 
-1. Trong ứng dụng chính, `Q` chỉ hỏi mô tả cảnh mặc định; muốn câu hỏi khác dùng công cụ riêng.
+1. Ứng dụng có đọc lại đúng câu bạn hỏi (“Bạn hỏi: …”) không? Nếu ứng dụng báo không dùng được micro, nó đang trả lời câu mặc định “Phía trước có gì?”; kiểm tra quyền Microphone (mục 5.1a) và model PhoWhisper. Nghe sai thường do nói nhỏ/phòng ồn; xem `rms_threshold` ở mục 9.3a.
 2. `backend` có đang là `disabled` hoặc `legacy_caption` không?
 3. Có snapshot local đầy đủ và thư viện `mlx-vlm` trong đúng môi trường không?
 4. Terminal có báo thiếu đường dẫn, lỗi inference hoặc đầu ra bị loại vì giới hạn câu/token không?
@@ -724,7 +757,7 @@ Chuẩn bị một chiếc ghế hoặc đồ vật quen thuộc, một tờ gi�
 | 1 | Mở ứng dụng với `--source 0` | Ảnh thật thay đổi theo cảnh, log nạp model |
 | 2 | Đưa một vật quen thuộc vào trái/giữa/phải | Nhãn và hướng cập nhật; nhận diện có thể không thành công mọi lần |
 | 3 | Đưa tờ giấy vào khung và nhấn `SPACE` | Kết quả đọc hoặc thông báo chất lượng ảnh |
-| 4 | Đợi xong, nhấn `Q` | Mô tả cảnh; kiểm tra log để phân biệt model và fallback |
+| 4 | Đợi xong, nhấn `Q`, sau tiếng bíp hỏi “Phía trước có gì?” | Câu “Bạn hỏi: …” rồi câu trả lời; kiểm tra log để phân biệt model và fallback |
 | 5 | Nhấn `S` khi đang có lời đọc | Âm thanh dừng, yêu cầu cũ không phát lại kết quả muộn |
 | 6 | Nhấn `ESC` | Cửa sổ đóng và chương trình kết thúc |
 
@@ -744,7 +777,7 @@ Không cần tạo tình huống va chạm thật để chứng minh cảnh báo
 | Thử riêng OCR qua camera (Vision, EasyOCR dự phòng) | `python scripts/run_ocr_camera.py --camera 0` |
 | Thử riêng OCR với file ảnh | `python scripts/run_ocr_camera.py --image /duong/dan/anh.jpg` |
 | Đọc chữ trong ứng dụng chính | `SPACE` trong cửa sổ |
-| Mô tả cảnh trong ứng dụng chính | `Q` trong cửa sổ |
+| Hỏi về cảnh trong ứng dụng chính | `Q` trong cửa sổ, nói câu hỏi sau tiếng bíp; `Q` lần nữa để dừng nghe sớm |
 | Về chế độ Cảnh báo | `C` trong cửa sổ ứng dụng chính |
 | Dừng lời/yêu cầu hiện tại | `S` trong cửa sổ; giữ chế độ hiện tại |
 | Thoát | `ESC` trong cửa sổ; `Ctrl+C` tại Terminal khi cần |

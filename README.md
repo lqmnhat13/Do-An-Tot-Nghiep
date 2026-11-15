@@ -33,7 +33,7 @@
 | Depth + đồng bộ | Depth Anything V2 Metric-Indoor ước lượng khoảng cách (mét, nhân `metric_scale`); bộ đồng bộ kiểm tra độ mới và ghép với detection. | Liên tục |
 | Risk FSM + âm thanh | Đánh giá rủi ro từ dữ liệu hợp lệ; chỉ phát cảnh báo HIGH trong chế độ Cảnh báo. | Đánh giá liên tục; phát theo chế độ |
 | OCR | Apple Vision trên macOS; EasyOCR dự phòng nếu Vision lỗi khi khởi tạo hoặc khi đọc. Ảnh nghi mờ/tối/lóa vẫn được đọc thử, chỉ hướng dẫn chụp lại khi không đọc ra chữ; tiền xử lý và sắp thứ tự đọc bằng hình học. | Khi bấm `Space` |
-| VQA | Qwen2.5-VL qua MLX-VLM mặc định; kiểm tra câu hỏi trước inference và lọc lời khẳng định an toàn trong câu trả lời. | Khi bấm `Q` |
+| VQA | Câu hỏi nói qua micro, nhận dạng offline bằng PhoWhisper-small; Qwen2.5-VL qua MLX-VLM mặc định trả lời; kiểm tra câu hỏi trước inference và lọc lời khẳng định an toàn trong câu trả lời. | Khi bấm `Q` |
 | HUD | Hiển thị ảnh camera, bbox, hành lang, mức nguy cơ, depth và trạng thái/hiệu năng; kết quả OCR/VQA được phát qua TTS. | Khi bật GUI |
 
 Khi OCR hoặc VQA đang xử lý, detection và depth vẫn tiếp tục chạy. Chọn OCR/VQA sẽ dừng và tắt toàn bộ cảnh báo vật cản, kể cả `HIGH_RISK`, cho đến khi bấm `C` chuyển về chế độ Cảnh báo; MEDIUM/LOW chỉ dùng để hiển thị thông tin và không phát âm thanh trong mọi chế độ. Khi dữ liệu detection/depth trễ hoặc không đạt chất lượng, hệ thống không tự suy ra rằng môi trường an toàn.
@@ -48,7 +48,7 @@ Bộ đồng bộ ưu tiên depth cùng `frame_id`, nếu chưa có thì dùng d
 
 ## Yêu cầu và model
 
-- **Nền tảng mục tiêu:** macOS trên Apple Silicon M1, 16 GB unified memory; cần cấp quyền Camera cho ứng dụng Terminal khi dùng webcam.
+- **Nền tảng mục tiêu:** macOS trên Apple Silicon M1, 16 GB unified memory; cần cấp quyền Camera cho ứng dụng Terminal khi dùng webcam và quyền Micro khi hỏi VQA bằng giọng nói (xem [Hỏi VQA bằng giọng nói](#hỏi-vqa-bằng-giọng-nói)).
 - **Python:** lần kiểm thử ngày 11/10/2026 dùng Python **3.10.20** trong Conda `ai-macbook` trên macOS arm64.
 - **Tăng tốc:** PyTorch MPS cho detection/depth; MLX cho VQA mặc định. Một số thành phần có thể dùng CPU hoặc fallback, nhưng độ trễ sẽ khác.
 - **Âm thanh:** lệnh `say` của macOS, ưu tiên giọng tiếng Việt `Linh`; cần kiểm tra giọng này trên máy chạy.
@@ -60,6 +60,7 @@ Bộ đồng bộ ưu tiên depth cùng `frame_id`, nếu chưa có thì dùng d
 | Khoảng cách | Depth Anything V2 Metric-Indoor Small (bản relative Small vẫn chọn được) | `configs/model_config.yaml` → `depth` |
 | OCR | Apple Vision; EasyOCR tiếng Việt/Anh dự phòng | `configs/model_config.yaml` → `ocr` |
 | VQA | Qwen2.5-VL-3B-Instruct-4bit qua MLX-VLM; backend BLIP + MarianMT là lựa chọn legacy | `configs/model_config.yaml` → `vqa` |
+| Nhận dạng giọng nói (câu hỏi VQA) | `vinai/PhoWhisper-small` qua `transformers` (~1 GB, BSD-3-Clause), chỉ tiếng Việt; thu micro bằng `sounddevice` | `configs/model_config.yaml` → `speech` |
 | TTS | `say` của macOS và các WAV cảnh báo | `configs/app_config.yaml` → `audio` |
 
 `mlx-vlm` là dependency cài riêng, không nằm trong `requirements.txt`. Model VQA được nạp khi có yêu cầu, không nạp ở lúc khởi động. Nếu backend/model VQA không khả dụng, dịch vụ có thể dùng ngữ cảnh detection làm câu trả lời dự phòng; điều này không tương đương một câu trả lời VQA chính xác.
@@ -88,9 +89,9 @@ python scripts/download_models.py
 python scripts/download_models.py --mlx-vlm
 ```
 
-Lệnh đầu chuẩn bị YOLO, Depth Anything, EasyOCR, backend VQA legacy và các WAV mẫu; lệnh thứ hai tải riêng snapshot MLX-VLM mặc định. Lệnh đầu có thể tạo lại WAV và một số lỗi tải được in ra nhưng không nhất thiết làm tiến trình trả mã lỗi khác `0`: hãy đọc từng dòng `[OK]`/`[FAIL]`, rồi kiểm tra môi trường bằng `python scripts/inspect_environment.py`. Không cần tải lại nếu tài nguyên đã có.
+Lệnh đầu chuẩn bị YOLO, Depth Anything, EasyOCR, PhoWhisper (nhận dạng câu hỏi bằng giọng nói), backend VQA legacy và các WAV mẫu; lệnh thứ hai tải riêng snapshot MLX-VLM mặc định. Lệnh đầu có thể tạo lại WAV và một số lỗi tải được in ra nhưng không nhất thiết làm tiến trình trả mã lỗi khác `0`: hãy đọc từng dòng `[OK]`/`[FAIL]`, rồi kiểm tra môi trường bằng `python scripts/inspect_environment.py`. Không cần tải lại nếu tài nguyên đã có.
 
-Depth (bản Metric-Indoor trong cấu hình và bản relative Small) và BLIP/MarianMT được lưu trong **cache Hugging Face của tài khoản chạy script**, EasyOCR dùng cache riêng. Apple Vision dùng framework hệ thống, không cần tải trọng số EasyOCR để chạy nhánh Vision, nhưng cần cache EasyOCR nếu muốn dùng dự phòng.
+Depth (bản Metric-Indoor trong cấu hình và bản relative Small), PhoWhisper và BLIP/MarianMT được lưu trong **cache Hugging Face của tài khoản chạy script**, EasyOCR dùng cache riêng. Apple Vision dùng framework hệ thống, không cần tải trọng số EasyOCR để chạy nhánh Vision, nhưng cần cache EasyOCR nếu muốn dùng dự phòng.
 
 Sau khi chuẩn bị, chạy **offline nghiêm ngặt**:
 
@@ -119,14 +120,34 @@ Giám sát sức khỏe chạy mỗi 0,5 giây (sau 5 giây khởi động). Ngo
 | Phím | Tác dụng |
 | --- | --- |
 | `Space` | Chụp frame mới và đọc chữ bằng OCR. |
-| `Q` | Hỏi VQA theo câu mặc định “Phía trước có gì?”. Câu cũ “Mô tả khung cảnh phía trước” khiến Qwen2.5-VL-3B-4bit sinh câu ảo giác cố định và chạm giới hạn token (xem đánh giá). |
+| `Q` | Hỏi VQA bằng giọng nói: nghe tiếng bíp rồi nói câu hỏi. Bấm `Q` lần nữa khi đang nghe để dừng thu sớm. Không dùng được micro/nhận dạng thì hỏi câu mặc định “Phía trước có gì?”. |
 | `C` | Chuyển về chế độ Cảnh báo, dừng lời OCR/VQA và hủy hiệu lực kết quả đang chờ. |
 | `S` | Dừng giọng đọc và hủy kết quả OCR/VQA đang chờ; giữ nguyên chế độ đã chọn. |
 | `Esc` | Thoát cửa sổ và dừng hệ thống. |
 
-Khởi động ở chế độ Cảnh báo. Khi được chấp nhận, `Space`/`Q` vừa chọn chế độ OCR/VQA vừa xử lý ảnh camera mới nhất, tuổi không quá **1 giây**; hoàn tất, lỗi hoặc thiếu ảnh đều giữ chế độ đó. Bấm lại để xử lý ảnh mới. Chỉ `C` bật lại cảnh báo từ nguồn ảnh sau lúc chuyển chế độ. Nếu worker cũ còn chạy, yêu cầu OCR/VQA mới bị từ chối; `C` vẫn chuyển về Cảnh báo ngay. `S`/`C` hủy hiệu lực kết quả muộn và ngắt âm thanh, nhưng không cưỡng bức dừng inference đang chạy hoặc giải phóng model khỏi RAM. Mỗi tác vụ có giới hạn thời gian (OCR 30 giây, VQA 60 giây gồm cả lần nạp model): quá hạn thì đọc "…quá thời gian. Vui lòng thử lại." và giải phóng worker để nhận yêu cầu mới. Riêng Apple Vision không trả về trong `ocr.read_timeout_sec` (mặc định 10 giây) thì chuyển sang EasyOCR.
+Khởi động ở chế độ Cảnh báo. Khi được chấp nhận, `Space`/`Q` vừa chọn chế độ OCR/VQA vừa xử lý ảnh camera mới nhất, tuổi không quá **1 giây**; hoàn tất, lỗi hoặc thiếu ảnh đều giữ chế độ đó. Bấm lại để xử lý ảnh mới. Với câu hỏi bằng giọng nói, ảnh được lấy lúc ngừng thu (khi hỏi xong), không phải lúc bấm `Q`. Chỉ `C` bật lại cảnh báo từ nguồn ảnh sau lúc chuyển chế độ. Nếu worker cũ còn chạy, yêu cầu OCR/VQA mới bị từ chối; `C` vẫn chuyển về Cảnh báo ngay. `S`/`C` hủy hiệu lực kết quả muộn và ngắt âm thanh, nhưng không cưỡng bức dừng inference đang chạy hoặc giải phóng model khỏi RAM. Mỗi tác vụ có giới hạn thời gian (OCR 30 giây, VQA 60 giây gồm cả lần nạp model): quá hạn thì đọc "…quá thời gian. Vui lòng thử lại." và giải phóng worker để nhận yêu cầu mới. Riêng Apple Vision không trả về trong `ocr.read_timeout_sec` (mặc định 10 giây) thì chuyển sang EasyOCR.
 
 Các phím trên chỉ hoạt động khi cửa sổ GUI có focus. Ở chế độ `--no-gui`, dùng `Ctrl+C` để dừng; không có thao tác OCR/VQA qua phím tắt GUI. Nếu cần thử riêng OCR trên ảnh hoặc đổi câu hỏi VQA trên webcam, dùng các CLI phụ trong [CLI.md](CLI.md). Hai CLI phụ đó **không** chạy pipeline cảnh báo; để thử trải nghiệm đầy đủ, dùng `app.py`.
+
+### Hỏi VQA bằng giọng nói
+
+1. Bấm `Q`: app chọn chế độ VQA (tắt cảnh báo vật cản như trước), đọc xong câu chuyển chế độ thì phát tiếng bíp; HUD hiện `DANG NGHE...`.
+2. Nói câu hỏi sau tiếng bíp. App tự dừng thu khi im lặng **1,2 giây** sau khi đã nói, khi thu đủ tối đa **8 giây**, hoặc khi không có tiếng nói trong **5 giây** đầu. Bấm `Q` lần nữa để dừng sớm và nhận dạng phần đã nói.
+3. Ảnh camera được chụp lúc ngừng thu. PhoWhisper chuyển câu nói thành chữ, app đọc lại "Bạn hỏi: …" rồi trả lời dựa trên ảnh đó (luồng VQA như trên).
+4. `S`/`C` trong lúc thu hoặc nhận dạng sẽ hủy, không đọc kết quả muộn.
+
+| Tình huống | App nói |
+| --- | --- |
+| Không nghe thấy tiếng nói, hoặc nhận dạng ra chữ rỗng | "Không nghe rõ câu hỏi. Bấm Q và hỏi lại." — không chạy VQA. Khi không nghe thấy tiếng nói, app **không** gọi PhoWhisper vì trên im lặng model tự bịa ra cả câu. |
+| Micro lỗi hoặc bị từ chối quyền (bản ghi toàn số 0 do macOS chặn quyền Micro cũng tính là lỗi), thiếu model PhoWhisper, nhận dạng quá 15 giây | "Không dùng được micro hoặc nhận dạng giọng nói. Hệ thống sẽ mô tả phía trước." rồi hỏi câu mặc định “Phía trước có gì?”; nhánh này không đọc lại "Bạn hỏi". |
+
+Câu hỏi giờ là tự do nên guardrail câu hỏi là lớp chặn đầu tiên: câu hỏi về việc có đi được không hoặc lối đi có trống/thông thoáng/an toàn không (ví dụ "Đường trống không?") bị từ chối trước khi gọi model. "Phía trước có gì?" vẫn được trả lời. Câu cũ “Mô tả khung cảnh phía trước” không còn được dùng làm câu mặc định vì khiến Qwen2.5-VL-3B-4bit sinh câu ảo giác cố định và chạm giới hạn token (xem đánh giá).
+
+**Quyền Micro:** macOS cần cấp quyền Micro cho ứng dụng chạy lệnh (Terminal, iTerm hoặc VS Code) tại System Settings → Privacy & Security → Microphone, rồi **khởi động lại** ứng dụng đó. Chưa cấp quyền thì macOS trả về im lặng tuyệt đối và app báo lỗi micro như bảng trên.
+
+**Cấu hình** trong `configs/model_config.yaml` → `speech`: `enabled`, `model_name` (`vinai/PhoWhisper-small`), `sample_rate` (16000), `rms_threshold` (0,01 — ngưỡng năng lượng coi là có tiếng nói), `silence_sec` (1,2), `max_sec` (8), `no_speech_sec` (5). Micro nhỏ, nói mà app báo không nghe rõ → **giảm** `rms_threshold`; phòng ồn/có quạt khiến app không tự dừng thu → **tăng**. Đặt `speech.enabled: false` để `Q` quay lại hỏi câu cố định “Phía trước có gì?” không cần micro.
+
+**Đo trên M1 (MPS, offline):** PhoWhisper-small nhận dạng khoảng **0,7 giây/câu** khi đã nạp; lần bấm `Q` đầu tiên khoảng **4,5 giây** vì gồm cả nạp model (lazy-load, không nạp lúc khởi động).
 
 ## Cấu hình thực tế
 
@@ -135,7 +156,7 @@ Các phím trên chỉ hoạt động khi cửa sổ GUI có focus. Ở chế đ
 | File | Các cấu hình đã nối vào ứng dụng chính |
 | --- | --- |
 | `configs/app_config.yaml` | Device chung, nguồn/kích thước/FPS camera, giọng/tốc độ TTS, kích thước preview và hai cờ HUD `show_depth_map`, `show_spatial_guides`. |
-| `configs/model_config.yaml` | Trọng số/ngưỡng confidence/danh sách lớp YOLO; repo/kích thước inference/ROI depth; engine/ngôn ngữ/ngưỡng confidence và chất lượng OCR; backend và cấu hình con `vqa.mlx_vlm`. |
+| `configs/model_config.yaml` | Trọng số/ngưỡng confidence/danh sách lớp YOLO; repo/kích thước inference/ROI depth; engine/ngôn ngữ/ngưỡng confidence và chất lượng OCR; backend và cấu hình con `vqa.mlx_vlm`; khối `speech` cho câu hỏi VQA bằng giọng nói. |
 | `configs/fusion_rules.yaml` | Hành lang, vùng trái/giữa/phải, ngưỡng stale/skew, ngưỡng HIGH/MEDIUM/LOW, xác nhận tăng mức, cooldown, nhãn vật thể tiếng Việt và thời hạn cảnh báo. |
 
 Các điểm cần lưu ý khi điều chỉnh:
@@ -181,6 +202,7 @@ Báo cáo đang được quản lý trong Git tại `evaluation/results/eval_rep
 - Khoảng cách từ Depth Anything V2 Metric-Indoor là **ước lượng**: trên NYU sau hiệu chỉnh, sai số trung vị khoảng 0,2 m nhưng có ca lệch hơn 0,7 m; hệ số `metric_scale` phải hiệu chỉnh lại cho từng camera. Câu cảnh báo không đọc số mét.
 - Camera mờ, lóa, bị che, thiếu sáng, ngoài khung hình hoặc vật thể ngoài các lớp detection có thể gây bỏ sót. Không có cảnh báo không có nghĩa là an toàn.
 - OCR có thể đọc sai biển hiệu/chữ nhỏ; VQA có thể nhầm đối tượng, suy diễn hoặc trả lời quá ngắn/dài. Không dùng hai chức năng này làm nguồn xác nhận an toàn di chuyển.
+- PhoWhisper có thể nghe sai câu hỏi (giọng địa phương, nói nhỏ, phòng ồn); app đọc lại "Bạn hỏi: …" để người dùng kiểm tra và hỏi lại nếu sai. Model chỉ nhận tiếng Việt.
 - OCR sắp thứ tự theo tọa độ dòng và khoảng cách chữ, chưa phân tích đầy đủ bố cục nhiều cột/bảng. EasyOCR chậm hơn Vision nhiều (0,5–7,6 s/ảnh) và kém chính xác hơn. Guardrail VQA phân loại ý định bằng biểu thức chính quy (hỏi người dùng có di chuyển được không, hỏi vật cản/nguy hiểm), không bảo đảm phát hiện mọi cách diễn đạt.
 - Dữ liệu detection/depth trễ hoặc không hợp lệ bị loại khỏi đánh giá rủi ro; hệ thống không phát cảnh báo dựa trên kết quả stale. Khi tình trạng này kéo dài quá 3 giây, hệ thống đọc thông báo "cảnh báo vật cản đang tạm ngừng" thay vì im lặng; trong khoảng 3 giây đầu vẫn có thể **không có cảnh báo**.
 - Xử lý trên M1 16 GB có thể thay đổi theo bộ model, tải hệ thống và trạng thái nóng/lạnh của model. Chưa có cam kết về latency, RAM hoặc độ chính xác cho mọi cảnh.
@@ -192,7 +214,7 @@ Báo cáo đang được quản lý trong Git tại `evaluation/results/eval_rep
 | `app.py` | Entry point ứng dụng đầy đủ. |
 | `src/camera/`, `src/detection/`, `src/depth/`, `src/tracking/` | Thu ảnh, phát hiện, độ sâu và tracking. |
 | `src/fusion/`, `src/audio/`, `src/runtime/` | Đồng bộ, đánh giá rủi ro, cảnh báo và điều phối thread. |
-| `src/ocr/`, `src/vqa/`, `src/ui/` | OCR, VQA và HUD. |
+| `src/ocr/`, `src/vqa/`, `src/speech/`, `src/ui/` | OCR, VQA, thu micro + nhận dạng câu hỏi bằng giọng nói (PhoWhisper) và HUD. |
 | `configs/` | Cấu hình ứng dụng, model và fusion. |
 | `scripts/`, `tests/`, `evaluation/` | CLI phụ, unit test và kết quả đánh giá. |
 | `models/manifest.json` | Thông tin nguồn và giấy phép các model được khai báo. |

@@ -43,7 +43,8 @@ Người dùng chọn A vì câu hỏi bằng tiếng Việt và không thêm th
    8 s, hoặc bấm Q lần nữa. Không ai nói trong 5 s đầu → dừng.
 4. **Chụp ảnh lúc dừng thu** (thời điểm người dùng hỏi xong), qua kiểm tra ảnh mới như hiện tại.
 5. PhoWhisper chuyển âm thanh thành chữ (lazy-load lần đầu bấm Q; chuẩn hoá NFC).
-6. Đọc lại ngắn "Bạn hỏi: <câu hỏi>." để người dùng biết máy nghe đúng không; HUD hiện câu hỏi.
+6. Đọc lại ngắn "Bạn hỏi: <câu hỏi>." để người dùng biết máy nghe đúng không; HUD hiện câu hỏi. Chỉ
+   đọc lại khi câu hỏi đến từ giọng nói; nhánh fallback (xem "Khi có lỗi") không đọc lại.
 7. Guardrail câu hỏi → model VQA với ảnh ở bước 4 → đọc câu trả lời (luồng VQA hiện có).
 
 ## Khi có lỗi
@@ -51,8 +52,8 @@ Người dùng chọn A vì câu hỏi bằng tiếng Việt và không thêm th
 | Tình huống | App nói |
 |---|---|
 | Không nghe được tiếng nói / chữ rỗng | "Không nghe rõ câu hỏi. Bấm Q và hỏi lại." — không chạy VQA. |
-| Micro bị từ chối quyền hoặc lỗi, hoặc chưa có model PhoWhisper | Báo một câu ngắn rồi dùng câu mặc định "Phía trước có gì?" (fallback). |
-| Nhận dạng quá hạn (15 s) | Như lỗi model: báo rồi dùng câu mặc định. |
+| Micro bị từ chối quyền hoặc lỗi (kể cả bản ghi toàn số 0 khi macOS chặn quyền Micro), hoặc chưa có model PhoWhisper | "Không dùng được micro hoặc nhận dạng giọng nói. Hệ thống sẽ mô tả phía trước." rồi dùng câu mặc định "Phía trước có gì?" (fallback). Nhánh này không đọc lại "Bạn hỏi: …" vì người dùng không nói câu đó. |
+| Nhận dạng quá hạn (15 s) | Như lỗi model: báo rồi dùng câu mặc định, không đọc lại "Bạn hỏi". |
 | Bấm S / C trong lúc thu hoặc nhận dạng | Huỷ, không đọc kết quả muộn (cơ chế token hiện có). |
 
 ## Guardrail câu hỏi
