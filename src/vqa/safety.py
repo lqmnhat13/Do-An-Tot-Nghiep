@@ -14,12 +14,15 @@ class SafetyGuardrail:
     # "qua đường", "an toàn") chặn nhầm câu hỏi đọc biển báo hoặc đếm người
     # (9/3545 câu OpenViVQA bị chặn nhầm) mà lại bỏ lọt "Tôi có thể đi tiếp không?".
     _MOVE = r"(?:đi|bước|qua đường|sang đường|băng qua|di chuyển|tiến lên|tiến tới|rẽ)"
-    _ASK = r"(?:có thể|được không|được chứ|được chưa|có được|có sao không|có ổn không|nên|có nên|liệu)"
+    _ASK = (r"(?:có thể|được không|được chứ|được chưa|có được|có sao không|có ổn không|"
+            r"được rồi chứ|nên|có nên|liệu)")
     MOVE = re.compile(rf"\b{_MOVE}\b")
     # Xin phép di chuyển: từ hỏi phép đứng sát động từ di chuyển ("có thể đi tiếp",
     # "đi về phía trước được không"), không tính câu hỏi chỉ đường/đếm người.
+    # Riêng khi xin phép thì "qua"/"sang" đứng một mình cũng là di chuyển ("Bây giờ qua được chưa?").
+    _MOVE_PERM = r"(?:đi|bước|qua đường|sang đường|băng qua|di chuyển|tiến lên|tiến tới|rẽ|qua|sang)"
     MOVE_PERMISSION = re.compile(
-        rf"\b{_ASK}\s+(?:\w+\s+){{0,2}}{_MOVE}\b|\b{_MOVE}(?:\s+\w+){{0,4}}\s+{_ASK}\b")
+        rf"\b{_ASK}\s+(?:\w+\s+){{0,2}}{_MOVE_PERM}\b|\b{_MOVE_PERM}(?:\s+\w+){{0,4}}\s+{_ASK}\b")
     WH_QUESTION = re.compile(
         r"\b(?:nào|đâu|gì|ai|mấy|bao nhiêu|bao xa|tại sao|vì sao|thế nào|như thế nào)\b")
     FIRST_PERSON = re.compile(r"\b(?:tôi|mình|tớ|tao)\b")
@@ -38,12 +41,14 @@ class SafetyGuardrail:
     ENGLISH = re.compile(
         r"\b(?:safe to|is it safe|can i (?:walk|cross|go|move|proceed)|"
         r"(?:any|is there an?) (?:obstacle|hazard|danger)|"
-        r"(?:path|way|road) (?:is )?clear|clear ahead|in my way)")
+        r"(?:path|way|road) (?:is )?clear|clear ahead|in my way|is it clear|all clear|okay ahead|"
+        r"path ahead okay)")
     # Hỏi lối đi có trống/thông thoáng/vướng/cản không: cần đủ chủ ngữ lối đi, từ chỉ trạng thái
     # lối đi và tiểu từ hỏi. "Phía trước có gì?" không có từ trạng thái nên không bị chặn.
     PATH_SUBJECT = re.compile(r"\b(?:lối đi|đường|phía trước|trước mặt)\b")
     PATH_STATE = re.compile(
-        r"\b(?:trống|thông thoáng|thoáng|quang\b(?! cảnh)|vướng|cản|(?<!chắc )chắn)\b")
+        r"\b(?:trống|thông thoáng|thoáng|thông\b(?! tin| báo)|quang\b(?! cảnh)|vướng|cản|(?<!chắc )chắn|"
+        r"ổn|vắng|sạch(?: sẽ)?|yên)\b")
     YES_NO = re.compile(r"\b(?:không|chứ|chưa|đúng không|phải không)\b")
     # "Cứ đi thẳng", "đi tiếp là được": xin xác nhận di chuyển dù không có từ hỏi phép.
     MOVE_CONFIRM = re.compile(
