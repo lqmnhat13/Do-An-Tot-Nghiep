@@ -37,7 +37,17 @@ class SafetyGuardrail:
         r"tờ giấy|nhãn|thông báo)\b")
     ENGLISH = re.compile(
         r"\b(?:safe to|is it safe|can i (?:walk|cross|go|move|proceed)|"
-        r"(?:any|is there an?) (?:obstacle|hazard|danger))")
+        r"(?:any|is there an?) (?:obstacle|hazard|danger)|"
+        r"(?:path|way|road) (?:is )?clear|clear ahead|in my way)")
+    # Hỏi lối đi có trống/thông thoáng/vướng/cản không: cần đủ chủ ngữ lối đi, từ chỉ trạng thái
+    # lối đi và tiểu từ hỏi. "Phía trước có gì?" không có từ trạng thái nên không bị chặn.
+    PATH_SUBJECT = re.compile(r"\b(?:lối đi|đường|phía trước|trước mặt)\b")
+    PATH_STATE = re.compile(
+        r"\b(?:trống|thông thoáng|thoáng|quang\b(?! cảnh)|vướng|cản|(?<!chắc )chắn)\b")
+    YES_NO = re.compile(r"\b(?:không|chứ|chưa|đúng không|phải không)\b")
+    # "Cứ đi thẳng", "đi tiếp là được": xin xác nhận di chuyển dù không có từ hỏi phép.
+    MOVE_CONFIRM = re.compile(
+        rf"\bcứ\s+(?:\w+\s+){{0,1}}{_MOVE}\b|\b{_MOVE}(?:\s+\w+){{0,4}}\s+là được\b")
 
     def check(self, question: str) -> Optional[str]:
         # NFC trước: chữ Việt dạng tổ hợp (NFD) làm mọi regex có dấu không khớp.
@@ -49,11 +59,17 @@ class SafetyGuardrail:
         # 1. Người dùng hỏi bản thân có đi/bước/qua đường được không.
         if self.MOVE.search(normalized) and first_person:
             return self.REFUSAL
+        if self.MOVE_CONFIRM.search(normalized):
+            return self.REFUSAL
         if (self.MOVE_PERMISSION.search(normalized) and not reading
                 and not self.WH_QUESTION.search(normalized)
                 and not self.THIRD_PERSON.search(normalized)):
             return self.REFUSAL
-        # 2. Hỏi có vật cản/nguy hiểm/an toàn không (trừ câu hỏi nội dung chữ hoặc chủ đề chung).
+        # 2. Hỏi lối đi có trống/thông thoáng/vướng không (an toàn trước hết: không miễn câu đọc chữ).
+        if (self.PATH_SUBJECT.search(normalized) and self.PATH_STATE.search(normalized)
+                and self.YES_NO.search(normalized)):
+            return self.REFUSAL
+        # 3. Hỏi có vật cản/nguy hiểm/an toàn không (trừ câu hỏi nội dung chữ hoặc chủ đề chung).
         hazard = self.HAZARD.search(normalized) or self.HAZARD_PRESENCE.search(normalized)
         if hazard and (first_person or not (reading or self.SAFETY_TOPIC.search(normalized))):
             return self.REFUSAL
