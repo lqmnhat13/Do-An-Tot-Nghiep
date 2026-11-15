@@ -41,7 +41,7 @@ class TestOCRVQA(unittest.TestCase):
         self.assertEqual(format_vqa_answer("Một chiếc ghế"), "Một chiếc ghế.")
         self.assertEqual(format_vqa_answer("Ghế màu đỏ.", {"spatial_objects": [
             {"name": "ghế", "direction": "LEFT", "proximity": "gần"}
-        ]}), "Ghế màu đỏ. Cụ thể có: ghế bên trái (gần).")
+        ]}), "Ghế màu đỏ.")
 
     def test_image_quality_checker_dark(self):
         checker = ImageQualityChecker(min_brightness=40.0)

@@ -27,7 +27,7 @@ def format_vqa_answer(
     backend_text: str,
     visual_context: Optional[Dict[str, Any]] = None
 ) -> str:
-    """Ghép output backend với grounding, hoặc dùng grounding làm fallback."""
+    """Đọc nguyên câu trả lời của model; khi không có thì dùng danh sách vật nhận diện."""
     details = _spatial_details(visual_context)
     description = backend_text.strip()
     if _DONT_KNOW.fullmatch(" ".join(re.sub(r"[^\w\s]", " ", description.lower()).split())):
@@ -37,10 +37,8 @@ def format_vqa_answer(
         # Preserve model punctuation; legacy captions still need a final period.
         ending = description.rstrip('\"\u201d\u2019\u0027)')
         suffix = "" if ending.endswith((".", "!", "?", "…")) else "."
-        final_text = f"{description}{suffix}"
-        if details:
-            final_text += f" Cụ thể có: {', '.join(details)}."
-        return final_text
+        # Chỉ đọc câu trả lời; danh sách vật nhận diện chỉ dùng khi model không trả lời được.
+        return f"{description}{suffix}"
     if details:
         return f"Trước mặt bạn phát hiện có: {', '.join(details)}."
     # Không dùng câu kiểu "chưa phát hiện vật thể": người khiếm thị dễ hiểu là phía trước trống.

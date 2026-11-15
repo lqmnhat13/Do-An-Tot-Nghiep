@@ -166,7 +166,7 @@ class TestVQAAnswerFormatting(unittest.TestCase):
         self.assertEqual(format_vqa_answer("Ghế màu đỏ."), "Ghế màu đỏ.")
         self.assertEqual(format_vqa_answer("Một chiếc ghế"), "Một chiếc ghế.")
         self.assertEqual(format_vqa_answer("Ghế màu đỏ.", self.CONTEXT),
-                         "Ghế màu đỏ. Cụ thể có: ghế bên trái (gần).")
+                         "Ghế màu đỏ.")
 
     def test_dont_know_answer_uses_detection_fallback(self):
         for text in ("Không xác định rõ từ ảnh.", "Không xác định rõ từ ảnh",
