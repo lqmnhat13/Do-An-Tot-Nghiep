@@ -519,7 +519,7 @@ class SystemCoordinator:
                 assessments = self.risk_fsm.update(sync_pair)
 
                 # 5. Chỉ phát cảnh báo khi người dùng chọn chế độ Cảnh báo.
-                self._post_safety_alert(assessments)
+                self._post_safety_alert(assessments, sync_pair.data_quality)
 
                 e2e_ms = (time.monotonic() - t0) * 1000.0
                 self.metrics.record_latency("end_to_end_ms", e2e_ms)
@@ -539,17 +539,26 @@ class SystemCoordinator:
             except Exception as e:
                 print(f"[DetectionWorker] Lỗi suy luận và fusion: {e}")
 
-    def _post_safety_alert(self, assessments: List[RiskAssessment]) -> None:
-        """Gate before aggregation so muted modes do not consume cooldown."""
+    def _post_safety_alert(self, assessments: List[RiskAssessment],
+                           data_quality: Optional[DataQuality] = None) -> None:
+        """Gate before aggregation so muted modes do not consume cooldown.
+
+        data_quality là chất lượng của cặp detection/depth vừa đánh giá; khi có, câu cảnh báo về
+        vật không còn HIGH trên dữ liệu VALID sẽ bị dừng (người dùng đã đi qua vật).
+        """
         with self._state_lock:
             if self._selected_mode != "WARNING" or self._shutting_down:
                 return
             candidates = [a for a in assessments if a.source_timestamp > self._warning_since]
+            if data_quality is not None:
+                keys = self.alert_aggregator.supported_alert_keys(candidates, data_quality)
+                if keys is not None and self.audio_coordinator.retain_safety_alerts(keys):
+                    self.alert_aggregator.release_global_interval()
             if not candidates:
                 return
             task = self.alert_aggregator.aggregate(candidates)
-            if task is not None:
-                self.audio_coordinator.post_task(task)
+            if task is not None and not self.audio_coordinator.post_task(task):
+                self.alert_aggregator.release_global_interval()
 
     # ================= On-Demand OCR & VQA =================
 

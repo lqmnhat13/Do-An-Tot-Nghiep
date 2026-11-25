@@ -26,7 +26,10 @@ audio:
   enabled: true
   engine: "say" # say (macOS native) | dummy
   voice: "Linh" # Vietnamese voice on macOS
-  speech_rate_wpm: 200
+  speech_rate_wpm: 240 # 200 -> 240: "ghế phía trước" 0,97 s -> 0,83 s; áp dụng cả cho OCR/VQA
+  # Clip WAV dựng sẵn cho câu cảnh báo (tạo nền lúc khởi động, phát trong tiến trình ~15 ms
+  # thay vì ~0,8 s khởi động của `say`). Đổi giọng/tốc độ sẽ tự dựng bộ clip mới.
+  alert_clip_dir: "assets/audio/tts_cache"
   enable_chimes: true
   min_alert_interval_sec: 2.0
 

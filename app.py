@@ -6,7 +6,9 @@ Khởi tạo các thành phần theo đúng kế hoạch kiến trúc và chạy
 
 import argparse
 import os
+import shutil
 import sys
+import threading
 import yaml
 
 from src.camera.camera_manager import CameraManager
@@ -18,7 +20,7 @@ from src.fusion.walking_corridor import WalkingCorridor
 from src.fusion.generic_obstacle import build_generic_obstacle_detector
 from src.fusion.spatial_zones import SpatialZones
 from src.fusion.synchronizer import Synchronizer
-from src.fusion.risk_fsm import RiskFSM
+from src.fusion.risk_fsm import RiskFSM, GENERIC_OBSTACLE_NAME
 from src.fusion.alert_aggregator import AlertAggregator
 from src.audio.tts_engine import TTSEngine
 from src.audio.audio_coordinator import AudioCoordinator
@@ -151,16 +153,26 @@ def main():
         global_alert_interval_sec=float(agg_cfg.get("global_alert_interval_sec", 3.5)),
         max_detection_age_ms=max_detection_age_ms,
         max_depth_age_ms=max_depth_age_ms,
-        max_alert_age_ms=max_alert_age_ms
+        max_alert_age_ms=max_alert_age_ms,
+        revoke_grace_sec=float(agg_cfg.get("revoke_grace_sec", 0.4))
     )
 
     # 5. Audio Coordinator
     audio_cfg = app_cfg.get("audio", {})
     tts_engine = TTSEngine(
         voice=audio_cfg.get("voice", "Linh"),
-        speech_rate_wpm=audio_cfg.get("speech_rate_wpm", 200)
+        speech_rate_wpm=audio_cfg.get("speech_rate_wpm", 240),
+        clip_dir=audio_cfg.get("alert_clip_dir", "assets/audio/tts_cache")
     )
     audio_coordinator = AudioCoordinator(tts_engine=tts_engine)
+    # Dựng sẵn clip cho mọi câu cảnh báo (chạy nền; lần sau dùng lại từ đĩa). Câu chưa có clip
+    # vẫn được đọc bằng `say`, chỉ chậm hơn ~0,8 s.
+    if shutil.which("say"):
+        tts_engine.warm_up()
+        alert_names = [class_filter.get_vietnamese_name(c) for c in sorted(class_filter.alert_classes)]
+        alert_names.append(GENERIC_OBSTACLE_NAME)
+        threading.Thread(target=tts_engine.prerender, args=(AlertAggregator.alert_texts(alert_names),),
+                         name="AlertClipPrerender", daemon=True).start()
 
     # 6. On-Demand OCR & VQA
     ocr_service = build_ocr_service(model_cfg, device)

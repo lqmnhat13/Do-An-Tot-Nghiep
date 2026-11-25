@@ -62,3 +62,6 @@ artifacts/
 
 # Local model downloads (prepared explicitly by scripts/download_models.py)
 /models/weights/
+
+# Clip giọng nói cảnh báo dựng sẵn lúc chạy (phụ thuộc giọng/tốc độ của từng máy)
+assets/audio/tts_cache/

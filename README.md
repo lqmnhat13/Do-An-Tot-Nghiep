@@ -52,6 +52,7 @@ Bộ đồng bộ ưu tiên depth cùng `frame_id`, nếu chưa có thì dùng d
 - **Python:** lần kiểm thử ngày 11/10/2026 dùng Python **3.10.20** trong Conda `ai-macbook` trên macOS arm64.
 - **Tăng tốc:** PyTorch MPS cho detection/depth; MLX cho VQA mặc định. Một số thành phần có thể dùng CPU hoặc fallback, nhưng độ trễ sẽ khác.
 - **Âm thanh:** lệnh `say` của macOS, ưu tiên giọng tiếng Việt `Linh`; cần kiểm tra giọng này trên máy chạy.
+  Câu cảnh báo vật cản ngắn ("ghế phía trước") được dựng sẵn thành clip lúc khởi động (`assets/audio/tts_cache/`, lần chạy đầu mất ~35 s chạy nền) và phát ngay trong tiến trình; câu đang đọc bị dừng khi dữ liệu mới hợp lệ cho thấy vật đã hết nguy hiểm (người dùng đã đi qua).
 - **Trọng số:** YOLO ở `models/weights/yolov8s.pt` (tải bằng `scripts/download_models.py`; thiếu thì dùng `yolov8n.pt` có sẵn trong Git); các model Hugging Face cần có trong cache hoặc thư mục local trước khi chạy offline. Snapshot VQA MLX được lưu tại `models/weights/qwen2_5_vl_3b_4bit` theo cấu hình hiện tại.
 
 | Tác vụ | Model/backend mặc định | Cấu hình |

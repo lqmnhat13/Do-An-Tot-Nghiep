@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Dict, Iterable, List, Optional, Set
 import time
 
 from src.contracts.risk import RiskAssessment, RiskLevel, Direction, DataQuality
@@ -16,7 +16,9 @@ class AlertAggregator:
     Bộ tổng hợp và lựa chọn cảnh báo nguy cơ quan trọng nhất.
     Tuân thủ mục 4.3 của Kế hoạch:
     - Chỉ tổng hợp cảnh báo HIGH; MEDIUM/LOW không kích hoạt âm thanh hoặc cooldown.
-    - Báo hướng và mức gần bằng lời (proximity_desc), không đọc khoảng cách mét.
+    - Câu nói chỉ gồm tên vật và hướng ("ghế phía trước"): mọi câu được đọc đều là HIGH nên
+      mức gần là thừa, và câu ngắn để người dùng nghe xong trước khi đi tới vật.
+    - Không đọc khoảng cách mét.
     - Lọc bỏ dữ liệu stale/degraded trước khi xếp hạng hoặc kích hoạt cooldown.
     - Cảnh báo có thời hạn hiệu lực rõ ràng (expires_at) ràng buộc với tuổi dữ liệu nguồn.
     """
@@ -30,12 +32,18 @@ class AlertAggregator:
         max_detection_age_ms: Optional[float] = None,
         max_depth_age_ms: Optional[float] = None,
         max_alert_age_ms: Optional[float] = None,
+        revoke_grace_sec: float = 0.4,
     ):
         self.risk_fsm = risk_fsm
         self.alert_lifetime_sec = alert_lifetime_sec
         self.global_alert_interval_sec = global_alert_interval_sec
         self._last_global_alert_time: float = 0.0
         self._last_alert_risk_level: Optional[RiskLevel] = None
+        # Câu cảnh báo chỉ bị dừng khi dữ liệu VALID liên tục trong revoke_grace_sec không còn
+        # thấy vật HIGH cùng tên (chống cắt câu vì YOLO bỏ sót vài frame).
+        self.revoke_grace_sec = revoke_grace_sec
+        self._last_high_seen: Dict[str, float] = {}
+        self._last_not_valid_time = float("-inf")
 
         if max_source_age_sec is not None:
             self.max_source_age_sec = max_source_age_sec
@@ -49,24 +57,54 @@ class AlertAggregator:
 
         self._last_selected_reason: str = ""
 
+    @staticmethod
+    def format_alert_text(class_name: str, direction: Direction) -> str:
+        return f"{class_name} {DIRECTION_TEXT_VI.get(direction, 'phía trước')}"
+
+    @classmethod
+    def alert_texts(cls, class_names: Iterable[str]) -> List[str]:
+        """Mọi câu cảnh báo có thể đọc, để TTSEngine dựng sẵn clip."""
+        return [cls.format_alert_text(name, d) for name in dict.fromkeys(class_names) for d in Direction]
+
+    def _is_alertable(self, a: RiskAssessment, now: float) -> bool:
+        """HIGH trên dữ liệu VALID, chưa hết hạn và nguồn chưa quá tuổi (chưa xét cooldown)."""
+        return (a.data_quality == DataQuality.VALID
+                and a.risk_level == RiskLevel.HIGH
+                and not a.is_expired(now)
+                and (now - a.source_timestamp) <= self.max_source_age_sec)
+
+    def supported_alert_keys(self, assessments: List[RiskAssessment], data_quality: DataQuality,
+                             current_mono: Optional[float] = None) -> Optional[Set[str]]:
+        """Tên vật còn là HIGH trong revoke_grace_sec gần nhất.
+
+        None nghĩa là chưa đủ bằng chứng để dừng câu nào: frame này hoặc một frame trong
+        khoảng grace không VALID. Dữ liệu cũ/suy giảm không bao giờ được coi là "đã hết nguy hiểm".
+        """
+        now = current_mono if current_mono is not None else time.monotonic()
+        if data_quality != DataQuality.VALID:
+            self._last_not_valid_time = now
+            return None
+        for a in assessments:
+            if self._is_alertable(a, now):
+                self._last_high_seen[a.class_name] = now
+        cutoff = now - self.revoke_grace_sec
+        self._last_high_seen = {k: t for k, t in self._last_high_seen.items() if t >= cutoff}
+        if self._last_not_valid_time >= cutoff:
+            return None
+        return set(self._last_high_seen)
+
+    def release_global_interval(self) -> None:
+        """Câu cảnh báo trước bị huỷ/không phát: không giữ khoảng nghỉ toàn cục cho nó."""
+        self._last_global_alert_time = 0.0
+
     def aggregate(self, assessments: List[RiskAssessment], current_mono: Optional[float] = None) -> Optional[AudioTask]:
         now = current_mono if current_mono is not None else time.monotonic()
 
-        # 1. Lọc các đối tượng:
-        # - data_quality phải là VALID (không dùng dữ liệu DEGRADED, STALE hoặc UNAVAILABLE)
-        # - risk_level phải là HIGH
-        # - Chưa hết hạn assessment (a.is_expired(now))
-        # - Chưa quá hạn dữ liệu nguồn (now - a.source_timestamp <= max_source_age_sec)
-        # - Được phép phát theo quy tắc cooldown của FSM
+        # 1. Lọc các đối tượng HIGH trên dữ liệu VALID còn mới (_is_alertable) và được phép
+        # phát theo quy tắc cooldown của FSM.
         active_candidates: List[RiskAssessment] = []
         for a in assessments:
-            if a.data_quality != DataQuality.VALID:
-                continue
-            if a.risk_level != RiskLevel.HIGH:
-                continue
-            if a.is_expired(now):
-                continue
-            if (now - a.source_timestamp) > self.max_source_age_sec:
+            if not self._is_alertable(a, now):
                 continue
 
             t_id = a.track_id if a.track_id is not None else -1
@@ -94,22 +132,8 @@ class AlertAggregator:
                 if not is_escalation:
                     return None
 
-        # 4. Tạo câu nói tiếng Việt ngắn gọn, không khẳng định khoảng cách mét
-        dir_text = DIRECTION_TEXT_VI.get(top_risk.direction, "phía trước")
-        prox_text = top_risk.proximity_desc # ví dụ: "độ gần tương đối cao", "độ gần tương đối trung bình"
-
-        prefix = "Chú ý, có"
-
-        if prox_text and prox_text != "chưa rõ":
-            if top_risk.direction == Direction.CENTER:
-                alert_text = f"{prefix} {top_risk.class_name} phía trước, {prox_text}"
-            else:
-                alert_text = f"{prefix} {top_risk.class_name} {dir_text}, {prox_text}"
-        else:
-            if top_risk.direction == Direction.CENTER:
-                alert_text = f"{prefix} {top_risk.class_name} phía trước"
-            else:
-                alert_text = f"{prefix} {top_risk.class_name} {dir_text}"
+        # 4. Câu ngắn: tên vật trước, rồi hướng; không đọc khoảng cách mét
+        alert_text = self.format_alert_text(top_risk.class_name, top_risk.direction)
 
         t_id = top_risk.track_id if top_risk.track_id is not None else -1
         self._last_selected_reason = (
@@ -139,7 +163,8 @@ class AlertAggregator:
             created_at=now,
             expires_at=task_expires_at,
             interruptible=True,
-            task_id=f"alert_track_{t_id}_{int(now*1000)}"
+            task_id=f"alert_track_{t_id}_{int(now*1000)}",
+            alert_key=top_risk.class_name
         )
 
     @property

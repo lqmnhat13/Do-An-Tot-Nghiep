@@ -2,7 +2,7 @@ import queue
 import threading
 import time
 from dataclasses import dataclass
-from typing import Optional, Dict
+from typing import Optional, Dict, Set
 
 from src.contracts.audio import AudioTask, AudioPriority
 from src.audio.tts_engine import TTSEngine
@@ -52,6 +52,7 @@ class AudioCoordinator:
             self._interrupt_locked()
         if self._thread and self._thread.is_alive():
             self._thread.join(timeout=1.5)
+        self.tts_engine.close()
 
     def set_safety_alerts_enabled(self, enabled: bool) -> None:
         """Gate HIGH_RISK; disabling also invalidates previously dequeued safety tasks."""
@@ -77,6 +78,39 @@ class AudioCoordinator:
                     retained.append(entry)
             for entry in retained:
                 self._queue.put(entry)
+
+    def retain_safety_alerts(self, supported_keys: Set[str]) -> bool:
+        """Dừng câu cảnh báo đang đọc và bỏ câu đang chờ có alert_key không còn trong supported_keys.
+
+        Người dùng đi qua vật thì câu về vật đó không còn đúng: đọc tiếp chỉ làm trễ cảnh báo sau.
+        Trả về True nếu có câu bị huỷ.
+        """
+        def stale(task: AudioTask) -> bool:
+            return (task.priority == AudioPriority.HIGH_RISK and task.alert_key is not None
+                    and task.alert_key not in supported_keys)
+
+        with self._current_lock:
+            revoked = False
+            if self._current_task is not None and stale(self._current_task):
+                self.tts_engine.stop()
+                self._current_task = None
+                self._current_entry = None
+                self._interrupted_count += 1
+                revoked = True
+            retained = []
+            while True:
+                try:
+                    entry = self._queue.get_nowait()
+                except queue.Empty:
+                    break
+                if stale(entry.task):
+                    self._pending_tasks_count = max(0, self._pending_tasks_count - 1)
+                    revoked = True
+                else:
+                    retained.append(entry)
+            for entry in retained:
+                self._queue.put(entry)
+            return revoked
 
     def post_task(self, task: AudioTask) -> bool:
         with self._current_lock:

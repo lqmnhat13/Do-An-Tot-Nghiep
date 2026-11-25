@@ -59,6 +59,9 @@ alert_aggregator:
   # Khoảng nghỉ tối thiểu giữa hai cảnh báo bất kỳ (chống dồn dập, tạo khoảng thở cho người dùng)
   global_alert_interval_sec: 3.5
   alert_lifetime_sec: 3.0
+  # Dừng câu cảnh báo đang đọc khi dữ liệu VALID liên tục trong khoảng này không còn thấy vật
+  # HIGH cùng tên (người dùng đã đi qua vật). Dữ liệu cũ/suy giảm không bao giờ dừng câu.
+  revoke_grace_sec: 0.4
 
 labels_vi:
   person: "người"

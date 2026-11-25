@@ -22,6 +22,9 @@ class AudioTask:
     expires_at: float = 0.0 # 0 nghĩa là không hết hạn
     interruptible: bool = True
     task_id: str = ""
+    # Cảnh báo vật cản: tên vật được đọc. AudioCoordinator.retain_safety_alerts dừng câu khi
+    # dữ liệu VALID mới không còn vật HIGH nào mang tên này. None = không bao giờ bị huỷ theo cách đó.
+    alert_key: Optional[str] = None
 
     def is_expired(self, current_mono: Optional[float] = None) -> bool:
         if self.expires_at <= 0.0:

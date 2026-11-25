@@ -519,7 +519,7 @@ class TestFusion(unittest.TestCase):
         )
         task3 = aggregator_spaced.aggregate([a3], current_mono=t0 + 1.5)
         self.assertIsNotNone(task3)
-        self.assertEqual(task3.text, "Chú ý, có bậc thang phía trước, độ gần tương đối cao")
+        self.assertEqual(task3.text, "bậc thang phía trước")
 
         # 4. Track 4 đến lúc t0 + 2.0 với mức HIGH -> Vì cảnh báo trước đó (task3) ĐÃ LÀ HIGH,
         # không còn là escalation từ non-HIGH lên HIGH nữa, nên bị interval chặn để tránh spam tiếng hét liên tục
@@ -553,7 +553,7 @@ class TestFusion(unittest.TestCase):
         )
         task5 = aggregator_spaced.aggregate([a4_fresh], current_mono=t0 + 4.7)
         self.assertIsNotNone(task5)
-        self.assertEqual(task5.text, "Chú ý, có tường phía trước, độ gần tương đối cao")
+        self.assertEqual(task5.text, "tường phía trước")
 
 if __name__ == "__main__":
     unittest.main()
