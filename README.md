@@ -122,7 +122,7 @@ Giám sát sức khỏe chạy mỗi 0,5 giây (sau 5 giây khởi động). Ngo
 | --- | --- |
 | `Space` | Chụp frame mới và đọc chữ bằng OCR. |
 | `Q` | Hỏi VQA bằng giọng nói: nghe tiếng bíp rồi nói câu hỏi. Bấm `Q` lần nữa khi đang nghe để dừng thu sớm. Không dùng được micro/nhận dạng thì hỏi câu mặc định “Phía trước có gì?”. |
-| `M` | Nhận diện mệnh giá tờ tiền Việt Nam trước camera (đọc chữ in trên tờ tiền bằng OCR). Chỉ trả lời khi đọc rõ; tờ tiền nhỏ trong khung, bị gấp/che hoặc nhiều tờ khác mệnh giá thì nói "Chưa đọc rõ…" hoặc "Thấy nhiều mệnh giá…". Không kiểm tra tiền thật/giả. |
+| `M` | Nhận diện mệnh giá tờ tiền Việt Nam trước camera (đọc chữ in trên tờ tiền bằng OCR, trên tối đa 4 khung hình liên tiếp ở độ phân giải đầy đủ của webcam). Chỉ trả lời khi đọc rõ; tờ tiền nhỏ trong khung, bị gấp/che hoặc nhiều tờ khác mệnh giá thì nói "Chưa đọc rõ…" hoặc "Thấy nhiều mệnh giá…". Không kiểm tra tiền thật/giả. |
 | `C` | Chuyển về chế độ Cảnh báo, dừng lời OCR/VQA/nhận diện tiền và hủy hiệu lực kết quả đang chờ. |
 | `S` | Dừng giọng đọc và hủy kết quả OCR/VQA đang chờ; giữ nguyên chế độ đã chọn. |
 | `Esc` | Thoát cửa sổ và dừng hệ thống. |

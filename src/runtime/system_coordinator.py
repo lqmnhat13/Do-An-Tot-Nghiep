@@ -644,10 +644,38 @@ class SystemCoordinator:
         self._say_rejected()
         return False
 
+    MONEY_FRAME_GAP_SEC = 0.1   # các khung đọc tiền cách nhau ít nhất chừng này (khác ảnh thật)
+    MONEY_FRAME_WAIT_SEC = 0.5  # chờ khung mới tối đa chừng này rồi thôi
+
+    def _latest_money_frame(self) -> Optional[FramePacket]:
+        """Khung độ phân giải cao của camera nếu có (cùng góc nhìn), không thì khung pipeline."""
+        getter = getattr(self.camera_manager, "get_latest_full_frame", None)
+        packet = getter() if callable(getter) else None
+        return packet if isinstance(packet, FramePacket) else self.get_latest_frame()
+
+    def _money_frames(self):
+        last_ts = [None]
+
+        def next_frame() -> Optional[np.ndarray]:
+            deadline = time.monotonic() + self.MONEY_FRAME_WAIT_SEC
+            while True:
+                packet = self._latest_money_frame()
+                now = time.monotonic()
+                if (packet is not None and self._is_fresh_on_demand_frame(packet, now)
+                        and (last_ts[0] is None
+                             or packet.timestamp_mono - last_ts[0] >= self.MONEY_FRAME_GAP_SEC)):
+                    last_ts[0] = packet.timestamp_mono
+                    return packet.image
+                if now >= deadline:
+                    return None
+                time.sleep(0.02)
+        return next_frame
+
     def _run_currency_task(self, token: int) -> None:
         def process(packet: FramePacket):
-            res = self.currency_service.recognize(packet.image,
-                                                  request_id=f"money_{token}_{packet.frame_id}")
+            res = self.currency_service.recognize_frames(
+                self._money_frames(), should_stop=lambda: not self._is_current_on_demand(token),
+                request_id=f"money_{token}_{packet.frame_id}")
             return (None if res.cancelled else res.text), res.latency_sec
         self._run_frame_task(token, "MONEY", "money_sec", process,
                              no_frame_text="Chưa có ảnh camera mới để nhận diện tiền. Vui lòng thử lại.",

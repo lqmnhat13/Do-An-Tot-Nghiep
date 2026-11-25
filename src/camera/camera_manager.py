@@ -21,11 +21,18 @@ class CameraManager:
         height: int = 480,
         target_fps: float = 30.0,
         reconnect_delay_sec: float = 2.0,
-        max_reconnect_attempts: int = 5
+        max_reconnect_attempts: int = 5,
+        capture_width: Optional[int] = None,
+        capture_height: Optional[int] = None
     ):
         self.source = source
         self.width = width
         self.height = height
+        # Webcam chụp ở độ phân giải cao hơn (vd. 1280x720): pipeline nhận vùng giữa đúng tỉ lệ
+        # width:height thu nhỏ (cùng góc nhìn với chế độ 640x480 của webcam MacBook, đo tương quan
+        # 0,994), còn khung đầy đủ giữ lại cho nhận diện tiền. None: như cũ (co giãn cả khung).
+        self.capture_width = capture_width
+        self.capture_height = capture_height
         self.target_fps = target_fps
         self.reconnect_delay_sec = reconnect_delay_sec
         self.max_reconnect_attempts = max_reconnect_attempts
@@ -44,12 +51,35 @@ class CameraManager:
         self._last_frame_time = 0.0
         self._is_alive = False
         self._latest_packet: Optional[FramePacket] = None
+        self._latest_full_packet: Optional[FramePacket] = None
         self._frame_lock = threading.Lock()
 
     def get_latest_frame(self) -> Optional[FramePacket]:
         """Lấy khung hình mới nhất trực tiếp từ camera (phục vụ render mượt mà 30 FPS)."""
         with self._frame_lock:
             return self._latest_packet
+
+    def get_latest_full_frame(self) -> Optional[FramePacket]:
+        """Khung độ phân giải cao mới nhất (chỉ có khi cấu hình capture_width/height); None nếu không có."""
+        with self._frame_lock:
+            return self._latest_full_packet
+
+    def _split_frame(self, raw: np.ndarray) -> Tuple[np.ndarray, Optional[np.ndarray]]:
+        """Trả về (ảnh cho pipeline width x height, khung đầy đủ hoặc None)."""
+        h, w = raw.shape[:2]
+        if (w, h) == (self.width, self.height):
+            return raw, None
+        if not (self.capture_width and self.capture_height):
+            return cv2.resize(raw, (self.width, self.height)), None
+        target = self.width / self.height
+        if w / h > target:
+            cw, ch = int(round(h * target)), h
+        else:
+            cw, ch = w, int(round(w / target))
+        x0, y0 = (w - cw) // 2, (h - ch) // 2
+        pipeline = cv2.resize(raw[y0:y0 + ch, x0:x0 + cw], (self.width, self.height),
+                              interpolation=cv2.INTER_AREA)
+        return pipeline, raw
 
     def subscribe(self, buffer: BoundedBuffer[FramePacket]) -> None:
         """Đăng ký một BoundedBuffer nhận khung hình mới từ camera."""
@@ -110,8 +140,8 @@ class CameraManager:
             if not self._cap.isOpened():
                 self._cap = cv2.VideoCapture(cam_idx)
             if self._cap.isOpened():
-                self._cap.set(cv2.CAP_PROP_FRAME_WIDTH, self.width)
-                self._cap.set(cv2.CAP_PROP_FRAME_HEIGHT, self.height)
+                self._cap.set(cv2.CAP_PROP_FRAME_WIDTH, self.capture_width or self.width)
+                self._cap.set(cv2.CAP_PROP_FRAME_HEIGHT, self.capture_height or self.height)
                 self._cap.set(cv2.CAP_PROP_FPS, self.target_fps)
                 return True
         except Exception as e:
@@ -144,11 +174,7 @@ class CameraManager:
             return self._video_playback.read()
 
         if self._cap is not None and self._cap.isOpened():
-            ret, frame = self._cap.read()
-            if ret and frame is not None:
-                if frame.shape[1] != self.width or frame.shape[0] != self.height:
-                    frame = cv2.resize(frame, (self.width, self.height))
-            return ret, frame
+            return self._cap.read()  # _capture_loop tách khung pipeline / khung đầy đủ
 
         return False, None
 
@@ -188,6 +214,10 @@ class CameraManager:
             now_mono = time.monotonic()
             self._last_frame_time = now_mono
 
+            full_frame = None
+            if self._cap is not None:  # chỉ webcam được thu nhỏ/cắt; video và dummy giữ nguyên
+                raw_frame, full_frame = self._split_frame(raw_frame)
+
             # Đóng gói FramePacket bất biến
             h, w = raw_frame.shape[:2]
             packet = FramePacket(
@@ -198,10 +228,22 @@ class CameraManager:
                 timestamp_mono=now_mono,
                 timestamp_sensor=now_mono
             )
+            full_packet = None
+            if full_frame is not None:
+                fh, fw = full_frame.shape[:2]
+                full_packet = FramePacket(
+                    frame_id=self._frame_counter,
+                    source_id=str(self.source),
+                    image=full_frame,  # mảng mới mỗi lần cap.read(), không dùng chung với pipeline
+                    original_size=(fw, fh),
+                    timestamp_mono=now_mono,
+                    timestamp_sensor=now_mono
+                )
 
             # Lưu frame mới nhất phục vụ live preview mượt mà
             with self._frame_lock:
                 self._latest_packet = packet
+                self._latest_full_packet = full_packet
 
             # Phân phối tới các subscribers qua BoundedBuffer (drop-oldest)
             with self._subscribers_lock:

@@ -11,6 +11,12 @@ camera:
   height: 480
   fps: 30
   buffer_size: 2 # drop-oldest bounded buffer limit
+  # Webcam chụp ở độ phân giải này; detection/depth vẫn nhận vùng giữa đúng tỉ lệ width:height thu
+  # về 640x480 (webcam MacBook: chế độ 640x480 chính là vùng giữa 960x720 của 1280x720, nên góc nhìn
+  # và hiệu chỉnh depth không đổi). Khung đầy đủ dùng cho nhận diện tiền (phím M) để đọc chữ nhỏ.
+  # Đặt null cả hai để quay về chụp thẳng 640x480. Webcam này tối đa 1280x720.
+  capture_width: 1280
+  capture_height: 720
   reconnect_delay_sec: 2.0
   max_reconnect_attempts: 5
 

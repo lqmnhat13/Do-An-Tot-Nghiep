@@ -89,7 +89,9 @@ def main():
         height=app_cfg.get("camera", {}).get("height", 480),
         target_fps=app_cfg.get("camera", {}).get("fps", 30.0),
         reconnect_delay_sec=float(app_cfg.get("camera", {}).get("reconnect_delay_sec", 2.0)),
-        max_reconnect_attempts=int(app_cfg.get("camera", {}).get("max_reconnect_attempts", 5))
+        max_reconnect_attempts=int(app_cfg.get("camera", {}).get("max_reconnect_attempts", 5)),
+        capture_width=app_cfg.get("camera", {}).get("capture_width"),
+        capture_height=app_cfg.get("camera", {}).get("capture_height")
     )
 
     # 2. Detection & Tracking
