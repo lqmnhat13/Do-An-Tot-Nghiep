@@ -1,5 +1,4 @@
 import os
-import threading
 import time
 import cv2
 from typing import Optional, List, Dict, Any, Tuple
@@ -7,7 +6,10 @@ import numpy as np
 
 from src.contracts.request import OCRRequest, OCRResult
 from src.ocr.image_quality import ImageQualityChecker
+from src.ocr.vision_worker import OCRCancelled, VisionWorkerClient
 from src.runtime.model_loading import EASYOCR_DIR, is_offline_mode, offline_load_error
+
+VISION_HANG_LOG_DIR = "logs/vision_hang"
 
 class OCRService:
     """
@@ -25,39 +27,53 @@ class OCRService:
         min_confidence: float = 0.35,
         quality_checker: Optional[ImageQualityChecker] = None,
         engine: str = "easyocr",
-        read_timeout_sec: float = 10.0,
+        read_timeout_sec: float = 3.0,
     ):
         self.languages = languages or ["vi", "en"]
         self.engine = engine
         self.use_gpu = use_gpu
         self.min_confidence = min_confidence
         self.quality_checker = quality_checker or ImageQualityChecker()
-        # Apple Vision từng không trả về (> 40 s) khi chạy trong app; quá hạn thì coi như lỗi
-        # lúc đọc và chuyển sang EasyOCR. 0 = không giới hạn.
+        # Apple Vision chạy ở tiến trình phụ (src/ocr/vision_worker.py): bình thường 0,1-0,6 s;
+        # quá hạn thì lần đọc đó dùng EasyOCR, tiến trình Vision được khởi động lại cho lần sau.
         self.read_timeout_sec = read_timeout_sec
-        self._reader = None
-        self._using_vision = False
+        self._vision: Optional[VisionWorkerClient] = None
+        self._reader = None  # EasyOCR (engine chính khi engine="easyocr", dự phòng cho Vision)
         self._load_attempted = False
         self._load_error: Optional[str] = None
 
-    def _ensure_reader(self) -> None:
-        if self._reader is not None or self._load_attempted:
-            return
+    @property
+    def _using_vision(self) -> bool:
+        return self._vision is not None and not self._vision.disabled
 
-        self._load_attempted = True
+    def _ensure_reader(self) -> None:
         if self.engine == "vision":
-            try:
-                from src.ocr.vision_engine import VisionOCRReader
-                self._reader = VisionOCRReader(self.languages)
-                self._using_vision = True
-                self._load_error = None
-                return
-            except Exception as exc:
-                print(f"[OCRService] Vision không khả dụng: {exc}. Dùng EasyOCR.")
-        self._load_easyocr()
+            if self._vision is None:
+                self._vision = VisionWorkerClient(self.languages, read_timeout_sec=self.read_timeout_sec,
+                                                  hang_log_dir=VISION_HANG_LOG_DIR)
+            return
+        if self._reader is None:
+            self._load_easyocr()
+
+    def warm_up(self) -> None:
+        """Mở app: khởi động sẵn tiến trình Vision ở nền (không chặn)."""
+        if self.engine == "vision":
+            self._ensure_reader()
+            self._vision.warm_up()
+
+    def cancel(self) -> None:
+        """Người dùng huỷ (C/S/Esc): dừng ngay lần đọc Vision đang chạy."""
+        if self._vision is not None:
+            self._vision.cancel()
+
+    def close(self) -> None:
+        if self._vision is not None:
+            self._vision.close()
 
     def _load_easyocr(self) -> None:
-        self._using_vision = False
+        if self._load_attempted:
+            return
+        self._load_attempted = True
         print("[OCRService] Đang khởi tạo EasyOCR engine cho tiếng Việt...")
         try:
             import easyocr
@@ -185,28 +201,6 @@ class OCRService:
 
         return " ".join(result_lines)
 
-    def _read(self, image: np.ndarray):
-        """Vision chạy ở luồng daemon có giới hạn thời gian; EasyOCR đọc trực tiếp."""
-        reader = self._reader
-        if not self._using_vision or not self.read_timeout_sec:
-            return reader.readtext(image)
-        box: Dict[str, Any] = {}
-
-        def run():
-            try:
-                box["result"] = reader.readtext(image)
-            except BaseException as exc:
-                box["error"] = exc
-
-        worker = threading.Thread(target=run, name="VisionOCRRead", daemon=True)
-        worker.start()
-        worker.join(self.read_timeout_sec)
-        if worker.is_alive():
-            raise TimeoutError(f"Vision không phản hồi sau {self.read_timeout_sec:.0f} s")
-        if "error" in box:
-            raise box["error"]
-        return box["result"]
-
     def process(self, request: OCRRequest) -> OCRResult:
         t0 = time.monotonic()
 
@@ -232,28 +226,28 @@ class OCRService:
 
         try:
             self._ensure_reader()
-            if self._reader is None:
-                message = self._load_error or "EasyOCR không khả dụng."
-                return OCRResult(
-                    request_id=request.request_id,
-                    success=False,
-                    text=message,
-                    latency_sec=time.monotonic() - t0,
-                    error_message=message
-                )
 
             # 2. Tiền xử lý ảnh (upscale + tăng tương phản)
             processed_image, scale = self._preprocess_image(request.image)
 
-            # 3. Chạy nhận dạng; Vision lỗi lúc chạy (không chỉ lúc nạp) cũng chuyển sang EasyOCR
-            try:
-                raw_results = self._read(processed_image)
-            except Exception as exc:
-                if not self._using_vision:
-                    raise
-                print(f"[OCRService] Vision lỗi khi đọc: {exc}. Chuyển sang EasyOCR.")
-                self._reader = None
-                self._load_easyocr()
+            # 3. Chạy nhận dạng: Vision lỗi/treo thì riêng lần này dùng EasyOCR
+            raw_results = None
+            if self._using_vision:
+                try:
+                    raw_results = self._vision.readtext(processed_image)
+                except OCRCancelled:
+                    return OCRResult(
+                        request_id=request.request_id,
+                        success=False,
+                        text="Đã huỷ đọc chữ.",
+                        latency_sec=time.monotonic() - t0,
+                        error_message="cancelled"
+                    )
+                except Exception as exc:
+                    print(f"[OCRService] {exc}. Lần này dùng EasyOCR.")
+            if raw_results is None:
+                if self._reader is None:
+                    self._load_easyocr()
                 if self._reader is None:
                     message = self._load_error or "EasyOCR không khả dụng."
                     return OCRResult(

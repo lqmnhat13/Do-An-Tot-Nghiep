@@ -236,15 +236,16 @@ class TestHealthAnnouncements(unittest.TestCase):
 
 
 # ---------------------------------------------------------------- 4. OCR không được treo vô hạn
-class _HangingVision:
-    release = threading.Event()
+class _HangingVisionClient:
+    """Client Vision giả: hết hạn chờ như tiến trình Vision bị treo."""
 
-    def __init__(self, languages):
-        pass
+    def __init__(self, languages, **kwargs):
+        self.read_timeout_sec = kwargs.get("read_timeout_sec")
+        self.disabled = False
 
     def readtext(self, image):
-        self.release.wait(timeout=5)
-        return []
+        time.sleep(self.read_timeout_sec)
+        raise TimeoutError("Vision không phản hồi đúng hạn")
 
 
 class _FakeEasyOCR:
@@ -260,18 +261,15 @@ class _PassQuality:
 class TestOCRTimeouts(unittest.TestCase):
     def test_hanging_vision_falls_back_to_easyocr_within_timeout(self):
         image = np.full((300, 700, 3), 255, np.uint8)
-        try:
-            with patch("src.ocr.vision_engine.VisionOCRReader", _HangingVision), \
-                 patch("easyocr.Reader", return_value=_FakeEasyOCR()):
-                service = OCRService(engine="vision", use_gpu=False, quality_checker=_PassQuality(),
-                                     read_timeout_sec=0.2)
-                t0 = time.monotonic()
-                result = service.process(OCRRequest(request_id="1", image=image))
-            self.assertLess(time.monotonic() - t0, 2.0)
-            self.assertTrue(result.success)
-            self.assertIn("LỐI THOÁT HIỂM", result.text)
-        finally:
-            _HangingVision.release.set()
+        with patch("src.ocr.ocr_service.VisionWorkerClient", _HangingVisionClient), \
+             patch("easyocr.Reader", return_value=_FakeEasyOCR()):
+            service = OCRService(engine="vision", use_gpu=False, quality_checker=_PassQuality(),
+                                 read_timeout_sec=0.2)
+            t0 = time.monotonic()
+            result = service.process(OCRRequest(request_id="1", image=image))
+        self.assertLess(time.monotonic() - t0, 2.0)
+        self.assertTrue(result.success)
+        self.assertIn("LỐI THOÁT HIỂM", result.text)
 
     def test_hung_on_demand_task_is_reported_and_releases_worker(self):
         engine = MagicMock(spec=TTSEngine)

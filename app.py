@@ -47,7 +47,7 @@ def build_ocr_service(model_cfg: dict, device: str) -> OCRService:
         engine=ocr_cfg.get("engine", "easyocr"),
         use_gpu=(device == "mps"),
         min_confidence=float(ocr_cfg.get("min_confidence", 0.35)),
-        read_timeout_sec=float(ocr_cfg.get("read_timeout_sec", 10.0)),
+        read_timeout_sec=float(ocr_cfg.get("read_timeout_sec", 3.0)),
         quality_checker=ImageQualityChecker(
             blur_threshold=float(ocr_cfg.get("blur_laplacian_threshold", 50.0)),
             min_brightness=float(ocr_cfg.get("min_brightness", 40.0)),
@@ -179,6 +179,7 @@ def main():
 
     # 6. On-Demand OCR & VQA
     ocr_service = build_ocr_service(model_cfg, device)
+    ocr_service.warm_up()  # Vision: khởi động tiến trình phụ và gọi thử ở nền
     vqa_cfg = model_cfg.get("vqa", {})
     vqa_service = VQAService(
         device=device,

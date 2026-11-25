@@ -204,6 +204,10 @@ class SystemCoordinator:
         # Đang thu micro thì dừng ngay (recorder kiểm tra sự kiện giữa mỗi block ~30 ms).
         if self._listen_stop_event is not None:
             self._listen_stop_event.set()
+        # Vision ở tiến trình phụ dừng được ngay, để luồng OCR kết thúc và Space dùng lại được.
+        cancel_ocr = getattr(self.ocr_service, "cancel", None)
+        if callable(cancel_ocr):
+            cancel_ocr()
 
     def enter_warning_mode(self) -> None:
         """C: cancel on-demand output and explicitly restore fresh safety alerts."""
@@ -379,6 +383,9 @@ class SystemCoordinator:
             and self._on_demand_thread is not threading.current_thread()
         ):
             self._on_demand_thread.join(timeout=1.5)
+        close_ocr = getattr(self.ocr_service, "close", None)
+        if callable(close_ocr):
+            close_ocr()
         self.audio_coordinator.stop()
 
     # ================= Giám sát sức khỏe =================

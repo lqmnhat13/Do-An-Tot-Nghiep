@@ -65,3 +65,6 @@ artifacts/
 
 # Clip giọng nói cảnh báo dựng sẵn lúc chạy (phụ thuộc giọng/tốc độ của từng máy)
 assets/audio/tts_cache/
+
+# Stack native lúc Apple Vision treo (src/ocr/vision_worker.py)
+logs/

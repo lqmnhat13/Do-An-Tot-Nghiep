@@ -132,6 +132,15 @@ class TestRejectedKeyFeedback(unittest.TestCase):
         self.assertFalse(self.system.trigger_vqa(None))
         self.assertEqual(self.system.get_runtime_snapshot()["selected_mode"], "WARNING")
 
+    def test_c_cancels_running_ocr_read_and_stop_closes_ocr(self):
+        self.assertTrue(self.system.trigger_ocr())
+        self.assertTrue(self.entered.wait(timeout=2))
+        self.ocr.cancel.assert_not_called()
+        self.system.enter_warning_mode()
+        self.ocr.cancel.assert_called()
+        self.system.stop()
+        self.ocr.close.assert_called_once()
+
     def test_rejection_while_listening_is_silent(self):
         self.assertTrue(self.system.trigger_ocr())
         self.assertTrue(self.entered.wait(timeout=2))
