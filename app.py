@@ -25,6 +25,7 @@ from src.fusion.alert_aggregator import AlertAggregator
 from src.audio.tts_engine import TTSEngine
 from src.audio.audio_coordinator import AudioCoordinator
 from src.ocr.ocr_service import OCRService
+from src.currency.currency_service import CurrencyService
 from src.ocr.image_quality import ImageQualityChecker
 from src.vqa.vqa_service import VQAService
 from src.runtime.system_coordinator import (
@@ -173,6 +174,7 @@ def main():
         alert_names = [class_filter.get_vietnamese_name(c) for c in sorted(class_filter.alert_classes)]
         alert_names.append(GENERIC_OBSTACLE_NAME)
         clip_texts = (list(MODE_ANNOUNCEMENTS.values()) + [BUSY_TEXT, STOPPING_TEXT]
+                      + CurrencyService.spoken_texts()
                       + AlertAggregator.alert_texts(alert_names))
         threading.Thread(target=tts_engine.prerender, args=(clip_texts,),
                          name="AlertClipPrerender", daemon=True).start()

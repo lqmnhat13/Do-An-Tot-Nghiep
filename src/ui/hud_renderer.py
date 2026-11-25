@@ -5,6 +5,7 @@ import numpy as np
 
 from src.fusion.walking_corridor import WalkingCorridor
 from src.contracts.risk import RiskLevel, Direction, RiskAssessment
+from src.contracts.modes import ON_DEMAND_MODES
 
 # Bảng màu chuẩn BGR cho Dark Translucent HUD
 COLOR_PANEL_BG = (28, 22, 18)        # Nền tối charcoal
@@ -188,7 +189,7 @@ class HUDRenderer:
         # 4. Banner cảnh báo ưu tiên khẩn cấp (Priority Alert Banner)
         legacy_mode = snapshot.get("mode", "OBSERVATION")
         selected_mode = snapshot.get("selected_mode", legacy_mode)
-        enabled = snapshot.get("safety_alerts_enabled", selected_mode not in ("OCR", "VQA"))
+        enabled = snapshot.get("safety_alerts_enabled", selected_mode not in ON_DEMAND_MODES)
         if enabled:
             self._draw_alert_banner(canvas, assessments, w)
 
@@ -241,14 +242,15 @@ class HUDRenderer:
 
         # Status Pill cho chế độ hiện tại
         mode_str = snapshot.get("mode", "OBSERVATION")
-        selected = snapshot.get("selected_mode", mode_str if mode_str in ("OCR", "VQA") else "WARNING")
+        selected = snapshot.get("selected_mode", mode_str if mode_str in ON_DEMAND_MODES else "WARNING")
         enabled = snapshot.get("safety_alerts_enabled", selected == "WARNING")
-        if selected in ("OCR", "VQA"):
+        if selected in ON_DEMAND_MODES:
             active = snapshot.get("on_demand_active", True)
             status = "XU LY" if active else "SAN SANG"
             if width < 600:
                 status = "XL" if active else "CHO"
-            pill_text = f"{selected} {status} | CB {'BAT' if enabled else 'TAT'}"
+            label = {"MONEY": "TIEN"}.get(selected, selected)
+            pill_text = f"{label} {status} | CB {'BAT' if enabled else 'TAT'}"
             pill_color = COLOR_MED_RISK
         else:
             pill_text = "CANH BAO BAT" if enabled else "CANH BAO TAT"
@@ -518,6 +520,7 @@ class HUDRenderer:
         shortcuts = [
             ("Q", "Hoi canh vat"),
             ("SPACE", "Doc chu"),
+            ("M", "Tien"),
             ("C", "Canh bao"),
             ("S", "Dung doc"),
             ("ESC", "Thoat")
@@ -526,13 +529,14 @@ class HUDRenderer:
             shortcuts = [
                 ("Q", "VQA"),
                 ("SPACE", "OCR"),
+                ("M", "Tien"),
                 ("C", "CB"),
                 ("S", "Dung"),
                 ("ESC", "Thoat")
             ]
 
         if width < 480:
-            shortcuts = [("Q", "VQA"), ("SPACE", "OCR"), ("C", "CB"), ("S", ""), ("ESC", "")]
+            shortcuts = [("Q", "VQA"), ("SPACE", "OCR"), ("M", ""), ("C", "CB"), ("S", ""), ("ESC", "")]
         curr_x = 8 if width < 480 else 16
         font_scale = 0.32 if width < 480 else 0.38
         gap = 8 if width < 480 else 18

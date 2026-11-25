@@ -10,6 +10,13 @@ class SafetyGuardrail:
         "Hệ thống không thể xác nhận đường đi có an toàn hay không. "
         "Xin hãy cẩn thận dùng gậy dẫn đường và kiểm tra xung quanh."
     )
+    # Mệnh giá/thật-giả của tiền: VLM 3B dễ đoán sai mệnh giá, và không ai kiểm tra được tiền giả
+    # qua camera; chuyển sang phím M (OCR + luật, chỉ trả lời khi đọc rõ). Không chặn
+    # "bao nhiêu tiền" chung (bảng giá, hoá đơn tiền điện vẫn hỏi VQA được).
+    MONEY_REDIRECT = ("Để biết mệnh giá tờ tiền, hãy bấm phím M. "
+                      "Hệ thống không thể kiểm tra tiền thật hay giả.")
+    MONEY = re.compile(r"\b(?:tờ tiền|tờ bạc|mệnh giá|tiền giả|tiền thật|tiền polime|tiền polymer)\b"
+                       r"|\btiền\b.*\b(?:thật hay giả|giả hay thật)\b")
     # Phân loại theo ý định thay vì khớp từ khoá đơn lẻ, vì từ khoá đơn ("đi thẳng",
     # "qua đường", "an toàn") chặn nhầm câu hỏi đọc biển báo hoặc đếm người
     # (9/3545 câu OpenViVQA bị chặn nhầm) mà lại bỏ lọt "Tôi có thể đi tiếp không?".
@@ -57,6 +64,8 @@ class SafetyGuardrail:
     def check(self, question: str) -> Optional[str]:
         # NFC trước: chữ Việt dạng tổ hợp (NFD) làm mọi regex có dấu không khớp.
         normalized = " ".join(unicodedata.normalize("NFC", question).strip().lower().split())
+        if self.MONEY.search(normalized):
+            return self.MONEY_REDIRECT
         if self.ENGLISH.search(normalized):
             return self.REFUSAL
         reading = bool(self.READING.search(normalized))

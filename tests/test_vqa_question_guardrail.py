@@ -64,7 +64,7 @@ MUST_ALLOW = (
     "Người đàn ông đang đi đâu?",
     "Chiếc xe màu gì?",
     "Hộp thuốc này là thuốc gì?",
-    "Tờ tiền này mệnh giá bao nhiêu?",
+    "Món này giá bao nhiêu tiền?",  # mệnh giá tờ tiền: chuyển sang phím M (test_currency)
     "Áo này màu gì?",
     "Trên bàn có những gì?",
     "Cửa đang mở hay đóng?",

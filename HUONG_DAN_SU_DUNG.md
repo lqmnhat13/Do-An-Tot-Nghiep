@@ -28,6 +28,7 @@
 |---|---|---|
 | Quan sát và cảnh báo | Tự chạy sau khi khởi động; nhấn `C` để quay lại | Vật thể xuất hiện trên giao diện; một số tình huống tạo âm báo/lời cảnh báo |
 | Đọc chữ — OCR | Nhấn `SPACE` | Chụp ảnh hiện tại, nhận dạng chữ và đọc kết quả |
+| Nhận diện mệnh giá tiền | Đưa một tờ tiền phẳng, gần camera, đủ sáng rồi nhấn `M` | Đọc mệnh giá (ví dụ "Một trăm nghìn đồng.") hoặc "Chưa đọc rõ mệnh giá…" khi chưa chắc chắn |
 | Hỏi về khung cảnh — VQA | Nhấn `Q`, nghe tiếng bíp rồi nói câu hỏi | Chụp ảnh lúc hỏi xong, đọc lại câu đã nghe và trả lời bằng giọng nói |
 | Dừng lời nói/yêu cầu hiện tại | Nhấn `S` | Ngắt âm thanh, vô hiệu kết quả on-demand đang chờ; giữ chế độ hiện tại |
 | Thoát | Nhấn `ESC` | Dừng ứng dụng và đóng cửa sổ |

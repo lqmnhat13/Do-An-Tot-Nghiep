@@ -8,6 +8,7 @@ from src.contracts.detection import DetectionResult
 from src.contracts.depth_map import DepthMap
 from src.contracts.risk import RiskAssessment, RiskLevel, DataQuality
 from src.contracts.audio import AudioTask, AudioPriority
+from src.contracts.modes import ON_DEMAND_MODES
 from src.contracts.request import OCRRequest, OCRResult, VQARequest, VQAResult
 
 from src.camera.bounded_buffer import BoundedBuffer
@@ -22,6 +23,7 @@ from src.fusion.synchronizer import Synchronizer
 from src.fusion.risk_fsm import RiskFSM
 from src.fusion.alert_aggregator import AlertAggregator
 from src.ocr.ocr_service import OCRService
+from src.currency.currency_service import CurrencyService
 from src.vqa.vqa_service import VQAService
 from src.audio.audio_coordinator import AudioCoordinator
 from src.runtime.metrics import PerformanceMetrics
@@ -44,6 +46,7 @@ MODE_ANNOUNCEMENTS = {
     "WARNING": "Chế độ cảnh báo",
     "OCR": "Chế độ đọc chữ, tắt cảnh báo",
     "VQA": "Chế độ hỏi đáp, tắt cảnh báo",
+    "MONEY": "Chế độ đọc tiền, tắt cảnh báo",
 }
 VOICE_UNAVAILABLE_TEXT = ("Không dùng được micro hoặc nhận dạng giọng nói. "
                           "Hệ thống sẽ mô tả phía trước.")
@@ -115,7 +118,8 @@ class SystemCoordinator:
         vqa_service: Optional[VQAService] = None,
         watchdog_timeout_sec: float = 3.0,
         voice_recorder: Optional["MicRecorder"] = None,
-        transcriber: Optional["PhoWhisperTranscriber"] = None
+        transcriber: Optional["PhoWhisperTranscriber"] = None,
+        currency_service: Optional[CurrencyService] = None
     ):
         self.camera_manager = camera_manager
         self.detector = detector
@@ -127,6 +131,8 @@ class SystemCoordinator:
         self.audio_coordinator = audio_coordinator
         self.ocr_service = ocr_service or OCRService()
         self.vqa_service = vqa_service or VQAService()
+        # Nhận diện tiền dùng chung OCRService (chung tiến trình Vision, huỷ và dự phòng EasyOCR).
+        self.currency_service = currency_service or CurrencyService(self.ocr_service)
         # Hỏi bằng giọng nói chỉ bật khi có đủ cả micro lẫn bộ nhận dạng.
         self.voice_recorder = voice_recorder
         self.transcriber = transcriber
@@ -220,8 +226,8 @@ class SystemCoordinator:
 
     def set_on_demand_active(self, active: bool, mode: str = "OBSERVATION") -> None:
         """Compatibility setter: ending a task no longer changes the selected mode."""
-        if active and mode not in ("OCR", "VQA"):
-            raise ValueError("On-demand mode must be OCR or VQA")
+        if active and mode not in ON_DEMAND_MODES:
+            raise ValueError(f"On-demand mode must be one of {ON_DEMAND_MODES}")
         with self._state_lock:
             if self._shutting_down and active:
                 return
@@ -622,6 +628,37 @@ class SystemCoordinator:
         return 0.0 <= age_ms <= cls.MAX_ON_DEMAND_FRAME_AGE_MS
 
     def _run_ocr_task(self, token: int) -> None:
+        def process(packet: FramePacket):
+            res = self.ocr_service.process(
+                OCRRequest(request_id=f"ocr_{token}_{packet.frame_id}", image=packet.image))
+            return (None if res.error_message == "cancelled" else res.text), res.latency_sec
+        self._run_frame_task(token, "OCR", "ocr_sec", process,
+                             no_frame_text="Chưa có ảnh camera mới để đọc chữ. Vui lòng thử lại.",
+                             processing_text="Đang xử lý đọc chữ...",
+                             timeout_text="Đọc chữ quá thời gian. Vui lòng thử lại.")
+
+    def trigger_currency(self) -> bool:
+        """Phím M: nhận diện mệnh giá tờ tiền trước camera."""
+        if self._start_on_demand("MONEY", self._run_currency_task):
+            return True
+        self._say_rejected()
+        return False
+
+    def _run_currency_task(self, token: int) -> None:
+        def process(packet: FramePacket):
+            res = self.currency_service.recognize(packet.image,
+                                                  request_id=f"money_{token}_{packet.frame_id}")
+            return (None if res.cancelled else res.text), res.latency_sec
+        self._run_frame_task(token, "MONEY", "money_sec", process,
+                             no_frame_text="Chưa có ảnh camera mới để nhận diện tiền. Vui lòng thử lại.",
+                             processing_text="Đang nhận diện tiền...",
+                             timeout_text="Nhận diện tiền quá thời gian. Vui lòng thử lại.")
+
+    def _run_frame_task(self, token: int, label: str, metric_name: str, process,
+                        no_frame_text: str, processing_text: str, timeout_text: str) -> None:
+        """Khung chung cho tác vụ một ảnh (OCR, nhận diện tiền): ảnh mới -> bíp + "đang xử lý"
+        -> ``process(packet)`` có hạn OCR_TIMEOUT_SEC -> đọc kết quả. ``process`` trả
+        ``(câu nói, latency)``; câu nói ``None`` nghĩa là đã bị huỷ, không đọc gì."""
         try:
             if not self._is_current_on_demand(token):
                 return
@@ -631,7 +668,7 @@ class SystemCoordinator:
             ):
                 if not self._post_on_demand_audio(token, AudioTask(
                     priority=AudioPriority.ON_DEMAND,
-                    text="Chưa có ảnh camera mới để đọc chữ. Vui lòng thử lại.",
+                    text=no_frame_text,
                     interruptible=True
                 )):
                     return
@@ -641,31 +678,31 @@ class SystemCoordinator:
 
             if not self._post_on_demand_audio(token, AudioTask(
                 priority=AudioPriority.ON_DEMAND,
-                text="Đang xử lý đọc chữ...",
+                text=processing_text,
                 sound_file="assets/audio/chime.wav",
                 interruptible=True
             )):
                 return
 
-            req = OCRRequest(request_id=f"ocr_{token}_{packet.frame_id}", image=packet.image)
             try:
-                res = self._call_with_deadline(lambda: self.ocr_service.process(req),
-                                               self.OCR_TIMEOUT_SEC)
+                text, latency = self._call_with_deadline(lambda: process(packet), self.OCR_TIMEOUT_SEC)
             except TimeoutError:
-                print(f"[SystemCoordinator] OCR quá {self.OCR_TIMEOUT_SEC:.0f} s, hủy tác vụ.")
+                print(f"[SystemCoordinator] {label} quá {self.OCR_TIMEOUT_SEC:.0f} s, hủy tác vụ.")
                 self._post_on_demand_audio(token, AudioTask(
                     priority=AudioPriority.ON_DEMAND,
-                    text="Đọc chữ quá thời gian. Vui lòng thử lại.",
+                    text=timeout_text,
                     interruptible=True))
+                return
+            if text is None:
                 return
 
             if not self._publish_on_demand_result(
                 token,
-                "ocr_sec",
-                res.latency_sec,
+                metric_name,
+                latency,
                 AudioTask(
                     priority=AudioPriority.ON_DEMAND,
-                    text=res.text,
+                    text=text,
                     interruptible=True
                 )
             ):
@@ -674,7 +711,7 @@ class SystemCoordinator:
             if self._is_current_on_demand(token):
                 self._wait_on_demand_audio(token, timeout=45.0)
         except Exception as e:
-            print(f"[SystemCoordinator] Lỗi xử lý OCR: {e}")
+            print(f"[SystemCoordinator] Lỗi xử lý {label}: {e}")
         finally:
             self._finish_on_demand(token)
 

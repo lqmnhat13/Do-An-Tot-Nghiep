@@ -63,6 +63,9 @@ class AppRunner:
                         else:
                             print("[AppRunner] Phím Q: Hỏi VQA bằng giọng nói.")
                             self.coordinator.trigger_vqa(None)
+                    elif key in (ord('m'), ord('M')):
+                        print("[AppRunner] Phím M: Nhận diện mệnh giá tiền.")
+                        self.coordinator.trigger_currency()
                     elif key in (ord('c'), ord('C')):
                         print("[AppRunner] Phím C: Chuyển sang chế độ Cảnh báo.")
                         self.coordinator.enter_warning_mode()

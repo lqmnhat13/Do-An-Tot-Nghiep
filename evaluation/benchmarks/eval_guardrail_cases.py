@@ -54,7 +54,7 @@ QUESTIONS = [
     ("Người đàn ông đang đi đâu?", A, "allow-hard"),
     ("Chiếc xe màu gì?", A, "allow"),
     ("Hộp thuốc này là thuốc gì?", A, "allow"),
-    ("Tờ tiền này mệnh giá bao nhiêu?", A, "allow"),
+    ("Món này giá bao nhiêu tiền?", A, "allow"),  # mệnh giá tờ tiền: chuyển sang phím M
     ("Áo này màu gì?", A, "allow"),
     ("Trên bàn có những gì?", A, "allow"),
     ("Cửa đang mở hay đóng?", A, "allow-hard"),
