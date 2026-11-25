@@ -112,6 +112,14 @@ class AudioCoordinator:
                 self._queue.put(entry)
             return revoked
 
+    def is_pending_or_playing(self, task: AudioTask) -> bool:
+        """Task này còn trong hàng chờ hoặc đang phát."""
+        with self._current_lock:
+            if self._current_task is task:
+                return True
+            with self._queue.mutex:
+                return any(entry.task is task for entry in self._queue.queue)
+
     def post_task(self, task: AudioTask) -> bool:
         with self._current_lock:
             if task.priority == AudioPriority.HIGH_RISK and not self._safety_alerts_enabled:

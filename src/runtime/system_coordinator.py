@@ -37,6 +37,14 @@ if TYPE_CHECKING:  # chỉ cho type hint: transcriber import torch, không nạp
 DEFAULT_VQA_QUESTION = "Phía trước có gì?"
 NO_SPEECH_TEXT = "Không nghe rõ câu hỏi. Bấm Q và hỏi lại."
 BUSY_TEXT = "Đang xử lý, vui lòng chờ hoặc bấm C."
+# Bấm C chỉ huỷ phần đọc kết quả; luồng OCR/VQA đang treo (vd. Apple Vision) vẫn chạy tới hạn.
+STOPPING_TEXT = "Tác vụ trước chưa dừng hẳn, vui lòng thử lại sau giây lát."
+# Câu thông báo chế độ: ngắn (dựng sẵn clip, ~1 s) và không bị cảnh báo vật cản cắt ngang.
+MODE_ANNOUNCEMENTS = {
+    "WARNING": "Chế độ cảnh báo",
+    "OCR": "Chế độ đọc chữ, tắt cảnh báo",
+    "VQA": "Chế độ hỏi đáp, tắt cảnh báo",
+}
 VOICE_UNAVAILABLE_TEXT = ("Không dùng được micro hoặc nhận dạng giọng nói. "
                           "Hệ thống sẽ mô tả phía trước.")
 LISTEN_CHIME_FILE = "assets/audio/chime.wav"
@@ -71,6 +79,10 @@ class SystemCoordinator:
     DEFAULT_VQA_QUESTION = DEFAULT_VQA_QUESTION
     NO_SPEECH_TEXT = NO_SPEECH_TEXT
     BUSY_TEXT = BUSY_TEXT
+    STOPPING_TEXT = STOPPING_TEXT
+    # Cảnh báo vật cản chờ câu "Chế độ cảnh báo" đọc xong, nhưng không lâu hơn mức này
+    # (luồng âm thanh kẹt thì cảnh báo vẫn phải chạy).
+    MODE_ANNOUNCE_MAX_SEC = 2.5
     VOICE_UNAVAILABLE_TEXT = VOICE_UNAVAILABLE_TEXT
 
     # Giám sát sức khỏe: người khiếm thị không thấy HUD, nên mất camera/depth phải được nói ra.
@@ -144,6 +156,8 @@ class SystemCoordinator:
         self._current_mode = "OBSERVATION" # "OBSERVATION" | "OCR" | "VQA" | "DEGRADED"
         self._selected_mode = "WARNING"
         self._warning_since = float("-inf")
+        self._mode_announcement: Optional[AudioTask] = None
+        self._mode_announced_at = float("-inf")
         self._on_demand_active = False
         self._on_demand_generation = 0
         self._active_on_demand_token: Optional[int] = None
@@ -173,13 +187,15 @@ class SystemCoordinator:
         self.audio_coordinator.interrupt()
         self.audio_coordinator.set_safety_alerts_enabled(mode == "WARNING")
         if changed:
+            now = time.monotonic()
             if mode == "WARNING":
-                self._warning_since = time.monotonic()
-                text = "Đã chuyển sang chế độ cảnh báo."
-            else:
-                text = f"Đã chuyển sang {mode}. Cảnh báo vật cản đã tắt."
-            self.audio_coordinator.post_task(AudioTask(
-                priority=AudioPriority.ON_DEMAND, text=text, interruptible=True))
+                self._warning_since = now
+            # Không cho cảnh báo HIGH ngắt: vừa bấm C luôn có vật HIGH, câu bị cắt sau ~0,2 s.
+            task = AudioTask(priority=AudioPriority.ON_DEMAND, text=MODE_ANNOUNCEMENTS[mode],
+                             interruptible=False)
+            if self.audio_coordinator.post_task(task):
+                self._mode_announcement = task
+                self._mode_announced_at = now
 
     def _cancel_on_demand_locked(self) -> None:
         self._on_demand_generation += 1
@@ -549,6 +565,12 @@ class SystemCoordinator:
         with self._state_lock:
             if self._selected_mode != "WARNING" or self._shutting_down:
                 return
+            if self._mode_announcement is not None:
+                # Chưa tổng hợp (không tốn cooldown) khi "Chế độ cảnh báo" còn chờ/đang đọc.
+                if (time.monotonic() - self._mode_announced_at < self.MODE_ANNOUNCE_MAX_SEC
+                        and self.audio_coordinator.is_pending_or_playing(self._mode_announcement)):
+                    return
+                self._mode_announcement = None
             candidates = [a for a in assessments if a.source_timestamp > self._warning_since]
             if data_quality is not None:
                 keys = self.alert_aggregator.supported_alert_keys(candidates, data_quality)
@@ -564,7 +586,28 @@ class SystemCoordinator:
 
     def trigger_ocr(self) -> bool:
         """Kích hoạt tác vụ đọc chữ theo yêu cầu."""
-        return self._start_on_demand("OCR", self._run_ocr_task)
+        if self._start_on_demand("OCR", self._run_ocr_task):
+            return True
+        self._say_rejected()
+        return False
+
+    def _say_rejected(self) -> None:
+        """Phím Space/Q bị từ chối: nói lý do để người dùng không tưởng phím hỏng.
+
+        Im lặng khi đang thu micro (tiếng máy lẫn vào câu hỏi) hoặc đang tắt hệ thống.
+        """
+        with self._state_lock:
+            if self._shutting_down or self._listening:
+                return
+            if self._on_demand_active:
+                text = BUSY_TEXT
+            elif self._on_demand_starting or (
+                    self._on_demand_thread is not None and self._on_demand_thread.is_alive()):
+                text = STOPPING_TEXT
+            else:
+                return
+            self.audio_coordinator.post_task(AudioTask(
+                priority=AudioPriority.ON_DEMAND, text=text, interruptible=True))
 
     @classmethod
     def _is_fresh_on_demand_frame(cls, packet: FramePacket, now: float) -> bool:
@@ -636,15 +679,7 @@ class SystemCoordinator:
         """
         if self._start_on_demand("VQA", self._run_vqa_task, (question,)):
             return True
-        with self._state_lock:
-            # Bấm Q khi tác vụ khác đang chạy (không phải lúc đang thu): báo để người dùng
-            # không tưởng phím bị hỏng. Không báo khi đang tắt hệ thống.
-            busy = (not self._shutting_down and not self._listening and (
-                self._on_demand_active
-                or (self._on_demand_thread is not None and self._on_demand_thread.is_alive())))
-            if busy:
-                self.audio_coordinator.post_task(AudioTask(
-                    priority=AudioPriority.ON_DEMAND, text=BUSY_TEXT, interruptible=True))
+        self._say_rejected()
         return False
 
     def is_listening(self) -> bool:
@@ -715,7 +750,7 @@ class SystemCoordinator:
         """Bíp -> thu -> nhận dạng. Trả ``(câu hỏi, ảnh lúc dừng thu, đánh giá nguy cơ khớp ảnh,
         là_giọng_nói)``; ảnh ``None`` nghĩa là không có ảnh mới. ``None`` nếu tác vụ đã kết
         thúc/bị hủy."""
-        # Chờ câu "Đã chuyển sang VQA..." phát xong rồi mới bíp, và chờ bíp xong mới mở micro,
+        # Chờ câu "Chế độ hỏi đáp..." phát xong rồi mới bíp, và chờ bíp xong mới mở micro,
         # để micro không thu lẫn tiếng máy. Loa vẫn bận quá hạn thì không mở micro đè lên.
         if not self._wait_on_demand_audio(token, self.VOICE_AUDIO_IDLE_TIMEOUT_SEC):
             if not self._is_current_on_demand(token):

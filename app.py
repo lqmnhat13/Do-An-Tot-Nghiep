@@ -27,7 +27,8 @@ from src.audio.audio_coordinator import AudioCoordinator
 from src.ocr.ocr_service import OCRService
 from src.ocr.image_quality import ImageQualityChecker
 from src.vqa.vqa_service import VQAService
-from src.runtime.system_coordinator import SystemCoordinator
+from src.runtime.system_coordinator import (
+    BUSY_TEXT, MODE_ANNOUNCEMENTS, STOPPING_TEXT, SystemCoordinator)
 from src.speech.factory import build_speech_components
 from src.ui.hud_renderer import HUDRenderer
 from src.ui.app_runner import AppRunner
@@ -171,7 +172,9 @@ def main():
         tts_engine.warm_up()
         alert_names = [class_filter.get_vietnamese_name(c) for c in sorted(class_filter.alert_classes)]
         alert_names.append(GENERIC_OBSTACLE_NAME)
-        threading.Thread(target=tts_engine.prerender, args=(AlertAggregator.alert_texts(alert_names),),
+        clip_texts = (list(MODE_ANNOUNCEMENTS.values()) + [BUSY_TEXT, STOPPING_TEXT]
+                      + AlertAggregator.alert_texts(alert_names))
+        threading.Thread(target=tts_engine.prerender, args=(clip_texts,),
                          name="AlertClipPrerender", daemon=True).start()
 
     # 6. On-Demand OCR & VQA

@@ -78,6 +78,7 @@ class TestRuntimeModes(unittest.TestCase):
         self.system.set_on_demand_active(True, 'OCR')
         old = high_assessment()
         self.system.enter_warning_mode()
+        self.audio.interrupt()  # câu "Chế độ cảnh báo" đã đọc xong; cảnh báo không phải chờ nó
         self.system._post_safety_alert([old])
         self.fsm.mark_alert_triggered.assert_not_called()
         fresh = high_assessment()
